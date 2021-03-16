@@ -1,0 +1,71 @@
+<conf:config xmlns:conf="de.mv.ape.gen.model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="de.mv.ape.gen.model ">
+    <basePackage>de.mv.ape.realization</basePackage>
+    <dtoPackage>dto</dtoPackage>
+    <domainPackage>domain</domainPackage>
+    <daoPackage>dao</daoPackage>
+    <useIdGenerator>true</useIdGenerator>
+    <entities>
+        <entity baseName="Root" models="DOMAIN_DAO_DTO">
+            <fields>
+                <field fieldName="rootName" type="String"/>
+                <field fieldName="description" type="String"/>
+            </fields>
+            <references>
+                <reference referenceName="client" targetEntity="Client" isOwner="true"/>
+                <reference referenceName="ext" targetEntity="RootExt" isOwner="true"/>
+            </references>
+        </entity>
+        <entity baseName="RootExt" models="DOMAIN_DAO_DTO">
+            <fields>
+                <field fieldName="ExtendedInfo" type="String"/>
+            </fields>
+        </entity>
+    </entities>
+    <groupings>
+        <grouping groupingPackage="grouping">
+            <entities>
+                <entity baseName="Client" models="DOMAIN_DAO_DTO">
+                    <fields>
+                        <field fieldName="clientName" type="String"/>
+                        <field fieldName="description" type="String"/>
+                        <field fieldName="privilegeGroup" type="String"/>
+                    </fields>
+                    <references>
+                        <reference referenceName="backlog" targetEntity="Backlog" isOwner="true" isList="true"/>
+                    </references>
+                </entity>
+            </entities>
+        </grouping>
+        <grouping groupingPackage="backlog">
+            <entities>
+                <entity baseName="Backlog" models="DOMAIN_DAO_DTO">
+                    <fields>
+                        <field fieldName="backlogName" type="String"/>
+                        <field fieldName="description" type="String"/>
+                        <field fieldName="privilegeGroup" type="String"/>
+                    </fields>
+                    <references>
+                        <reference referenceName="item" targetEntity="BacklogItem" isOwner="true" isList="true"/>
+                        <reference referenceName="epic" targetEntity="BacklogEpic" isOwner="true" isList="true"/>
+                    </references>
+                </entity>
+                <entity baseName="BacklogItem" models="DOMAIN_DAO_DTO">
+                    <fields>
+                        <field fieldName="backlogItemName" type="String"/>
+                        <field fieldName="description" type="AnyNewType" typePackage="de.mv.anything" isTypeEnum="true"/>
+                    </fields>
+                </entity>
+                <entity baseName="BacklogEpic" models="DOMAIN_DAO_DTO">
+                    <fields>
+                        <field fieldName="backlogEpicName" type="String"/>
+                        <field fieldName="description" type="String"/>
+                    </fields>
+                    <references>
+                        <reference referenceName="item" targetEntity="BacklogItem" isOwner="false" isList="true"/>
+                    </references>
+                </entity>
+            </entities>
+        </grouping>
+    </groupings>
+</conf:config>
