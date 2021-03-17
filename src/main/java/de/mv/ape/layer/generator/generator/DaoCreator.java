@@ -158,6 +158,7 @@ public class DaoCreator extends AbstractCreator {
      * Adds a field of reference to the parent entity
      *
      * @param daoClazz       clazz where to add attribute
+     * @param basePackage    base package name
      * @param reference      reference which should be add
      * @param isSingle       {@code true} if its unique reference
      * @param attributeNames List where to add the name of created attribute
@@ -186,6 +187,7 @@ public class DaoCreator extends AbstractCreator {
      * Adds a field or list of reference to the child entity
      *
      * @param daoClazz       clazz where to add attribute
+     * @param packageName    base package name
      * @param reference      reference which should be add
      * @param attributeNames list of attributes which are used as reference property at class
      * @param packageDir     base package directory where other referenced class sources are found
@@ -202,6 +204,7 @@ public class DaoCreator extends AbstractCreator {
      * Adds a field or list of reference to the child entity, but only if the source of reference is also the owner
      *
      * @param daoClazz       clazz where to add attribute
+     * @param packageName    base package name
      * @param reference      reference which should be add
      * @param attributeNames list of attributes which are used as reference property at class
      */
@@ -233,6 +236,7 @@ public class DaoCreator extends AbstractCreator {
      * Adds a field or list of reference to the child entity, but only if the source of reference is not the owner
      *
      * @param daoClazz       clazz where to add attribute
+     * @param packageName    base package name
      * @param reference      reference which should be add
      * @param attributeNames list of attributes which are used as reference property at class
      * @param packageDir     base package directory where other referenced class sources are found.
@@ -278,9 +282,10 @@ public class DaoCreator extends AbstractCreator {
     /**
      * Creates a connection table for reference where the source entity is not the owner
      *
-     * @param packageName package name to use
-     * @param reference   reference which should be presented by the connection table
-     * @param packageDir  directory of the package sources
+     * @param packageName     package name to use
+     * @param basePackageName base package name
+     * @param reference       reference which should be presented by the connection table
+     * @param packageDir      directory of the package sources
      */
     private Clazz createConnectionTable(String packageName, String basePackageName, Reference reference, File packageDir) {
         String clazzName = getConnectionTableName(reference);
