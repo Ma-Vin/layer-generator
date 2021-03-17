@@ -1,6 +1,7 @@
 package de.mv.ape.layer.generator.generator;
 
 import de.mv.ape.layer.generator.config.elements.Config;
+import de.mv.ape.layer.generator.config.elements.Entity;
 import de.mv.ape.layer.generator.config.elements.Reference;
 import de.mv.ape.layer.generator.sources.*;
 
@@ -39,7 +40,7 @@ public class DaoCreator extends AbstractCreator {
      * @param packageDir  directory where to write at
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
-    public boolean createDataAccessObject(de.mv.ape.layer.generator.config.elements.Entity entity, String packageName, File packageDir) {
+    public boolean createDataAccessObject(Entity entity, String packageName, File packageDir) {
         if (!entity.getModels().isDao()) {
             logger.debug(String.format("Entity %s is not relevant for dao", entity.getBaseName()));
             return true;
@@ -74,7 +75,7 @@ public class DaoCreator extends AbstractCreator {
      * @param entity   entity whose fields should be added as attribute
      * @param daoClazz Class where to add attributes
      */
-    private void addAttributes(de.mv.ape.layer.generator.config.elements.Entity entity, Clazz daoClazz) {
+    private void addAttributes(Entity entity, Clazz daoClazz) {
         Attribute idAttribute = new Attribute("id", Long.class.getSimpleName());
         idAttribute.addAnnotation(Id.class);
         idAttribute.addAnnotation(GeneratedValue.class, "strategy", "GenerationType.IDENTITY");
@@ -99,7 +100,7 @@ public class DaoCreator extends AbstractCreator {
      * @param packageName base package name where other referenced class are found
      * @param packageDir  base package directory where other referenced class sources are found
      */
-    private void addReferences(de.mv.ape.layer.generator.config.elements.Entity entity, Clazz daoClazz, String packageName, File packageDir) {
+    private void addReferences(Entity entity, Clazz daoClazz, String packageName, File packageDir) {
 
         List<String> attributes = new ArrayList<>();
 
@@ -131,7 +132,7 @@ public class DaoCreator extends AbstractCreator {
      * @param daoClazz class where to add methods
      * @param entity   Entity which is used for generating
      */
-    private void addDaoIdentificationMethods(Clazz daoClazz, de.mv.ape.layer.generator.config.elements.Entity entity) {
+    private void addDaoIdentificationMethods(Clazz daoClazz, Entity entity) {
         if (!config.isUseIdGenerator()) {
             return;
         }
