@@ -13,7 +13,7 @@ A maven plugin generator to create domain model, data transport or data access o
 For basic usage add a plugin entry like
 ```
 <groupId>de.mv.ape.layer.generator</groupId>
-<artifactId>layor-generator</artifactId>
+<artifactId>layer-generator</artifactId>
 <version>1.0-SNAPSHOT</version>
 <executions>
     <execution>
