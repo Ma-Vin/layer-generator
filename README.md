@@ -1,15 +1,16 @@
-#APE Layer Generator
+# APE Layer Generator
 A maven plugin generator to create domain model, data transport or data access objects.
 
 ## Development status
 :hourglass: not finished
 - [x] dao generator
-- [ ] dto generator
+- [x] dto generator
 - [x] domain generator
 - [ ] dao to domain mapper
 - [ ] domain to dto mapper
 - [ ] extensibility of generated objects
-# Usage
+
+## Usage
 For basic usage add a plugin entry like
 ```
 <groupId>de.mv.ape.layer.generator</groupId>

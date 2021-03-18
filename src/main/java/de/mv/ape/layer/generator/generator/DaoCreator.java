@@ -3,6 +3,7 @@ package de.mv.ape.layer.generator.generator;
 import de.mv.ape.layer.generator.config.elements.Config;
 import de.mv.ape.layer.generator.config.elements.Entity;
 import de.mv.ape.layer.generator.config.elements.Reference;
+import de.mv.ape.layer.generator.exceptions.NotSupportedMethodException;
 import de.mv.ape.layer.generator.sources.*;
 
 import javax.persistence.*;
@@ -28,7 +29,7 @@ public class DaoCreator extends AbstractCreator {
     public static final String CLASS_ENDING = ".class";
 
     public DaoCreator(Config config, Log logger) {
-        super(config, logger);
+        super(config, logger, true);
     }
 
     /**
@@ -74,21 +75,25 @@ public class DaoCreator extends AbstractCreator {
      * @param entity   entity whose fields should be added as attribute
      * @param daoClazz Class where to add attributes
      */
-    private void addAttributes(Entity entity, Clazz daoClazz) {
+    @Override
+    protected void addAttributes(Entity entity, Clazz daoClazz) {
         Attribute idAttribute = new Attribute("id", Long.class.getSimpleName());
         idAttribute.addAnnotation(Id.class);
         idAttribute.addAnnotation(GeneratedValue.class, "strategy", "GenerationType.IDENTITY");
         idAttribute.addAnnotation(Column.class, "name", "\"Id\"");
         daoClazz.addAttribute(idAttribute);
 
-        entity.getFields().stream()
-                .filter(f -> f.getModels() == null || f.getModels().isDao())
-                .forEach(f -> {
-                    if (f.getTypePackage() != null && !f.getTypePackage().isEmpty()) {
-                        daoClazz.addImport(String.format("%s.%s", f.getTypePackage(), f.getType()));
-                    }
-                    daoClazz.addAttribute(createAttribute(f, true, "Column"));
-                });
+        addAttributes(entity, daoClazz, "Column");
+    }
+
+    @Override
+    protected void addReferences(Entity entity, Clazz clazz, String packageName) {
+        throw new NotSupportedMethodException("Method addReferences(Entity entity, Clazz clazz, String packageName) should not be used in context data access object");
+    }
+
+    @Override
+    protected void addReference(Clazz clazz, String packageName, Reference reference, List<String> attributeNames) {
+        throw new NotSupportedMethodException("Method addReferenceClazz clazz, String packageName, Reference reference, List<String> attributeNames) should not be used in context data access object");
     }
 
     /**

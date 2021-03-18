@@ -1,9 +1,6 @@
 package de.mv.ape.layer.generator.generator;
 
-import de.mv.ape.layer.generator.config.elements.Config;
-import de.mv.ape.layer.generator.config.elements.Entity;
-import de.mv.ape.layer.generator.config.elements.Field;
-import de.mv.ape.layer.generator.config.elements.Reference;
+import de.mv.ape.layer.generator.config.elements.*;
 import de.mv.ape.layer.generator.sources.*;
 import lombok.*;
 import org.apache.maven.plugin.logging.Log;
@@ -12,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +20,11 @@ public abstract class AbstractCreator {
 
     protected Config config;
     protected Log logger;
+    protected boolean isDao;
+
+    AbstractCreator(Config config, Log logger) {
+        this(config, logger, false);
+    }
 
     /**
      * Generates and write the content to a file
@@ -49,6 +52,53 @@ public abstract class AbstractCreator {
             return false;
         }
     }
+
+    /**
+     * Adds all necessary attributes to the class
+     *
+     * @param entity entity whose fields should be added as attribute
+     * @param clazz  Class where to add attributes
+     */
+    @SuppressWarnings("java:S3878")
+    protected void addAttributes(Entity entity, Clazz clazz) {
+        addAttributes(entity, clazz, new String[]{});
+    }
+
+    /**
+     * Adds all necessary attributes to the class
+     *
+     * @param entity      entity whose fields should be added as attribute
+     * @param clazz       Class where to add attributes
+     * @param annotations annotations which should be added
+     */
+    protected void addAttributes(Entity entity, Clazz clazz, String... annotations) {
+        entity.getFields().stream()
+                .filter(f -> f.getModels() == null || f.getModels().isDomain())
+                .forEach(f -> {
+                    if (f.getTypePackage() != null && !f.getTypePackage().isEmpty()) {
+                        clazz.addImport(String.format("%s.%s", f.getTypePackage(), f.getType()));
+                    }
+                    clazz.addAttribute(createAttribute(f, isDao, annotations));
+                });
+    }
+
+    /**
+     * Adds all necessary references to the class
+     *
+     * @param entity      entity whose references should be added
+     * @param clazz       Class where to add attributes
+     * @param packageName base package name where other referenced class are found
+     */
+    protected void addReferences(Entity entity, Clazz clazz, String packageName) {
+        List<String> attributes = new ArrayList<>();
+
+        entity.getReferences().forEach(ref -> addReference(clazz, packageName, ref, attributes));
+
+        logger.debug(String.format("%d references added to %s", attributes.size(), clazz.getClassName()));
+        addExcludeAttributes(clazz, attributes);
+    }
+
+    protected abstract void addReference(Clazz clazz, String packageName, Reference reference, List<String> attributeNames);
 
     /**
      * Create a field

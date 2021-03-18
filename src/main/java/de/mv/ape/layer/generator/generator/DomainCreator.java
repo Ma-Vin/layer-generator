@@ -4,14 +4,10 @@ import de.mv.ape.layer.generator.config.elements.Config;
 import de.mv.ape.layer.generator.config.elements.Entity;
 import de.mv.ape.layer.generator.config.elements.Reference;
 import de.mv.ape.layer.generator.sources.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,6 +15,7 @@ import java.util.List;
  * Class to create sources of domain objects
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class DomainCreator extends AbstractCreator {
 
     public DomainCreator(Config config, Log logger) {
@@ -93,56 +90,16 @@ public class DomainCreator extends AbstractCreator {
         domainClazz.addAttribute(idAttribute);
     }
 
-    /**
-     * Adds all necessary attributes to the class
-     *
-     * @param entity      entity whose fields should be added as attribute
-     * @param domainClazz Class where to add attributes
-     */
-    private void addAttributes(Entity entity, Clazz domainClazz) {
-        entity.getFields().stream()
-                .filter(f -> f.getModels() == null || f.getModels().isDomain())
-                .forEach(f -> {
-                    if (f.getTypePackage() != null && !f.getTypePackage().isEmpty()) {
-                        domainClazz.addImport(String.format("%s.%s", f.getTypePackage(), f.getType()));
-                    }
-                    domainClazz.addAttribute(createAttribute(f, false));
-                });
-    }
-
-    /**
-     * Adds all necessary references to the class
-     *
-     * @param entity      entity whose references should be added
-     * @param domainClazz Class where to add attributes
-     * @param packageName base package name where other referenced class are found
-     */
-    private void addReferences(Entity entity, Clazz domainClazz, String packageName) {
-        List<String> attributes = new ArrayList<>();
-
-        entity.getReferences().forEach(ref -> addReference(domainClazz, packageName, ref, attributes));
-
-        logger.debug(String.format("%d references added to %s", attributes.size(), domainClazz.getClassName()));
-        addExcludeAttributes(domainClazz, attributes);
-    }
-
-    /**
-     * Adds a reference to the class
-     *
-     * @param domainClazz    clazz where to add attribute
-     * @param packageName    base package name
-     * @param reference      reference which should be add
-     * @param attributeNames list of attributes which are used as reference property at class
-     */
-    private void addReference(Clazz domainClazz, String packageName, Reference reference, List<String> attributeNames) {
+    @Override
+    protected void addReference(Clazz clazz, String packageName, Reference reference, List<String> attributeNames) {
         String childClassName = reference.getTargetEntity();
         String propertyBaseName = getLowerFirst(reference.getReferenceName());
 
         Attribute child;
 
         if (reference.isList()) {
-            domainClazz.addImport(Collection.class.getName());
-            domainClazz.addImport(Setter.class.getName());
+            clazz.addImport(Collection.class.getName());
+            clazz.addImport(Setter.class.getName());
 
             child = new Attribute(propertyBaseName + "s", String.format("%s<%s>", Collection.class.getSimpleName(), childClassName));
             child.addAnnotation(Setter.class.getSimpleName(), null, String.format("%s.%s", AccessLevel.class.getSimpleName(), AccessLevel.PROTECTED.name()));
@@ -172,14 +129,14 @@ public class DomainCreator extends AbstractCreator {
             removeMethod.addLine(String.format("return %s.remove(%s);", child.getAttributeName(), propertyBaseName));
             removeMethod.setJavaDoc(removeMethodDescription);
 
-            domainClazz.addMethod(addMethod);
-            domainClazz.addMethod(removeMethod);
+            clazz.addMethod(addMethod);
+            clazz.addMethod(removeMethod);
         } else {
             child = new Attribute(propertyBaseName, childClassName);
         }
 
-        domainClazz.addAttribute(child);
-        domainClazz.addImport(getPackageAndClass(reference, packageName));
+        clazz.addAttribute(child);
+        clazz.addImport(getPackageAndClass(reference, packageName));
 
         attributeNames.add(child.getAttributeName());
     }
