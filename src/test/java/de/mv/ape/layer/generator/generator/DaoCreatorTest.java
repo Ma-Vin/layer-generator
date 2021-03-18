@@ -2,7 +2,6 @@ package de.mv.ape.layer.generator.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.Mockito.*;
 
 import de.mv.ape.layer.generator.config.elements.*;
@@ -19,38 +18,19 @@ import java.io.IOException;
 import java.util.*;
 
 @Slf4j
-public class DaoCreatorTest {
-    public static final String BASE_PACKAGE = "de.test.package";
+public class DaoCreatorTest extends AbstractCreatorTest {
 
-    @Mock
-    private Config config;
-    @Mock
-    private File basePackageDir;
-    @Mock
-    private Entity entity;
-    @Mock
-    private Field field;
-    @Mock
-    private Entity targetEntity;
-    @Mock
-    private Reference targetReference;
     @Mock
     private Entity parentEntity;
     @Mock
     private Reference parentReference;
-    @Mock
-    private Grouping grouping;
-    @Mock
-    private BufferedWriter bufferedWriter;
 
     private DaoCreator cut;
 
-    Map<String, List<String>> writtenFileContents = new HashMap<>();
 
     @BeforeEach
     public void setUp() {
-        initMocks(this);
-        writtenFileContents.clear();
+        super.setUp();
 
         cut = new DaoCreator(config, new LogImpl()) {
             @Override
@@ -74,30 +54,11 @@ public class DaoCreatorTest {
                 return createdFile;
             }
         };
+    }
 
-        when(entity.getBaseName()).thenReturn("Dummy");
-        when(entity.getDescription()).thenReturn("Dummy description");
-        when(entity.getIdentificationPrefix()).thenReturn("DU");
-        when(entity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
-        when(entity.getGrouping()).thenReturn(grouping);
-
-        when(field.getFieldName()).thenReturn("anyField");
-        when(field.getType()).thenReturn("String");
-        when(field.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
-
-        when(grouping.getGroupingPackage()).thenReturn("group");
-        when(targetReference.getTargetEntity()).thenReturn("Target");
-        when(targetReference.getRealTargetEntity()).thenReturn(targetEntity);
-        when(targetReference.isList()).thenReturn(Boolean.TRUE);
-        when(targetReference.isOwner()).thenReturn(Boolean.TRUE);
-        when(targetReference.getReferenceName()).thenReturn("TargetRef");
-
-        when(targetEntity.getBaseName()).thenReturn("Target");
-        when(targetEntity.getDescription()).thenReturn("Target description");
-        when(targetEntity.getIdentificationPrefix()).thenReturn("TA");
-        when(targetEntity.getModels()).thenReturn(Models.DAO);
-        when(targetEntity.getGrouping()).thenReturn(grouping);
-
+    @Override
+    protected void initDefaultMock() {
+        super.initDefaultMock();
 
         when(parentEntity.getBaseName()).thenReturn("Owner");
         when(parentEntity.getDescription()).thenReturn("Owner description");
@@ -109,15 +70,6 @@ public class DaoCreatorTest {
         when(parentReference.getRealTargetEntity()).thenReturn(parentEntity);
         when(parentReference.isList()).thenReturn(Boolean.TRUE);
         when(parentReference.isOwner()).thenReturn(Boolean.TRUE);
-
-
-        when(config.getBasePackage()).thenReturn("de.test.package");
-        when(config.getDaoPackage()).thenReturn("dao");
-        when(config.getDtoPackage()).thenReturn("dto");
-        when(config.getDomainPackage()).thenReturn("domain");
-
-        when(basePackageDir.getName()).thenReturn("basePackageDir");
-        when(basePackageDir.getParentFile()).thenReturn(null);
     }
 
     @Test
@@ -147,13 +99,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -194,13 +140,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -242,13 +182,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -290,13 +224,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -339,13 +267,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -387,13 +309,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -455,13 +371,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
 
@@ -506,13 +416,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -643,13 +547,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -683,13 +581,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -724,13 +616,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -770,13 +656,7 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        checkSingleFile("DummyDao.java", expected);
     }
 
     @Test
@@ -818,21 +698,6 @@ public class DaoCreatorTest {
 
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
-
-        if (expected.size() != writtenFileContents.get("DummyDao.java").size()) {
-            logFileContents();
-        }
-        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
-    }
-
-    private void logFileContents() {
-        writtenFileContents.entrySet().forEach(entry -> {
-            log.error("File {} was written:", entry.getKey());
-            log.error("");
-            entry.getValue().forEach(line -> log.error(line));
-            log.error("-------------");
-        });
+        checkSingleFile("DummyDao.java", expected);
     }
 }

@@ -43,7 +43,7 @@ public class AttributeTest {
 
     @Test
     public void testGenerateQualifier() {
-        cut.setQualifier("public");
+        cut.setQualifier(Qualifier.PUBLIC);
         List<String> result = cut.generate();
         assertNotNull(result, "There should be any result");
         assertEquals(1, result.size(), "Wrong number of lines");

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,22 +36,8 @@ public class Annotation extends AbstractGenerateLines implements Comparable<Anno
     @Override
     public List<String> generate() {
         List<String> result = new ArrayList<>();
-        result.add(String.format("@%s(%s)", annotationName, getParametersText()));
+        result.add(String.format("@%s(%s)", annotationName, getParametersText(parameters)));
         return result;
-    }
-
-    private String getParametersText() {
-        if (parameters.isEmpty()) {
-            return "";
-        }
-        Collections.sort(parameters);
-        StringBuilder sb = new StringBuilder();
-        sb.append(parameters.get(0).getText());
-        for (int i = 1; i < parameters.size(); i++) {
-            sb.append(", ");
-            sb.append(parameters.get(i).getText());
-        }
-        return sb.toString();
     }
 
     public void addValue(String paraValue) {
@@ -76,14 +61,14 @@ public class Annotation extends AbstractGenerateLines implements Comparable<Anno
     public int compareTo(Annotation o) {
         int res = annotationName.compareTo(o.annotationName);
         if (res == 0) {
-            res = getParametersText().compareTo(o.getParametersText());
+            res = getParametersText(parameters).compareTo(getParametersText(o.parameters));
         }
         return res;
     }
 
     @Data
     @AllArgsConstructor
-    public class AttributeValue implements Comparable<AttributeValue> {
+    public class AttributeValue implements IComparableWithText<AttributeValue> {
         private boolean isArray;
         private String attributeName;
         private String[] values;
@@ -96,7 +81,7 @@ public class Annotation extends AbstractGenerateLines implements Comparable<Anno
             this(true, attributeName, values);
         }
 
-        private String getText() {
+        public String getText() {
             if (!isArray) {
                 return attributeName == null ? values[0] : String.format("%s = %s", attributeName, values[0]);
             }

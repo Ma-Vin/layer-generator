@@ -5,7 +5,7 @@ A maven plugin generator to create domain model, data transport or data access o
 :hourglass: not finished
 - [x] dao generator
 - [ ] dto generator
-- [ ] domain generator
+- [x] domain generator
 - [ ] dao to domain mapper
 - [ ] domain to dto mapper
 - [ ] extensibility of generated objects

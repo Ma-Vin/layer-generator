@@ -23,7 +23,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
     private Set<Clazz> innerClasses = new TreeSet<>();
     private Set<String> interfaces = new TreeSet<>();
     private String extension = null;
-    private String qualifier = "public";
+    private Qualifier qualifier = Qualifier.PUBLIC;
     private boolean isStatic;
     private boolean isInner;
 
@@ -56,7 +56,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
             result.addAll(description.generate());
         }
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
-        result.add(String.format("%s%s class %s%s%s {", qualifier, getStaticText(), className, getExtensionText(), getInterfaceText()));
+        result.add(String.format("%s%s class %s%s%s {", qualifier.getText(), getStaticText(), className, getExtensionText(), getInterfaceText()));
         result.add("");
         attributes.stream().sorted().forEach(a -> {
             result.addAll(a.generate(1));

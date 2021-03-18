@@ -16,7 +16,7 @@ public class Attribute extends AbstractGenerateLines implements Comparable<Attri
     private List<Annotation> annotations = new ArrayList<>();
     private boolean isStatic;
     private boolean isFinal;
-    private String qualifier = "private";
+    private Qualifier qualifier = Qualifier.PRIVATE;
     private String attributeName;
     private String attributeType;
     private String initValue = null;
@@ -33,7 +33,7 @@ public class Attribute extends AbstractGenerateLines implements Comparable<Attri
             result.addAll(javaDoc.generate());
         }
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
-        result.add(String.format("%s%s%s %s %s%s;", qualifier, getStaticText(), getFinalText(), attributeType, attributeName, getInitValueText()));
+        result.add(String.format("%s%s%s %s %s%s;", qualifier.getText(), getStaticText(), getFinalText(), attributeType, attributeName, getInitValueText()));
         return result;
     }
 

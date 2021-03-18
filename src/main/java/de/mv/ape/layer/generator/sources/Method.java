@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
     private JavaDoc javaDoc = null;
     private List<Annotation> annotations = new ArrayList<>();
     private boolean isStatic;
-    private String qualifier = "private";
+    private Qualifier qualifier = Qualifier.PRIVATE;
     private String methodType = "void";
     private String methodName;
     private List<Parameter> parameters = new ArrayList<>();
@@ -47,7 +46,7 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
             result.addAll(javaDoc.generate());
         }
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
-        result.add(String.format("%s%s %s %s(%s) {", qualifier, getStaticText(), methodType, methodName, getParametersText()));
+        result.add(String.format("%s%s %s %s(%s) {", qualifier.getText(), getStaticText(), methodType, methodName, getParametersText(parameters)));
         methodBody.forEach(b -> result.add(TAB + b));
         result.add("}");
         return result;
@@ -55,20 +54,6 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
 
     private String getStaticText() {
         return isStatic ? " static" : "";
-    }
-
-    private String getParametersText() {
-        if (parameters.isEmpty()) {
-            return "";
-        }
-        Collections.sort(parameters);
-        StringBuilder sb = new StringBuilder();
-        sb.append(parameters.get(0).getText());
-        for (int i = 1; i < parameters.size(); i++) {
-            sb.append(", ");
-            sb.append(parameters.get(i).getText());
-        }
-        return sb.toString();
     }
 
     @Override
@@ -104,11 +89,11 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
 
     @Data
     @AllArgsConstructor
-    public class Parameter implements Comparable<Parameter> {
+    public class Parameter implements IComparableWithText<Parameter> {
         private String parameterType;
         private String parameterName;
 
-        private String getText() {
+        public String getText() {
             return String.format("%s %s", parameterType, parameterName);
         }
 

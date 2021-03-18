@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Class to create sources of data access objects
@@ -88,7 +87,7 @@ public class DaoCreator extends AbstractCreator {
                     if (f.getTypePackage() != null && !f.getTypePackage().isEmpty()) {
                         daoClazz.addImport(String.format("%s.%s", f.getTypePackage(), f.getType()));
                     }
-                    daoClazz.addAttribute(createAttribute(f, "Column"));
+                    daoClazz.addAttribute(createAttribute(f, true, "Column"));
                 });
     }
 
@@ -110,20 +109,7 @@ public class DaoCreator extends AbstractCreator {
                 .forEach(ref -> addParentRef(daoClazz, packageName, ref, isSingle, attributes));
         entity.getReferences().forEach(ref -> addChildRef(daoClazz, packageName, ref, attributes, packageDir));
 
-        if (!attributes.isEmpty()) {
-            List<String> excludeAttributes = attributes.stream().map(a -> "\"" + a + "\"").collect(Collectors.toList());
-
-            Annotation toStringAnnotation = new Annotation(ToString.class);
-            Annotation equalsAndHashCodeAnnotation = new Annotation(EqualsAndHashCode.class);
-
-            toStringAnnotation.addParameterArray("exclude", excludeAttributes);
-            equalsAndHashCodeAnnotation.addParameterArray("exclude", excludeAttributes);
-
-            daoClazz.addImport(EqualsAndHashCode.class.getName());
-            daoClazz.addImport(ToString.class.getName());
-            daoClazz.addAnnotation(toStringAnnotation);
-            daoClazz.addAnnotation(equalsAndHashCodeAnnotation);
-        }
+        addExcludeAttributes(daoClazz, attributes);
     }
 
     /**
@@ -142,13 +128,13 @@ public class DaoCreator extends AbstractCreator {
         daoClazz.addImport(config.getBasePackage() + "." + config.getDomainPackage() + "." + entity.getBaseName());
 
         Method getIdentificationMethod = new Method("getIdentification");
-        getIdentificationMethod.setQualifier("public");
+        getIdentificationMethod.setQualifier(Qualifier.PUBLIC);
         getIdentificationMethod.setMethodType("String");
         getIdentificationMethod.addLine(String.format("return IdGenerator.generateIdentification(id, %s.ID_PREFIX);", entity.getBaseName()));
         daoClazz.addMethod(getIdentificationMethod);
 
         Method setIdentificationMethod = new Method("setIdentification");
-        setIdentificationMethod.setQualifier("public");
+        setIdentificationMethod.setQualifier(Qualifier.PUBLIC);
         setIdentificationMethod.addParameter("String", "identification");
         setIdentificationMethod.addLine(String.format("id = IdGenerator.generateId(identification, %s.ID_PREFIX);", entity.getBaseName()));
         daoClazz.addMethod(setIdentificationMethod);
