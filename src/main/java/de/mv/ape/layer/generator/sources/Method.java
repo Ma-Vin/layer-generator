@@ -12,14 +12,14 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class Method extends AbstractGenerateLines implements Comparable<Method> {
-    private JavaDoc javaDoc = null;
-    private List<Annotation> annotations = new ArrayList<>();
-    private boolean isStatic;
-    private Qualifier qualifier = Qualifier.PRIVATE;
-    private String methodType = "void";
-    private String methodName;
-    private List<Parameter> parameters = new ArrayList<>();
-    private List<String> methodBody = new ArrayList<>();
+    protected JavaDoc javaDoc = null;
+    protected List<Annotation> annotations = new ArrayList<>();
+    protected boolean isStatic;
+    protected Qualifier qualifier = Qualifier.PRIVATE;
+    protected String methodType = "void";
+    protected String methodName;
+    protected List<Parameter> parameters = new ArrayList<>();
+    protected List<String> methodBody = new ArrayList<>();
 
 
     public Method(String methodName) {
@@ -35,6 +35,10 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         methodBody.add(methodLine);
     }
 
+    public void addLine(String methodLine, int numTabs) {
+        methodBody.add(getTabs(numTabs) + methodLine);
+    }
+
     public void addParameter(String parameterType, String parameterName) {
         parameters.add(new Parameter(parameterType, parameterName));
     }
@@ -46,13 +50,17 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
             result.addAll(javaDoc.generate());
         }
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
-        result.add(String.format("%s%s %s %s(%s) {", qualifier.getText(), getStaticText(), methodType, methodName, getParametersText(parameters)));
+        result.add(getDeclaration());
         methodBody.forEach(b -> result.add(TAB + b));
         result.add("}");
         return result;
     }
 
-    private String getStaticText() {
+    protected String getDeclaration() {
+        return String.format("%s%s %s %s(%s) {", qualifier.getText(), getStaticText(), methodType, methodName, getParametersText(parameters));
+    }
+
+    protected String getStaticText() {
         return isStatic ? " static" : "";
     }
 
@@ -68,7 +76,7 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         int res = methodName.compareTo(o.methodName);
         if (res == 0) {
             for (int i = 0; i < parameters.size() && i < o.parameters.size() && res == 0; i++) {
-                res = parameters.get(i).parameterName.compareTo(o.getParameters().get(i).parameterName);
+                res = parameters.get(i).getParameterName().compareTo(o.getParameters().get(i).getParameterName());
             }
         }
         if (res == 0) {
@@ -87,20 +95,4 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         annotations.add(annotation);
     }
 
-    @Data
-    @AllArgsConstructor
-    public class Parameter implements IComparableWithText<Parameter> {
-        private String parameterType;
-        private String parameterName;
-
-        public String getText() {
-            return String.format("%s %s", parameterType, parameterName);
-        }
-
-        @Override
-        @SuppressWarnings("java:S1210")
-        public int compareTo(Parameter o) {
-            return parameterName.compareTo(o.parameterName);
-        }
-    }
 }

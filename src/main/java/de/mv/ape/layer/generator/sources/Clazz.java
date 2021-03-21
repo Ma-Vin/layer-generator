@@ -18,6 +18,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
     private Set<Import> imports = new TreeSet<>();
     private Set<Import> staticImports = new TreeSet<>();
     private JavaDoc description = null;
+    private Set<Constructor> constructors = new TreeSet<>();
     private Set<Attribute> attributes = new TreeSet<>();
     private Set<Method> methods = new TreeSet<>();
     private Set<Clazz> innerClasses = new TreeSet<>();
@@ -58,6 +59,10 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
         result.add(String.format("%s%s class %s%s%s {", qualifier.getText(), getStaticText(), className, getExtensionText(), getInterfaceText()));
         result.add("");
+        constructors.stream().sorted().forEach(a -> {
+            result.addAll(a.generate(1));
+            result.add("");
+        });
         attributes.stream().sorted().forEach(a -> {
             result.addAll(a.generate(1));
             result.add("");
@@ -102,6 +107,10 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
     @SuppressWarnings("java:S1210")
     public int compareTo(Clazz o) {
         return className.compareTo(o.className);
+    }
+
+    public void addConstructor(Constructor constructor) {
+        constructors.add(constructor);
     }
 
     public void addAttribute(Attribute attribute) {

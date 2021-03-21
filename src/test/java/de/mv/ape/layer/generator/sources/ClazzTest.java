@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static de.mv.ape.layer.generator.sources.AbstractGenerateLines.TAB;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,8 @@ public class ClazzTest {
     private JavaDoc javaDoc;
     @Mock
     private Method method;
+    @Mock
+    private Constructor constructor;
     @Mock
     private Clazz innerClazz;
 
@@ -165,7 +168,28 @@ public class ClazzTest {
         expected.add("");
         expected.add("public class Dummy {");
         expected.add("");
-        expected.add(AbstractGenerateLines.TAB + "attributePlaceHolder");
+        expected.add(TAB + "attributePlaceHolder");
+        expected.add("");
+        expected.add("}");
+
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+    @Test
+    public void testGenerateConstructors() {
+        when(method.generate()).thenReturn(Arrays.asList("constructorPlaceHolder"));
+        doCallRealMethod().when(method).generate(anyInt());
+        doCallRealMethod().when(method).getTabs(anyInt());
+        cut.addMethod(method);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.abc;");
+        expected.add("");
+        expected.add("public class Dummy {");
+        expected.add("");
+        expected.add(TAB + "constructorPlaceHolder");
         expected.add("");
         expected.add("}");
 
@@ -176,17 +200,17 @@ public class ClazzTest {
 
     @Test
     public void testGenerateMethods() {
-        when(method.generate()).thenReturn(Arrays.asList("methodPlaceHolder"));
-        doCallRealMethod().when(method).generate(anyInt());
-        doCallRealMethod().when(method).getTabs(anyInt());
-        cut.addMethod(method);
+        when(constructor.generate()).thenReturn(Arrays.asList("methodPlaceHolder"));
+        doCallRealMethod().when(constructor).generate(anyInt());
+        doCallRealMethod().when(constructor).getTabs(anyInt());
+        cut.addMethod(constructor);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.abc;");
         expected.add("");
         expected.add("public class Dummy {");
         expected.add("");
-        expected.add(AbstractGenerateLines.TAB + "methodPlaceHolder");
+        expected.add(TAB + "methodPlaceHolder");
         expected.add("");
         expected.add("}");
 
@@ -207,7 +231,7 @@ public class ClazzTest {
         expected.add("");
         expected.add("public class Dummy {");
         expected.add("");
-        expected.add(AbstractGenerateLines.TAB + "innerClazzPlaceHolder");
+        expected.add(TAB + "innerClazzPlaceHolder");
         expected.add("");
         expected.add("}");
 

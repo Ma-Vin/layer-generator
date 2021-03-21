@@ -14,7 +14,7 @@ public abstract class AbstractGenerateLines {
         return generate().stream().map(s -> s.trim().isEmpty() ? s : tabs + s).collect(Collectors.toList());
     }
 
-    protected String getTabs(int numTabs) {
+    public static String getTabs(int numTabs) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < numTabs; i++) {
             sb.append(TAB);
@@ -34,5 +34,9 @@ public abstract class AbstractGenerateLines {
             sb.append(parameters.get(i).getText());
         }
         return sb.toString();
+    }
+
+    protected static String getUpperFirst(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 }
