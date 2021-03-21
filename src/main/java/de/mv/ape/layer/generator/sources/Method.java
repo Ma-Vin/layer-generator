@@ -35,9 +35,27 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         methodBody.add(methodLine);
     }
 
-    public void addLine(String methodLine, int numTabs) {
-        methodBody.add(getTabs(numTabs) + methodLine);
+    public void addLine(String methodLine, String... args) {
+        methodBody.add(String.format(methodLine, args));
     }
+
+    public void addLine(String methodLine, int numTabs) {
+        addLine(getTabs(numTabs) + methodLine);
+    }
+
+    public void addLine(String methodLine, int numTabs, String... args) {
+        addLine(getTabs(numTabs) + methodLine, args);
+    }
+
+    /**
+     * Adds an empty line if the last one is not already empty
+     */
+    public void addEmptyLine() {
+        if (!methodBody.isEmpty() && !methodBody.get(methodBody.size() - 1).trim().isEmpty()) {
+            methodBody.add("");
+        }
+    }
+
 
     public void addParameter(String parameterType, String parameterName) {
         parameters.add(new Parameter(parameterType, parameterName));
@@ -51,7 +69,7 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         }
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
         result.add(getDeclaration());
-        methodBody.forEach(b -> result.add(TAB + b));
+        methodBody.forEach(b -> result.add(b.trim().isEmpty() ? "" : TAB + b));
         result.add("}");
         return result;
     }

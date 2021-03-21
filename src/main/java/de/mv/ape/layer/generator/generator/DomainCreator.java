@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DomainCreator extends AbstractCreator {
+public class DomainCreator extends AbstractObjectCreator {
 
     public DomainCreator(Config config, Log logger) {
         super(config, logger);

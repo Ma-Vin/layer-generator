@@ -1,30 +1,27 @@
 package de.mv.ape.layer.generator.generator;
 
-import de.mv.ape.layer.generator.config.elements.*;
-import de.mv.ape.layer.generator.sources.*;
-import lombok.*;
+import de.mv.ape.layer.generator.config.elements.Config;
+import de.mv.ape.layer.generator.config.elements.Entity;
+import de.mv.ape.layer.generator.config.elements.Reference;
+import de.mv.ape.layer.generator.sources.AbstractGenerateLines;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public abstract class AbstractCreator {
-
     protected Config config;
     protected Log logger;
-    protected boolean isDao;
-
-    AbstractCreator(Config config, Log logger) {
-        this(config, logger, false);
-    }
 
     /**
      * Generates and write the content to a file
@@ -53,104 +50,46 @@ public abstract class AbstractCreator {
         }
     }
 
-    /**
-     * Adds all necessary attributes to the class
-     *
-     * @param entity entity whose fields should be added as attribute
-     * @param clazz  Class where to add attributes
-     */
-    @SuppressWarnings("java:S3878")
-    protected void addAttributes(Entity entity, Clazz clazz) {
-        addAttributes(entity, clazz, new String[]{});
+    protected static String getLowerFirst(String text) {
+        return text.substring(0, 1).toLowerCase() + text.substring(1);
+    }
+
+
+    public static String getUpperFirst(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
     /**
-     * Adds all necessary attributes to the class
+     * Creator Method to be make mocking easier at unit test
      *
-     * @param entity      entity whose fields should be added as attribute
-     * @param clazz       Class where to add attributes
-     * @param annotations annotations which should be added
+     * @param classFile file to write at
+     * @return created buffered writer
      */
-    protected void addAttributes(Entity entity, Clazz clazz, String... annotations) {
-        entity.getFields().stream()
-                .filter(f -> f.getModels() == null || f.getModels().isDomain())
-                .forEach(f -> {
-                    if (f.getTypePackage() != null && !f.getTypePackage().isEmpty()) {
-                        clazz.addImport(String.format("%s.%s", f.getTypePackage(), f.getType()));
-                    }
-                    clazz.addAttribute(createAttribute(f, isDao, annotations));
-                });
+    protected BufferedWriter createBufferedWriter(File classFile) throws IOException {
+        return new BufferedWriter(new FileWriter(classFile));
     }
 
     /**
-     * Adds all necessary references to the class
+     * Creator Method to be make mocking easier at unit test
      *
-     * @param entity      entity whose references should be added
-     * @param clazz       Class where to add attributes
-     * @param packageName base package name where other referenced class are found
+     * @param dir      directory of the file
+     * @param fileName name of the file
+     * @return created file
      */
-    protected void addReferences(Entity entity, Clazz clazz, String packageName) {
-        List<String> attributes = new ArrayList<>();
-
-        entity.getReferences().forEach(ref -> addReference(clazz, packageName, ref, attributes));
-
-        logger.debug(String.format("%d references added to %s", attributes.size(), clazz.getClassName()));
-        addExcludeAttributes(clazz, attributes);
-    }
-
-    protected abstract void addReference(Clazz clazz, String packageName, Reference reference, List<String> attributeNames);
-
-    /**
-     * Create a field
-     *
-     * @param field       field whose source lines should be generated
-     * @param isDao       {@code true} if an attribute of a dao is created
-     * @param annotations annotations which should be added
-     * @return attribute
-     */
-    protected Attribute createAttribute(Field field, boolean isDao, String... annotations) {
-        Attribute attribute = new Attribute(field.getFieldName(), field.getType());
-        if (field.getDescription() != null) {
-            attribute.setJavaDoc(new JavaDoc(field.getDescription()));
-        }
-        if (isDao && field.isTypeEnum()) {
-            attribute.addAnnotation("Enumerated", null, "EnumType.STRING");
-        }
-        for (String annotation : annotations) {
-            attribute.addAnnotation(annotation);
-        }
-        logger.debug(String.format("Attribute %s of type %s was created", attribute.getAttributeName(), attribute.getAttributeType()));
-        return attribute;
+    protected File createFile(File dir, String fileName) {
+        return new File(dir, fileName);
     }
 
     /**
-     * Adds exclusions to {@link ToString} and {@link EqualsAndHashCode} for a given list of names of attribute.
-     * If the list is empty, not any annotation will be added.
+     * Checks whether a text starts with an vowel
      *
-     * @param daoClazz   class where to add the Annotation with exclusion
-     * @param attributes attributes to exclude
+     * @param text text to check
+     * @return {@code true} if the first letter of text is a vowel
      */
-    protected void addExcludeAttributes(Clazz daoClazz, List<String> attributes) {
-        if (attributes.isEmpty()) {
-            return;
-        }
-
-        List<String> excludeAttributes = attributes.stream()
-                .map(a -> a.startsWith("\"") && a.endsWith("\"") ? a : "\"" + a + "\"")
-                .collect(Collectors.toList());
-
-        Annotation toStringAnnotation = new Annotation(ToString.class);
-        Annotation equalsAndHashCodeAnnotation = new Annotation(EqualsAndHashCode.class);
-
-        toStringAnnotation.addParameterArray("exclude", excludeAttributes);
-        equalsAndHashCodeAnnotation.addParameterArray("exclude", excludeAttributes);
-
-        daoClazz.addImport(EqualsAndHashCode.class.getName());
-        daoClazz.addImport(ToString.class.getName());
-        daoClazz.addAnnotation(toStringAnnotation);
-        daoClazz.addAnnotation(equalsAndHashCodeAnnotation);
+    protected boolean startsWithVowel(String text) {
+        String vowels = "aeiou";
+        return vowels.contains(text.toLowerCase().substring(0, 1));
     }
-
 
     /**
      * Creates a string with package of entity
@@ -161,25 +100,25 @@ public abstract class AbstractCreator {
      */
     protected String getPackage(Entity entity, String basePackage) {
         if (entity.getGrouping() != null) {
-            return String.format("%s.%s"
-                    , basePackage
-                    , entity.getGrouping().getGroupingPackage());
+            return getPackage(entity.getGrouping().getGroupingPackage(), basePackage);
         }
         return basePackage;
     }
 
     /**
-     * Creates a File for package of entity
+     * Creates a string with package of subPackage
      *
-     * @param entity         entity to check if a sub package is needed
-     * @param basePackageDir package which is definitely used for package dir
-     * @return package directory
+     * @param subPackage    sub package
+     * @param basePackage package which is definitely used for package name
+     * @return package
      */
-    protected File getPackageDir(Entity entity, File basePackageDir) {
-        if (entity.getGrouping() != null) {
-            return createFile(basePackageDir, entity.getGrouping().getGroupingPackage());
+    protected String getPackage(String subPackage, String basePackage) {
+        if (subPackage != null) {
+            return String.format("%s.%s"
+                    , basePackage
+                    , subPackage);
         }
-        return basePackageDir;
+        return basePackage;
     }
 
     /**
@@ -218,41 +157,5 @@ public abstract class AbstractCreator {
      */
     protected String getPackageAndClass(Reference ref, String basePackage) {
         return getPackageAndClass(ref.getRealTargetEntity(), basePackage, "");
-    }
-
-    protected static String getLowerFirst(String text) {
-        return text.substring(0, 1).toLowerCase() + text.substring(1);
-    }
-
-    /**
-     * Creator Method to be make mocking easier at unit test
-     *
-     * @param classFile file to write at
-     * @return created buffered writer
-     */
-    protected BufferedWriter createBufferedWriter(File classFile) throws IOException {
-        return new BufferedWriter(new FileWriter(classFile));
-    }
-
-    /**
-     * Creator Method to be make mocking easier at unit test
-     *
-     * @param dir      directory of the file
-     * @param fileName name of the file
-     * @return created file
-     */
-    protected File createFile(File dir, String fileName) {
-        return new File(dir, fileName);
-    }
-
-    /**
-     * Checks whether a text starts with an vowel
-     *
-     * @param text text to check
-     * @return {@code true} if the first letter of text is a vowel
-     */
-    protected boolean startsWithVowel(String text) {
-        String vowels = "aeiou";
-        return vowels.contains(text.toLowerCase().substring(0, 1));
     }
 }

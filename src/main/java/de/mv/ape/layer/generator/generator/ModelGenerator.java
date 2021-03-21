@@ -22,10 +22,13 @@ public class ModelGenerator {
     private Optional<File> dtoPackageDir = Optional.empty();
     private Optional<File> domainPackageDir = Optional.empty();
     private Optional<File> daoPackageDir = Optional.empty();
+    private Optional<File> mapperPackageDir = Optional.empty();
 
     private DaoCreator daoCreator;
     private DomainCreator domainCreator;
     private DtoCreator dtoCreator;
+
+    private AccessMapperCreator accessMapperCreator;
 
     /**
      * Constructor of the generator
@@ -44,9 +47,12 @@ public class ModelGenerator {
         this.genDto = genDto;
         this.genDomain = genDomain;
         this.genDao = genDao;
+
         daoCreator = createDaoCreator();
         domainCreator = createDomainCreator();
         dtoCreator = createDtoCreator();
+
+        accessMapperCreator = createAccessMapperCreator();
     }
 
     /**
@@ -69,6 +75,10 @@ public class ModelGenerator {
         }
         if (!createDataTransportObjects()) {
             logger.error("data transport objects could not be created");
+            return false;
+        }
+        if (!createAccessMapper()) {
+            logger.error("access mapper for domain and data access objects could not be created");
             return false;
         }
         return true;
@@ -101,6 +111,12 @@ public class ModelGenerator {
         if (genDao && config.getDaoPackage() != null && !config.getDaoPackage().isEmpty()) {
             daoPackageDir = createDirForPackage(basePackageDir.get(), config.getDaoPackage(), "dao");
             if (daoPackageDir.isEmpty()) {
+                return false;
+            }
+        }
+        if ((genDao || genDto) && genDomain) {
+            mapperPackageDir = createDirForPackage(basePackageDir.get(), "mapper", "mapper");
+            if (mapperPackageDir.isEmpty()) {
                 return false;
             }
         }
@@ -142,6 +158,10 @@ public class ModelGenerator {
         String packageName = config.getBasePackage() + "." + config.getDaoPackage();
         if (daoPackageDir.isEmpty()) {
             logger.error("Empty daoPackageDir");
+            return false;
+        }
+        if (!daoCreator.createDataAccessObjectInterface(packageName, daoPackageDir.get())) {
+            logger.error("Dao interface could not be created");
             return false;
         }
         return createEntitiesObjects(e -> createDataAccessObject(e, packageName, daoPackageDir.get()), daoPackageDir.get());
@@ -236,7 +256,7 @@ public class ModelGenerator {
             }
         }
 
-        logger.debug(String.format("%d groupings are to generate", config.getEntities().size()));
+        logger.debug(String.format("%d groupings are to generate", config.getGroupings().size()));
         for (Grouping g : config.getGroupings()) {
             Optional<File> groupingDir = createDirForPackage(packageDir, g.getGroupingPackage()
                     , "dao " + g.getGroupingPackage());
@@ -250,6 +270,35 @@ public class ModelGenerator {
                 if (!createEntityCaller.create(e)) {
                     result = false;
                 }
+            }
+        }
+        return result;
+    }
+
+    private boolean createAccessMapper() {
+        if (!genDao || !genDomain) {
+            logger.debug("skip access mapper generation");
+            return true;
+        }
+        if (mapperPackageDir.isEmpty()) {
+            logger.error("directory for mapper is empty but needed");
+            return false;
+        }
+
+        String mapperPackageName = config.getBasePackage() + ".mapper";
+        String daoPackageName = config.getBasePackage() + "." + config.getDaoPackage();
+        String domainPackageName = config.getBasePackage() + "." + config.getDomainPackage();
+
+        logger.debug(String.format("%d entities are put at common access mapper", config.getEntities().size()));
+        boolean result = accessMapperCreator.createAccessMapper(config.getEntities(), null, mapperPackageName
+                , daoPackageName, domainPackageName, mapperPackageDir.get());
+
+        logger.debug(String.format("%d groupings getting their own access mapper", config.getGroupings().size()));
+        for (Grouping g : config.getGroupings()) {
+            logger.debug(String.format("%d entities are put at %s groupings access mapper", config.getEntities().size(), g.getGroupingPackage()));
+            if (!accessMapperCreator.createAccessMapper(g.getEntities(), g.getGroupingPackage(), mapperPackageName
+                    , daoPackageName, domainPackageName, mapperPackageDir.get())) {
+                result = false;
             }
         }
         return result;
@@ -285,6 +334,15 @@ public class ModelGenerator {
      */
     protected DomainCreator createDomainCreator() {
         return new DomainCreator(config, logger);
+    }
+
+    /**
+     * Creator Method to be make mocking easier at unit test
+     *
+     * @return created access mapper creator
+     */
+    protected AccessMapperCreator createAccessMapperCreator() {
+        return new AccessMapperCreator(config, logger);
     }
 
     /**

@@ -144,6 +144,26 @@ public class MethodTest {
         TestUtil.checkSortingOfSortedList(methods);
     }
 
+    @Test
+    public void testAddEmptyLine() {
+        cut.addLine("abc");
+
+        cut.addEmptyLine();
+        assertEquals(2, cut.getMethodBody().size(), "Wrong number of lines");
+        assertEquals("", cut.getMethodBody().get(1), "Wrong added line");
+    }
+
+    @Test
+    public void testAddEmptyLineLastLineIsEmpty() {
+        cut.addLine("abc");
+        cut.addLine("");
+
+        cut.addEmptyLine();
+        assertEquals(2, cut.getMethodBody().size(), "Wrong number of lines");
+        assertEquals("", cut.getMethodBody().get(1), "Last line should be an empty one");
+    }
+
+
     private Method getMethod(String methodName, boolean isStatic, String... parameters) {
         Method result = new Method(methodName);
         result.setStatic(isStatic);

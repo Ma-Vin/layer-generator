@@ -77,6 +77,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
@@ -88,7 +89,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@Entity()");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
@@ -118,6 +119,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
@@ -129,7 +131,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@Entity()");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
@@ -152,6 +154,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.group.TargetDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -168,14 +171,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"targetRef\"})");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
         expected.add("	@Id()");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@OneToOne(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
+        expected.add("	@OneToOne(targetEntity = TargetDao.class, mappedBy = \"parentDummy\")");
         expected.add("	private TargetDao targetRef;");
         expected.add("");
         expected.add("}");
@@ -193,6 +196,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.group.TargetDao;");
         expected.add("import java.util.Collection;");
         expected.add("import javax.persistence.*;");
@@ -210,14 +214,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"targetRefs\"})");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
         expected.add("	@Id()");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
+        expected.add("	@OneToMany(targetEntity = TargetDao.class, mappedBy = \"parentDummy\")");
         expected.add("	private Collection<TargetDao> targetRefs;");
         expected.add("");
         expected.add("}");
@@ -236,6 +240,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -252,7 +257,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"parentOwner\"})");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
@@ -278,6 +283,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -294,7 +300,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"parentOwner\"})");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
@@ -336,6 +342,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -352,7 +359,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\", \"parentAnotherOwner\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"parentOwner\", \"parentAnotherOwner\"})");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
@@ -385,6 +392,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.group.TargetDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -401,7 +409,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"targetRef\"})");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
@@ -428,6 +436,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.group.DummyToTargetDao;");
         expected.add("import java.util.Collection;");
         expected.add("import javax.persistence.*;");
@@ -445,14 +454,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"targetRefs\"})");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
         expected.add("	@Id()");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@OneToMany(mappedBy = \"target\", targetEntity = DummyToTargetDao.class)");
+        expected.add("	@OneToMany(targetEntity = DummyToTargetDao.class, mappedBy = \"target\")");
         expected.add("	private Collection<DummyToTargetDao> targetRefs;");
         expected.add("");
         expected.add("}");
@@ -525,6 +534,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
@@ -536,7 +546,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@Entity()");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
@@ -559,6 +569,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
@@ -570,7 +581,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@Entity()");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
@@ -591,6 +602,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
@@ -602,7 +614,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@Entity()");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column()");
         expected.add("	private String anyField;");
@@ -629,6 +641,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import the.enum.package.AnyEnum;");
@@ -641,7 +654,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@Entity()");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column()");
         expected.add("	@Enumerated(EnumType.STRING)");
@@ -667,6 +680,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.mv.ape.utils.generators.IdGenerator;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.domain.Dummy;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -679,17 +693,19 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@Entity()");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("public class DummyDao {");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
         expected.add("	@Id()");
         expected.add("	private Long id;");
         expected.add("");
+        expected.add("	@Override()");
         expected.add("	public String getIdentification() {");
         expected.add("		return IdGenerator.generateIdentification(id, Dummy.ID_PREFIX);");
         expected.add("	}");
         expected.add("");
+        expected.add("	@Override()");
         expected.add("	public void setIdentification(String identification) {");
         expected.add("		id = IdGenerator.generateId(identification, Dummy.ID_PREFIX);");
         expected.add("	}");
@@ -699,5 +715,66 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
         checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectInterface() {
+        List<String> expected = new ArrayList<>();
+
+        expected.add("package de.test.package.dao;");
+        expected.add("");
+        expected.add("public interface IIdentifiableDao {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the id of the dao");
+        expected.add("	 */");
+        expected.add("	Long getId();");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @param id the id of the dao");
+        expected.add("	 */");
+        expected.add("	void setId(Long id);");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObjectInterface(BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile(DaoCreator.DAO_INTERFACE + ".java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectInterfaceUseIdGenerator() {
+        when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
+        List<String> expected = new ArrayList<>();
+
+        expected.add("package de.test.package.dao;");
+        expected.add("");
+        expected.add("public interface IIdentifiableDao {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the id of the dao");
+        expected.add("	 */");
+        expected.add("	Long getId();");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the calculated identification from id of the dao");
+        expected.add("	 */");
+        expected.add("	String getIdentification();");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @param id the id of the dao");
+        expected.add("	 */");
+        expected.add("	void setId(Long id);");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @param identification the identification where to determine the id from");
+        expected.add("	 */");
+        expected.add("	void setIdentification(String identification);");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObjectInterface(BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile(DaoCreator.DAO_INTERFACE + ".java", expected);
     }
 }

@@ -1,6 +1,5 @@
 package de.mv.ape.layer.generator.sources;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,6 @@ public abstract class AbstractGenerateLines {
         if (parameters.isEmpty()) {
             return "";
         }
-        Collections.sort(parameters);
         StringBuilder sb = new StringBuilder();
         sb.append(parameters.get(0).getText());
         for (int i = 1; i < parameters.size(); i++) {

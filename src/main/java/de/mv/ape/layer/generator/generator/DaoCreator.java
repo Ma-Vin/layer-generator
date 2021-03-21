@@ -22,14 +22,31 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DaoCreator extends AbstractCreator {
+public class DaoCreator extends AbstractObjectCreator {
 
     public static final String TARGET_ENTITY = "targetEntity";
     public static final String PLACEHOLDER_ID = "\"%sId\"";
     public static final String CLASS_ENDING = ".class";
+    public static final String DAO_INTERFACE = "IIdentifiableDao";
 
     public DaoCreator(Config config, Log logger) {
         super(config, logger, true);
+    }
+
+
+    public boolean createDataAccessObjectInterface(String basePackageName, File basePackageDir) {
+        Interface daoInterface = new Interface(basePackageName, DAO_INTERFACE);
+
+        daoInterface.addMethodDeclarationWithDescription("Long", "getId", "@return the id of the dao");
+        daoInterface.addMethodDeclarationWithDescription("void", "setId", "@param id the id of the dao", "Long", "id");
+        if (config.isUseIdGenerator()) {
+            daoInterface.addMethodDeclarationWithDescription("String", "getIdentification"
+                    , "@return the calculated identification from id of the dao");
+            daoInterface.addMethodDeclarationWithDescription("void", "setIdentification"
+                    , "@param identification the identification where to determine the id from", "String", "identification");
+        }
+
+        return writeClassFile(basePackageDir, daoInterface.getInterfaceName(), daoInterface);
     }
 
     /**
@@ -46,6 +63,7 @@ public class DaoCreator extends AbstractCreator {
             return true;
         }
         Clazz daoClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName() + "Dao");
+        daoClazz.addInterface(DAO_INTERFACE);
 
         JavaDoc javaDoc = new JavaDoc(String.format("Generated dao class of %s", entity.getBaseName()));
         if (entity.getDescription() != null && !entity.getDescription().trim().isEmpty()) {
@@ -54,6 +72,7 @@ public class DaoCreator extends AbstractCreator {
         }
         daoClazz.setDescription(javaDoc);
 
+        daoClazz.addImport(String.format("%s.%s", packageName, DAO_INTERFACE));
         daoClazz.addImport("javax.persistence.*");
         daoClazz.addImport(Data.class.getName());
 
@@ -133,12 +152,14 @@ public class DaoCreator extends AbstractCreator {
         daoClazz.addImport(config.getBasePackage() + "." + config.getDomainPackage() + "." + entity.getBaseName());
 
         Method getIdentificationMethod = new Method("getIdentification");
+        getIdentificationMethod.addAnnotation(Override.class.getSimpleName());
         getIdentificationMethod.setQualifier(Qualifier.PUBLIC);
         getIdentificationMethod.setMethodType("String");
         getIdentificationMethod.addLine(String.format("return IdGenerator.generateIdentification(id, %s.ID_PREFIX);", entity.getBaseName()));
         daoClazz.addMethod(getIdentificationMethod);
 
         Method setIdentificationMethod = new Method("setIdentification");
+        setIdentificationMethod.addAnnotation(Override.class.getSimpleName());
         setIdentificationMethod.setQualifier(Qualifier.PUBLIC);
         setIdentificationMethod.addParameter("String", "identification");
         setIdentificationMethod.addLine(String.format("id = IdGenerator.generateId(identification, %s.ID_PREFIX);", entity.getBaseName()));
@@ -266,7 +287,7 @@ public class DaoCreator extends AbstractCreator {
         attributeNames.add(child.getAttributeName());
     }
 
-    private String getConnectionTableName(Reference reference) {
+    public static String getConnectionTableName(Reference reference) {
         return String.format("%sTo%sDao", reference.getParent().getBaseName(), reference.getTargetEntity());
     }
 

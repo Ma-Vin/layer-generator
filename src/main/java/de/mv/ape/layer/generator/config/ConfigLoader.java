@@ -153,6 +153,7 @@ public class ConfigLoader {
             parentRef.setParent(targetEntity);
             parentRef.setOwner(actualReference.isOwner());
             parentRef.setList(actualReference.isList());
+            parentRef.setReferenceName(actualReference.getReferenceName());
 
             targetEntity.getParentRefs().add(parentRef);
         }

@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DtoCreator extends AbstractCreator {
+public class DtoCreator extends AbstractObjectCreator {
 
     public DtoCreator(Config config, Log logger) {
         super(config, logger);
