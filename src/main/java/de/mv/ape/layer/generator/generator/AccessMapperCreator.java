@@ -76,6 +76,14 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addMethod(getInstanceMethod);
     }
 
+    /**
+     * Creates mapping methods from domain to dao
+     *
+     * @param mapperClass       class where to add methods at
+     * @param entity            entity whose properties are to map
+     * @param daoPackageName    name of base dao package
+     * @param domainPackageName name of base domain package
+     */
     private void createConvertToDaoMethods(Clazz mapperClass, Entity entity, String daoPackageName, String domainPackageName) {
         mapperClass.addImport(getPackageAndClass(entity, daoPackageName, "Dao"));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, ""));
@@ -88,6 +96,13 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         createConvertToDaoMethod(mapperClass, entity, daoPackageName);
     }
 
+    /**
+     * Creates mapping methods from domain to dao with a given parent
+     *
+     * @param mapperClass    class where to add methods at
+     * @param entity         entity whose properties are to map
+     * @param daoPackageName name of base dao package
+     */
     private void createConvertToDaoMethodWithParent(Clazz mapperClass, Entity entity, Reference referenceToParent, String daoPackageName) {
         Method convertMethod = createConvertToDaoMethodWithParentBase(mapperClass, entity, referenceToParent, daoPackageName);
         convertMethod.addLine("return %s(%s,%s parent, new %s<>());"
@@ -121,6 +136,15 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(Map.class.getName());
     }
 
+    /**
+     * Creates a basic convert method with parent parameter
+     *
+     * @param mapperClass       class where to add the method
+     * @param entity            entity which is to map
+     * @param referenceToParent reference to parent which should be used for the parent parameter
+     * @param daoPackageName    name of base dao package
+     * @return the created Method
+     */
     private Method createConvertToDaoMethodWithParentBase(Clazz mapperClass, Entity entity, Reference referenceToParent, String daoPackageName) {
         Method convertMethod = createConvertToDaoMethodBase(entity);
         mapperClass.addImport(getPackageAndClass(referenceToParent, daoPackageName, "Dao"));
@@ -129,10 +153,23 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         return convertMethod;
     }
 
+    /**
+     * Determines the name of the converting method
+     *
+     * @param entity entity which is to convert
+     * @return Name of the dao converting method
+     */
     private String getConvertMethodNameDao(Entity entity) {
         return String.format(CONVERT_TO_TEXT, entity.getBaseName(), "Dao");
     }
 
+    /**
+     * Creates mapping methods from domain to dao without a given parent as parameter
+     *
+     * @param mapperClass    class where to add methods at
+     * @param entity         entity whose properties are to map
+     * @param daoPackageName name of base dao package
+     */
     private void createConvertToDaoMethod(Clazz mapperClass, Entity entity, String daoPackageName) {
         Method convertMethod = createConvertToDaoMethodBase(entity);
         convertMethod.addLine("return %s(%s,%s new %s<>());"
@@ -152,6 +189,14 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(Map.class.getName());
     }
 
+    /**
+     * Creates the method content which contains the concrete mapping
+     *
+     * @param mapperClass    class where to add methods at
+     * @param convertMethod  the method where to add body
+     * @param entity         entity whose properties are to map
+     * @param daoPackageName name of base dao package
+     */
     private void createConvertToDaoMappings(Clazz mapperClass, Method convertMethod, Entity entity, String daoPackageName) {
         convertMethod.addLine("if (%s == null) {", getLowerFirst(entity.getBaseName()));
         convertMethod.addLine("return null;", 1);
@@ -187,6 +232,13 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         convertMethod.addLine("return result;");
     }
 
+    /**
+     * Adds mappings for single reference to other dao
+     *
+     * @param convertMethod the method where to add body
+     * @param entity        entity whose properties are to map
+     * @param reference     reference which is actual to map
+     */
     private void addSingleRefConvertToDao(Method convertMethod, Entity entity, Reference reference) {
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity());
 
@@ -210,6 +262,15 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         }
     }
 
+    /**
+     * Adds mappings for multi reference to other dao
+     *
+     * @param mapperClass    class where to add imports
+     * @param convertMethod  the method where to add body
+     * @param entity         entity whose properties are to map
+     * @param reference      reference which is actual to map
+     * @param daoPackageName name of base dao package
+     */
     private void addMultiRefConvertToDao(Clazz mapperClass, Method convertMethod, Entity entity, Reference reference, String daoPackageName) {
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity());
 
@@ -252,6 +313,12 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         convertMethod.addLine("%s);", reference.isOwner() ? "" : "}");
     }
 
+    /**
+     * Creates a basic convert method
+     *
+     * @param entity entity which is to map
+     * @return the created Method
+     */
     private Method createConvertToDaoMethodBase(Entity entity) {
         Method convertMethod = new Method(getConvertMethodNameDao(entity));
         convertMethod.setMethodType(String.format("%sDao", entity.getBaseName()));
@@ -268,14 +335,32 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         return convertMethod;
     }
 
+    /**
+     * Determines the name of the mapper class
+     *
+     * @param entity entity whose mapper is asked for
+     * @return class name of the mapper
+     */
     private String getMapperName(Entity entity) {
         return getMapperName(entity.getGrouping() == null ? null : entity.getGrouping().getGroupingPackage());
     }
 
+    /**
+     * Determines the name of the mapper class
+     *
+     * @param groupingName grouping which is used for the first part of name
+     * @return class name of the mapper
+     */
     private String getMapperName(String groupingName) {
         return String.format("%sAccessMapper", groupingName != null && !groupingName.trim().isEmpty() ? getUpperFirst(groupingName) : "Common");
     }
 
+    /**
+     * Determines how to get the key for the {@code mappedObjects} map
+     *
+     * @param entity entity whose key is asked for
+     * @return the key to use
+     */
     private String getterIdentificationForMap(Entity entity) {
         if (config.isUseIdGenerator()) {
             return String.format("%s.getIdentification()", getLowerFirst(entity.getBaseName()));
@@ -283,10 +368,24 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         return String.format("\"%sDao\" + %s.getId().longValue()", getUpperFirst(entity.getBaseName()), getLowerFirst(entity.getBaseName()));
     }
 
+    /**
+     * Checks whether a converting method of an entity needs to provide a mapping indicator for child entities
+     *
+     * @param entity entity which is to check
+     * @return {@code true} if an indicator is to provide
+     */
     private boolean hasIncludeChildrenParameter(Entity entity) {
         return entity.getReferences().stream().anyMatch(Reference::isList);
     }
 
+    /**
+     * Creates mapping methods from dao to domain
+     *
+     * @param mapperClass       class where to add methods at
+     * @param entity            entity whose properties are to map
+     * @param daoPackageName    name of base dao package
+     * @param domainPackageName name of base domain package
+     */
     private void createConvertToDomainMethods(Clazz mapperClass, Entity entity, String daoPackageName, String domainPackageName) {
     }
 }

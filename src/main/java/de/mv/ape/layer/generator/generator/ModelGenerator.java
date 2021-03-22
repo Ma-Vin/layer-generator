@@ -275,6 +275,11 @@ public class ModelGenerator {
         return result;
     }
 
+    /**
+     * Creates the access mapper if data access and domain objects are to generate
+     *
+     * @return {@code true} if generation of the mapper was successful
+     */
     private boolean createAccessMapper() {
         if (!genDao || !genDomain) {
             logger.debug("skip access mapper generation");
