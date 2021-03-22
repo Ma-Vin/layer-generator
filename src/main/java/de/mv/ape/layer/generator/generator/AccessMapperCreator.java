@@ -18,6 +18,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
     public static final String CONVERT_TO_TEXT = "convertTo%s%s";
     public static final String INCLUDE_CHILDREN_PARAMETER = "includeChildren";
+    public static final String DAO_POSTFIX = "Dao";
 
     public AccessMapperCreator(Config config, Log logger) {
         super(config, logger);
@@ -99,22 +100,15 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     /**
      * Creates mapping methods from domain to dao with a given parent
      *
-     * @param mapperClass    class where to add methods at
-     * @param entity         entity whose properties are to map
-     * @param daoPackageName name of base dao package
+     * @param mapperClass       class where to add methods at
+     * @param entity            entity whose properties are to map
+     * @param referenceToParent reference to parent which should be used for the parent parameter
+     * @param daoPackageName    name of base dao package
      */
     private void createConvertToDaoMethodWithParent(Clazz mapperClass, Entity entity, Reference referenceToParent, String daoPackageName) {
-        Method convertMethod = createConvertToDaoMethodWithParentBase(mapperClass, entity, referenceToParent, daoPackageName);
-        convertMethod.addLine("return %s(%s,%s parent, new %s<>());"
-                , getConvertMethodNameDao(entity)
-                , getLowerFirst(entity.getBaseName())
-                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
-                , HashMap.class.getSimpleName()
-        );
-        mapperClass.addMethod(convertMethod);
-        mapperClass.addImport(HashMap.class.getName());
+        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, daoPackageName, DAO_POSTFIX);
 
-        Method convertMethodWithMap = createConvertToDaoMethodWithParentBase(mapperClass, entity, referenceToParent, daoPackageName);
+        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, daoPackageName, DAO_POSTFIX);
         convertMethodWithMap.addParameter(String.format("%s<String, %s>", Map.class.getSimpleName(), DaoCreator.DAO_INTERFACE), "mappedObjects");
         convertMethodWithMap.addLine("%sDao result = %s(%s,%s mappedObjects)"
                 , entity.getBaseName()
@@ -137,18 +131,42 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     }
 
     /**
+     * Creates mapping methods with a given parent but without a map parameter
+     *
+     * @param mapperClass           class where to add methods at
+     * @param entity                entity whose properties are to map
+     * @param referenceToParent     reference to parent which should be used for the parent parameter
+     * @param packageName           name of base package
+     * @param classParameterPostFix postfix for classes and parameters
+     */
+    private void createConvertMethodWithParentWithoutMap(Clazz mapperClass, Entity entity, Reference referenceToParent, String packageName, String classParameterPostFix) {
+        Method convertMethod = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, packageName, classParameterPostFix);
+        convertMethod.addLine("return %s(%s,%s parent, new %s<>());"
+                , getConvertMethodName(entity, classParameterPostFix)
+                , getLowerFirst(entity.getBaseName())
+                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , HashMap.class.getSimpleName()
+        );
+        mapperClass.addMethod(convertMethod);
+        mapperClass.addImport(HashMap.class.getName());
+    }
+
+    /**
      * Creates a basic convert method with parent parameter
      *
-     * @param mapperClass       class where to add the method
-     * @param entity            entity which is to map
-     * @param referenceToParent reference to parent which should be used for the parent parameter
-     * @param daoPackageName    name of base dao package
+     * @param mapperClass           class where to add the method
+     * @param entity                entity which is to map
+     * @param referenceToParent     reference to parent which should be used for the parent parameter
+     * @param packageName           name of base  package
+     * @param classParameterPostFix postfix for classes and parameters
      * @return the created Method
      */
-    private Method createConvertToDaoMethodWithParentBase(Clazz mapperClass, Entity entity, Reference referenceToParent, String daoPackageName) {
-        Method convertMethod = createConvertToDaoMethodBase(entity);
-        mapperClass.addImport(getPackageAndClass(referenceToParent, daoPackageName, "Dao"));
-        convertMethod.addParameter(referenceToParent.getTargetEntity() + "Dao", "parent");
+    private Method createConvertMethodWithParentBase(Clazz mapperClass, Entity entity, Reference referenceToParent
+            , String packageName, String classParameterPostFix) {
+
+        Method convertMethod = createConvertMethodBase(entity, classParameterPostFix);
+        mapperClass.addImport(getPackageAndClass(referenceToParent, packageName, classParameterPostFix));
+        convertMethod.addParameter(referenceToParent.getTargetEntity() + classParameterPostFix, "parent");
 
         return convertMethod;
     }
@@ -160,7 +178,17 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @return Name of the dao converting method
      */
     private String getConvertMethodNameDao(Entity entity) {
-        return String.format(CONVERT_TO_TEXT, entity.getBaseName(), "Dao");
+        return getConvertMethodName(entity, DAO_POSTFIX);
+    }
+
+    /**
+     * Determines the name of the converting method
+     *
+     * @param entity entity which is to convert
+     * @return Name of the dao converting method
+     */
+    private String getConvertMethodName(Entity entity, String classParameterPostFix) {
+        return String.format(CONVERT_TO_TEXT, entity.getBaseName(), classParameterPostFix);
     }
 
     /**
@@ -171,22 +199,33 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param daoPackageName name of base dao package
      */
     private void createConvertToDaoMethod(Clazz mapperClass, Entity entity, String daoPackageName) {
-        Method convertMethod = createConvertToDaoMethodBase(entity);
-        convertMethod.addLine("return %s(%s,%s new %s<>());"
-                , getConvertMethodNameDao(entity)
-                , getLowerFirst(entity.getBaseName())
-                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
-                , HashMap.class.getSimpleName());
-        mapperClass.addMethod(convertMethod);
-        mapperClass.addImport(HashMap.class.getName());
+        createConvertMethodWithoutMap(mapperClass, entity, DAO_POSTFIX);
 
-        Method convertMethodWithMap = createConvertToDaoMethodBase(entity);
+        Method convertMethodWithMap = createConvertMethodBase(entity, DAO_POSTFIX);
         convertMethodWithMap.addParameter(String.format("%s<String, %s>", Map.class.getSimpleName(), DaoCreator.DAO_INTERFACE), "mappedObjects");
 
         createConvertToDaoMappings(mapperClass, convertMethodWithMap, entity, daoPackageName);
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
+    }
+
+    /**
+     * Creates mapping methods without a map parameter
+     *
+     * @param mapperClass           class where to add methods at
+     * @param entity                entity whose properties are to map
+     * @param classParameterPostFix postfix for classes and parameters
+     */
+    private void createConvertMethodWithoutMap(Clazz mapperClass, Entity entity, String classParameterPostFix) {
+        Method convertMethod = createConvertMethodBase(entity, classParameterPostFix);
+        convertMethod.addLine("return %s(%s,%s new %s<>());"
+                , getConvertMethodName(entity, classParameterPostFix)
+                , getLowerFirst(entity.getBaseName())
+                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , HashMap.class.getSimpleName());
+        mapperClass.addMethod(convertMethod);
+        mapperClass.addImport(HashMap.class.getName());
     }
 
     /**
@@ -198,30 +237,11 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param daoPackageName name of base dao package
      */
     private void createConvertToDaoMappings(Clazz mapperClass, Method convertMethod, Entity entity, String daoPackageName) {
-        convertMethod.addLine("if (%s == null) {", getLowerFirst(entity.getBaseName()));
-        convertMethod.addLine("return null;", 1);
-        convertMethod.addLine("}");
-        convertMethod.addEmptyLine();
-        convertMethod.addLine("String identification = %s;", getterIdentificationForMap(entity));
-        convertMethod.addLine("if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {", getterIdentificationForMap(entity));
-        convertMethod.addLine("return (%sDao) mappedObjects.get(identification);", 1, getUpperFirst(entity.getBaseName()));
-        convertMethod.addLine("}");
-        convertMethod.addEmptyLine();
-        convertMethod.addLine("%1$sDao result = new %1$sDao();", getUpperFirst(entity.getBaseName()));
-        convertMethod.addEmptyLine();
-
-        entity.getFields().stream()
-                .filter(f -> f.getModels() == null || (f.getModels().isDomain() && f.getModels().isDao()))
-                .forEach(f ->
-                        convertMethod.addLine("result.set%1$s(%2$s.get%1$s());"
-                                , getUpperFirst(f.getFieldName())
-                                , getLowerFirst(entity.getBaseName()))
-                );
-        convertMethod.addEmptyLine();
+        addConvertDefaultMappings(convertMethod, entity, DAO_POSTFIX);
 
         entity.getReferences().stream()
                 .filter(ref -> !ref.isList())
-                .forEach(ref -> addSingleRefConvertToDao(convertMethod, entity, ref));
+                .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DAO_POSTFIX));
         convertMethod.addEmptyLine();
 
         entity.getReferences().stream()
@@ -233,17 +253,48 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     }
 
     /**
+     * Adds the default mappings to a convert method
+     *
+     * @param convertMethod         method where to add lines for default mapping instrcutions
+     * @param entity                entity whose properties are to map
+     * @param classParameterPostFix postfix for classes and parameters
+     */
+    private void addConvertDefaultMappings(Method convertMethod, Entity entity, String classParameterPostFix) {
+        convertMethod.addLine("if (%s == null) {", getLowerFirst(entity.getBaseName()));
+        convertMethod.addLine("return null;", 1);
+        convertMethod.addLine("}");
+        convertMethod.addEmptyLine();
+        convertMethod.addLine("String identification = %s;", getterIdentificationForMap(entity));
+        convertMethod.addLine("if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {", getterIdentificationForMap(entity));
+        convertMethod.addLine("return (%sDao) mappedObjects.get(identification);", 1, getUpperFirst(entity.getBaseName()));
+        convertMethod.addLine("}");
+        convertMethod.addEmptyLine();
+        convertMethod.addLine("%1$s%2$s result = new %1$s%2$s();", getUpperFirst(entity.getBaseName()), classParameterPostFix);
+        convertMethod.addEmptyLine();
+
+        entity.getFields().stream()
+                .filter(f -> f.getModels() == null || (f.getModels().isDomain() && f.getModels().isDao()))
+                .forEach(f ->
+                        convertMethod.addLine("result.set%1$s(%2$s.get%1$s());"
+                                , getUpperFirst(f.getFieldName())
+                                , getLowerFirst(entity.getBaseName()))
+                );
+        convertMethod.addEmptyLine();
+    }
+
+    /**
      * Adds mappings for single reference to other dao
      *
-     * @param convertMethod the method where to add body
-     * @param entity        entity whose properties are to map
-     * @param reference     reference which is actual to map
+     * @param convertMethod         the method where to add body
+     * @param entity                entity whose properties are to map
+     * @param reference             reference which is actual to map
+     * @param classParameterPostFix postfix for classes and parameters
      */
-    private void addSingleRefConvertToDao(Method convertMethod, Entity entity, Reference reference) {
+    private void addSingleRefConvert(Method convertMethod, Entity entity, Reference reference, String classParameterPostFix) {
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity());
 
         String mapperName = getMapperName(reference.getRealTargetEntity());
-        String mapperMethodName = getConvertMethodNameDao(reference.getRealTargetEntity());
+        String mapperMethodName = getConvertMethodName(reference.getRealTargetEntity(), classParameterPostFix);
         String variableName = getLowerFirst(entity.getBaseName());
         String getterSubName = getUpperFirst(reference.getReferenceName());
 
@@ -316,12 +367,13 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     /**
      * Creates a basic convert method
      *
-     * @param entity entity which is to map
+     * @param entity                entity which is to map
+     * @param classParameterPostFix postfix for classes and parameters
      * @return the created Method
      */
-    private Method createConvertToDaoMethodBase(Entity entity) {
-        Method convertMethod = new Method(getConvertMethodNameDao(entity));
-        convertMethod.setMethodType(String.format("%sDao", entity.getBaseName()));
+    private Method createConvertMethodBase(Entity entity, String classParameterPostFix) {
+        Method convertMethod = new Method(getConvertMethodName(entity, classParameterPostFix));
+        convertMethod.setMethodType(String.format("%s%s", entity.getBaseName(), classParameterPostFix));
         convertMethod.setQualifier(Qualifier.PUBLIC);
         convertMethod.setStatic(true);
 
