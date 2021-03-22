@@ -40,10 +40,10 @@ public class DaoCreator extends AbstractObjectCreator {
         daoInterface.addMethodDeclarationWithDescription("Long", "getId", "@return the id of the dao");
         daoInterface.addMethodDeclarationWithDescription("void", "setId", "@param id the id of the dao", "Long", "id");
         if (config.isUseIdGenerator()) {
-            daoInterface.addMethodDeclarationWithDescription("String", "getIdentification"
+            daoInterface.addMethodDeclarationWithDescription(String.class.getSimpleName(), "getIdentification"
                     , "@return the calculated identification from id of the dao");
             daoInterface.addMethodDeclarationWithDescription("void", "setIdentification"
-                    , "@param identification the identification where to determine the id from", "String", "identification");
+                    , "@param identification the identification where to determine the id from", String.class.getSimpleName(), "identification");
         }
 
         return writeClassFile(basePackageDir, daoInterface.getInterfaceName(), daoInterface);
@@ -154,14 +154,14 @@ public class DaoCreator extends AbstractObjectCreator {
         Method getIdentificationMethod = new Method("getIdentification");
         getIdentificationMethod.addAnnotation(Override.class.getSimpleName());
         getIdentificationMethod.setQualifier(Qualifier.PUBLIC);
-        getIdentificationMethod.setMethodType("String");
+        getIdentificationMethod.setMethodType(String.class.getSimpleName());
         getIdentificationMethod.addLine(String.format("return IdGenerator.generateIdentification(id, %s.ID_PREFIX);", entity.getBaseName()));
         daoClazz.addMethod(getIdentificationMethod);
 
         Method setIdentificationMethod = new Method("setIdentification");
         setIdentificationMethod.addAnnotation(Override.class.getSimpleName());
         setIdentificationMethod.setQualifier(Qualifier.PUBLIC);
-        setIdentificationMethod.addParameter("String", "identification");
+        setIdentificationMethod.addParameter(String.class.getSimpleName(), "identification");
         setIdentificationMethod.addLine(String.format("id = IdGenerator.generateId(identification, %s.ID_PREFIX);", entity.getBaseName()));
         daoClazz.addMethod(setIdentificationMethod);
     }

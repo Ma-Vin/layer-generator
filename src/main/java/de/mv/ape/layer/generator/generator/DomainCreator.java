@@ -28,10 +28,10 @@ public class DomainCreator extends AbstractObjectCreator {
         Interface daoInterface = new Interface(basePackageName, DOMAIN_INTERFACE);
 
         if (config.isUseIdGenerator()) {
-            daoInterface.addMethodDeclarationWithDescription("String", "getIdentification"
+            daoInterface.addMethodDeclarationWithDescription(String.class.getSimpleName(), "getIdentification"
                     , "@return the identification of the domain object");
             daoInterface.addMethodDeclarationWithDescription("void", "setIdentification"
-                    , "@param identification the identification of the domain object", "String", "identification");
+                    , "@param identification the identification of the domain object", String.class.getSimpleName(), "identification");
         }
         else{
             daoInterface.addMethodDeclarationWithDescription("Long", "getId", "@return the id of the domain object");
@@ -90,10 +90,10 @@ public class DomainCreator extends AbstractObjectCreator {
         if (config.isUseIdGenerator()) {
             logger.debug("Identification will be created for " + domainClazz.getClassName());
 
-            Attribute identificationAttribute = new Attribute("identification", "String");
+            Attribute identificationAttribute = new Attribute("identification", String.class.getSimpleName());
             identificationAttribute.setJavaDoc(new JavaDoc(String.format("Identification of %s", domainClazz.getClassName())));
 
-            Attribute prefixAttribute = new Attribute("ID_PREFIX", "String");
+            Attribute prefixAttribute = new Attribute("ID_PREFIX", String.class.getSimpleName());
             prefixAttribute.setQualifier(Qualifier.PUBLIC);
             prefixAttribute.setStatic(true);
             prefixAttribute.setFinal(true);
