@@ -224,6 +224,10 @@ public class ModelGenerator {
             logger.error("Empty domainPackageDir");
             return false;
         }
+        if (!domainCreator.createDomainObjectInterface(packageName, domainPackageDir.get())) {
+            logger.error("Domain interface could not be created");
+            return false;
+        }
         return createEntitiesObjects(e -> createDomainObject(e, packageName, domainPackageDir.get()), domainPackageDir.get());
     }
 

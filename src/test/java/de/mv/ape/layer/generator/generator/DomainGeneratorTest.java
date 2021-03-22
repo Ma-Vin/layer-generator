@@ -52,6 +52,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -63,7 +64,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class Dummy {");
+        expected.add("public class Dummy implements IIdentifiable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * Id of Dummy");
@@ -94,6 +95,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -105,7 +107,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class Dummy {");
+        expected.add("public class Dummy implements IIdentifiable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * Id of Dummy");
@@ -128,6 +130,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Target;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -144,7 +147,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
         expected.add("@ToString(exclude = {\"targetRef\"})");
-        expected.add("public class Dummy {");
+        expected.add("public class Dummy implements IIdentifiable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * Id of Dummy");
@@ -168,6 +171,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Target;");
         expected.add("import java.util.Collection;");
         expected.add("import lombok.Data;");
@@ -186,7 +190,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
         expected.add("@ToString(exclude = {\"targetRefs\"})");
-        expected.add("public class Dummy {");
+        expected.add("public class Dummy implements IIdentifiable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * Id of Dummy");
@@ -228,6 +232,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -239,7 +244,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class Dummy {");
+        expected.add("public class Dummy implements IIdentifiable {");
         expected.add("");
         expected.add("	private String anyField;");
         expected.add("");
@@ -265,6 +270,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("import the.enum.package.AnyEnum;");
@@ -277,7 +283,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class Dummy {");
+        expected.add("public class Dummy implements IIdentifiable {");
         expected.add("");
         expected.add("	private AnyEnum anyField;");
         expected.add("");
@@ -301,6 +307,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -312,7 +319,7 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class Dummy {");
+        expected.add("public class Dummy implements IIdentifiable {");
         expected.add("");
         expected.add("	public static final String ID_PREFIX = \"DU\";");
         expected.add("");
@@ -326,5 +333,56 @@ public class DomainGeneratorTest extends AbstractCreatorTest {
         assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
 
         checkSingleFile("Dummy.java", expected);
+    }
+
+    @Test
+    public void testCreateDomainObjectInterface() {
+        List<String> expected = new ArrayList<>();
+
+        expected.add("package de.test.package.domain;");
+        expected.add("");
+        expected.add("public interface IIdentifiable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the id of the domain object");
+        expected.add("	 */");
+        expected.add("	Long getId();");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @param id the id of the domain object");
+        expected.add("	 */");
+        expected.add("	void setId(Long id);");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDomainObjectInterface(BASE_PACKAGE + ".domain", basePackageDir));
+
+        checkSingleFile(DomainCreator.DOMAIN_INTERFACE + ".java", expected);
+    }
+
+    @Test
+    public void testCreateDomainObjectInterfaceUseIdGenerator() {
+        when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
+        List<String> expected = new ArrayList<>();
+
+        expected.add("package de.test.package.domain;");
+        expected.add("");
+        expected.add("public interface IIdentifiable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the identification of the domain object");
+        expected.add("	 */");
+        expected.add("	String getIdentification();");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @param identification the identification of the domain object");
+        expected.add("	 */");
+        expected.add("	void setIdentification(String identification);");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDomainObjectInterface(BASE_PACKAGE + ".domain", basePackageDir));
+
+        checkSingleFile(DomainCreator.DOMAIN_INTERFACE + ".java", expected);
     }
 }

@@ -18,8 +18,27 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class DomainCreator extends AbstractObjectCreator {
 
+    public static final String DOMAIN_INTERFACE = "IIdentifiable";
+
     public DomainCreator(Config config, Log logger) {
         super(config, logger);
+    }
+
+    public boolean createDomainObjectInterface(String basePackageName, File basePackageDir) {
+        Interface daoInterface = new Interface(basePackageName, DOMAIN_INTERFACE);
+
+        if (config.isUseIdGenerator()) {
+            daoInterface.addMethodDeclarationWithDescription("String", "getIdentification"
+                    , "@return the identification of the domain object");
+            daoInterface.addMethodDeclarationWithDescription("void", "setIdentification"
+                    , "@param identification the identification of the domain object", "String", "identification");
+        }
+        else{
+            daoInterface.addMethodDeclarationWithDescription("Long", "getId", "@return the id of the domain object");
+            daoInterface.addMethodDeclarationWithDescription("void", "setId", "@param id the id of the domain object", "Long", "id");
+        }
+
+        return writeClassFile(basePackageDir, daoInterface.getInterfaceName(), daoInterface);
     }
 
     /**
@@ -37,6 +56,7 @@ public class DomainCreator extends AbstractObjectCreator {
         }
 
         Clazz domainClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName());
+        domainClazz.addInterface(DOMAIN_INTERFACE);
 
         JavaDoc javaDoc = new JavaDoc(String.format("Generated domain class of %s", entity.getBaseName()));
         if (entity.getDescription() != null && !entity.getDescription().trim().isEmpty()) {
@@ -45,6 +65,7 @@ public class DomainCreator extends AbstractObjectCreator {
         }
         domainClazz.setDescription(javaDoc);
 
+        domainClazz.addImport(String.format("%s.%s", packageName, DOMAIN_INTERFACE));
         domainClazz.addImport(Data.class.getName());
         domainClazz.addImport(NoArgsConstructor.class.getName());
 

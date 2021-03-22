@@ -77,6 +77,7 @@ public class ModelGeneratorTest {
         when(daoCreator.createDataAccessObjectInterface(any(), any())).thenReturn(Boolean.TRUE);
         when(daoCreator.createDataAccessObject(any(), any(), any())).thenReturn(Boolean.TRUE);
         when(dtoCreator.createDataTransportObject(any(), any(), any())).thenReturn(Boolean.TRUE);
+        when(domainCreator.createDomainObjectInterface(any(), any())).thenReturn(Boolean.TRUE);
         when(domainCreator.createDomainObject(any(), any(), any())).thenReturn(Boolean.TRUE);
         when(accessMapperCreator.createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any())).thenReturn(Boolean.TRUE);
     }
@@ -100,6 +101,7 @@ public class ModelGeneratorTest {
         verify(daoCreator).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(domainCreator).createDomainObjectInterface(any(), any());
         verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
     }
 
@@ -113,6 +115,7 @@ public class ModelGeneratorTest {
         verify(daoCreator, never()).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -126,6 +129,7 @@ public class ModelGeneratorTest {
         verify(daoCreator, never()).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -139,6 +143,7 @@ public class ModelGeneratorTest {
         verify(daoCreator, never()).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -153,6 +158,7 @@ public class ModelGeneratorTest {
         verify(daoCreator, never()).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -168,6 +174,7 @@ public class ModelGeneratorTest {
         // first Entry will be created before first grouping fails
         verify(daoCreator).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -182,6 +189,7 @@ public class ModelGeneratorTest {
         verify(daoCreator, never()).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -196,6 +204,7 @@ public class ModelGeneratorTest {
         verify(daoCreator, never()).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -210,6 +219,7 @@ public class ModelGeneratorTest {
         verify(daoCreator).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -224,6 +234,7 @@ public class ModelGeneratorTest {
         verify(daoCreator).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -238,6 +249,7 @@ public class ModelGeneratorTest {
         verify(daoCreator, never()).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
     }
 
@@ -252,6 +264,23 @@ public class ModelGeneratorTest {
         verify(daoCreator, never()).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator).createDomainObjectInterface(any(), any());
         verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
     }
+
+    @Test
+    public void testGenerateDomainInterfaceFail() {
+        cut.setGenDao(false);
+        cut.setGenDto(false);
+        when(domainCreator.createDomainObjectInterface(any(), any())).thenReturn(Boolean.FALSE);
+
+        assertFalse(cut.generate(), "The generation should not be successful");
+
+        verify(daoCreator, never()).createDataAccessObjectInterface(any(), any());
+        verify(daoCreator, never()).createDataAccessObject(any(), any(), any());
+        verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
+        verify(domainCreator).createDomainObjectInterface(any(), any());
+        verify(domainCreator, never()).createDomainObject(any(), any(), any());
+    }
+
 }
