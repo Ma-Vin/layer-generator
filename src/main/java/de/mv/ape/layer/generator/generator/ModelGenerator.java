@@ -95,32 +95,31 @@ public class ModelGenerator {
             return false;
         }
 
-        if (genDto && config.getDtoPackage() != null && !config.getDtoPackage().isEmpty()) {
-            dtoPackageDir = createDirForPackage(basePackageDir.get(), config.getDtoPackage(), "dto");
-            if (dtoPackageDir.isEmpty()) {
-                return false;
-            }
-        }
+        return createPackage(genDto, config.getDtoPackage(), basePackageDir.get(), "dto", f -> dtoPackageDir = Optional.of(f))
+                && createPackage(genDomain, config.getDomainPackage(), basePackageDir.get(), "domain", f -> domainPackageDir = Optional.of(f))
+                && createPackage(genDao, config.getDaoPackage(), basePackageDir.get(), "dao", f -> daoPackageDir = Optional.of(f))
+                && createPackage((genDao || genDto) && genDomain, "mapper", basePackageDir.get(), "mapper", f -> mapperPackageDir = Optional.of(f));
+    }
 
-        if (genDomain && config.getDomainPackage() != null && !config.getDomainPackage().isEmpty()) {
-            domainPackageDir = createDirForPackage(basePackageDir.get(), config.getDomainPackage(), "domain");
-            if (domainPackageDir.isEmpty()) {
+    /**
+     * Creates the directory for a package if needed
+     *
+     * @param modelIndicator       general indicator if to create the directory
+     * @param modelPackageSubName  sub package name to at a base package name
+     * @param basePackageDir       base package name
+     * @param messageTextOfPackage Message text for logger
+     * @param packageFileSetter    Functional interface to set the optional of the package directory
+     * @return {@code true} if creation was successful
+     */
+    private boolean createPackage(boolean modelIndicator, String modelPackageSubName, File basePackageDir
+            , String messageTextOfPackage, PackageFileSetter packageFileSetter) {
+        if (modelIndicator && modelPackageSubName != null && !modelPackageSubName.isEmpty()) {
+            Optional<File> packageDir = createDirForPackage(basePackageDir, modelPackageSubName, messageTextOfPackage);
+            if (packageDir.isEmpty()) {
                 return false;
             }
+            packageFileSetter.set(packageDir.get());
         }
-        if (genDao && config.getDaoPackage() != null && !config.getDaoPackage().isEmpty()) {
-            daoPackageDir = createDirForPackage(basePackageDir.get(), config.getDaoPackage(), "dao");
-            if (daoPackageDir.isEmpty()) {
-                return false;
-            }
-        }
-        if ((genDao || genDto) && genDomain) {
-            mapperPackageDir = createDirForPackage(basePackageDir.get(), "mapper", "mapper");
-            if (mapperPackageDir.isEmpty()) {
-                return false;
-            }
-        }
-
         return true;
     }
 
@@ -365,4 +364,8 @@ public class ModelGenerator {
         return new File(dir, fileName);
     }
 
+    @FunctionalInterface
+    public interface PackageFileSetter {
+        void set(File packageFile);
+    }
 }
