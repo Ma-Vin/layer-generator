@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class DomainGeneratorTest extends AbstractCreatorTest {
+public class DomainCreatorTest extends AbstractCreatorTest {
 
     private DomainCreator cut;
 
