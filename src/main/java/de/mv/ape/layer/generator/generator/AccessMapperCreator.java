@@ -255,9 +255,25 @@ public class AccessMapperCreator extends AbstractMapperCreator {
                 .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DAO_POSTFIX));
         convertMethod.addEmptyLine();
 
-        entity.getReferences().stream()
-                .filter(Reference::isList)
-                .forEach(ref -> addMultiRefConvertToDao(mapperClass, convertMethod, entity, ref, daoPackageName));
+        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity);
+
+        if (hasIncludeChildrenParameter) {
+            entity.getReferences().stream()
+                    .filter(Reference::isList)
+                    .forEach(ref -> {
+                        String getterSubName = getUpperFirst(ref.getReferenceName()) + "s";
+                        convertMethod.addLine("result.set%s(new %s<>());", getterSubName, ArrayList.class.getSimpleName());
+                    });
+
+            convertMethod.addLine("if (includeChildren) {");
+
+            entity.getReferences().stream()
+                    .filter(Reference::isList)
+                    .forEach(ref -> addMultiRefConvertToDao(mapperClass, convertMethod, entity, ref, daoPackageName));
+
+            convertMethod.addLine("}");
+        }
+
         convertMethod.addEmptyLine();
         convertMethod.addLine("%s.put(identification, result);", MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethod.addLine(RETURN_RESULT_TEXT);
@@ -346,34 +362,34 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         String targetConnectionName = getUpperFirst(entity.getBaseName());
 
         mapperClass.addImport(ArrayList.class.getName());
-        convertMethod.addLine("result.set%s(new %s<>());", getterSubName, ArrayList.class.getSimpleName());
-        convertMethod.addLine("%s.get%s().forEach(arg ->%s", variableName, getterSubName, reference.isOwner() ? "" : " {");
 
-        int numTabs = reference.isOwner() ? 2 : 1;
+        convertMethod.addLine("%s.get%s().forEach(arg ->%s", 1, variableName, getterSubName, reference.isOwner() ? "" : " {");
+
+        int refNumTabs = reference.isOwner() ? 3 : 2;
 
         if (reference.isOwner() && hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg, includeChildren, result, %s)"
-                    , numTabs, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
+            convertMethod.addLine("%s.%s(arg, true, result, %s)"
+                    , refNumTabs, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (!reference.isOwner() && hasIncludeChildrenParameter) {
-            convertMethod.addLine("%1$s connectionTable = new %1$s();", numTabs, connectionTableName);
-            convertMethod.addLine("connectionTable.set%s(result);", numTabs, sourceConnectionName);
-            convertMethod.addLine("connectionTable.set%s(%s.%s(arg, includeChildren, %s));"
-                    , numTabs, targetConnectionName, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
-            convertMethod.addLine("result.get%s().add(connectionTable);", numTabs, getterSubName);
+            convertMethod.addLine("%1$s connectionTable = new %1$s();", refNumTabs, connectionTableName);
+            convertMethod.addLine("connectionTable.set%s(result);", refNumTabs, sourceConnectionName);
+            convertMethod.addLine("connectionTable.set%s(%s.%s(arg, true, %s));"
+                    , refNumTabs, targetConnectionName, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
+            convertMethod.addLine("result.get%s().add(connectionTable);", refNumTabs, getterSubName);
             mapperClass.addImport(String.format("%s.%s", getPackage(entity, daoPackageName), connectionTableName));
         } else if (reference.isOwner() && !hasIncludeChildrenParameter) {
             convertMethod.addLine("%s.%s(arg, result, %s)"
-                    , numTabs, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
+                    , refNumTabs, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else {
-            convertMethod.addLine("%1$s connectionTable = new %1$s();", numTabs, connectionTableName);
-            convertMethod.addLine("connectionTable.set%s(result);", numTabs, sourceConnectionName);
+            convertMethod.addLine("%1$s connectionTable = new %1$s();", refNumTabs, connectionTableName);
+            convertMethod.addLine("connectionTable.set%s(result);", refNumTabs, sourceConnectionName);
             convertMethod.addLine("connectionTable.set%s(%s.%s(arg, %s));"
-                    , numTabs, targetConnectionName, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
-            convertMethod.addLine("result.get%s().add(connectionTable);", numTabs, getterSubName);
+                    , refNumTabs, targetConnectionName, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
+            convertMethod.addLine("result.get%s().add(connectionTable);", refNumTabs, getterSubName);
             mapperClass.addImport(String.format("%s.%s", getPackage(entity, daoPackageName), connectionTableName));
         }
 
-        convertMethod.addLine("%s);", reference.isOwner() ? "" : "}");
+        convertMethod.addLine("%s);", 1, reference.isOwner() ? "" : "}");
     }
 
     /**
@@ -529,9 +545,18 @@ public class AccessMapperCreator extends AbstractMapperCreator {
                 .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DOMAIN_POSTFIX));
         convertMethod.addEmptyLine();
 
-        entity.getReferences().stream()
-                .filter(Reference::isList)
-                .forEach(ref -> addMultiRefConvertToDomain(mapperClass, convertMethod, entity, ref));
+        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity);
+
+        if (hasIncludeChildrenParameter) {
+            convertMethod.addLine("if (includeChildren) {");
+
+            entity.getReferences().stream()
+                    .filter(Reference::isList)
+                    .forEach(ref -> addMultiRefConvertToDomain(mapperClass, convertMethod, entity, ref));
+
+            convertMethod.addLine("}");
+        }
+
         convertMethod.addEmptyLine();
         convertMethod.addLine("%s.put(identification, result);", MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethod.addLine(RETURN_RESULT_TEXT);
@@ -555,22 +580,22 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         String targetConnectionName = getUpperFirst(entity.getBaseName());
 
         mapperClass.addImport(ArrayList.class.getName());
-        convertMethod.addLine("%s.get%s().forEach(arg ->", variableName, getterSubName);
+        convertMethod.addLine("%s.get%s().forEach(arg ->", 1, variableName, getterSubName);
 
         if (reference.isOwner() && hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg, includeChildren, result, %s)"
-                    , 2, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
+            convertMethod.addLine("%s.%s(arg, true, result, %s)"
+                    , 3, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (!reference.isOwner() && hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg.get%s(), includeChildren, result, %s)"
-                    , 2, mapperName, mapperMethodName, targetConnectionName, MAPPED_OBJECTS_PARAMETER_TEXT);
+            convertMethod.addLine("%s.%s(arg.get%s(), true, result, %s)"
+                    , 3, mapperName, mapperMethodName, targetConnectionName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (reference.isOwner() && !hasIncludeChildrenParameter) {
             convertMethod.addLine("%s.%s(arg, result, %s)"
-                    , 2, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
+                    , 3, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else {
             convertMethod.addLine("%s.%s(arg.get%s(), result, %s)"
-                    , 2, mapperName, mapperMethodName, targetConnectionName, MAPPED_OBJECTS_PARAMETER_TEXT);
+                    , 3, mapperName, mapperMethodName, targetConnectionName, MAPPED_OBJECTS_PARAMETER_TEXT);
         }
 
-        convertMethod.addLine(");");
+        convertMethod.addLine(");", 1);
     }
 }
