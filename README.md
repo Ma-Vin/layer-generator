@@ -1,3 +1,5 @@
+![Maven Workflow Action](https://github.com/Ma-Vin/de.mv.ape.layerGenerator/actions/workflows/maven.yml/badge.svg)
+
 # APE Layer Generator
 A maven plugin generator to create domain model, data transport or data access objects.
 
