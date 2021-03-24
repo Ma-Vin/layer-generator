@@ -3,6 +3,15 @@
 # APE Layer Generator
 A maven plugin generator to create domain model, data transport or data access objects.
 
+## Sonarcloud analysis
+
+* [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=alert_status)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)
+* [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)  [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=bugs)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator) 
+* [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=security_rating)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)  [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)
+* [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)  [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)  [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=code_smells)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)
+* [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=coverage)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)
+* [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)  [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.mv.ape.layerGenerator&metric=ncloc)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.mv.ape.layerGenerator)
+
 ## Development status
 :hourglass: not finished
 - [x] dao generator
