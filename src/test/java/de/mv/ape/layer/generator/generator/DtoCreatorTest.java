@@ -54,6 +54,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -65,7 +66,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class DummyDto {");
+        expected.add("public class DummyDto implements ITransportable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * Id of Dummy");
@@ -96,6 +97,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto;");
         expected.add("");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -107,7 +109,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class DummyDto {");
+        expected.add("public class DummyDto implements ITransportable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * Id of Dummy");
@@ -130,6 +132,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.TargetDto;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -146,7 +149,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
         expected.add("@ToString(exclude = {\"targetRef\"})");
-        expected.add("public class DummyDto {");
+        expected.add("public class DummyDto implements ITransportable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * Id of Dummy");
@@ -170,6 +173,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -181,7 +185,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class DummyDto {");
+        expected.add("public class DummyDto implements ITransportable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * Id of Dummy");
@@ -202,6 +206,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -213,7 +218,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class DummyDto {");
+        expected.add("public class DummyDto implements ITransportable {");
         expected.add("");
         expected.add("	private String anyField;");
         expected.add("");
@@ -239,6 +244,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("import the.enum.package.AnyEnum;");
@@ -251,7 +257,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class DummyDto {");
+        expected.add("public class DummyDto implements ITransportable {");
         expected.add("");
         expected.add("	private AnyEnum anyField;");
         expected.add("");
@@ -275,6 +281,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -286,7 +293,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data()");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
-        expected.add("public class DummyDto {");
+        expected.add("public class DummyDto implements ITransportable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * Identification of Dummy");
@@ -298,5 +305,56 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
 
         checkSingleFile("DummyDto.java", expected);
+    }
+
+    @Test
+    public void testCreateDataTransportObjectInterface() {
+        List<String> expected = new ArrayList<>();
+
+        expected.add("package de.test.package.dto;");
+        expected.add("");
+        expected.add("public interface ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the id of the dto");
+        expected.add("	 */");
+        expected.add("	Long getId();");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @param id the id of the dto");
+        expected.add("	 */");
+        expected.add("	void setId(Long id);");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObjectInterface(BASE_PACKAGE + ".dto", basePackageDir));
+
+        checkSingleFile(DtoCreator.DTO_INTERFACE + ".java", expected);
+    }
+
+    @Test
+    public void testCreateDataTransportObjectInterfaceUseIdGenerator() {
+        when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
+        List<String> expected = new ArrayList<>();
+
+        expected.add("package de.test.package.dto;");
+        expected.add("");
+        expected.add("public interface ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the identification of the dto");
+        expected.add("	 */");
+        expected.add("	String getIdentification();");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @param identification the identification of the dto");
+        expected.add("	 */");
+        expected.add("	void setIdentification(String identification);");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObjectInterface(BASE_PACKAGE + ".dto", basePackageDir));
+
+        checkSingleFile(DtoCreator.DTO_INTERFACE + ".java", expected);
     }
 }

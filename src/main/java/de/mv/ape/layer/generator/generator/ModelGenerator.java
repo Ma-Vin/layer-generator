@@ -29,6 +29,7 @@ public class ModelGenerator {
     private DtoCreator dtoCreator;
 
     private AccessMapperCreator accessMapperCreator;
+    private TransportMapperCreator transportMapperCreator;
 
     /**
      * Constructor of the generator
@@ -53,6 +54,7 @@ public class ModelGenerator {
         dtoCreator = createDtoCreator();
 
         accessMapperCreator = createAccessMapperCreator();
+        transportMapperCreator = createTransportMapperCreator();
     }
 
     /**
@@ -79,6 +81,10 @@ public class ModelGenerator {
         }
         if (!createAccessMapper()) {
             logger.error("access mapper for domain and data access objects could not be created");
+            return false;
+        }
+        if (!createTransportMapper()) {
+            logger.error("access mapper for domain and data transport objects could not be created");
             return false;
         }
         return true;
@@ -191,6 +197,10 @@ public class ModelGenerator {
         String packageName = config.getBasePackage() + "." + config.getDtoPackage();
         if (dtoPackageDir.isEmpty()) {
             logger.error("Empty dtoPackageDir");
+            return false;
+        }
+        if (!dtoCreator.createDataTransportObjectInterface(packageName, dtoPackageDir.get())) {
+            logger.error("Dto interface could not be created");
             return false;
         }
         return createEntitiesObjects(e -> createDataTransportObject(e, packageName, dtoPackageDir.get()), dtoPackageDir.get());
@@ -312,6 +322,40 @@ public class ModelGenerator {
         return result;
     }
 
+    /**
+     * Creates the access mapper if data transport and domain objects are to generate
+     *
+     * @return {@code true} if generation of the mapper was successful
+     */
+    private boolean createTransportMapper() {
+        if (!genDto || !genDomain) {
+            logger.debug("skip transport mapper generation");
+            return true;
+        }
+        if (mapperPackageDir.isEmpty()) {
+            logger.error("directory for mapper is empty but needed");
+            return false;
+        }
+
+        String mapperPackageName = config.getBasePackage() + ".mapper";
+        String dtoPackageName = config.getBasePackage() + "." + config.getDtoPackage();
+        String domainPackageName = config.getBasePackage() + "." + config.getDomainPackage();
+
+        logger.debug(String.format("%d entities are put at common transport mapper", config.getEntities().size()));
+        boolean result = transportMapperCreator.createTransportMapper(config.getEntities(), null, mapperPackageName
+                , dtoPackageName, domainPackageName, mapperPackageDir.get());
+
+        logger.debug(String.format("%d groupings getting their own transport mapper", config.getGroupings().size()));
+        for (Grouping g : config.getGroupings()) {
+            logger.debug(String.format("%d entities are put at %s groupings transport mapper", config.getEntities().size(), g.getGroupingPackage()));
+            if (!transportMapperCreator.createTransportMapper(g.getEntities(), g.getGroupingPackage(), mapperPackageName
+                    , dtoPackageName, domainPackageName, mapperPackageDir.get())) {
+                result = false;
+            }
+        }
+        return result;
+    }
+
     @FunctionalInterface
     private interface CreateEntityCaller {
         boolean create(Entity entity);
@@ -351,6 +395,15 @@ public class ModelGenerator {
      */
     protected AccessMapperCreator createAccessMapperCreator() {
         return new AccessMapperCreator(config, logger);
+    }
+
+    /**
+     * Creator Method to be make mocking easier at unit test
+     *
+     * @return created access mapper creator
+     */
+    protected TransportMapperCreator createTransportMapperCreator() {
+        return new TransportMapperCreator(config, logger);
     }
 
     /**

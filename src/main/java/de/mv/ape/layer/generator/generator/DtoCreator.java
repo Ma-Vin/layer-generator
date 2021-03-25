@@ -19,8 +19,27 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class DtoCreator extends AbstractObjectCreator {
 
+    public static final String DTO_INTERFACE = "ITransportable";
+
     public DtoCreator(Config config, Log logger) {
         super(config, logger);
+    }
+
+    public boolean createDataTransportObjectInterface(String basePackageName, File basePackageDir) {
+        Interface dtoInterface = new Interface(basePackageName, DTO_INTERFACE);
+
+        if (config.isUseIdGenerator()) {
+            dtoInterface.addMethodDeclarationWithDescription(String.class.getSimpleName(), "getIdentification"
+                    , "@return the identification of the dto");
+            dtoInterface.addMethodDeclarationWithDescription("void", "setIdentification"
+                    , "@param identification the identification of the dto", String.class.getSimpleName(), "identification");
+        }
+        else{
+            dtoInterface.addMethodDeclarationWithDescription("Long", "getId", "@return the id of the dto");
+            dtoInterface.addMethodDeclarationWithDescription("void", "setId", "@param id the id of the dto", "Long", "id");
+        }
+
+        return writeClassFile(basePackageDir, dtoInterface.getInterfaceName(), dtoInterface);
     }
 
     /**
@@ -38,6 +57,7 @@ public class DtoCreator extends AbstractObjectCreator {
         }
 
         Clazz dtoClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName() + "Dto");
+        dtoClazz.addInterface(DTO_INTERFACE);
 
         JavaDoc javaDoc = new JavaDoc(String.format("Generated dto class of %s", entity.getBaseName()));
         if (entity.getDescription() != null && !entity.getDescription().trim().isEmpty()) {
@@ -46,6 +66,7 @@ public class DtoCreator extends AbstractObjectCreator {
         }
         dtoClazz.setDescription(javaDoc);
 
+        dtoClazz.addImport(String.format("%s.%s", packageName, DTO_INTERFACE));
         dtoClazz.addImport(Data.class.getName());
         dtoClazz.addImport(NoArgsConstructor.class.getName());
 
