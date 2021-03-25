@@ -50,11 +50,18 @@
         <sonar.projectName>de.mv.ape.modelgenerator</sonar.projectName>
         <sonar.test.exclusions>src/test/**/*</sonar.test.exclusions>
         <sonar.scm.provider>git</sonar.scm.provider>
-
-        <sonar.projectKey>Ma-Vin_de.mv.ape.layerGenerator</sonar.projectKey>
-        <sonar.organization>ma-vin</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>sonar-cloud</id>
+            <properties>
+                <sonar.projectKey>Ma-Vin_de.mv.ape.layerGenerator</sonar.projectKey>
+                <sonar.organization>ma-vin</sonar.organization>
+                <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>
