@@ -150,7 +150,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity);
 
-        if (hasIncludeChildrenParameter) {
+        if (hasIncludeChildrenParameter && entity.getReferences().stream().anyMatch(Reference::isList)) {
             entity.getReferences().stream()
                     .filter(Reference::isList)
                     .forEach(ref -> {
@@ -316,7 +316,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity);
 
-        if (hasIncludeChildrenParameter) {
+        if (hasIncludeChildrenParameter && entity.getReferences().stream().anyMatch(Reference::isList)) {
             convertMethod.addLine("if (includeChildren) {");
 
             entity.getReferences().stream()

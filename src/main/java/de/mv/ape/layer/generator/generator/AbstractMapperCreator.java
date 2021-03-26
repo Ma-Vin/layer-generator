@@ -240,7 +240,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @return {@code true} if an indicator is to provide
      */
     protected boolean hasIncludeChildrenParameter(Entity entity) {
-        return entity.getReferences().stream().anyMatch(Reference::isList);
+        return entity.getReferences().stream().anyMatch(ref -> ref.isList() || hasIncludeChildrenParameter(ref.getRealTargetEntity()));
     }
 
     /**
