@@ -122,7 +122,6 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao;");
         expected.add("");
-        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
@@ -158,7 +157,6 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import de.test.package.dao.group.TargetDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -200,7 +198,6 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import de.test.package.dao.group.TargetDao;");
         expected.add("import java.util.Collection;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -396,7 +393,6 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import de.test.package.dao.group.TargetDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -440,7 +436,6 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import de.test.package.dao.group.DummyToTargetDao;");
         expected.add("import java.util.Collection;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -472,8 +467,6 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expectedConnection = new ArrayList<>();
         expectedConnection.add("package de.test.package.dao.group;");
         expectedConnection.add("");
-        expectedConnection.add("import de.test.package.dao.group.DummyDao;");
-        expectedConnection.add("import de.test.package.dao.group.TargetDao;");
         expectedConnection.add("import java.io.Serializable;");
         expectedConnection.add("import javax.persistence.*;");
         expectedConnection.add("import lombok.AllArgsConstructor;");

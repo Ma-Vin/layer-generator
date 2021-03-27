@@ -100,7 +100,6 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto;");
         expected.add("");
-        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -136,7 +135,6 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dto.group;");
         expected.add("");
         expected.add("import de.test.package.dto.ITransportable;");
-        expected.add("import de.test.package.dto.group.TargetDto;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.NoArgsConstructor;");

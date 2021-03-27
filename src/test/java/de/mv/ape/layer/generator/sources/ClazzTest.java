@@ -84,6 +84,44 @@ public class ClazzTest {
 
     @Test
     public void testGenerateImports() {
+        cut.addImport("de.abc.sub.Something");
+        cut.addStaticImport("de.abc.sub.Anything.*");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.abc;");
+        expected.add("");
+        expected.add("import static de.abc.sub.Anything.*;");
+        expected.add("");
+        expected.add("import de.abc.sub.Something;");
+        expected.add("");
+        expected.add("public class Dummy {");
+        expected.add("");
+        expected.add("}");
+
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+    @Test
+    public void testGenerateImportsSamePackage() {
+        cut.addImport("de.abc.Something");
+        cut.addStaticImport("de.abc.Anything");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.abc;");
+        expected.add("");
+        expected.add("public class Dummy {");
+        expected.add("");
+        expected.add("}");
+
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+    @Test
+    public void testGenerateImportsSamePackageButStaticMethods() {
         cut.addImport("de.abc.Something");
         cut.addStaticImport("de.abc.Anything.*");
 
@@ -91,8 +129,6 @@ public class ClazzTest {
         expected.add("package de.abc;");
         expected.add("");
         expected.add("import static de.abc.Anything.*;");
-        expected.add("");
-        expected.add("import de.abc.Something;");
         expected.add("");
         expected.add("public class Dummy {");
         expected.add("");

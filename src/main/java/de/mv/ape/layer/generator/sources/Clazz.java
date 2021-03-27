@@ -4,6 +4,7 @@ package de.mv.ape.layer.generator.sources;
 import lombok.Data;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -40,6 +41,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
 
     @Override
     public List<String> generate() {
+        removeImportsAtSamePackage();
         List<String> result = new ArrayList<>();
         if (!isInner) {
             result.add(String.format("package %s;", packageName));
@@ -101,6 +103,24 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
 
     private String getStaticText() {
         return isStatic ? " static" : "";
+    }
+
+    private void removeImportsAtSamePackage() {
+        if (isInner) {
+            imports.clear();
+            staticImports.clear();
+        }
+        Set<Import> toRemove = imports.stream()
+                .filter(i -> i.importedClass.startsWith(packageName))
+                .filter(i -> !i.importedClass.substring(packageName.length() + 1).contains("."))
+                .collect(Collectors.toSet());
+        imports.removeAll(toRemove);
+
+        Set<Import> staticToRemove = staticImports.stream()
+                .filter(i -> i.importedClass.startsWith(packageName))
+                .filter(i -> !i.importedClass.substring(packageName.length() + 1).contains("."))
+                .collect(Collectors.toSet());
+        staticImports.removeAll(staticToRemove);
     }
 
     @Override
