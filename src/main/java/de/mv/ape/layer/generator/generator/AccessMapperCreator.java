@@ -18,6 +18,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     public static final String MAPPER_TYPE_NAME = "Access";
     public static final String DAO_POSTFIX = "Dao";
     public static final String DOMAIN_POSTFIX = "";
+    public static final String PACKAGE_AND_CLASS_NAME_FORMAT = "%s.%s";
 
     public AccessMapperCreator(Config config, Log logger) {
         super(config, logger);
@@ -60,7 +61,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     private void createConvertToDaoMethods(Clazz mapperClass, Entity entity, String daoPackageName, String domainPackageName) {
         mapperClass.addImport(getPackageAndClass(entity, daoPackageName, DAO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
-        mapperClass.addImport(String.format("%s.%s", daoPackageName, DaoCreator.DAO_INTERFACE));
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, DaoCreator.DAO_INTERFACE));
 
         entity.getParentRefs().stream()
                 .filter(Reference::isOwner)
@@ -208,7 +209,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             convertMethod.addLine("connectionTable.set%s(%s.%s(arg, true, %s));"
                     , refNumTabs, targetConnectionName, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
             convertMethod.addLine("result.get%s().add(connectionTable);", refNumTabs, getterSubName);
-            mapperClass.addImport(String.format("%s.%s", getPackage(entity, daoPackageName), connectionTableName));
+            mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, getPackage(entity, daoPackageName), connectionTableName));
         } else if (reference.isOwner() && !hasIncludeChildrenParameter) {
             convertMethod.addLine("%s.%s(arg, result, %s)"
                     , refNumTabs, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
@@ -218,7 +219,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             convertMethod.addLine("connectionTable.set%s(%s.%s(arg, %s));"
                     , refNumTabs, targetConnectionName, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
             convertMethod.addLine("result.get%s().add(connectionTable);", refNumTabs, getterSubName);
-            mapperClass.addImport(String.format("%s.%s", getPackage(entity, daoPackageName), connectionTableName));
+            mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, getPackage(entity, daoPackageName), connectionTableName));
         }
 
         convertMethod.addLine("%s);", 1, reference.isOwner() ? "" : "}");
@@ -240,7 +241,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     private void createConvertToDomainMethods(Clazz mapperClass, Entity entity, String daoPackageName, String domainPackageName) {
         mapperClass.addImport(getPackageAndClass(entity, daoPackageName, DAO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
-        mapperClass.addImport(String.format("%s.%s", domainPackageName, DomainCreator.DOMAIN_INTERFACE));
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
         entity.getParentRefs().stream()
                 .filter(Reference::isOwner)
