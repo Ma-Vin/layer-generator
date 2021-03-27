@@ -2,6 +2,7 @@ package de.mv.ape.layer.generator.generator;
 
 import de.mv.ape.layer.generator.config.elements.Config;
 import de.mv.ape.layer.generator.config.elements.Entity;
+import de.mv.ape.layer.generator.config.elements.Field;
 import de.mv.ape.layer.generator.config.elements.Reference;
 import de.mv.ape.layer.generator.sources.*;
 import lombok.AccessLevel;
@@ -93,11 +94,11 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     /**
      * Adds the default mappings to a convert method
      *
-     * @param convertMethod         method where to add lines for default mapping instrcutions
+     * @param convertMethod         method where to add lines for default mapping instructions
      * @param entity                entity whose properties are to map
      * @param classParameterPostFix postfix for classes and parameters
      */
-    protected void addConvertDefaultMappings(Method convertMethod, Entity entity, String classParameterPostFix) {
+    protected void addConvertDefaultMappings(Method convertMethod, Entity entity, String classParameterPostFix, FieldRelevantChecker fieldChecker) {
         convertMethod.addLine("if (%s == null) {", getLowerFirst(entity.getBaseName()));
         convertMethod.addLine("return null;", 1);
         convertMethod.addLine("}");
@@ -112,7 +113,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         convertMethod.addEmptyLine();
 
         entity.getFields().stream()
-                .filter(f -> f.getModels() == null || (f.getModels().isDomain() && f.getModels().isDao()))
+                .filter(fieldChecker::isRelevant)
                 .forEach(f ->
                         convertMethod.addLine("result.set%1$s(%2$s.get%1$s());"
                                 , getUpperFirst(f.getFieldName())
@@ -127,9 +128,11 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param entity                      entity which is to map
      * @param classParameterPostFix       postfix for classes and parameters
      * @param sourceClassParameterPostFix postfix for classes and parameters which is to map
+     * @param entityChecker               checker for relevance verification
      * @return the created Method
      */
-    protected Method createConvertMethodBase(Entity entity, String classParameterPostFix, String sourceClassParameterPostFix) {
+    protected Method createConvertMethodBase(Entity entity, String classParameterPostFix, String sourceClassParameterPostFix
+            , EntityRelevantChecker entityChecker) {
         Method convertMethod = new Method(getConvertMethodName(entity, classParameterPostFix));
         convertMethod.setMethodType(String.format("%s%s", entity.getBaseName(), classParameterPostFix));
         convertMethod.setQualifier(Qualifier.PUBLIC);
@@ -138,7 +141,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         String objParamName = getLowerFirst(entity.getBaseName());
         convertMethod.addParameter(String.format("%s%s", getUpperFirst(entity.getBaseName()), sourceClassParameterPostFix), objParamName);
 
-        if (hasIncludeChildrenParameter(entity)) {
+        if (hasIncludeChildrenParameter(entity, entityChecker)) {
             convertMethod.addParameter("boolean", INCLUDE_CHILDREN_PARAMETER);
         }
 
@@ -152,13 +155,16 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param entity                      entity whose properties are to map
      * @param classParameterPostFix       postfix for classes and parameters
      * @param sourceClassParameterPostFix postfix for classes and parameters which is to map
+     * @param entityChecker               checker for relevance verification
      */
-    protected void createConvertMethodWithoutMap(Clazz mapperClass, Entity entity, String classParameterPostFix, String sourceClassParameterPostFix) {
-        Method convertMethod = createConvertMethodBase(entity, classParameterPostFix, sourceClassParameterPostFix);
+    protected void createConvertMethodWithoutMap(Clazz mapperClass, Entity entity, String classParameterPostFix
+            , String sourceClassParameterPostFix, EntityRelevantChecker entityChecker) {
+
+        Method convertMethod = createConvertMethodBase(entity, classParameterPostFix, sourceClassParameterPostFix, entityChecker);
         convertMethod.addLine("return %s(%s,%s new %s<>());"
                 , getConvertMethodName(entity, classParameterPostFix)
                 , getLowerFirst(entity.getBaseName())
-                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , hasIncludeChildrenParameter(entity, entityChecker) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , HashMap.class.getSimpleName());
         mapperClass.addMethod(convertMethod);
         mapperClass.addImport(HashMap.class.getName());
@@ -173,16 +179,18 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param packageName                 name of base package
      * @param classParameterPostFix       postfix for classes and parameters
      * @param sourceClassParameterPostFix postfix for classes and parameters which is to map
+     * @param entityChecker               checker for relevance verification
      */
     protected void createConvertMethodWithParentWithoutMap(Clazz mapperClass, Entity entity, Reference referenceToParent, String packageName
-            , String classParameterPostFix, String sourceClassParameterPostFix) {
+            , String classParameterPostFix, String sourceClassParameterPostFix, EntityRelevantChecker entityChecker) {
+
         Method convertMethod = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, packageName
-                , classParameterPostFix, sourceClassParameterPostFix);
+                , classParameterPostFix, sourceClassParameterPostFix, entityChecker);
 
         convertMethod.addLine("return %s(%s,%s parent, new %s<>());"
                 , getConvertMethodName(entity, classParameterPostFix)
                 , getLowerFirst(entity.getBaseName())
-                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , hasIncludeChildrenParameter(entity, entityChecker) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , HashMap.class.getSimpleName()
         );
         mapperClass.addMethod(convertMethod);
@@ -198,12 +206,13 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param packageName                 name of base  package
      * @param classParameterPostFix       postfix for classes and parameters
      * @param sourceClassParameterPostFix postfix for classes and parameters which is to map
+     * @param entityChecker               checker for relevance verification
      * @return the created Method
      */
     protected Method createConvertMethodWithParentBase(Clazz mapperClass, Entity entity, Reference referenceToParent
-            , String packageName, String classParameterPostFix, String sourceClassParameterPostFix) {
+            , String packageName, String classParameterPostFix, String sourceClassParameterPostFix, EntityRelevantChecker entityChecker) {
 
-        Method convertMethod = createConvertMethodBase(entity, classParameterPostFix, sourceClassParameterPostFix);
+        Method convertMethod = createConvertMethodBase(entity, classParameterPostFix, sourceClassParameterPostFix, entityChecker);
         mapperClass.addImport(getPackageAndClass(referenceToParent, packageName, classParameterPostFix));
         convertMethod.addParameter(referenceToParent.getTargetEntity() + classParameterPostFix, "parent");
 
@@ -217,9 +226,12 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param entity                entity whose properties are to map
      * @param reference             reference which is actual to map
      * @param classParameterPostFix postfix for classes and parameters
+     * @param entityChecker         checker for relevance verification
      */
-    protected void addSingleRefConvert(Method convertMethod, Entity entity, Reference reference, String classParameterPostFix) {
-        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity());
+    protected void addSingleRefConvert(Method convertMethod, Entity entity, Reference reference, String classParameterPostFix
+            , EntityRelevantChecker entityChecker) {
+
+        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity(), entityChecker);
 
         String mapperName = getMapperName(reference.getRealTargetEntity());
         String mapperMethodName = getConvertMethodName(reference.getRealTargetEntity(), classParameterPostFix);
@@ -247,8 +259,10 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param entity entity which is to check
      * @return {@code true} if an indicator is to provide
      */
-    protected boolean hasIncludeChildrenParameter(Entity entity) {
-        return entity.getReferences().stream().anyMatch(ref -> ref.isList() || hasIncludeChildrenParameter(ref.getRealTargetEntity()));
+    protected boolean hasIncludeChildrenParameter(Entity entity, EntityRelevantChecker entityChecker) {
+        return entityChecker.isRelevant(entity) && entity.getReferences().stream()
+                .anyMatch(ref -> (ref.isList() && entityChecker.isRelevant(ref.getRealTargetEntity()))
+                        || hasIncludeChildrenParameter(ref.getRealTargetEntity(), entityChecker));
     }
 
     /**
@@ -272,5 +286,27 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
             return String.format("%s.getIdentification()", getLowerFirst(entity.getBaseName()));
         }
         return String.format("\"%s%s\" + %s.getId().longValue()", getUpperFirst(entity.getBaseName()), classParameterPostFix, getLowerFirst(entity.getBaseName()));
+    }
+
+    @FunctionalInterface
+    public interface FieldRelevantChecker {
+        /**
+         * Checks whether field elements are to generate or not
+         *
+         * @param field field to check
+         * @return {@code true} if the field is relevant for the mapper
+         */
+        boolean isRelevant(Field field);
+    }
+
+    @FunctionalInterface
+    public interface EntityRelevantChecker {
+        /**
+         * Checks whether entity elements are to generate or not
+         *
+         * @param entity entity to check
+         * @return {@code true} if the entity is relevant for the mapper
+         */
+        boolean isRelevant(Entity entity);
     }
 }

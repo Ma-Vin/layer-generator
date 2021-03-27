@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -102,7 +103,15 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateAccessMapper() {
+    public void testCreateAccessMapper() {
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    private List<String> getDefaultExpected(){
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
@@ -175,13 +184,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
-
-        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+        return expected;
     }
 
     @Test
-    public void tesCreateAccessMapperField() {
+    public void testCreateAccessMapperField() {
         when(entity.getFields()).thenReturn(Arrays.asList(field));
 
         List<String> expected = new ArrayList<>();
@@ -260,14 +267,13 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-
         assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
 
     @Test
-    public void tesCreateAccessMapperSingleRef() {
+    public void testCreateAccessMapperSingleRef() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -354,7 +360,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateAccessMapperSingleRefNotOwner() {
+    public void testCreateAccessMapperSingleRefNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
@@ -442,7 +448,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateAccessMapperMultiRef() {
+    public void testCreateAccessMapperMultiRef() {
         when(targetReference.getParent()).thenReturn(entity);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
 
@@ -538,7 +544,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateAccessMapperMultiRefNotOwner() {
+    public void testCreateAccessMapperMultiRefNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -639,7 +645,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateAccessMapperParentSingleRef() {
+    public void testCreateAccessMapperParentSingleRef() {
         when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
@@ -753,7 +759,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateAccessMapperParentMultiRef() {
+    public void testCreateAccessMapperParentMultiRef() {
         when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
@@ -878,7 +884,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
 
     @Test
-    public void tesCreateAccessMapperUseIdGenerator() {
+    public void testCreateAccessMapperUseIdGenerator() {
         when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
 
         List<String> expected = new ArrayList<>();
@@ -959,7 +965,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateAccessMapperSingleRefWithChildren() {
+    public void testCreateAccessMapperSingleRefWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -1049,7 +1055,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
 
     @Test
-    public void tesCreateAccessMapperSingleRefNotOwnerWithChildren() {
+    public void testCreateAccessMapperSingleRefNotOwnerWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
@@ -1139,7 +1145,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateAccessMapperMultiRefWithChildren() {
+    public void testCreateAccessMapperMultiRefWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
         when(targetEntity.getReferences()).thenReturn(Arrays.asList(subReference));
@@ -1238,7 +1244,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
 
     @Test
-    public void tesCreateAccessMapperMultiRefNotOwnerWithChildren() {
+    public void testCreateAccessMapperMultiRefNotOwnerWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -1341,7 +1347,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateAccessMapperGroupingWithDot() {
+    public void testCreateAccessMapperGroupingWithDot() {
         when(grouping.getGroupingPackage()).thenReturn("group.subgroup");
         
         List<String> expected = new ArrayList<>();
@@ -1419,5 +1425,86 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createAccessMapper(entities, "group.subgroup", MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
 
         checkSingleFile(String.format("%sAccessMapper.java", "GroupSubgroup"), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperNothingToMap(){
+        when(entity.getModels()).thenReturn(Models.DTO);
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
+
+        when(entity.getModels()).thenReturn(Models.DOMAIN);
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only domain");
+
+        when(entity.getModels()).thenReturn(Models.DAO);
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dao");
+    }
+
+    @Test
+    public void testCreateAccessMapperNoAllToMap(){
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
+        when(subEntity.getModels()).thenReturn(Models.DAO);
+        entities.add(parentEntity);
+        entities.add(subEntity);
+
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperMultiRefParentNotRelevant(){
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
+
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperSingleRefParentNotRelevant(){
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
+        when(parentReference.isList()).thenReturn(Boolean.FALSE);
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
+
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperMultiRefChildNotRelevant(){
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
+        when(targetReference.getParent()).thenReturn(entity);
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperSingleRefChildNotRelevant(){
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
 }

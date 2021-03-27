@@ -2,6 +2,7 @@ package de.mv.ape.layer.generator.generator;
 
 import de.mv.ape.layer.generator.config.elements.Config;
 import de.mv.ape.layer.generator.config.elements.Entity;
+import de.mv.ape.layer.generator.config.elements.Field;
 import de.mv.ape.layer.generator.config.elements.Reference;
 import de.mv.ape.layer.generator.sources.Clazz;
 import de.mv.ape.layer.generator.sources.Method;
@@ -36,6 +37,11 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      */
     public boolean createTransportMapper(List<Entity> entities, String groupingName, String mapperPackageName, String dtoPackageName
             , String domainPackageName, File mapperPackageDir) {
+
+        if (entities.stream().noneMatch(TransportMapperCreator::isEntityRelevant)) {
+            logger.debug("No access mapper need for " + mapperPackageName);
+            return true;
+        }
         Clazz mapperClass = new Clazz(mapperPackageName, getMapperName(groupingName));
         logger.debug("Create transport mapper " + mapperClass.getClassName());
 
@@ -65,7 +71,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
     }
 
     @Override
-    protected boolean hasIncludeChildrenParameter(Entity entity) {
+    protected boolean hasIncludeChildrenParameter(Entity entity, EntityRelevantChecker relevantChecker) {
         return false;
     }
 
@@ -78,6 +84,10 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      */
     private void createConvertToDomainMethods(Clazz mapperClass, Entity entity, String dtoPackageName, String domainPackageName) {
+        if (!isEntityRelevant(entity)) {
+            logger.debug(String.format("Entity %s is not need to converted by %s", entity.getBaseName(), mapperClass.getClassName()));
+            return;
+        }
         mapperClass.addImport(getPackageAndClass(entity, dtoPackageName, DTO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
         mapperClass.addImport(String.format("%s.%s", domainPackageName, DomainCreator.DOMAIN_INTERFACE));
@@ -99,15 +109,23 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      */
     private void createConvertToDomainMethodWithParent(Clazz mapperClass, Entity entity, Reference referenceToParent, String domainPackageName) {
-        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, domainPackageName, DOMAIN_POSTFIX, DTO_POSTFIX);
+        if (!isEntityRelevant(referenceToParent.getRealTargetEntity())) {
+            logger.debug(String.format("No connection is to generate to parent %s from entity %s"
+                    , referenceToParent.getTargetEntity(), entity.getBaseName()));
+            return;
+        }
+        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, domainPackageName, DOMAIN_POSTFIX
+                , DTO_POSTFIX, TransportMapperCreator::isEntityRelevant);
 
-        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, domainPackageName, DOMAIN_POSTFIX, DTO_POSTFIX);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
+        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, domainPackageName
+                , DOMAIN_POSTFIX, DTO_POSTFIX, TransportMapperCreator::isEntityRelevant);
+        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE)
+                , MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethodWithMap.addLine("%s result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodName(entity, DOMAIN_POSTFIX)
                 , getLowerFirst(entity.getBaseName())
-                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , hasIncludeChildrenParameter(entity, TransportMapperCreator::isEntityRelevant) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , MAPPED_OBJECTS_PARAMETER_TEXT
         );
         convertMethodWithMap.addLine("if (result != null) {");
@@ -126,16 +144,17 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @param entity      entity whose properties are to map
      */
     private void createConvertToDomainMethod(Clazz mapperClass, Entity entity) {
-        createConvertMethodWithoutMap(mapperClass, entity, DOMAIN_POSTFIX, DTO_POSTFIX);
+        createConvertMethodWithoutMap(mapperClass, entity, DOMAIN_POSTFIX, DTO_POSTFIX, TransportMapperCreator::isEntityRelevant);
 
-        Method convertMethodWithMap = createConvertMethodBase(entity, DOMAIN_POSTFIX, DTO_POSTFIX);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
+        Method convertMethodWithMap = createConvertMethodBase(entity, DOMAIN_POSTFIX, DTO_POSTFIX, TransportMapperCreator::isEntityRelevant);
+        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE)
+                , MAPPED_OBJECTS_PARAMETER_TEXT);
 
-        addConvertDefaultMappings(convertMethodWithMap, entity, DOMAIN_POSTFIX);
+        addConvertDefaultMappings(convertMethodWithMap, entity, DOMAIN_POSTFIX, TransportMapperCreator::isFieldRelevant);
 
         entity.getReferences().stream()
-                .filter(ref -> !ref.isList())
-                .forEach(ref -> addSingleRefConvert(convertMethodWithMap, entity, ref, DOMAIN_POSTFIX));
+                .filter(ref -> !ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))
+                .forEach(ref -> addSingleRefConvert(convertMethodWithMap, entity, ref, DOMAIN_POSTFIX, TransportMapperCreator::isEntityRelevant));
         convertMethodWithMap.addEmptyLine();
 
         convertMethodWithMap.addEmptyLine();
@@ -155,6 +174,10 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      */
     private void createConvertToDtoMethods(Clazz mapperClass, Entity entity, String dtoPackageName, String domainPackageName) {
+        if (!isEntityRelevant(entity)) {
+            logger.debug(String.format("Entity %s is not need to converted by %s", entity.getBaseName(), mapperClass.getClassName()));
+            return;
+        }
         mapperClass.addImport(getPackageAndClass(entity, dtoPackageName, DTO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
         mapperClass.addImport(String.format("%s.%s", dtoPackageName, DtoCreator.DTO_INTERFACE));
@@ -176,15 +199,23 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @param daoPackageName    name of base dao package
      */
     private void createConvertToDtoMethodWithParent(Clazz mapperClass, Entity entity, Reference referenceToParent, String daoPackageName) {
-        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, daoPackageName, DTO_POSTFIX, DOMAIN_POSTFIX);
+        if (!isEntityRelevant(referenceToParent.getRealTargetEntity())) {
+            logger.debug(String.format("No connection is to generate to parent %s from entity %s"
+                    , referenceToParent.getTargetEntity(), entity.getBaseName()));
+            return;
+        }
+        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, daoPackageName, DTO_POSTFIX
+                , DOMAIN_POSTFIX, TransportMapperCreator::isEntityRelevant);
 
-        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, daoPackageName, DTO_POSTFIX, DOMAIN_POSTFIX);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
+        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, daoPackageName
+                , DTO_POSTFIX, DOMAIN_POSTFIX, TransportMapperCreator::isEntityRelevant);
+        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE)
+                , MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethodWithMap.addLine("%sDao result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodNameDto(entity)
                 , getLowerFirst(entity.getBaseName())
-                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , hasIncludeChildrenParameter(entity, TransportMapperCreator::isEntityRelevant) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , MAPPED_OBJECTS_PARAMETER_TEXT
         );
         convertMethodWithMap.addLine("if (result != null) {");
@@ -203,16 +234,16 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @param entity      entity whose properties are to map
      */
     private void createConvertToDtoMethod(Clazz mapperClass, Entity entity) {
-        createConvertMethodWithoutMap(mapperClass, entity, DTO_POSTFIX, DOMAIN_POSTFIX);
+        createConvertMethodWithoutMap(mapperClass, entity, DTO_POSTFIX, DOMAIN_POSTFIX, TransportMapperCreator::isEntityRelevant);
 
-        Method convertMethodWithMap = createConvertMethodBase(entity, DTO_POSTFIX, DOMAIN_POSTFIX);
+        Method convertMethodWithMap = createConvertMethodBase(entity, DTO_POSTFIX, DOMAIN_POSTFIX, TransportMapperCreator::isEntityRelevant);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
 
-        addConvertDefaultMappings(convertMethodWithMap, entity, DTO_POSTFIX);
+        addConvertDefaultMappings(convertMethodWithMap, entity, DTO_POSTFIX, TransportMapperCreator::isFieldRelevant);
 
         entity.getReferences().stream()
-                .filter(ref -> !ref.isList())
-                .forEach(ref -> addSingleRefConvert(convertMethodWithMap, entity, ref, DTO_POSTFIX));
+                .filter(ref -> !ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))
+                .forEach(ref -> addSingleRefConvert(convertMethodWithMap, entity, ref, DTO_POSTFIX, TransportMapperCreator::isEntityRelevant));
         convertMethodWithMap.addEmptyLine();
 
 
@@ -222,5 +253,25 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
+    }
+
+    /**
+     * Checks whether elements are to generate or not
+     *
+     * @param entity Entity to check for relevance
+     * @return {@code true} if the entity is relevant for the mapper
+     */
+    private static boolean isEntityRelevant(Entity entity) {
+        return entity.getModels() == null || (entity.getModels().isDto() && entity.getModels().isDomain());
+    }
+
+    /**
+     * Checks whether elements are to generate or not
+     *
+     * @param field Field to check for relevance
+     * @return {@code true} if the field is relevant for the mapper
+     */
+    private static boolean isFieldRelevant(Field field) {
+        return field.getModels() == null || (field.getModels().isDto() && field.getModels().isDomain());
     }
 }

@@ -67,7 +67,7 @@ public class AbstractCreatorTest {
         when(targetEntity.getBaseName()).thenReturn("Target");
         when(targetEntity.getDescription()).thenReturn("Target description");
         when(targetEntity.getIdentificationPrefix()).thenReturn("TA");
-        when(targetEntity.getModels()).thenReturn(Models.DAO);
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(targetEntity.getGrouping()).thenReturn(grouping);
 
         when(config.getBasePackage()).thenReturn(BASE_PACKAGE);

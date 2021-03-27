@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -99,7 +100,15 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateTransportMapper() {
+    public void testCreateTransportMapper() {
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    private List<String> getDefaultExpected(){
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
@@ -172,13 +181,11 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
-
-        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+        return expected;
     }
 
     @Test
-    public void tesCreateTransportMapperField() {
+    public void testCreateTransportMapperField() {
         when(entity.getFields()).thenReturn(Arrays.asList(field));
 
         List<String> expected = new ArrayList<>();
@@ -264,7 +271,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateTransportMapperSingleRef() {
+    public void testCreateTransportMapperSingleRef() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -351,7 +358,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateTransportMapperSingleRefNotOwner() {
+    public void testCreateTransportMapperSingleRefNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
@@ -439,7 +446,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateTransportMapperMultiRef() {
+    public void testCreateTransportMapperMultiRef() {
         when(targetReference.getParent()).thenReturn(entity);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
 
@@ -521,7 +528,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateTransportMapperMultiRefNotOwner() {
+    public void testCreateTransportMapperMultiRefNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -604,7 +611,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateTransportMapperParentSingleRef() {
+    public void testCreateTransportMapperParentSingleRef() {
         when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
@@ -718,7 +725,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateTransportMapperParentMultiRef() {
+    public void testCreateTransportMapperParentMultiRef() {
         when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
@@ -802,7 +809,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
 
     @Test
-    public void tesCreateTransportMapperUseIdGenerator() {
+    public void testCreateTransportMapperUseIdGenerator() {
         when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
 
         List<String> expected = new ArrayList<>();
@@ -883,7 +890,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateTransportMapperSingleRefWithChildren() {
+    public void testCreateTransportMapperSingleRefWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -973,7 +980,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
 
     @Test
-    public void tesCreateTransportMapperSingleRefNotOwnerWithChildren() {
+    public void testCreateTransportMapperSingleRefNotOwnerWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
@@ -1063,7 +1070,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void tesCreateTransportMapperMultiRefWithChildren() {
+    public void testCreateTransportMapperMultiRefWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
         when(targetEntity.getReferences()).thenReturn(Arrays.asList(subReference));
@@ -1148,7 +1155,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
 
     @Test
-    public void tesCreateTransportMapperMultiRefNotOwnerWithChildren() {
+    public void testCreateTransportMapperMultiRefNotOwnerWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -1226,6 +1233,87 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("}");
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateTransportMapperNothingToMap(){
+        when(entity.getModels()).thenReturn(Models.DTO);
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
+
+        when(entity.getModels()).thenReturn(Models.DOMAIN);
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only domain");
+
+        when(entity.getModels()).thenReturn(Models.DAO);
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dao");
+    }
+
+    @Test
+    public void testCreateTransportMapperNoAllToMap(){
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
+        when(subEntity.getModels()).thenReturn(Models.DTO);
+        entities.add(parentEntity);
+        entities.add(subEntity);
+
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperMultiRefParentNotRelevant(){
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
+
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperSingleRefParentNotRelevant(){
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
+        when(parentReference.isList()).thenReturn(Boolean.FALSE);
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
+
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperMultiRefChildNotRelevant(){
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
+        when(targetReference.getParent()).thenReturn(entity);
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperSingleRefChildNotRelevant(){
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+
+        List<String> expected = getDefaultExpected();
 
         assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
 

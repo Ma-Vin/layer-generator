@@ -4,6 +4,7 @@ import static de.mv.ape.layer.generator.sources.AbstractGenerateLines.TAB;
 
 import de.mv.ape.layer.generator.config.elements.Config;
 import de.mv.ape.layer.generator.config.elements.Entity;
+import de.mv.ape.layer.generator.config.elements.Field;
 import de.mv.ape.layer.generator.config.elements.Reference;
 import de.mv.ape.layer.generator.sources.*;
 import org.apache.maven.plugin.logging.Log;
@@ -37,6 +38,11 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      */
     public boolean createAccessMapper(List<Entity> entities, String groupingName, String mapperPackageName, String daoPackageName
             , String domainPackageName, File mapperPackageDir) {
+
+        if (entities.stream().noneMatch(AccessMapperCreator::isEntityRelevant)) {
+            logger.debug("No access mapper need for " + mapperPackageName);
+            return true;
+        }
         Clazz mapperClass = new Clazz(mapperPackageName, getMapperName(groupingName));
         logger.debug("Create access mapper " + mapperClass.getClassName());
 
@@ -59,6 +65,10 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      */
     private void createConvertToDaoMethods(Clazz mapperClass, Entity entity, String daoPackageName, String domainPackageName) {
+        if (!isEntityRelevant(entity)) {
+            logger.debug(String.format("Entity %s is not need to converted by %s", entity.getBaseName(), mapperClass.getClassName()));
+            return;
+        }
         mapperClass.addImport(getPackageAndClass(entity, daoPackageName, DAO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, DaoCreator.DAO_INTERFACE));
@@ -80,15 +90,23 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param daoPackageName    name of base dao package
      */
     private void createConvertToDaoMethodWithParent(Clazz mapperClass, Entity entity, Reference referenceToParent, String daoPackageName) {
-        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, daoPackageName, DAO_POSTFIX, DOMAIN_POSTFIX);
+        if (!isEntityRelevant(referenceToParent.getRealTargetEntity())) {
+            logger.debug(String.format("No connection is to generate to parent %s from entity %s"
+                    , referenceToParent.getTargetEntity(), entity.getBaseName()));
+            return;
+        }
+        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, daoPackageName, DAO_POSTFIX
+                , DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant);
 
-        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, daoPackageName, DAO_POSTFIX, DOMAIN_POSTFIX);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DaoCreator.DAO_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
+        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent
+                , daoPackageName, DAO_POSTFIX, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant);
+        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DaoCreator.DAO_INTERFACE)
+                , MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethodWithMap.addLine("%sDao result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodNameDao(entity)
                 , getLowerFirst(entity.getBaseName())
-                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , hasIncludeChildrenParameter(entity, AccessMapperCreator::isEntityRelevant) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , MAPPED_OBJECTS_PARAMETER_TEXT
         );
         convertMethodWithMap.addLine("if (result != null) {");
@@ -123,10 +141,11 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param daoPackageName name of base dao package
      */
     private void createConvertToDaoMethod(Clazz mapperClass, Entity entity, String daoPackageName) {
-        createConvertMethodWithoutMap(mapperClass, entity, DAO_POSTFIX, DOMAIN_POSTFIX);
+        createConvertMethodWithoutMap(mapperClass, entity, DAO_POSTFIX, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant);
 
-        Method convertMethodWithMap = createConvertMethodBase(entity, DAO_POSTFIX, DOMAIN_POSTFIX);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DaoCreator.DAO_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
+        Method convertMethodWithMap = createConvertMethodBase(entity, DAO_POSTFIX, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant);
+        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DaoCreator.DAO_INTERFACE)
+                , MAPPED_OBJECTS_PARAMETER_TEXT);
 
         createConvertToDaoMappings(mapperClass, convertMethodWithMap, entity, daoPackageName);
 
@@ -143,18 +162,22 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param daoPackageName name of base dao package
      */
     private void createConvertToDaoMappings(Clazz mapperClass, Method convertMethod, Entity entity, String daoPackageName) {
-        addConvertDefaultMappings(convertMethod, entity, DAO_POSTFIX);
+        addConvertDefaultMappings(convertMethod, entity, DAO_POSTFIX, AccessMapperCreator::isFieldRelevant);
 
         entity.getReferences().stream()
                 .filter(ref -> !ref.isList())
-                .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DAO_POSTFIX));
+                .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
+                .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant));
         convertMethod.addEmptyLine();
 
-        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity);
+        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity, AccessMapperCreator::isEntityRelevant);
 
-        if (hasIncludeChildrenParameter && entity.getReferences().stream().anyMatch(Reference::isList)) {
+        if (hasIncludeChildrenParameter && entity.getReferences().stream()
+                .anyMatch(ref -> ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))) {
+
             entity.getReferences().stream()
                     .filter(Reference::isList)
+                    .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
                     .forEach(ref -> {
                         String getterSubName = getUpperFirst(ref.getReferenceName()) + "s";
                         convertMethod.addLine("result.set%s(new %s<>());", getterSubName, ArrayList.class.getSimpleName());
@@ -164,6 +187,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
             entity.getReferences().stream()
                     .filter(Reference::isList)
+                    .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
                     .forEach(ref -> addMultiRefConvertToDao(mapperClass, convertMethod, entity, ref, daoPackageName));
 
             convertMethod.addLine("}");
@@ -184,7 +208,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param daoPackageName name of base dao package
      */
     private void addMultiRefConvertToDao(Clazz mapperClass, Method convertMethod, Entity entity, Reference reference, String daoPackageName) {
-        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity());
+        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity(), AccessMapperCreator::isEntityRelevant);
 
         String mapperName = getMapperName(reference.getRealTargetEntity());
         String mapperMethodName = getConvertMethodNameDao(reference.getRealTargetEntity());
@@ -239,6 +263,10 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      */
     private void createConvertToDomainMethods(Clazz mapperClass, Entity entity, String daoPackageName, String domainPackageName) {
+        if (!isEntityRelevant(entity)) {
+            logger.debug(String.format("Entity %s is not need to converted by %s", entity.getBaseName(), mapperClass.getClassName()));
+            return;
+        }
         mapperClass.addImport(getPackageAndClass(entity, daoPackageName, DAO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
@@ -260,15 +288,22 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      */
     private void createConvertToDomainMethodWithParent(Clazz mapperClass, Entity entity, Reference referenceToParent, String domainPackageName) {
-        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, domainPackageName, DOMAIN_POSTFIX, DAO_POSTFIX);
+        if (!isEntityRelevant(referenceToParent.getRealTargetEntity())) {
+            logger.debug(String.format("No connection is to generate to parent %s from entity %s"
+                    , referenceToParent.getTargetEntity(), entity.getBaseName()));
+            return;
+        }
+        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, domainPackageName, DOMAIN_POSTFIX
+                , DAO_POSTFIX, AccessMapperCreator::isEntityRelevant);
 
-        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, domainPackageName, DOMAIN_POSTFIX, DAO_POSTFIX);
+        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, domainPackageName
+                , DOMAIN_POSTFIX, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethodWithMap.addLine("%s result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodName(entity, DOMAIN_POSTFIX)
                 , getLowerFirst(entity.getBaseName())
-                , hasIncludeChildrenParameter(entity) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , hasIncludeChildrenParameter(entity, AccessMapperCreator::isEntityRelevant) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , MAPPED_OBJECTS_PARAMETER_TEXT
         );
         convertMethodWithMap.addLine("if (result != null) {");
@@ -291,10 +326,11 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param entity      entity whose properties are to map
      */
     private void createConvertToDomainMethod(Clazz mapperClass, Entity entity) {
-        createConvertMethodWithoutMap(mapperClass, entity, DOMAIN_POSTFIX, DAO_POSTFIX);
+        createConvertMethodWithoutMap(mapperClass, entity, DOMAIN_POSTFIX, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant);
 
-        Method convertMethodWithMap = createConvertMethodBase(entity, DOMAIN_POSTFIX, DAO_POSTFIX);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
+        Method convertMethodWithMap = createConvertMethodBase(entity, DOMAIN_POSTFIX, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant);
+        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE)
+                , MAPPED_OBJECTS_PARAMETER_TEXT);
 
         createConvertToDomainMappings(mapperClass, convertMethodWithMap, entity);
 
@@ -310,20 +346,24 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param entity        entity whose properties are to map
      */
     private void createConvertToDomainMappings(Clazz mapperClass, Method convertMethod, Entity entity) {
-        addConvertDefaultMappings(convertMethod, entity, DOMAIN_POSTFIX);
+        addConvertDefaultMappings(convertMethod, entity, DOMAIN_POSTFIX, AccessMapperCreator::isFieldRelevant);
 
         entity.getReferences().stream()
                 .filter(ref -> !ref.isList())
-                .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DOMAIN_POSTFIX));
+                .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
+                .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant));
         convertMethod.addEmptyLine();
 
-        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity);
+        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity, AccessMapperCreator::isEntityRelevant);
 
-        if (hasIncludeChildrenParameter && entity.getReferences().stream().anyMatch(Reference::isList)) {
+        if (hasIncludeChildrenParameter && entity.getReferences().stream()
+                .anyMatch(ref -> ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))) {
+
             convertMethod.addLine("if (includeChildren) {");
 
             entity.getReferences().stream()
                     .filter(Reference::isList)
+                    .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
                     .forEach(ref -> addMultiRefConvertToDomain(mapperClass, convertMethod, entity, ref));
 
             convertMethod.addLine("}");
@@ -343,7 +383,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param reference     reference which is actual to map
      */
     private void addMultiRefConvertToDomain(Clazz mapperClass, Method convertMethod, Entity entity, Reference reference) {
-        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity());
+        boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity(), AccessMapperCreator::isEntityRelevant);
 
         String mapperName = getMapperName(reference.getRealTargetEntity());
         String mapperMethodName = getConvertMethodName(reference.getRealTargetEntity(), DOMAIN_POSTFIX);
@@ -369,5 +409,25 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         }
 
         convertMethod.addLine(");", 1);
+    }
+
+    /**
+     * Checks whether elements are to generate or not
+     *
+     * @param entity Entity to check for relevance
+     * @return {@code true} if the entity is relevant for the mapper
+     */
+    private static boolean isEntityRelevant(Entity entity) {
+        return entity.getModels() == null || (entity.getModels().isDao() && entity.getModels().isDomain());
+    }
+
+    /**
+     * Checks whether elements are to generate or not
+     *
+     * @param field Field to check for relevance
+     * @return {@code true} if the field is relevant for the mapper
+     */
+    private static boolean isFieldRelevant(Field field) {
+        return field.getModels() == null || (field.getModels().isDao() && field.getModels().isDomain());
     }
 }
