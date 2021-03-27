@@ -28,11 +28,13 @@ public class Field {
     /**
      * package of the type if necessary
      */
+    @XmlAttribute()
     private String typePackage;
 
     /**
      * package of the type if necessary
      */
+    @XmlAttribute()
     private boolean isTypeEnum;
 
     /**

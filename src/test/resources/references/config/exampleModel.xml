@@ -31,9 +31,9 @@
         <entity baseName="RootExt" models="DOMAIN_DAO_DTO" identificationPrefix="RE">
             <fields>
                 <field fieldName="ExtendedInfo" type="String"/>
-                <field fieldName="someEnum" typePackage="de.enum.anything" type="AnyEnumType" isTypeEnum="true"/>
+                <field fieldName="someEnum" type="AnyEnumType" typePackage="de.enums.anything" isTypeEnum="true"/>
                 <field fieldName="someInteger" type="Integer"/>
-                <field fieldName="someCustom" typePackage="de.custom.anything" type="CustomType"/>
+                <field fieldName="someCustom" type="CustomType" typePackage="de.custom.anything"/>
                 <field fieldName="onlyDao" models="DAO" type="String"/>
                 <field fieldName="onlyDomain" models="DOMAIN" type="String"/>
                 <field fieldName="onlyDto" models="DTO" type="String"/>
@@ -45,10 +45,10 @@
                 <field fieldName="numberWithDaoInfo" type="double">
                     <daoInfo precision="7" scale="3"/>
                 </field>
-                <field fieldName="daoEnum" typePackage="de.enum.anything" type="AnyEnumType" isTypeEnum="true">
+                <field fieldName="daoEnum" typePackage="de.enums.anything" type="AnyEnumType" isTypeEnum="true">
                     <daoInfo useEnumText="false"/>
                 </field>
-                <field fieldName="daoEnumWithText" typePackage="de.enum.anything" type="AnyEnumType" isTypeEnum="true">
+                <field fieldName="daoEnumWithText" typePackage="de.enums.anything" type="AnyEnumType" isTypeEnum="true">
                     <daoInfo useEnumText="true"/>
                 </field>
             </fields>

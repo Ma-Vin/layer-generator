@@ -49,10 +49,10 @@
                 <field fieldName="numberWithDaoInfo" type="double">
                     <daoInfo precision="7" scale="3"/>
                 </field>
-                <field fieldName="daoEnum" typePackage="de.enum.anything" type="AnyEnumType" isTypeEnum="true">
+                <field fieldName="daoEnum" typePackage="de.enums.anything" type="AnyEnumType" isTypeEnum="true">
                     <daoInfo useEnumText="false"/>
                 </field>
-                <field fieldName="daoEnumWithText" typePackage="de.enum.anything" type="AnyEnumType" isTypeEnum="true">
+                <field fieldName="daoEnumWithText" typePackage="de.enums.anything" type="AnyEnumType" isTypeEnum="true">
                     <daoInfo useEnumText="true"/>
                 </field>
             </fields>
