@@ -174,6 +174,8 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import java.util.Collection;");
+        expected.add("import java.util.HashSet;");
+        expected.add("import lombok.AccessLevel;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.NoArgsConstructor;");

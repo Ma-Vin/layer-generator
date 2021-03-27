@@ -9,6 +9,7 @@ import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -121,6 +122,8 @@ public class DomainCreator extends AbstractObjectCreator {
         if (reference.isList()) {
             clazz.addImport(Collection.class.getName());
             clazz.addImport(Setter.class.getName());
+            clazz.addImport(AccessLevel.class.getName());
+            clazz.addImport(HashSet.class.getName());
 
             child = new Attribute(propertyBaseName + "s", String.format("%s<%s>", Collection.class.getSimpleName(), childClassName));
             child.addAnnotation(Setter.class.getSimpleName(), null, String.format("%s.%s", AccessLevel.class.getSimpleName(), AccessLevel.PROTECTED.name()));
