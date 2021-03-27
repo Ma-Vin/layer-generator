@@ -714,6 +714,51 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
+    public void testCreateDataAccessObjectUseIdGeneratorWithoutDomain() {
+        when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
+        when(entity.getModels()).thenReturn(Models.DAO);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.mv.ape.utils.generators.IdGenerator;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@Entity()");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id()");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	@Override()");
+        expected.add("	public String getIdentification() {");
+        expected.add("		return IdGenerator.generateIdentification(id, \"\");");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	@Override()");
+        expected.add("	public void setIdentification(String identification) {");
+        expected.add("		id = IdGenerator.generateId(identification, \"\");");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
     public void testCreateDataAccessObjectInterface() {
         List<String> expected = new ArrayList<>();
 
