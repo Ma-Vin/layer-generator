@@ -33,6 +33,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     private Entity parentEntity;
     @Mock
     private Reference parentReference;
+    @Mock
+    private Entity anotherParentEntity;
+    @Mock
+    private Reference anotherParentReference;
 
     @Mock
     private Entity subEntity;
@@ -86,6 +90,18 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(parentReference.isList()).thenReturn(Boolean.TRUE);
         when(parentReference.isOwner()).thenReturn(Boolean.TRUE);
 
+        when(anotherParentEntity.getBaseName()).thenReturn("AnotherOwner");
+        when(anotherParentEntity.getDescription()).thenReturn("Another owner description");
+        when(anotherParentEntity.getIdentificationPrefix()).thenReturn("AOW");
+        when(anotherParentEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(anotherParentEntity.getGrouping()).thenReturn(null);
+
+        when(anotherParentReference.getTargetEntity()).thenReturn("AnotherOwner");
+        when(anotherParentReference.getRealTargetEntity()).thenReturn(anotherParentEntity);
+        when(anotherParentReference.getReferenceName()).thenReturn("anotherDummy");
+        when(anotherParentReference.isList()).thenReturn(Boolean.TRUE);
+        when(anotherParentReference.isOwner()).thenReturn(Boolean.TRUE);
+
         when(subEntity.getBaseName()).thenReturn("Child");
         when(subEntity.getDescription()).thenReturn("child description");
         when(subEntity.getIdentificationPrefix()).thenReturn("CH");
@@ -108,7 +124,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
 
-    private List<String> getDefaultExpected(){
+    private List<String> getDefaultExpected() {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
@@ -725,6 +741,140 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
+    public void testCreateTransportMapperMultiParentSingleRef() {
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
+        when(parentReference.isList()).thenReturn(Boolean.FALSE);
+        when(anotherParentReference.isList()).thenReturn(Boolean.FALSE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.domain.AnotherOwner;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.domain.Owner;");
+        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.AnotherOwnerDto;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import de.test.package.dto.OwnerDto;");
+        expected.add("import de.test.package.dto.group.DummyDto;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public class GroupingTransportMapper {");
+        expected.add("");
+        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingTransportMapper instance;");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDto dummy) {");
+        expected.add("		return convertToDummy(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDto dummy, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"Dummy\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (Dummy) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		Dummy result = new Dummy();");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDto dummy, AnotherOwner parent) {");
+        expected.add("		return convertToDummy(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDto dummy, AnotherOwner parent, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			parent.setAnotherDummy(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDto dummy, Owner parent) {");
+        expected.add("		return convertToDummy(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDto dummy, Owner parent, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			parent.setDummy(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy) {");
+        expected.add("		return convertToDummyDto(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy, Map<String, ITransportable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"DummyDto\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (DummyDto) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy, AnotherOwnerDto parent) {");
+        expected.add("		return convertToDummyDto(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy, AnotherOwnerDto parent, Map<String, ITransportable> mappedObjects) {");
+        expected.add("		DummyDto result = convertToDummyDto(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			parent.setAnotherDummy(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy, OwnerDto parent) {");
+        expected.add("		return convertToDummyDto(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy, OwnerDto parent, Map<String, ITransportable> mappedObjects) {");
+        expected.add("		DummyDto result = convertToDummyDto(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			parent.setDummy(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingTransportMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
     public void testCreateTransportMapperParentMultiRef() {
         when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -1240,7 +1390,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void testCreateTransportMapperNothingToMap(){
+    public void testCreateTransportMapperNothingToMap() {
         when(entity.getModels()).thenReturn(Models.DTO);
         assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
@@ -1255,7 +1405,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void testCreateTransportMapperNoAllToMap(){
+    public void testCreateTransportMapperNoAllToMap() {
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
         when(subEntity.getModels()).thenReturn(Models.DTO);
         entities.add(parentEntity);
@@ -1269,7 +1419,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void testCreateAccessMapperMultiRefParentNotRelevant(){
+    public void testCreateAccessMapperMultiRefParentNotRelevant() {
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
         when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
 
@@ -1281,7 +1431,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void testCreateAccessMapperSingleRefParentNotRelevant(){
+    public void testCreateAccessMapperSingleRefParentNotRelevant() {
         when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
         when(parentReference.isList()).thenReturn(Boolean.FALSE);
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
@@ -1294,7 +1444,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void testCreateAccessMapperMultiRefChildNotRelevant(){
+    public void testCreateAccessMapperMultiRefChildNotRelevant() {
         when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
         when(targetReference.getParent()).thenReturn(entity);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -1307,7 +1457,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void testCreateAccessMapperSingleRefChildNotRelevant(){
+    public void testCreateAccessMapperSingleRefChildNotRelevant() {
         when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);

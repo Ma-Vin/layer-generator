@@ -16,6 +16,10 @@ public class Parameter implements IComparableWithText<Parameter> {
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Parameter o) {
-        return parameterName.compareTo(o.parameterName);
+        int res = parameterName.compareTo(o.parameterName);
+        if (res == 0) {
+            res = parameterType.compareTo(o.parameterType);
+        }
+        return res;
     }
 }

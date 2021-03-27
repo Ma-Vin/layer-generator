@@ -136,6 +136,7 @@ public class MethodTest {
         List<Method> methods = new ArrayList<>();
         methods.add(getMethod("A", true));
         methods.add(getMethod("A", true, "p1Type", "p1Name"));
+        methods.add(getMethod("A", true, "p3Type", "p1Name"));
         methods.add(getMethod("A", true, "p2Type", "p2Name"));
         methods.add(getMethod("B", true));
         methods.add(getMethod("A", false));

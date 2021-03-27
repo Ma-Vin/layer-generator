@@ -34,6 +34,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     private Entity parentEntity;
     @Mock
     private Reference parentReference;
+    @Mock
+    private Entity anotherParentEntity;
+    @Mock
+    private Reference anotherParentReference;
 
     @Mock
     private Entity subEntity;
@@ -88,6 +92,18 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(parentReference.getReferenceName()).thenReturn("dummy");
         when(parentReference.isList()).thenReturn(Boolean.TRUE);
         when(parentReference.isOwner()).thenReturn(Boolean.TRUE);
+
+        when(anotherParentEntity.getBaseName()).thenReturn("AnotherOwner");
+        when(anotherParentEntity.getDescription()).thenReturn("Another owner description");
+        when(anotherParentEntity.getIdentificationPrefix()).thenReturn("AOW");
+        when(anotherParentEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(anotherParentEntity.getGrouping()).thenReturn(null);
+
+        when(anotherParentReference.getTargetEntity()).thenReturn("AnotherOwner");
+        when(anotherParentReference.getRealTargetEntity()).thenReturn(anotherParentEntity);
+        when(anotherParentReference.getReferenceName()).thenReturn("anotherDummy");
+        when(anotherParentReference.isList()).thenReturn(Boolean.TRUE);
+        when(anotherParentReference.isOwner()).thenReturn(Boolean.TRUE);
 
         when(subEntity.getBaseName()).thenReturn("Child");
         when(subEntity.getDescription()).thenReturn("child description");
@@ -759,6 +775,142 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
+    public void testCreateAccessMapperMultiParentSingleRef() {
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
+        when(parentReference.isList()).thenReturn(Boolean.FALSE);
+        when(anotherParentReference.isList()).thenReturn(Boolean.FALSE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.dao.AnotherOwnerDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.dao.OwnerDao;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.AnotherOwner;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.domain.Owner;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public class GroupingAccessMapper {");
+        expected.add("");
+        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingAccessMapper instance;");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy) {");
+        expected.add("		return convertToDummy(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"Dummy\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (Dummy) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		Dummy result = new Dummy();");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, AnotherOwner parent) {");
+        expected.add("		return convertToDummy(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, AnotherOwner parent, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			parent.setAnotherDummy(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Owner parent) {");
+        expected.add("		return convertToDummy(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Owner parent, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			parent.setDummy(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy) {");
+        expected.add("		return convertToDummyDao(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"DummyDao\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (DummyDao) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, AnotherOwnerDao parent) {");
+        expected.add("		return convertToDummyDao(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, AnotherOwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		DummyDao result = convertToDummyDao(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			result.setParentAnotherOwner(parent);");
+        expected.add("			parent.setAnotherDummy(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, OwnerDao parent) {");
+        expected.add("		return convertToDummyDao(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, OwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		DummyDao result = convertToDummyDao(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			result.setParentOwner(parent);");
+        expected.add("			parent.setDummy(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingAccessMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
     public void testCreateAccessMapperParentMultiRef() {
         when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -882,6 +1034,140 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
 
+    @Test
+    public void testCreateAccessMapperMultiParentMultiRef() {
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.dao.AnotherOwnerDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.dao.OwnerDao;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.AnotherOwner;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.domain.Owner;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public class GroupingAccessMapper {");
+        expected.add("");
+        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingAccessMapper instance;");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy) {");
+        expected.add("		return convertToDummy(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"Dummy\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (Dummy) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		Dummy result = new Dummy();");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, AnotherOwner parent) {");
+        expected.add("		return convertToDummy(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, AnotherOwner parent, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			parent.getAnotherDummys().add(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Owner parent) {");
+        expected.add("		return convertToDummy(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Owner parent, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			parent.getDummys().add(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy) {");
+        expected.add("		return convertToDummyDao(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"DummyDao\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (DummyDao) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, AnotherOwnerDao parent) {");
+        expected.add("		return convertToDummyDao(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, AnotherOwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		DummyDao result = convertToDummyDao(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			result.setParentAnotherOwner(parent);");
+        expected.add("			parent.getAnotherDummys().add(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, OwnerDao parent) {");
+        expected.add("		return convertToDummyDao(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, OwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		DummyDao result = convertToDummyDao(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			result.setParentOwner(parent);");
+        expected.add("			parent.getDummys().add(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingAccessMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
 
     @Test
     public void testCreateAccessMapperUseIdGenerator() {

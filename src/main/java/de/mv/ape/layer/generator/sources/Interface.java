@@ -117,7 +117,7 @@ public class Interface extends AbstractGenerateLines implements Comparable<Inter
             int res = methodName.compareTo(o.methodName);
             if (res == 0) {
                 for (int i = 0; i < parameters.size() && i < o.parameters.size() && res == 0; i++) {
-                    res = parameters.get(i).getParameterName().compareTo(o.getParameters().get(i).getParameterName());
+                    res = parameters.get(i).compareTo(o.getParameters().get(i));
                 }
             }
             if (res == 0) {

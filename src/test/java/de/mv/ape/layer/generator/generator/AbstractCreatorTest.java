@@ -86,7 +86,7 @@ public class AbstractCreatorTest {
         if (expectedLines.size() != writtenFileContents.get(fileName).size()) {
             for (int i = 0; i < expectedLines.size() && i < writtenFileContents.get(fileName).size(); i++) {
                 if (!expectedLines.get(i).equals(writtenFileContents.get(fileName).get(i))) {
-                    log.error("First Diff Value");
+                    log.error("First Diff Value at line " + i);
                     log.error("Expected: " + expectedLines.get(i));
                     log.error("Actual:   " + writtenFileContents.get(fileName).get(i));
                     log.error("-------------");
