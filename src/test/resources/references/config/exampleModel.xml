@@ -1,69 +1,147 @@
 <conf:config xmlns:conf="de.mv.ape.gen.model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="de.mv.ape.gen.model ">
-    <basePackage>de.mv.ape.realization</basePackage>
+    <basePackage>de.mv.ape.test.content</basePackage>
     <dtoPackage>dto</dtoPackage>
     <domainPackage>domain</domainPackage>
     <daoPackage>dao</daoPackage>
     <useIdGenerator>true</useIdGenerator>
     <entities>
-        <entity baseName="Root" models="DOMAIN_DAO_DTO">
+        <entity baseName="Root" models="DOMAIN_DAO_DTO" identificationPrefix="R">
             <fields>
                 <field fieldName="rootName" type="String"/>
                 <field fieldName="description" type="String"/>
             </fields>
             <references>
-                <reference referenceName="client" targetEntity="Client" isOwner="true"/>
+                <reference referenceName="singleRef" targetEntity="SingleRefOneParent" isOwner="true"/>
+                <reference referenceName="anotherSingleRef" targetEntity="SingleRefTwoParents" isOwner="true"/>
+                <reference referenceName="multiRef" targetEntity="MultiRefOneParent" isOwner="true" isList="true"/>
+                <reference referenceName="anotherMultiRef" targetEntity="MultiRefTwoParents" isOwner="true"
+                           isList="true"/>
+                <reference referenceName="singleRefIndirectParent" targetEntity="SingleRefIndirectParent"
+                           isOwner="true"/>
+                <reference referenceName="singleRefIndirectOtherParent" targetEntity="SingleRefOtherIndirectParent"
+                           isOwner="true"/>
+                <reference referenceName="multiRefIndirectParent" targetEntity="MultiRefIndirectParent" isOwner="true"
+                           isList="true"/>
+                <reference referenceName="multiRefIndirectOtherParent" targetEntity="MultiRefOtherIndirectParent"
+                           isOwner="true" isList="true"/>
                 <reference referenceName="ext" targetEntity="RootExt" isOwner="true"/>
             </references>
         </entity>
-        <entity baseName="RootExt" models="DOMAIN_DAO_DTO">
+        <entity baseName="RootExt" models="DOMAIN_DAO_DTO" identificationPrefix="RE">
             <fields>
                 <field fieldName="ExtendedInfo" type="String"/>
+                <field fieldName="someEnum" typePackage="de.enum.anything" type="AnyEnumType" isTypeEnum="true"/>
+                <field fieldName="someInteger" type="Integer"/>
+                <field fieldName="someCustom" typePackage="de.custom.anything" type="CustomType"/>
+                <field fieldName="onlyDao" models="DAO" type="String"/>
+                <field fieldName="onlyDomain" models="DOMAIN" type="String"/>
+                <field fieldName="onlyDto" models="DTO" type="String"/>
+                <field fieldName="DaoAndDomain" models="DOMAIN_DAO" type="String"/>
+                <field fieldName="DtoAndDomain" models="DOMAIN_DTO" type="String"/>
+                <field fieldName="textWithDaoInfo" type="String">
+                    <daoInfo nullable="false" length="128"/>
+                </field>
+                <field fieldName="numberWithDaoInfo" type="double">
+                    <daoInfo precision="7" scale="3"/>
+                </field>
+                <field fieldName="daoEnum" typePackage="de.enum.anything" type="AnyEnumType" isTypeEnum="true">
+                    <daoInfo useEnumText="false"/>
+                </field>
+                <field fieldName="daoEnumWithText" typePackage="de.enum.anything" type="AnyEnumType" isTypeEnum="true">
+                    <daoInfo useEnumText="true"/>
+                </field>
             </fields>
         </entity>
     </entities>
     <groupings>
-        <grouping groupingPackage="grouping">
+        <grouping groupingPackage="single">
             <entities>
-                <entity baseName="Client" models="DOMAIN_DAO_DTO">
-                    <fields>
-                        <field fieldName="clientName" type="String"/>
-                        <field fieldName="description" type="String"/>
-                        <field fieldName="privilegeGroup" type="String"/>
-                    </fields>
+                <entity baseName="SingleRefOneParent" models="DOMAIN_DAO_DTO" identificationPrefix="S1">
+                    <field fieldName="description" type="String"/>
                     <references>
-                        <reference referenceName="backlog" targetEntity="Backlog" isOwner="true" isList="true"/>
+                        <reference referenceName="singleRef" targetEntity="SingleRefTwoParents" isOwner="true"/>
                     </references>
+                </entity>
+                <entity baseName="SingleRefTwoParents" models="DOMAIN_DAO_DTO" identificationPrefix="S2">
+                    <field fieldName="description" type="String"/>
                 </entity>
             </entities>
         </grouping>
-        <grouping groupingPackage="backlog">
+        <grouping groupingPackage="multi">
             <entities>
-                <entity baseName="Backlog" models="DOMAIN_DAO_DTO">
-                    <fields>
-                        <field fieldName="backlogName" type="String"/>
-                        <field fieldName="description" type="String"/>
-                        <field fieldName="privilegeGroup" type="String"/>
-                    </fields>
+                <entity baseName="MultiRefOneParent" models="DOMAIN_DAO_DTO" identificationPrefix="M1">
+                    <field fieldName="description" type="String"/>
                     <references>
-                        <reference referenceName="item" targetEntity="BacklogItem" isOwner="true" isList="true"/>
-                        <reference referenceName="epic" targetEntity="BacklogEpic" isOwner="true" isList="true"/>
+                        <reference referenceName="multiRef" targetEntity="MultiRefTwoParents" isOwner="true"
+                                   isList="true"/>
                     </references>
                 </entity>
-                <entity baseName="BacklogItem" models="DOMAIN_DAO_DTO">
-                    <fields>
-                        <field fieldName="backlogItemName" type="String"/>
-                        <field fieldName="description" type="AnyNewType" typePackage="de.mv.anything" isTypeEnum="true"/>
-                    </fields>
+                <entity baseName="MultiRefTwoParents" models="DOMAIN_DAO_DTO" identificationPrefix="M2">
+                    <field fieldName="description" type="String"/>
                 </entity>
-                <entity baseName="BacklogEpic" models="DOMAIN_DAO_DTO">
-                    <fields>
-                        <field fieldName="backlogEpicName" type="String"/>
-                        <field fieldName="description" type="String"/>
-                    </fields>
+            </entities>
+        </grouping>
+        <grouping groupingPackage="single.indirect">
+            <entities>
+                <entity baseName="SingleRefOtherIndirectParent" models="DOMAIN_DAO_DTO" identificationPrefix="SI1">
+                    <field fieldName="description" type="String"/>
                     <references>
-                        <reference referenceName="item" targetEntity="BacklogItem" isOwner="false" isList="true"/>
+                        <reference referenceName="singleIndirectRef" targetEntity="SingleRefIndirectParent"
+                                   isOwner="false"/>
                     </references>
+                </entity>
+                <entity baseName="SingleRefIndirectParent" models="DOMAIN_DAO_DTO" identificationPrefix="SI2">
+                    <field fieldName="description" type="String"/>
+                </entity>
+            </entities>
+        </grouping>
+        <grouping groupingPackage="multi.indirect">
+            <entities>
+                <entity baseName="MultiRefOtherIndirectParent" models="DOMAIN_DAO_DTO" identificationPrefix="MI1">
+                    <field fieldName="description" type="String"/>
+                    <references>
+                        <reference referenceName="multiIndirectRef" targetEntity="MultiRefIndirectParent"
+                                   isOwner="false" isList="true"/>
+                    </references>
+                </entity>
+                <entity baseName="MultiRefIndirectParent" models="DOMAIN_DAO_DTO" identificationPrefix="MI2">
+                    <field fieldName="description" type="String"/>
+                </entity>
+            </entities>
+        </grouping>
+        <grouping groupingPackage="domain.dao">
+            <entities>
+                <entity baseName="DomainAndDao" models="DOMAIN_DAO" identificationPrefix="DD1">
+                    <field fieldName="description" type="String"/>
+                </entity>
+            </entities>
+        </grouping>
+        <grouping groupingPackage="domain.dto">
+            <entities>
+                <entity baseName="DomainAndDto" models="DOMAIN_DTO" identificationPrefix="DD2">
+                    <field fieldName="description" type="String"/>
+                </entity>
+            </entities>
+        </grouping>
+        <grouping groupingPackage="dao">
+            <entities>
+                <entity baseName="OnlyDao" models="DAO" identificationPrefix="D1">
+                    <field fieldName="description" type="String"/>
+                </entity>
+            </entities>
+        </grouping>
+        <grouping groupingPackage="domain">
+            <entities>
+                <entity baseName="OnlyDomain" models="DOMAIN" identificationPrefix="D2">
+                    <field fieldName="description" type="String"/>
+                </entity>
+            </entities>
+        </grouping>
+        <grouping groupingPackage="dto">
+            <entities>
+                <entity baseName="OnlyDto" models="DTO" identificationPrefix="D3">
+                    <field fieldName="description" type="String"/>
                 </entity>
             </entities>
         </grouping>
