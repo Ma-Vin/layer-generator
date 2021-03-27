@@ -211,7 +211,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
                 , DTO_POSTFIX, DOMAIN_POSTFIX, TransportMapperCreator::isEntityRelevant);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE)
                 , MAPPED_OBJECTS_PARAMETER_TEXT);
-        convertMethodWithMap.addLine("%sDao result = %s(%s,%s %s);"
+        convertMethodWithMap.addLine("%sDto result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodNameDto(entity)
                 , getLowerFirst(entity.getBaseName())
