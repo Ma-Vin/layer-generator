@@ -149,7 +149,7 @@ public class DaoCreator extends AbstractObjectCreator {
         logger.debug("Identification methods will be created for " + daoClazz.getClassName());
 
         daoClazz.addImport("de.mv.ape.utils.generators.IdGenerator");
-        daoClazz.addImport(config.getBasePackage() + "." + config.getDomainPackage() + "." + entity.getBaseName());
+        daoClazz.addImport(getPackageAndClass(entity, config.getBasePackage() + "." + config.getDomainPackage(), ""));
 
         Method getIdentificationMethod = new Method("getIdentification");
         getIdentificationMethod.addAnnotation(Override.class.getSimpleName());

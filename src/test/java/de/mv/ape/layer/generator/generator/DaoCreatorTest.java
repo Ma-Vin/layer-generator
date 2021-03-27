@@ -684,7 +684,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.mv.ape.utils.generators.IdGenerator;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import de.test.package.domain.Dummy;");
+        expected.add("import de.test.package.domain.group.Dummy;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
