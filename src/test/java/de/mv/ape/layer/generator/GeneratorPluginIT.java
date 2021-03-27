@@ -53,7 +53,7 @@ public class GeneratorPluginIT {
                 result = false;
             }
         }
-        return result;
+        return  file.delete() && result;
     }
 
     @Test

@@ -19,6 +19,8 @@ public class DomainCreatorTest extends AbstractCreatorTest {
 
     private DomainCreator cut;
 
+    private List<String> directoriesWhereRequestedToWrite = new ArrayList<>();
+
     @BeforeEach
     public void setUp() {
         super.setUp();
@@ -39,6 +41,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
 
             @Override
             protected File createFile(File dir, String fileName) {
+                directoriesWhereRequestedToWrite.add(dir.getName());
                 File createdFile = mock(File.class);
                 when(createdFile.getName()).thenReturn(fileName);
                 when(createdFile.getParentFile()).thenReturn(dir);
@@ -384,5 +387,41 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createDomainObjectInterface(BASE_PACKAGE + ".domain", basePackageDir));
 
         checkSingleFile(DomainCreator.DOMAIN_INTERFACE + ".java", expected);
+    }
+
+    @Test
+    public void testCreateDomainObjectGroupingWithDots() {
+        when(grouping.getGroupingPackage()).thenReturn("group.subgroup");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.domain.group.subgroup;");
+        expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated domain class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@NoArgsConstructor()");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class Dummy implements IIdentifiable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+
+        assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
+        assertTrue(directoriesWhereRequestedToWrite.contains("group\\subgroup"), "Dot should be replaced by backslash");
+
+        checkSingleFile("Dummy.java", expected);
     }
 }

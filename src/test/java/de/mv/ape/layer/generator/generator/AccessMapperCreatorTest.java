@@ -74,6 +74,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     protected void initDefaultMock() {
         super.initDefaultMock();
 
+        when(grouping.getGroupingPackage()).thenReturn(GROUPING_NAME);
+        
         when(parentEntity.getBaseName()).thenReturn("Owner");
         when(parentEntity.getDescription()).thenReturn("Owner description");
         when(parentEntity.getIdentificationPrefix()).thenReturn("OW");
@@ -104,8 +106,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
@@ -183,8 +185,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
@@ -269,8 +271,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
@@ -300,7 +302,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
-        expected.add("		GroupAccessMapper.convertToTarget(dummy.getTargetRef(), result, mappedObjects);");
+        expected.add("		GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -322,7 +324,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
         expected.add("");
-        expected.add("		GroupAccessMapper.convertToTargetDao(dummy.getTargetRef(), result, mappedObjects);");
+        expected.add("		GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -355,8 +357,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
@@ -386,7 +388,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
-        expected.add("		result.setTargetRef(GroupAccessMapper.convertToTarget(dummy.getTargetRef(), mappedObjects));");
+        expected.add("		result.setTargetRef(GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), mappedObjects));");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -408,7 +410,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
         expected.add("");
-        expected.add("		result.setTargetRef(GroupAccessMapper.convertToTargetDao(dummy.getTargetRef(), mappedObjects));");
+        expected.add("		result.setTargetRef(GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), mappedObjects));");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -439,8 +441,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -473,7 +475,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
-        expected.add("					GroupAccessMapper.convertToTarget(arg, result, mappedObjects)");
+        expected.add("					GroupingAccessMapper.convertToTarget(arg, result, mappedObjects)");
         expected.add("			);");
         expected.add("		}");
         expected.add("");
@@ -500,7 +502,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
-        expected.add("					GroupAccessMapper.convertToTargetDao(arg, result, mappedObjects)");
+        expected.add("					GroupingAccessMapper.convertToTargetDao(arg, result, mappedObjects)");
         expected.add("			);");
         expected.add("		}");
         expected.add("");
@@ -534,9 +536,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.dao.group.DummyToTargetDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.dao.grouping.DummyToTargetDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -569,7 +571,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
-        expected.add("					GroupAccessMapper.convertToTarget(arg.getDummy(), result, mappedObjects)");
+        expected.add("					GroupingAccessMapper.convertToTarget(arg.getDummy(), result, mappedObjects)");
         expected.add("			);");
         expected.add("		}");
         expected.add("");
@@ -598,7 +600,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			dummy.getTargetRefs().forEach(arg -> {");
         expected.add("				DummyToTargetDao connectionTable = new DummyToTargetDao();");
         expected.add("				connectionTable.setDummy(result);");
-        expected.add("				connectionTable.setDummy(GroupAccessMapper.convertToTargetDao(arg, mappedObjects));");
+        expected.add("				connectionTable.setDummy(GroupingAccessMapper.convertToTargetDao(arg, mappedObjects));");
         expected.add("				result.getTargetRefs().add(connectionTable);");
         expected.add("			});");
         expected.add("		}");
@@ -635,9 +637,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.mapper;");
         expected.add("");
         expected.add("import de.test.package.dao.OwnerDao;");
-        expected.add("import de.test.package.dao.group.DummyDao;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.domain.Owner;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
@@ -667,7 +669,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
-        expected.add("		GroupAccessMapper.convertToTarget(dummy.getTargetRef(), result, mappedObjects);");
+        expected.add("		GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -701,7 +703,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
         expected.add("");
-        expected.add("		GroupAccessMapper.convertToTargetDao(dummy.getTargetRef(), result, mappedObjects);");
+        expected.add("		GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -746,9 +748,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.mapper;");
         expected.add("");
         expected.add("import de.test.package.dao.OwnerDao;");
-        expected.add("import de.test.package.dao.group.DummyDao;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.domain.Owner;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -781,7 +783,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
-        expected.add("					GroupAccessMapper.convertToTarget(arg, result, mappedObjects)");
+        expected.add("					GroupingAccessMapper.convertToTarget(arg, result, mappedObjects)");
         expected.add("			);");
         expected.add("		}");
         expected.add("");
@@ -820,7 +822,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
-        expected.add("					GroupAccessMapper.convertToTargetDao(arg, result, mappedObjects)");
+        expected.add("					GroupingAccessMapper.convertToTargetDao(arg, result, mappedObjects)");
         expected.add("			);");
         expected.add("		}");
         expected.add("");
@@ -866,8 +868,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
@@ -949,8 +951,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
@@ -980,7 +982,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
-        expected.add("		GroupAccessMapper.convertToTarget(dummy.getTargetRef(), includeChildren, result, mappedObjects);");
+        expected.add("		GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), includeChildren, result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1002,7 +1004,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
         expected.add("");
-        expected.add("		GroupAccessMapper.convertToTargetDao(dummy.getTargetRef(), includeChildren, result, mappedObjects);");
+        expected.add("		GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), includeChildren, result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1038,8 +1040,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
@@ -1069,7 +1071,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
-        expected.add("		result.setTargetRef(GroupAccessMapper.convertToTarget(dummy.getTargetRef(), includeChildren, mappedObjects));");
+        expected.add("		result.setTargetRef(GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), includeChildren, mappedObjects));");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1091,7 +1093,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
         expected.add("");
-        expected.add("		result.setTargetRef(GroupAccessMapper.convertToTargetDao(dummy.getTargetRef(), includeChildren, mappedObjects));");
+        expected.add("		result.setTargetRef(GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), includeChildren, mappedObjects));");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1124,8 +1126,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -1158,7 +1160,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
-        expected.add("					GroupAccessMapper.convertToTarget(arg, true, result, mappedObjects)");
+        expected.add("					GroupingAccessMapper.convertToTarget(arg, true, result, mappedObjects)");
         expected.add("			);");
         expected.add("		}");
         expected.add("");
@@ -1185,7 +1187,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
-        expected.add("					GroupAccessMapper.convertToTargetDao(arg, true, result, mappedObjects)");
+        expected.add("					GroupingAccessMapper.convertToTargetDao(arg, true, result, mappedObjects)");
         expected.add("			);");
         expected.add("		}");
         expected.add("");
@@ -1222,9 +1224,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.test.package.dao.group.DummyDao;");
-        expected.add("import de.test.package.dao.group.DummyToTargetDao;");
-        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.dao.grouping.DummyToTargetDao;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -1257,7 +1259,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
-        expected.add("					GroupAccessMapper.convertToTarget(arg.getDummy(), true, result, mappedObjects)");
+        expected.add("					GroupingAccessMapper.convertToTarget(arg.getDummy(), true, result, mappedObjects)");
         expected.add("			);");
         expected.add("		}");
         expected.add("");
@@ -1286,7 +1288,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			dummy.getTargetRefs().forEach(arg -> {");
         expected.add("				DummyToTargetDao connectionTable = new DummyToTargetDao();");
         expected.add("				connectionTable.setDummy(result);");
-        expected.add("				connectionTable.setDummy(GroupAccessMapper.convertToTargetDao(arg, true, mappedObjects));");
+        expected.add("				connectionTable.setDummy(GroupingAccessMapper.convertToTargetDao(arg, true, mappedObjects));");
         expected.add("				result.getTargetRefs().add(connectionTable);");
         expected.add("			});");
         expected.add("		}");
@@ -1310,5 +1312,84 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void tesCreateAccessMapperGroupingWithDot() {
+        when(grouping.getGroupingPackage()).thenReturn("group.subgroup");
+        
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.dao.group.subgroup.DummyDao;");
+        expected.add("import de.test.package.domain.group.subgroup.Dummy;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public class GroupSubgroupAccessMapper {");
+        expected.add("");
+        expected.add("	private GroupSubgroupAccessMapper() {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupSubgroupAccessMapper instance;");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy) {");
+        expected.add("		return convertToDummy(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"Dummy\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (Dummy) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		Dummy result = new Dummy();");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy) {");
+        expected.add("		return convertToDummyDao(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"DummyDao\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (DummyDao) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupSubgroupAccessMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = new GroupSubgroupAccessMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createAccessMapper(entities, "group.subgroup", MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", "GroupSubgroup"), expected);
     }
 }

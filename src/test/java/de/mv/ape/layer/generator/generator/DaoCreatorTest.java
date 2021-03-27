@@ -1,7 +1,6 @@
 package de.mv.ape.layer.generator.generator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import de.mv.ape.layer.generator.config.elements.*;
@@ -27,6 +26,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     private DaoCreator cut;
 
+    private List<String> directoriesWhereRequestedToWrite = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
@@ -48,12 +48,15 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
             @Override
             protected File createFile(File dir, String fileName) {
+                directoriesWhereRequestedToWrite.add(dir.getName());
                 File createdFile = mock(File.class);
                 when(createdFile.getName()).thenReturn(fileName);
                 when(createdFile.getParentFile()).thenReturn(dir);
                 return createdFile;
             }
         };
+
+        directoriesWhereRequestedToWrite.clear();
     }
 
     @Override
@@ -776,5 +779,41 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createDataAccessObjectInterface(BASE_PACKAGE + ".dao", basePackageDir));
 
         checkSingleFile(DaoCreator.DAO_INTERFACE + ".java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectGroupingWithDots() {
+        when(grouping.getGroupingPackage()).thenReturn("group.subgroup");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group.subgroup;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@Entity()");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id()");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
+        assertTrue(directoriesWhereRequestedToWrite.contains("group\\subgroup"), "Dot should be replaced by backslash");
+
+        checkSingleFile("DummyDao.java", expected);
     }
 }

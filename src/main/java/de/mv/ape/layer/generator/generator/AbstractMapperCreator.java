@@ -33,6 +33,14 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @return class name of the mapper
      */
     protected String getMapperName(String mapperTypeName, String groupingName) {
+        if (groupingName != null && groupingName.contains(".")) {
+            String[] split = groupingName.split("\\.");
+            StringBuilder sb = new StringBuilder();
+            for (String s : split) {
+                sb.append(getUpperFirst(s));
+            }
+            groupingName = sb.toString();
+        }
         return String.format("%s%sMapper", groupingName != null && !groupingName.trim().isEmpty() ? getUpperFirst(groupingName) : "Common"
                 , getUpperFirst(mapperTypeName));
     }

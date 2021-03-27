@@ -134,9 +134,12 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
      */
     protected File getPackageDir(Entity entity, File basePackageDir) {
         if (entity.getGrouping() != null) {
-            return createFile(basePackageDir, entity.getGrouping().getGroupingPackage());
+            String dir = entity.getGrouping().getGroupingPackage();
+            if (dir.contains(".")) {
+                dir = dir.replace(".", "\\");
+            }
+            return createFile(basePackageDir, dir);
         }
         return basePackageDir;
     }
-
 }

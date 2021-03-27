@@ -108,7 +108,7 @@ public abstract class AbstractCreator {
     /**
      * Creates a string with package of subPackage
      *
-     * @param subPackage    sub package
+     * @param subPackage  sub package
      * @param basePackage package which is definitely used for package name
      * @return package
      */

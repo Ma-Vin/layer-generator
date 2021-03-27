@@ -138,6 +138,9 @@ public class ModelGenerator {
      * @return Optional of created directory. If not successful the result will be {@link Optional#empty()}
      */
     private Optional<File> createDirForPackage(File baseDir, String dir, String messageTextOfPackage) {
+        if (dir.contains(".")) {
+            dir = dir.replace(".", "\\");
+        }
         File packageDir = createFile(baseDir, dir);
         if (!packageDir.exists()) {
             logger.debug(String.format("%s package does not exists and will be created at \"%s\"", messageTextOfPackage, packageDir.getAbsoluteFile()));

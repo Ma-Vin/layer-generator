@@ -12,14 +12,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 public class DtoCreatorTest extends AbstractCreatorTest {
+
     private DtoCreator cut;
+
+    private List<String> directoriesWhereRequestedToWrite = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
@@ -41,6 +43,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
             @Override
             protected File createFile(File dir, String fileName) {
+                directoriesWhereRequestedToWrite.add(dir.getName());
                 File createdFile = mock(File.class);
                 when(createdFile.getName()).thenReturn(fileName);
                 when(createdFile.getParentFile()).thenReturn(dir);
@@ -356,5 +359,41 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createDataTransportObjectInterface(BASE_PACKAGE + ".dto", basePackageDir));
 
         checkSingleFile(DtoCreator.DTO_INTERFACE + ".java", expected);
+    }
+
+    @Test
+    public void testCreateDataTransportObjectGroupingWithDots() {
+        when(grouping.getGroupingPackage()).thenReturn("group.subgroup");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group.subgroup;");
+        expected.add("");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@NoArgsConstructor()");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class DummyDto implements ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+
+        assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
+        assertTrue(directoriesWhereRequestedToWrite.contains("group\\subgroup"), "Dot should be replaced by backslash");
+
+        checkSingleFile("DummyDto.java", expected);
     }
 }

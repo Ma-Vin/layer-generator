@@ -13,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ModelGeneratorTest {
 
@@ -41,6 +43,8 @@ public class ModelGeneratorTest {
     private Grouping grouping;
 
     private ModelGenerator cut;
+
+    private List<String> requestFilesToCreate = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
@@ -74,6 +78,7 @@ public class ModelGeneratorTest {
 
             @Override
             protected File createFile(File dir, String fileName) {
+                requestFilesToCreate.add(fileName);
                 return packageDir;
             }
         };
@@ -89,6 +94,8 @@ public class ModelGeneratorTest {
         when(domainCreator.createDomainObject(any(), any(), any())).thenReturn(Boolean.TRUE);
         when(accessMapperCreator.createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any())).thenReturn(Boolean.TRUE);
         when(transportMapperCreator.createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any())).thenReturn(Boolean.TRUE);
+
+        requestFilesToCreate.clear();
     }
 
     private void createDefaultConfigMock() {
@@ -99,6 +106,7 @@ public class ModelGeneratorTest {
 
         when(config.getEntities()).thenReturn(Arrays.asList(entity));
         when(config.getGroupings()).thenReturn(Arrays.asList(grouping));
+        when(grouping.getGroupingPackage()).thenReturn("group");
 
         when(grouping.getEntities()).thenReturn(Arrays.asList(groupingEntity));
     }
@@ -302,6 +310,22 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+    }
+
+    @Test
+    public void testGenerateGroupingWithDots() {
+        when(grouping.getGroupingPackage()).thenReturn("group.subgroup");
+        assertTrue(cut.generate(), "The generation should be successful");
+
+        assertFalse(requestFilesToCreate.contains("group.subgroup"), "Not any directories with dots should be created");
+        assertTrue(requestFilesToCreate.contains("group\\subgroup"), "Dot should be replaced by backslash");
+
+        verify(daoCreator).createDataAccessObjectInterface(any(), any());
+        verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
+        verify(dtoCreator).createDataTransportObjectInterface(any(), any());
+        verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(domainCreator).createDomainObjectInterface(any(), any());
+        verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
     }
 
 }
