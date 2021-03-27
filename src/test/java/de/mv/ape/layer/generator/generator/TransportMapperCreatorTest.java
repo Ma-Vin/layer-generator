@@ -646,7 +646,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("	public static Dummy convertToDummy(DummyDto dummy, Owner parent, Map<String, IIdentifiable> mappedObjects) {");
-        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects)");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
         expected.add("		if (result != null) {");
         expected.add("			parent.setDummy(result);");
         expected.add("		}");
@@ -680,7 +680,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("	public static DummyDto convertToDummyDto(Dummy dummy, OwnerDto parent, Map<String, ITransportable> mappedObjects) {");
-        expected.add("		DummyDao result = convertToDummyDto(dummy, mappedObjects)");
+        expected.add("		DummyDao result = convertToDummyDto(dummy, mappedObjects);");
         expected.add("		if (result != null) {");
         expected.add("			parent.setDummy(result);");
         expected.add("		}");

@@ -102,7 +102,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, domainPackageName, DOMAIN_POSTFIX, DTO_POSTFIX);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
-        convertMethodWithMap.addLine("%s result = %s(%s,%s %s)"
+        convertMethodWithMap.addLine("%s result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodName(entity, DOMAIN_POSTFIX)
                 , getLowerFirst(entity.getBaseName())
@@ -178,7 +178,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, daoPackageName, DTO_POSTFIX, DOMAIN_POSTFIX);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
-        convertMethodWithMap.addLine("%sDao result = %s(%s,%s %s)"
+        convertMethodWithMap.addLine("%sDao result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodNameDto(entity)
                 , getLowerFirst(entity.getBaseName())

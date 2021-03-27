@@ -680,7 +680,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("	public static Dummy convertToDummy(DummyDao dummy, Owner parent, Map<String, IIdentifiable> mappedObjects) {");
-        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects)");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
         expected.add("		if (result != null) {");
         expected.add("			parent.getDummys().add(result);");
         expected.add("		}");
@@ -714,7 +714,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, OwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
-        expected.add("		DummyDao result = convertToDummyDao(dummy, mappedObjects)");
+        expected.add("		DummyDao result = convertToDummyDao(dummy, mappedObjects);");
         expected.add("		if (result != null) {");
         expected.add("			result.setParentOwner(parent);");
         expected.add("			parent.getDummys().add(result);");
@@ -796,7 +796,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("	public static Dummy convertToDummy(DummyDao dummy, boolean includeChildren, Owner parent, Map<String, IIdentifiable> mappedObjects) {");
-        expected.add("		Dummy result = convertToDummy(dummy, includeChildren, mappedObjects)");
+        expected.add("		Dummy result = convertToDummy(dummy, includeChildren, mappedObjects);");
         expected.add("		if (result != null) {");
         expected.add("			parent.getDummys().add(result);");
         expected.add("		}");
@@ -835,7 +835,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, boolean includeChildren, OwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
-        expected.add("		DummyDao result = convertToDummyDao(dummy, includeChildren, mappedObjects)");
+        expected.add("		DummyDao result = convertToDummyDao(dummy, includeChildren, mappedObjects);");
         expected.add("		if (result != null) {");
         expected.add("			result.setParentOwner(parent);");
         expected.add("			parent.getDummys().add(result);");

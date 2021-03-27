@@ -82,7 +82,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, daoPackageName, DAO_POSTFIX, DOMAIN_POSTFIX);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DaoCreator.DAO_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
-        convertMethodWithMap.addLine("%sDao result = %s(%s,%s %s)"
+        convertMethodWithMap.addLine("%sDao result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodNameDao(entity)
                 , getLowerFirst(entity.getBaseName())
@@ -261,7 +261,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, domainPackageName, DOMAIN_POSTFIX, DAO_POSTFIX);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
-        convertMethodWithMap.addLine("%s result = %s(%s,%s %s)"
+        convertMethodWithMap.addLine("%s result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodName(entity, DOMAIN_POSTFIX)
                 , getLowerFirst(entity.getBaseName())
