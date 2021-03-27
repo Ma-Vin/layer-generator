@@ -84,6 +84,9 @@ public class ConfigLoader {
             if (e.getReferences() == null) {
                 e.setReferences(new ArrayList<>());
             }
+            if(e.getFields()==null){
+                e.setFields(new ArrayList<>());
+            }
             e.setParentRefs(new ArrayList<>());
         });
         config.getGroupings().forEach(g -> {
@@ -93,6 +96,9 @@ public class ConfigLoader {
             g.getEntities().forEach(e -> {
                 if (e.getReferences() == null) {
                     e.setReferences(new ArrayList<>());
+                }
+                if(e.getFields()==null){
+                    e.setFields(new ArrayList<>());
                 }
                 e.setParentRefs(new ArrayList<>());
             });
