@@ -60,6 +60,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     private void createConvertToDaoMethods(Clazz mapperClass, Entity entity, String daoPackageName, String domainPackageName) {
         mapperClass.addImport(getPackageAndClass(entity, daoPackageName, DAO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
+        mapperClass.addImport(String.format("%s.%s", daoPackageName, DaoCreator.DAO_INTERFACE));
 
         entity.getParentRefs().stream()
                 .filter(Reference::isOwner)
@@ -239,6 +240,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     private void createConvertToDomainMethods(Clazz mapperClass, Entity entity, String daoPackageName, String domainPackageName) {
         mapperClass.addImport(getPackageAndClass(entity, daoPackageName, DAO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
+        mapperClass.addImport(String.format("%s.%s", domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
         entity.getParentRefs().stream()
                 .filter(Reference::isOwner)

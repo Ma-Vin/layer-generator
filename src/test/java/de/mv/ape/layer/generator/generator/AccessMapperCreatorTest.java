@@ -106,7 +106,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -185,7 +187,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -271,7 +275,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -357,7 +363,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -441,7 +449,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
         expected.add("import java.util.HashMap;");
@@ -536,8 +546,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.dao.grouping.DummyToTargetDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
         expected.add("import java.util.HashMap;");
@@ -636,8 +648,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
@@ -747,8 +761,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
@@ -868,7 +884,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -951,7 +969,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -1040,7 +1060,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -1126,7 +1148,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
         expected.add("import java.util.HashMap;");
@@ -1224,8 +1248,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.dao.grouping.DummyToTargetDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
         expected.add("import java.util.HashMap;");
@@ -1321,7 +1347,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.group.subgroup.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.subgroup.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");

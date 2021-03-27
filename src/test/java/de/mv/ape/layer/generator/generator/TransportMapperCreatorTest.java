@@ -103,7 +103,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -182,7 +184,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -268,7 +272,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -354,7 +360,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -438,7 +446,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -519,7 +529,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -602,8 +614,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.OwnerDto;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -712,7 +726,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -792,7 +808,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -875,7 +893,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -964,7 +984,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -1050,7 +1072,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
@@ -1134,7 +1158,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");

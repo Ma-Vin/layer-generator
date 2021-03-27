@@ -80,6 +80,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
     private void createConvertToDomainMethods(Clazz mapperClass, Entity entity, String dtoPackageName, String domainPackageName) {
         mapperClass.addImport(getPackageAndClass(entity, dtoPackageName, DTO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
+        mapperClass.addImport(String.format("%s.%s", domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
         entity.getParentRefs().stream()
                 .filter(ref -> ref.isOwner() && !ref.isList())
@@ -150,17 +151,18 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      *
      * @param mapperClass       class where to add methods at
      * @param entity            entity whose properties are to map
-     * @param daoPackageName    name of base dao package
+     * @param dtoPackageName    name of base dto package
      * @param domainPackageName name of base domain package
      */
-    private void createConvertToDtoMethods(Clazz mapperClass, Entity entity, String daoPackageName, String domainPackageName) {
-        mapperClass.addImport(getPackageAndClass(entity, daoPackageName, DTO_POSTFIX));
+    private void createConvertToDtoMethods(Clazz mapperClass, Entity entity, String dtoPackageName, String domainPackageName) {
+        mapperClass.addImport(getPackageAndClass(entity, dtoPackageName, DTO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
+        mapperClass.addImport(String.format("%s.%s", dtoPackageName, DtoCreator.DTO_INTERFACE));
 
         entity.getParentRefs().stream()
                 .filter(ref -> ref.isOwner() && !ref.isList())
                 .forEach(ref ->
-                        createConvertToDtoMethodWithParent(mapperClass, entity, ref, daoPackageName)
+                        createConvertToDtoMethodWithParent(mapperClass, entity, ref, dtoPackageName)
                 );
         createConvertToDtoMethod(mapperClass, entity);
     }
