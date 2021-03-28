@@ -791,7 +791,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	public static TargetDao convertToTargetDao(Target target, ChildDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
         expected.add("		TargetDao result = convertToTargetDao(target, mappedObjects);");
         expected.add("		if (result != null) {");
-        expected.add("			parent.getTargetRefs().add(result);");
+        expected.add("			ChildToTargetDao connectionTable = new ChildToTargetDao();");
+        expected.add("			connectionTable.setTarget(result);");
+        expected.add("			connectionTable.setChild(parent);");
+        expected.add("			parent.getTargetRefs().add(connectionTable);");
         expected.add("		}");
         expected.add("		return result;");
         expected.add("	}");
@@ -1439,7 +1442,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiParentMultiRefOwnerAndNotOwner() {
         when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
+        when(parentReference.getParent()).thenReturn(entity);
         when(anotherParentReference.isOwner()).thenReturn(Boolean.FALSE);
+        when(anotherParentReference.getParent()).thenReturn(entity);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -1536,7 +1541,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, AnotherOwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
         expected.add("		DummyDao result = convertToDummyDao(dummy, mappedObjects);");
         expected.add("		if (result != null) {");
-        expected.add("			parent.getAnotherDummys().add(result);");
+        expected.add("			AnotherOwnerToDummyDao connectionTable = new AnotherOwnerToDummyDao();");
+        expected.add("			connectionTable.setDummy(result);");
+        expected.add("			connectionTable.setAnotherOwner(parent);");
+        expected.add("			parent.getAnotherDummys().add(connectionTable);");
         expected.add("		}");
         expected.add("		return result;");
         expected.add("	}");

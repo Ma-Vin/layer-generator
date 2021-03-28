@@ -301,6 +301,10 @@ public class DaoCreator extends AbstractObjectCreator {
         return String.format("%sTo%sDao", reference.getParent().getBaseName(), reference.getTargetEntity());
     }
 
+    public static String getConnectionTableNameParentRef(Reference parentReference) {
+        return String.format("%sTo%sDao", parentReference.getTargetEntity(), parentReference.getParent().getBaseName());
+    }
+
     /**
      * Creates a connection table for reference where the source entity is not the owner
      *

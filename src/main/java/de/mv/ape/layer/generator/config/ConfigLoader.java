@@ -84,7 +84,7 @@ public class ConfigLoader {
             if (e.getReferences() == null) {
                 e.setReferences(new ArrayList<>());
             }
-            if(e.getFields()==null){
+            if (e.getFields() == null) {
                 e.setFields(new ArrayList<>());
             }
             e.setParentRefs(new ArrayList<>());
@@ -97,7 +97,7 @@ public class ConfigLoader {
                 if (e.getReferences() == null) {
                     e.setReferences(new ArrayList<>());
                 }
-                if(e.getFields()==null){
+                if (e.getFields() == null) {
                     e.setFields(new ArrayList<>());
                 }
                 e.setParentRefs(new ArrayList<>());
@@ -152,17 +152,16 @@ public class ConfigLoader {
     }
 
     private void addParentRef(Entity actualEntity, Reference actualReference, Entity targetEntity) {
-        if (actualReference.isOwner()) {
-            Reference parentRef = new Reference();
-            parentRef.setTargetEntity(actualEntity.getBaseName());
-            parentRef.setRealTargetEntity(actualEntity);
-            parentRef.setParent(targetEntity);
-            parentRef.setOwner(actualReference.isOwner());
-            parentRef.setList(actualReference.isList());
-            parentRef.setReferenceName(actualReference.getReferenceName());
+        Reference parentRef = new Reference();
+        parentRef.setTargetEntity(actualEntity.getBaseName());
+        parentRef.setRealTargetEntity(actualEntity);
+        parentRef.setParent(targetEntity);
+        parentRef.setOwner(actualReference.isOwner());
+        parentRef.setList(actualReference.isList());
+        parentRef.setReferenceName(actualReference.getReferenceName());
 
-            targetEntity.getParentRefs().add(parentRef);
-        }
+        targetEntity.getParentRefs().add(parentRef);
+
 
         actualReference.setParent(actualEntity);
         actualReference.setRealTargetEntity(targetEntity);

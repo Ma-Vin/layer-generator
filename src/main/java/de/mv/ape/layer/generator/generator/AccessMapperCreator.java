@@ -109,19 +109,37 @@ public class AccessMapperCreator extends AbstractMapperCreator {
                 , MAPPED_OBJECTS_PARAMETER_TEXT
         );
         convertMethodWithMap.addLine("if (result != null) {");
-        if (referenceToParent.isOwner()) {
-            convertMethodWithMap.addLine("%sresult.setParent%s(parent);", TAB, referenceToParent.getTargetEntity());
-        }
-        if (referenceToParent.isList()) {
-            convertMethodWithMap.addLine("%sparent.get%ss().add(result);", TAB, getUpperFirst(referenceToParent.getReferenceName()));
-        } else {
-            convertMethodWithMap.addLine("%sparent.set%s(result);", TAB, getUpperFirst(referenceToParent.getReferenceName()));
-        }
+        addSettingOfDaoParent(convertMethodWithMap, entity, referenceToParent);
         convertMethodWithMap.addLine("}");
         convertMethodWithMap.addLine(RETURN_RESULT_TEXT);
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
+    }
+
+    /**
+     * Adds lines for setting the parent direct or with some connection table at dao converting
+     *
+     * @param convertMethod     Method where to add lines
+     * @param entity            Entity which is converted
+     * @param referenceToParent Reference to parent
+     */
+    private void addSettingOfDaoParent(Method convertMethod, Entity entity, Reference referenceToParent) {
+        if (referenceToParent.isOwner()) {
+            convertMethod.addLine("%sresult.setParent%s(parent);", TAB, referenceToParent.getTargetEntity());
+        }
+        if (referenceToParent.isList()) {
+            if (referenceToParent.isOwner()) {
+                convertMethod.addLine("%sparent.get%ss().add(result);", TAB, getUpperFirst(referenceToParent.getReferenceName()));
+            } else {
+                convertMethod.addLine("%s%2$s connectionTable = new %2$s();", TAB, DaoCreator.getConnectionTableNameParentRef(referenceToParent));
+                convertMethod.addLine("%sconnectionTable.set%s(result);", TAB, entity.getBaseName());
+                convertMethod.addLine("%sconnectionTable.set%s(parent);", TAB, referenceToParent.getTargetEntity());
+                convertMethod.addLine("%sparent.get%ss().add(connectionTable);", TAB, getUpperFirst(referenceToParent.getReferenceName()));
+            }
+        } else {
+            convertMethod.addLine("%sparent.set%s(result);", TAB, getUpperFirst(referenceToParent.getReferenceName()));
+        }
     }
 
     /**
