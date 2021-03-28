@@ -83,7 +83,7 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
      * @return attribute
      */
     protected Attribute createAttribute(Field field, boolean isDao, String... annotations) {
-        Attribute attribute = new Attribute(field.getFieldName(), field.getType());
+        Attribute attribute = new Attribute(getLowerFirst(field.getFieldName()), field.getType());
         if (field.getDescription() != null) {
             attribute.setJavaDoc(new JavaDoc(field.getDescription()));
         }
