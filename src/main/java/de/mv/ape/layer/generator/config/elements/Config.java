@@ -2,6 +2,8 @@ package de.mv.ape.layer.generator.config.elements;
 
 import de.mv.ape.layer.generator.config.ValidationUtil;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.mv.ape.gen.model")
 @Data
+@EqualsAndHashCode(exclude = {"groupings", "entities"})
+@ToString(exclude = {"groupings", "entities"})
 public class Config {
 
     /**

@@ -1,6 +1,8 @@
 package de.mv.ape.layer.generator.config.elements;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -13,6 +15,8 @@ import static de.mv.ape.layer.generator.config.ValidationUtil.validateRequired;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.mv.ape.gen.model")
 @Data
+@EqualsAndHashCode(exclude = {"entities"})
+@ToString(exclude = {"entities"})
 public class Grouping {
 
     /**
