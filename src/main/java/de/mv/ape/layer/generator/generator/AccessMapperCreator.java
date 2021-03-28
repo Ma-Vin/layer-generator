@@ -74,7 +74,6 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, DaoCreator.DAO_INTERFACE));
 
         entity.getParentRefs().stream()
-                .filter(Reference::isOwner)
                 .forEach(ref ->
                         createConvertToDaoMethodWithParent(mapperClass, entity, ref, daoPackageName)
                 );
@@ -110,7 +109,9 @@ public class AccessMapperCreator extends AbstractMapperCreator {
                 , MAPPED_OBJECTS_PARAMETER_TEXT
         );
         convertMethodWithMap.addLine("if (result != null) {");
-        convertMethodWithMap.addLine("%sresult.setParent%s(parent);", TAB, referenceToParent.getTargetEntity());
+        if (referenceToParent.isOwner()) {
+            convertMethodWithMap.addLine("%sresult.setParent%s(parent);", TAB, referenceToParent.getTargetEntity());
+        }
         if (referenceToParent.isList()) {
             convertMethodWithMap.addLine("%sparent.get%ss().add(result);", TAB, getUpperFirst(referenceToParent.getReferenceName()));
         } else {
@@ -216,7 +217,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         String getterSubName = getUpperFirst(reference.getReferenceName()) + "s";
         String connectionTableName = DaoCreator.getConnectionTableName(reference);
         String sourceConnectionName = getUpperFirst(reference.getParent().getBaseName());
-        String targetConnectionName = getUpperFirst(entity.getBaseName());
+        String targetConnectionName = getUpperFirst(reference.getRealTargetEntity().getBaseName());
 
         mapperClass.addImport(ArrayList.class.getName());
 
@@ -272,7 +273,6 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
         entity.getParentRefs().stream()
-                .filter(Reference::isOwner)
                 .forEach(ref ->
                         createConvertToDomainMethodWithParent(mapperClass, entity, ref, domainPackageName)
                 );
@@ -389,7 +389,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         String mapperMethodName = getConvertMethodName(reference.getRealTargetEntity(), DOMAIN_POSTFIX);
         String variableName = getLowerFirst(entity.getBaseName());
         String getterSubName = getUpperFirst(reference.getReferenceName()) + "s";
-        String targetConnectionName = getUpperFirst(entity.getBaseName());
+        String targetConnectionName = getUpperFirst(reference.getRealTargetEntity().getBaseName());
 
         mapperClass.addImport(ArrayList.class.getName());
         convertMethod.addLine("%s.get%s().forEach(arg ->", 1, variableName, getterSubName);
