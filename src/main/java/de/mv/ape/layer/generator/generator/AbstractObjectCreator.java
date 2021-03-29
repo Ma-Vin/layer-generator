@@ -12,19 +12,13 @@ import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @SuppressWarnings("java:S2160")
 public abstract class AbstractObjectCreator extends AbstractCreator {
 
-    protected boolean isDao;
-
     AbstractObjectCreator(Config config, Log logger) {
-        this(config, logger, false);
-    }
-
-    AbstractObjectCreator(Config config, Log logger, boolean isDao) {
         super(config, logger);
-        this.isDao = isDao;
     }
 
     /**
@@ -52,7 +46,7 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
                     if (f.getTypePackage() != null && !f.getTypePackage().isEmpty()) {
                         clazz.addImport(String.format("%s.%s", f.getTypePackage(), f.getType()));
                     }
-                    clazz.addAttribute(createAttribute(f, isDao, annotations));
+                    clazz.addAttribute(createAttribute(f, annotations));
                 });
     }
 
@@ -78,17 +72,13 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
      * Create a field
      *
      * @param field       field whose source lines should be generated
-     * @param isDao       {@code true} if an attribute of a dao is created
      * @param annotations annotations which should be added
      * @return attribute
      */
-    protected Attribute createAttribute(Field field, boolean isDao, String... annotations) {
+    protected Attribute createAttribute(Field field, String... annotations) {
         Attribute attribute = new Attribute(getLowerFirst(field.getFieldName()), field.getType());
         if (field.getDescription() != null) {
             attribute.setJavaDoc(new JavaDoc(field.getDescription()));
-        }
-        if (isDao && field.isTypeEnum()) {
-            attribute.addAnnotation("Enumerated", null, "EnumType.STRING");
         }
         for (String annotation : annotations) {
             attribute.addAnnotation(annotation);

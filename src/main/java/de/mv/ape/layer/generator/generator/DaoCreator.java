@@ -2,6 +2,7 @@ package de.mv.ape.layer.generator.generator;
 
 import de.mv.ape.layer.generator.config.elements.Config;
 import de.mv.ape.layer.generator.config.elements.Entity;
+import de.mv.ape.layer.generator.config.elements.Field;
 import de.mv.ape.layer.generator.config.elements.Reference;
 import de.mv.ape.layer.generator.exceptions.NotSupportedMethodException;
 import de.mv.ape.layer.generator.sources.*;
@@ -30,7 +31,7 @@ public class DaoCreator extends AbstractObjectCreator {
     public static final String DAO_INTERFACE = "IIdentifiableDao";
 
     public DaoCreator(Config config, Log logger) {
-        super(config, logger, true);
+        super(config, logger);
     }
 
 
@@ -103,6 +104,15 @@ public class DaoCreator extends AbstractObjectCreator {
         daoClazz.addAttribute(idAttribute);
 
         addAttributes(entity, daoClazz, "Column");
+    }
+
+    @Override
+    protected Attribute createAttribute(Field field, String... annotations) {
+        Attribute attribute = super.createAttribute(field, annotations);
+        if (field.isTypeEnum()) {
+            attribute.addAnnotation("Enumerated", null, "EnumType.STRING");
+        }
+        return attribute;
     }
 
     @Override
