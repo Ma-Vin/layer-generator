@@ -109,10 +109,40 @@ public class DaoCreator extends AbstractObjectCreator {
     @Override
     protected Attribute createAttribute(Field field, String... annotations) {
         Attribute attribute = super.createAttribute(field, annotations);
-        if (field.isTypeEnum()) {
+        if (field.isTypeEnum() && (field.getDaoInfo() == null || Boolean.TRUE.equals(field.getDaoInfo().getUseEnumText()))) {
             attribute.addAnnotation("Enumerated", null, "EnumType.STRING");
         }
+        if (field.getDaoInfo() != null) {
+            Annotation columnAnnotation = attribute.getAnnotations().stream()
+                    .filter(a -> Column.class.getSimpleName().equals(a.getAnnotationName()))
+                    .findFirst()
+                    .orElse(new Annotation(Column.class));
+
+            addParamIfExists(columnAnnotation, "name", field.getDaoInfo().getColumnName());
+            addParamIfExists(columnAnnotation, "nullable", field.getDaoInfo().getNullable());
+            addParamIfExists(columnAnnotation, "length", field.getDaoInfo().getLength());
+            addParamIfExists(columnAnnotation, "precision", field.getDaoInfo().getPrecision());
+            addParamIfExists(columnAnnotation, "scale", field.getDaoInfo().getScale());
+        }
         return attribute;
+    }
+
+    private void addParamIfExists(Annotation annotation, String annotationPropertyName, String annotationPropertyValue) {
+        if (annotationPropertyValue != null && !annotationPropertyValue.trim().isEmpty()) {
+            annotation.addParameter(annotationPropertyName, "\"" + annotationPropertyValue + "\"");
+        }
+    }
+
+    private void addParamIfExists(Annotation annotation, String annotationPropertyName, Integer annotationPropertyValue) {
+        if (annotationPropertyValue != null) {
+            annotation.addParameter(annotationPropertyName, annotationPropertyValue.toString());
+        }
+    }
+
+    private void addParamIfExists(Annotation annotation, String annotationPropertyName, Boolean annotationPropertyValue) {
+        if (annotationPropertyValue != null) {
+            annotation.addParameter(annotationPropertyName, annotationPropertyValue.toString());
+        }
     }
 
     @Override

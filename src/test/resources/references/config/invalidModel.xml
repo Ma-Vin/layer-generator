@@ -55,6 +55,9 @@
                 <field fieldName="daoEnumWithText" typePackage="de.enums.anything" type="AnyEnumType" isTypeEnum="true">
                     <daoInfo useEnumText="true"/>
                 </field>
+                <field fieldName="someName" type="String">
+                    <daoInfo columnName="anyOtherName"/>
+                </field>
             </fields>
         </entity>
     </entities>

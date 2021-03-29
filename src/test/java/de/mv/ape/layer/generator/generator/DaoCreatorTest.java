@@ -23,6 +23,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     private Entity parentEntity;
     @Mock
     private Reference parentReference;
+    @Mock
+    private DaoInfo daoInfo;
 
     private DaoCreator cut;
 
@@ -614,6 +616,102 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@Column()");
         expected.add("	private String anyField;");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id()");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectFieldWithDaoInfo() {
+        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(field.getDaoInfo()).thenReturn(daoInfo);
+        when(field.getType()).thenReturn("CustomEnum");
+        when(field.getTypePackage()).thenReturn("de.test.custom");
+        when(field.isTypeEnum()).thenReturn(Boolean.TRUE);
+
+        when(daoInfo.getColumnName()).thenReturn("differentName");
+        when(daoInfo.getNullable()).thenReturn(Boolean.FALSE);
+        when(daoInfo.getLength()).thenReturn(Integer.valueOf(5));
+        when(daoInfo.getPrecision()).thenReturn(Integer.valueOf(4));
+        when(daoInfo.getScale()).thenReturn(Integer.valueOf(2));
+        when(daoInfo.getUseEnumText()).thenReturn(Boolean.TRUE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.test.custom.CustomEnum;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@Entity()");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"differentName\", nullable = false, length = 5, precision = 4, scale = 2)");
+        expected.add("	@Enumerated(EnumType.STRING)");
+        expected.add("	private CustomEnum anyField;");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id()");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectFieldWithDaoInfoDoNotUseEnumText() {
+        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(field.getDaoInfo()).thenReturn(daoInfo);
+        when(field.getType()).thenReturn("CustomEnum");
+        when(field.getTypePackage()).thenReturn("de.test.custom");
+        when(field.isTypeEnum()).thenReturn(Boolean.TRUE);
+
+        when(daoInfo.getNullable()).thenReturn(null);
+        when(daoInfo.getLength()).thenReturn(null);
+        when(daoInfo.getPrecision()).thenReturn(null);
+        when(daoInfo.getScale()).thenReturn(null);
+        when(daoInfo.getUseEnumText()).thenReturn(Boolean.FALSE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.test.custom.CustomEnum;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@Entity()");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column()");
+        expected.add("	private CustomEnum anyField;");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");

@@ -14,6 +14,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(namespace = "de.mv.ape.gen.model")
 @Data
 public class DaoInfo {
+
+    @XmlAttribute
+    private String columnName;
+
     /**
      * (Optional) Whether the database column is nullable.
      */
