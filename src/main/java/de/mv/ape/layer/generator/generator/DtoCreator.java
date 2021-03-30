@@ -20,6 +20,7 @@ import java.util.List;
 public class DtoCreator extends AbstractObjectCreator {
 
     public static final String DTO_INTERFACE = "ITransportable";
+    public static final String DTO_POSTFIX = "Dto";
 
     public DtoCreator(Config config, Log logger) {
         super(config, logger);
@@ -33,8 +34,7 @@ public class DtoCreator extends AbstractObjectCreator {
                     , "@return the identification of the dto");
             dtoInterface.addMethodDeclarationWithDescription("void", "setIdentification"
                     , "@param identification the identification of the dto", String.class.getSimpleName(), "identification");
-        }
-        else{
+        } else {
             dtoInterface.addMethodDeclarationWithDescription("Long", "getId", "@return the id of the dto");
             dtoInterface.addMethodDeclarationWithDescription("void", "setId", "@param id the id of the dto", "Long", "id");
         }
@@ -56,8 +56,11 @@ public class DtoCreator extends AbstractObjectCreator {
             return true;
         }
 
-        Clazz dtoClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName() + "Dto");
-        dtoClazz.addInterface(DTO_INTERFACE);
+        Clazz dtoClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName() + DTO_POSTFIX);
+        if (entity.hasNoParent()) {
+            dtoClazz.addInterface(DTO_INTERFACE);
+        }
+        checkAndAddParent(dtoClazz, entity, packageName, DTO_POSTFIX);
 
         JavaDoc javaDoc = new JavaDoc(String.format("Generated dto class of %s", entity.getBaseName()));
         if (entity.getDescription() != null && !entity.getDescription().trim().isEmpty()) {
@@ -74,7 +77,7 @@ public class DtoCreator extends AbstractObjectCreator {
         dtoClazz.addAnnotation(NoArgsConstructor.class);
         dtoClazz.addAnnotation(new Annotation("SuppressWarnings", null, "\"java:S1068\""));
 
-        addIdentificationAttribute(dtoClazz);
+        addIdentificationAttribute(dtoClazz, entity);
         addAttributes(entity, dtoClazz);
         addReferences(entity, dtoClazz, packageName);
 
@@ -85,8 +88,9 @@ public class DtoCreator extends AbstractObjectCreator {
      * Adds an identification or id to the class depending {@link Config#isUseIdGenerator()}
      *
      * @param dtoClazz class where to add attribute
+     * @param entity   Entity which is used for generating
      */
-    private void addIdentificationAttribute(Clazz dtoClazz) {
+    private void addIdentificationAttribute(Clazz dtoClazz, Entity entity) {
         String ofPostFix = dtoClazz.getClassName().substring(0, dtoClazz.getClassName().length() - 3);
         if (config.isUseIdGenerator()) {
             logger.debug("Identification will be created for " + dtoClazz.getClassName());
@@ -98,11 +102,13 @@ public class DtoCreator extends AbstractObjectCreator {
 
             return;
         }
-        logger.debug("Id will be created for " + dtoClazz.getClassName());
+        if (entity.hasNoParent()) {
+            logger.debug("Id will be created for " + dtoClazz.getClassName());
 
-        Attribute idAttribute = new Attribute("id", "Long");
-        idAttribute.setJavaDoc(new JavaDoc(String.format("Id of %s", ofPostFix)));
-        dtoClazz.addAttribute(idAttribute);
+            Attribute idAttribute = new Attribute("id", "Long");
+            idAttribute.setJavaDoc(new JavaDoc(String.format("Id of %s", ofPostFix)));
+            dtoClazz.addAttribute(idAttribute);
+        }
     }
 
     @Override
@@ -112,10 +118,10 @@ public class DtoCreator extends AbstractObjectCreator {
             return;
         }
 
-        Attribute child = new Attribute(getLowerFirst(reference.getReferenceName()), reference.getTargetEntity() + "Dto");
+        Attribute child = new Attribute(getLowerFirst(reference.getReferenceName()), reference.getTargetEntity() + DTO_POSTFIX);
 
         clazz.addAttribute(child);
-        clazz.addImport(getPackageAndClass(reference, packageName, "Dto"));
+        clazz.addImport(getPackageAndClass(reference, packageName, DTO_POSTFIX));
 
         attributeNames.add(child.getAttributeName());
     }

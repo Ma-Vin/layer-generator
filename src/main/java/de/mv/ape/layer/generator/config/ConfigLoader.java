@@ -65,11 +65,14 @@ public class ConfigLoader {
 
     public boolean complete() {
         removeNullLists();
-        if (!completeParents()) {
+        if (!completeReferences()) {
+            logger.error("Completion of references could not be completed");
+            return false;
+        }
+        if (!completeParentEntities()) {
             logger.error("Completion of parents could not be completed");
             return false;
         }
-
         return true;
     }
 
@@ -105,26 +108,26 @@ public class ConfigLoader {
         });
     }
 
-    private boolean completeParents() {
-        if (!completeEntityParents(config.getEntities())) {
+    private boolean completeReferences() {
+        if (!completeReferencesOfEntities(config.getEntities())) {
             return false;
         }
         for (Grouping g : config.getGroupings()) {
             g.getEntities().forEach(e -> e.setGrouping(g));
-            if (!completeEntityParents(g.getEntities())) {
+            if (!completeReferencesOfEntities(g.getEntities())) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean completeEntityParents(List<Entity> entityList) {
+    private boolean completeReferencesOfEntities(List<Entity> entityList) {
         for (Entity e : entityList) {
             if (e.getReferences() == null) {
                 continue;
             }
             for (Reference r : e.getReferences()) {
-                if (!completeParents(r.getTargetEntity(), e, r)) {
+                if (!completeReferences(r.getTargetEntity(), e, r)) {
                     return false;
                 }
             }
@@ -132,17 +135,17 @@ public class ConfigLoader {
         return true;
     }
 
-    private boolean completeParents(String targetEntityName, Entity actualEntity, Reference actualReference) {
+    private boolean completeReferences(String targetEntityName, Entity actualEntity, Reference actualReference) {
         for (Entity e : config.getEntities()) {
             if (e.getBaseName().equals(targetEntityName)) {
-                addParentRef(actualEntity, actualReference, e);
+                addParentReferenceAndTarget(actualEntity, actualReference, e);
                 return true;
             }
         }
         for (Grouping g : config.getGroupings()) {
             for (Entity e : g.getEntities()) {
                 if (e.getBaseName().equals(targetEntityName)) {
-                    addParentRef(actualEntity, actualReference, e);
+                    addParentReferenceAndTarget(actualEntity, actualReference, e);
                     return true;
                 }
             }
@@ -151,7 +154,7 @@ public class ConfigLoader {
         return false;
     }
 
-    private void addParentRef(Entity actualEntity, Reference actualReference, Entity targetEntity) {
+    private void addParentReferenceAndTarget(Entity actualEntity, Reference actualReference, Entity targetEntity) {
         Reference parentRef = new Reference();
         parentRef.setTargetEntity(actualEntity.getBaseName());
         parentRef.setRealTargetEntity(actualEntity);
@@ -165,5 +168,50 @@ public class ConfigLoader {
 
         actualReference.setParent(actualEntity);
         actualReference.setRealTargetEntity(targetEntity);
+    }
+
+    private boolean completeParentEntities() {
+        if (!completeParentEntities(config.getEntities())) {
+            return false;
+        }
+        for (Grouping g : config.getGroupings()) {
+            if (!completeParentEntities(g.getEntities())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean completeParentEntities(List<Entity> entities) {
+        boolean result = true;
+        for (Entity e : entities) {
+            if (e.getParent() != null && !e.getParent().trim().isEmpty()) {
+                result = result && completeParentEntities(e, e.getParent().trim());
+            }
+        }
+        return result;
+    }
+
+    private boolean completeParentEntities(Entity actualEntity, String parentName) {
+        if (completeParentEntities(actualEntity, parentName, config.getEntities())) {
+            return true;
+        }
+        for (Grouping g : config.getGroupings()) {
+            if (completeParentEntities(actualEntity, parentName, g.getEntities())) {
+                return true;
+            }
+        }
+        logger.error(String.format("The parent %s of entity %s could not be found", parentName, actualEntity.getBaseName()));
+        return false;
+    }
+
+    private boolean completeParentEntities(Entity actualEntity, String parentName, List<Entity> entities) {
+        for (Entity e : entities) {
+            if (e.getBaseName().equals(parentName)) {
+                actualEntity.setRealParent(e);
+                return true;
+            }
+        }
+        return false;
     }
 }

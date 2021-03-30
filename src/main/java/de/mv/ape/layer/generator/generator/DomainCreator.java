@@ -33,8 +33,7 @@ public class DomainCreator extends AbstractObjectCreator {
                     , "@return the identification of the domain object");
             daoInterface.addMethodDeclarationWithDescription("void", "setIdentification"
                     , "@param identification the identification of the domain object", String.class.getSimpleName(), "identification");
-        }
-        else{
+        } else {
             daoInterface.addMethodDeclarationWithDescription("Long", "getId", "@return the id of the domain object");
             daoInterface.addMethodDeclarationWithDescription("void", "setId", "@param id the id of the domain object", "Long", "id");
         }
@@ -57,7 +56,10 @@ public class DomainCreator extends AbstractObjectCreator {
         }
 
         Clazz domainClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName());
-        domainClazz.addInterface(DOMAIN_INTERFACE);
+        if (entity.hasNoParent()) {
+            domainClazz.addInterface(DOMAIN_INTERFACE);
+        }
+        checkAndAddParent(domainClazz, entity, packageName, "");
 
         JavaDoc javaDoc = new JavaDoc(String.format("Generated domain class of %s", entity.getBaseName()));
         if (entity.getDescription() != null && !entity.getDescription().trim().isEmpty()) {
@@ -105,11 +107,13 @@ public class DomainCreator extends AbstractObjectCreator {
 
             return;
         }
-        logger.debug("Id will be created for " + domainClazz.getClassName());
+        if (entity.hasNoParent()) {
+            logger.debug("Id will be created for " + domainClazz.getClassName());
 
-        Attribute idAttribute = new Attribute("id", "Long");
-        idAttribute.setJavaDoc(new JavaDoc(String.format("Id of %s", domainClazz.getClassName())));
-        domainClazz.addAttribute(idAttribute);
+            Attribute idAttribute = new Attribute("id", "Long");
+            idAttribute.setJavaDoc(new JavaDoc(String.format("Id of %s", domainClazz.getClassName())));
+            domainClazz.addAttribute(idAttribute);
+        }
     }
 
     @Override

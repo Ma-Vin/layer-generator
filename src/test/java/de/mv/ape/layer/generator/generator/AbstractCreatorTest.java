@@ -52,6 +52,8 @@ public class AbstractCreatorTest {
         when(entity.getIdentificationPrefix()).thenReturn("DU");
         when(entity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(entity.getGrouping()).thenReturn(grouping);
+        when(entity.hasParent()).thenReturn(Boolean.FALSE);
+        when(entity.hasNoParent()).thenReturn(Boolean.TRUE);
 
         when(field.getFieldName()).thenReturn("anyField");
         when(field.getType()).thenReturn("String");
@@ -69,6 +71,8 @@ public class AbstractCreatorTest {
         when(targetEntity.getIdentificationPrefix()).thenReturn("TA");
         when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(targetEntity.getGrouping()).thenReturn(grouping);
+        when(targetEntity.hasParent()).thenReturn(Boolean.FALSE);
+        when(targetEntity.hasNoParent()).thenReturn(Boolean.TRUE);
 
         when(config.getBasePackage()).thenReturn(BASE_PACKAGE);
         when(config.getDaoPackage()).thenReturn("dao");

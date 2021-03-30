@@ -55,7 +55,7 @@ public class ConfigLoaderIT {
         assertEquals(14, rootExt.get().getFields().size(), "Wrong number of fields at rootExt");
 
         assertNotNull(configLoader.getConfig().getGroupings(), "There should be some groupings");
-        assertEquals(9, configLoader.getConfig().getGroupings().size(), "Wrong number of groupings");
+        assertEquals(10, configLoader.getConfig().getGroupings().size(), "Wrong number of groupings");
     }
 
     @Test()

@@ -1,9 +1,11 @@
 package de.mv.ape.layer.generator.generator;
 
+import de.mv.ape.layer.generator.config.elements.Entity;
 import de.mv.ape.layer.generator.config.elements.Models;
 import de.mv.ape.layer.generator.log.LogImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,6 +20,9 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 public class DtoCreatorTest extends AbstractCreatorTest {
+
+    @Mock
+    private Entity parentEntity;
 
     private DtoCreator cut;
 
@@ -391,6 +396,77 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
         assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
         assertTrue(directoriesWhereRequestedToWrite.contains("group\\subgroup"), "Dot should be replaced by backslash");
+
+        checkSingleFile("DummyDto.java", expected);
+    }
+
+    @Test
+    public void testCreateDataTransportObjectIsAbstract() {
+        when(entity.isAbstract()).thenReturn(Boolean.TRUE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group;");
+        expected.add("");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@NoArgsConstructor()");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public abstract class DummyDto implements ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+
+        checkSingleFile("DummyDto.java", expected);
+    }
+
+    @Test
+    public void testCreateDataTransportHasSuperClass() {
+        when(entity.getParent()).thenReturn("AnotherDummy");
+        when(entity.getRealParent()).thenReturn(parentEntity);
+        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.hasParent()).thenReturn(Boolean.TRUE);
+        when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
+        when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(parentEntity.getGrouping()).thenReturn(null);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group;");
+        expected.add("");
+        expected.add("import de.test.package.dto.AnotherDummyDto;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@NoArgsConstructor()");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class DummyDto extends AnotherDummyDto {");
+        expected.add("");
+        expected.add("	private String anyField;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
 
         checkSingleFile("DummyDto.java", expected);
     }

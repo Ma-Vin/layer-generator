@@ -67,6 +67,23 @@ public class ClazzTest {
     }
 
     @Test
+    public void testGenerateAbstract() {
+        cut.setAbstract(true);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.abc;");
+        expected.add("");
+        expected.add("public abstract class Dummy {");
+        expected.add("");
+        expected.add("}");
+
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+
+    @Test
     public void testGenerateInner() {
         cut = new Clazz("Dummy");
         cut.addImport("de.abc.Something");

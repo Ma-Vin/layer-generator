@@ -4,6 +4,7 @@ import de.mv.ape.layer.generator.config.elements.*;
 import de.mv.ape.layer.generator.log.LogImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class DomainCreatorTest extends AbstractCreatorTest {
+
+    @Mock
+    private Entity parentEntity;
 
     private DomainCreator cut;
 
@@ -420,6 +424,77 @@ public class DomainCreatorTest extends AbstractCreatorTest {
 
         assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
         assertTrue(directoriesWhereRequestedToWrite.contains("group\\subgroup"), "Dot should be replaced by backslash");
+
+        checkSingleFile("Dummy.java", expected);
+    }
+
+    @Test
+    public void testCreateDomainObjectIsAbstract() {
+        when(entity.isAbstract()).thenReturn(Boolean.TRUE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.domain.group;");
+        expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated domain class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@NoArgsConstructor()");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public abstract class Dummy implements IIdentifiable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+
+        checkSingleFile("Dummy.java", expected);
+    }
+
+    @Test
+    public void testCreateDomainObjectHasSuperClass() {
+        when(entity.getParent()).thenReturn("AnotherDummy");
+        when(entity.getRealParent()).thenReturn(parentEntity);
+        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.hasParent()).thenReturn(Boolean.TRUE);
+        when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
+        when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(parentEntity.getGrouping()).thenReturn(null);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.domain.group;");
+        expected.add("");
+        expected.add("import de.test.package.domain.AnotherDummy;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated domain class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@NoArgsConstructor()");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class Dummy extends AnotherDummy {");
+        expected.add("");
+        expected.add("	private String anyField;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
 
         checkSingleFile("Dummy.java", expected);
     }

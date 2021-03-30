@@ -74,7 +74,18 @@ public class Entity {
     private List<Reference> parentRefs;
 
     @XmlTransient
+    private Entity realParent;
+
+    @XmlTransient
     private Grouping grouping;
+
+    public boolean hasParent() {
+        return parent != null && !parent.trim().isEmpty();
+    }
+
+    public boolean hasNoParent() {
+        return !hasParent();
+    }
 
     public boolean isValid() {
         return validateRequired(baseName) && models != null && validateNonRequired(description)

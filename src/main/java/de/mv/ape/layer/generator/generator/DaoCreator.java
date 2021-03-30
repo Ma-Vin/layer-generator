@@ -29,6 +29,7 @@ public class DaoCreator extends AbstractObjectCreator {
     public static final String PLACEHOLDER_ID = "\"%sId\"";
     public static final String CLASS_ENDING = ".class";
     public static final String DAO_INTERFACE = "IIdentifiableDao";
+    public static final String DAO_POSTFIX = "Dao";
 
     public DaoCreator(Config config, Log logger) {
         super(config, logger);
@@ -63,8 +64,11 @@ public class DaoCreator extends AbstractObjectCreator {
             logger.debug(String.format("Entity %s is not relevant for dao", entity.getBaseName()));
             return true;
         }
-        Clazz daoClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName() + "Dao");
-        daoClazz.addInterface(DAO_INTERFACE);
+        Clazz daoClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName() + DAO_POSTFIX);
+        if (entity.hasNoParent()) {
+            daoClazz.addInterface(DAO_INTERFACE);
+        }
+        checkAndAddParent(daoClazz, entity, packageName, DAO_POSTFIX);
 
         JavaDoc javaDoc = new JavaDoc(String.format("Generated dao class of %s", entity.getBaseName()));
         if (entity.getDescription() != null && !entity.getDescription().trim().isEmpty()) {
@@ -78,8 +82,12 @@ public class DaoCreator extends AbstractObjectCreator {
         daoClazz.addImport(Data.class.getName());
 
         daoClazz.addAnnotation(Data.class);
-        daoClazz.addAnnotation(javax.persistence.Entity.class);
-        daoClazz.addAnnotation(new Annotation(Table.class, "name", String.format("\"%ss\"", entity.getBaseName())));
+        if (entity.isAbstract()) {
+            daoClazz.addAnnotation(MappedSuperclass.class);
+        } else {
+            daoClazz.addAnnotation(javax.persistence.Entity.class);
+            daoClazz.addAnnotation(new Annotation(Table.class, "name", String.format("\"%ss\"", entity.getBaseName())));
+        }
 
         addAttributes(entity, daoClazz);
         addReferences(entity, daoClazz, packageName, packageDir);
@@ -97,11 +105,16 @@ public class DaoCreator extends AbstractObjectCreator {
      */
     @Override
     protected void addAttributes(Entity entity, Clazz daoClazz) {
-        Attribute idAttribute = new Attribute("id", Long.class.getSimpleName());
-        idAttribute.addAnnotation(Id.class);
-        idAttribute.addAnnotation(GeneratedValue.class, "strategy", "GenerationType.IDENTITY");
-        idAttribute.addAnnotation(Column.class, "name", "\"Id\"");
-        daoClazz.addAttribute(idAttribute);
+        if (entity.hasNoParent()) {
+            Attribute idAttribute = new Attribute("id", Long.class.getSimpleName());
+            idAttribute.addAnnotation(Id.class);
+            idAttribute.addAnnotation(GeneratedValue.class, "strategy", "GenerationType.IDENTITY");
+            idAttribute.addAnnotation(Column.class, "name", "\"Id\"");
+            if (entity.isAbstract()) {
+                idAttribute.setQualifier(Qualifier.PROTECTED);
+            }
+            daoClazz.addAttribute(idAttribute);
+        }
 
         addAttributes(entity, daoClazz, "Column");
     }
@@ -183,7 +196,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param entity   Entity which is used for generating
      */
     private void addDaoIdentificationMethods(Clazz daoClazz, Entity entity) {
-        if (!config.isUseIdGenerator()) {
+        if (!config.isUseIdGenerator() || entity.isAbstract()) {
             return;
         }
         logger.debug("Identification methods will be created for " + daoClazz.getClassName());
@@ -226,7 +239,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param attributeNames List where to add the name of created attribute
      */
     private void addParentRef(Clazz daoClazz, String basePackage, Reference reference, boolean isSingle, List<String> attributeNames) {
-        String parentClassName = reference.getTargetEntity() + "Dao";
+        String parentClassName = reference.getTargetEntity() + DAO_POSTFIX;
         String refTypeName = reference.isList() ? ManyToOne.class.getSimpleName() : OneToOne.class.getSimpleName();
 
         Attribute parent = new Attribute("parent" + reference.getTargetEntity(), parentClassName);
@@ -240,7 +253,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
         attributeNames.add(parent.getAttributeName());
 
-        daoClazz.addImport(getPackageAndClass(reference, basePackage, "Dao"));
+        daoClazz.addImport(getPackageAndClass(reference, basePackage, DAO_POSTFIX));
 
         daoClazz.addAttribute(parent);
     }
@@ -271,7 +284,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param attributeNames list of attributes which are used as reference property at class
      */
     private void addDirectChildRef(Clazz daoClazz, String packageName, Reference reference, List<String> attributeNames) {
-        String childClassName = reference.getTargetEntity() + "Dao";
+        String childClassName = reference.getTargetEntity() + DAO_POSTFIX;
         String propertyBaseName = getLowerFirst(reference.getReferenceName());
         String refTypeName = reference.isList() ? OneToMany.class.getSimpleName() : OneToOne.class.getSimpleName();
         Attribute child;
@@ -289,7 +302,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
         child.addAnnotation(refAnnotation);
         daoClazz.addAttribute(child);
-        daoClazz.addImport(getPackageAndClass(reference, packageName, "Dao"));
+        daoClazz.addImport(getPackageAndClass(reference, packageName, DAO_POSTFIX));
 
         attributeNames.add(child.getAttributeName());
     }
@@ -315,7 +328,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
             child = new Attribute(propertyBaseName + "s", String.format("%s<%s>", Collection.class.getSimpleName(), childClassName));
 
-            Annotation refAnnotation = new Annotation("OneToMany");
+            Annotation refAnnotation = new Annotation(OneToMany.class.getSimpleName());
             refAnnotation.addParameter(TARGET_ENTITY, childClassName + CLASS_ENDING);
             refAnnotation.addParameter("mappedBy", String.format("\"%s\"", getLowerFirst(reference.getTargetEntity())));
             child.addAnnotation(refAnnotation);
@@ -329,9 +342,8 @@ public class DaoCreator extends AbstractObjectCreator {
             child = new Attribute(propertyBaseName, childClassName);
             child.addAnnotation(ManyToOne.class, TARGET_ENTITY, childClassName + CLASS_ENDING);
             child.addAnnotation(JoinColumn.class, "name", String.format(PLACEHOLDER_ID, propertyBaseName));
-            daoClazz.addImport(getPackageAndClass(reference, packageName, "Dao"));
+            daoClazz.addImport(getPackageAndClass(reference, packageName, DAO_POSTFIX));
         }
-
         daoClazz.addAttribute(child);
 
         attributeNames.add(child.getAttributeName());
@@ -363,8 +375,8 @@ public class DaoCreator extends AbstractObjectCreator {
         connectionClazz.addImport(NoArgsConstructor.class.getName());
         connectionClazz.addImport("javax.persistence.*");
         connectionClazz.addImport("java.io.Serializable");
-        connectionClazz.addImport(getPackageAndClass(reference, basePackageName, "Dao"));
-        connectionClazz.addImport(getPackageAndClass(reference.getParent(), basePackageName, "Dao"));
+        connectionClazz.addImport(getPackageAndClass(reference, basePackageName, DAO_POSTFIX));
+        connectionClazz.addImport(getPackageAndClass(reference.getParent(), basePackageName, DAO_POSTFIX));
 
         connectionClazz.addAnnotation("Entity");
         connectionClazz.addAnnotation(AllArgsConstructor.class.getSimpleName());
@@ -374,14 +386,14 @@ public class DaoCreator extends AbstractObjectCreator {
         connectionClazz.addAnnotation(new Annotation(IdClass.class, null, String.format("%s.%sId.class", clazzName, baseClassName)));
         connectionClazz.addAnnotation(new Annotation(SuppressWarnings.class.getSimpleName(), null, "\"java:S1948\""));
 
-        Attribute sourceAttribute = new Attribute(getLowerFirst(reference.getParent().getBaseName()), reference.getParent().getBaseName() + "Dao");
+        Attribute sourceAttribute = new Attribute(getLowerFirst(reference.getParent().getBaseName()), reference.getParent().getBaseName() + DAO_POSTFIX);
         sourceAttribute.addAnnotation(ManyToOne.class, TARGET_ENTITY, reference.getParent().getBaseName() + "Dao.class");
         sourceAttribute.addAnnotation(JoinColumn.class, "name", String.format(PLACEHOLDER_ID, reference.getParent().getBaseName()));
         sourceAttribute.addAnnotation(Id.class);
         connectionClazz.addAttribute(sourceAttribute);
 
-        Attribute targetAttribute = new Attribute(getLowerFirst(reference.getTargetEntity()), reference.getTargetEntity() + "Dao");
-        targetAttribute.addAnnotation(OneToOne.class, TARGET_ENTITY, reference.getTargetEntity() + "Dao.class");
+        Attribute targetAttribute = new Attribute(getLowerFirst(reference.getTargetEntity()), reference.getTargetEntity() + DAO_POSTFIX);
+        targetAttribute.addAnnotation(OneToOne.class, TARGET_ENTITY, reference.getTargetEntity() + DAO_POSTFIX + CLASS_ENDING);
         targetAttribute.addAnnotation(JoinColumn.class, "name", String.format(PLACEHOLDER_ID, reference.getTargetEntity()));
         targetAttribute.addAnnotation(Id.class);
         connectionClazz.addAttribute(targetAttribute);

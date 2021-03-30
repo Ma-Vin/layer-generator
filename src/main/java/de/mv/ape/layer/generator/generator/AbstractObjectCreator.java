@@ -22,6 +22,22 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
     }
 
     /**
+     * Checks whether the class has to be abstract or has to extend some super class
+     *
+     * @param clazz           class where to add abstract qualifier or extension
+     * @param entity          entity which holds the information
+     * @param basePackageName package which is definitely used for package name
+     * @param classPostfix    Postfix which will be append to super class name
+     */
+    protected void checkAndAddParent(Clazz clazz, Entity entity, String basePackageName, String classPostfix) {
+        clazz.setAbstract(entity.isAbstract());
+        if (entity.hasParent()) {
+            clazz.setExtension(entity.getRealParent().getBaseName() + classPostfix);
+            clazz.addImport(getPackageAndClass(entity.getRealParent(), basePackageName, classPostfix));
+        }
+    }
+
+    /**
      * Adds all necessary attributes to the class
      *
      * @param entity entity whose fields should be added as attribute

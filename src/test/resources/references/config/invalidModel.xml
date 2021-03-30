@@ -155,5 +155,16 @@
                 </entity>
             </entities>
         </grouping>
+        <grouping groupingPackage="parent">
+            <entities>
+                <entity baseName="SuperClass" models="DOMAIN_DAO_DTO" identificationPrefix="SC1" isAbstract="true">
+                    <field fieldName="description" type="String"/>
+                </entity>
+                <!-- empty Parent-->
+                <entity baseName="ExtendingClass" models="DOMAIN_DAO_DTO" identificationPrefix="SC2" parent="">
+                    <field fieldName="additionalDescription" type="String"/>
+                </entity>
+            </entities>
+        </grouping>
     </groupings>
 </conf:config>

@@ -61,90 +61,131 @@
         <grouping groupingPackage="single">
             <entities>
                 <entity baseName="SingleRefOneParent" models="DOMAIN_DAO_DTO" identificationPrefix="S1">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                     <references>
                         <reference referenceName="singleRef" targetEntity="SingleRefTwoParents" isOwner="true"/>
                     </references>
                 </entity>
                 <entity baseName="SingleRefTwoParents" models="DOMAIN_DAO_DTO" identificationPrefix="S2">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                 </entity>
             </entities>
         </grouping>
         <grouping groupingPackage="multi">
             <entities>
                 <entity baseName="MultiRefOneParent" models="DOMAIN_DAO_DTO" identificationPrefix="M1">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                     <references>
                         <reference referenceName="multiRef" targetEntity="MultiRefTwoParents" isOwner="true"
                                    isList="true"/>
                     </references>
                 </entity>
                 <entity baseName="MultiRefTwoParents" models="DOMAIN_DAO_DTO" identificationPrefix="M2">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                 </entity>
             </entities>
         </grouping>
         <grouping groupingPackage="single.indirect">
             <entities>
                 <entity baseName="SingleRefOtherIndirectParent" models="DOMAIN_DAO_DTO" identificationPrefix="SI1">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                     <references>
                         <reference referenceName="singleIndirectRef" targetEntity="SingleRefIndirectParent"
                                    isOwner="false"/>
                     </references>
                 </entity>
                 <entity baseName="SingleRefIndirectParent" models="DOMAIN_DAO_DTO" identificationPrefix="SI2">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                 </entity>
             </entities>
         </grouping>
         <grouping groupingPackage="multi.indirect">
             <entities>
                 <entity baseName="MultiRefOtherIndirectParent" models="DOMAIN_DAO_DTO" identificationPrefix="MI1">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                     <references>
                         <reference referenceName="multiIndirectRef" targetEntity="MultiRefIndirectParent"
                                    isOwner="false" isList="true"/>
                     </references>
                 </entity>
                 <entity baseName="MultiRefIndirectParent" models="DOMAIN_DAO_DTO" identificationPrefix="MI2">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                 </entity>
             </entities>
         </grouping>
         <grouping groupingPackage="domain.dao">
             <entities>
                 <entity baseName="DomainAndDao" models="DOMAIN_DAO" identificationPrefix="DD1">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                 </entity>
             </entities>
         </grouping>
         <grouping groupingPackage="domain.dto">
             <entities>
                 <entity baseName="DomainAndDto" models="DOMAIN_DTO" identificationPrefix="DD2">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                 </entity>
             </entities>
         </grouping>
         <grouping groupingPackage="dao">
             <entities>
                 <entity baseName="OnlyDao" models="DAO" identificationPrefix="D1">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                 </entity>
             </entities>
         </grouping>
         <grouping groupingPackage="domain">
             <entities>
                 <entity baseName="OnlyDomain" models="DOMAIN" identificationPrefix="D2">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
                 </entity>
             </entities>
         </grouping>
         <grouping groupingPackage="dto">
             <entities>
                 <entity baseName="OnlyDto" models="DTO" identificationPrefix="D3">
-                    <field fieldName="description" type="String"/>
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
+                </entity>
+            </entities>
+        </grouping>
+        <grouping groupingPackage="parent">
+            <entities>
+                <entity baseName="SuperClass" models="DOMAIN_DAO_DTO" identificationPrefix="SC1" isAbstract="true">
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
+                </entity>
+                <entity baseName="ExtendingClass" models="DOMAIN_DAO_DTO" identificationPrefix="SC2"
+                        parent="SuperClass">
+                    <fields>
+                        <field fieldName="additionalDescription" type="String"/>
+                    </fields>
                 </entity>
             </entities>
         </grouping>

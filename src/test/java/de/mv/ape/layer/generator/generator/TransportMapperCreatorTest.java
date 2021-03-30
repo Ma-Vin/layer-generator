@@ -83,6 +83,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(parentEntity.getIdentificationPrefix()).thenReturn("OW");
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(parentEntity.getGrouping()).thenReturn(null);
+        when(parentEntity.hasParent()).thenReturn(Boolean.FALSE);
+        when(parentEntity.hasNoParent()).thenReturn(Boolean.TRUE);
 
         when(parentReference.getTargetEntity()).thenReturn("Owner");
         when(parentReference.getRealTargetEntity()).thenReturn(parentEntity);
@@ -95,6 +97,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(anotherParentEntity.getIdentificationPrefix()).thenReturn("AOW");
         when(anotherParentEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(anotherParentEntity.getGrouping()).thenReturn(null);
+        when(anotherParentEntity.hasParent()).thenReturn(Boolean.FALSE);
+        when(anotherParentEntity.hasNoParent()).thenReturn(Boolean.TRUE);
 
         when(anotherParentReference.getTargetEntity()).thenReturn("AnotherOwner");
         when(anotherParentReference.getRealTargetEntity()).thenReturn(anotherParentEntity);
@@ -107,6 +111,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(subEntity.getIdentificationPrefix()).thenReturn("CH");
         when(subEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(subEntity.getGrouping()).thenReturn(grouping);
+        when(subEntity.hasParent()).thenReturn(Boolean.FALSE);
+        when(subEntity.hasNoParent()).thenReturn(Boolean.TRUE);
 
         when(subReference.getTargetEntity()).thenReturn("Child");
         when(subReference.getRealTargetEntity()).thenReturn(subEntity);
@@ -1464,6 +1470,112 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
 
         List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperAbstract() {
+        when(entity.isAbstract()).thenReturn(Boolean.TRUE);
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
+    }
+
+    @Test
+    public void testCreateAccessMapperWithParent() {
+        when(entity.getParent()).thenReturn("AnotherDummy");
+        when(entity.getRealParent()).thenReturn(parentEntity);
+        when(entity.hasParent()).thenReturn(Boolean.TRUE);
+        when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
+        when(parentEntity.isAbstract()).thenReturn(Boolean.TRUE);
+        when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
+        when(parentEntity.getReferences()).thenReturn(Arrays.asList(subReference));
+        when(parentEntity.getFields()).thenReturn(Arrays.asList(field));
+        when(subReference.getParent()).thenReturn(parentEntity);
+        when(subReference.isList()).thenReturn(Boolean.FALSE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import de.test.package.dto.group.DummyDto;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public class GroupingTransportMapper {");
+        expected.add("");
+        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingTransportMapper instance;");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDto dummy) {");
+        expected.add("		return convertToDummy(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDto dummy, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"Dummy\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (Dummy) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		Dummy result = new Dummy();");
+        expected.add("");
+        expected.add("		result.setAnyField(dummy.getAnyField());");
+        expected.add("");
+        expected.add("		GroupTransportMapper.convertToChild(dummy.getChild(), result, mappedObjects);");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy) {");
+        expected.add("		return convertToDummyDto(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy, Map<String, ITransportable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"DummyDto\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (DummyDto) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setAnyField(dummy.getAnyField());");
+        expected.add("");
+        expected.add("		GroupTransportMapper.convertToChildDto(dummy.getChild(), result, mappedObjects);");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingTransportMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
 
         assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
 

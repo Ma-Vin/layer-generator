@@ -28,6 +28,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
     private Qualifier qualifier = Qualifier.PUBLIC;
     private boolean isStatic;
     private boolean isInner;
+    private boolean isAbstract;
 
     public Clazz(String packageName, String className) {
         this.packageName = packageName;
@@ -59,7 +60,8 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
             result.addAll(description.generate());
         }
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
-        result.add(String.format("%s%s class %s%s%s {", qualifier.getText(), getStaticText(), className, getExtensionText(), getInterfaceText()));
+        result.add(String.format("%s%s%s class %s%s%s {", qualifier.getText(), getStaticText(), getAbstractText()
+                , className, getExtensionText(), getInterfaceText()));
         result.add("");
         constructors.stream().sorted().forEach(a -> {
             result.addAll(a.generate(1));
@@ -103,6 +105,10 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
 
     private String getStaticText() {
         return isStatic ? " static" : "";
+    }
+
+    private String getAbstractText() {
+        return isAbstract ? " abstract" : "";
     }
 
     private void removeImportsAtSamePackage() {

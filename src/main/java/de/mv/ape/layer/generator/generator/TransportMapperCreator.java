@@ -38,7 +38,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
     public boolean createTransportMapper(List<Entity> entities, String groupingName, String mapperPackageName, String dtoPackageName
             , String domainPackageName, File mapperPackageDir) {
 
-        if (entities.stream().noneMatch(TransportMapperCreator::isEntityRelevant)) {
+        if (entities.stream().noneMatch(e -> isEntityRelevant(e) && !e.isAbstract())) {
             logger.debug("No access mapper need for " + mapperPackageName);
             return true;
         }
@@ -47,7 +47,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         createGetInstance(mapperClass);
 
-        entities.forEach(e -> {
+        entities.stream().filter(e -> !e.isAbstract()).forEach(e -> {
             createConvertToDtoMethods(mapperClass, e, dtoPackageName, domainPackageName);
             createConvertToDomainMethods(mapperClass, e, dtoPackageName, domainPackageName);
         });
@@ -152,7 +152,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         addConvertDefaultMappings(convertMethodWithMap, entity, DOMAIN_POSTFIX, TransportMapperCreator::isFieldRelevant);
 
-        entity.getReferences().stream()
+        determineAllReferences(entity).stream()
                 .filter(ref -> !ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))
                 .forEach(ref -> addSingleRefConvert(convertMethodWithMap, entity, ref, DOMAIN_POSTFIX, TransportMapperCreator::isEntityRelevant));
         convertMethodWithMap.addEmptyLine();
@@ -241,7 +241,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         addConvertDefaultMappings(convertMethodWithMap, entity, DTO_POSTFIX, TransportMapperCreator::isFieldRelevant);
 
-        entity.getReferences().stream()
+        determineAllReferences(entity).stream()
                 .filter(ref -> !ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))
                 .forEach(ref -> addSingleRefConvert(convertMethodWithMap, entity, ref, DTO_POSTFIX, TransportMapperCreator::isEntityRelevant));
         convertMethodWithMap.addEmptyLine();

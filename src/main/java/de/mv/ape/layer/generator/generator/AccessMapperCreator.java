@@ -39,7 +39,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     public boolean createAccessMapper(List<Entity> entities, String groupingName, String mapperPackageName, String daoPackageName
             , String domainPackageName, File mapperPackageDir) {
 
-        if (entities.stream().noneMatch(AccessMapperCreator::isEntityRelevant)) {
+        if (entities.stream().noneMatch(e -> isEntityRelevant(e) && !e.isAbstract())) {
             logger.debug("No access mapper need for " + mapperPackageName);
             return true;
         }
@@ -48,7 +48,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         createGetInstance(mapperClass);
 
-        entities.forEach(e -> {
+        entities.stream().filter(e -> !e.isAbstract()).forEach(e -> {
             createConvertToDaoMethods(mapperClass, e, daoPackageName, domainPackageName);
             createConvertToDomainMethods(mapperClass, e, daoPackageName, domainPackageName);
         });
@@ -183,7 +183,9 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     private void createConvertToDaoMappings(Clazz mapperClass, Method convertMethod, Entity entity, String daoPackageName) {
         addConvertDefaultMappings(convertMethod, entity, DAO_POSTFIX, AccessMapperCreator::isFieldRelevant);
 
-        entity.getReferences().stream()
+        List<Reference> allReferences = determineAllReferences(entity);
+
+        allReferences.stream()
                 .filter(ref -> !ref.isList())
                 .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
                 .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant));
@@ -191,10 +193,10 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity, AccessMapperCreator::isEntityRelevant);
 
-        if (hasIncludeChildrenParameter && entity.getReferences().stream()
+        if (hasIncludeChildrenParameter && allReferences.stream()
                 .anyMatch(ref -> ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))) {
 
-            entity.getReferences().stream()
+            allReferences.stream()
                     .filter(Reference::isList)
                     .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
                     .forEach(ref -> {
@@ -204,7 +206,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
             convertMethod.addLine("if (includeChildren) {");
 
-            entity.getReferences().stream()
+            allReferences.stream()
                     .filter(Reference::isList)
                     .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
                     .forEach(ref -> addMultiRefConvertToDao(mapperClass, convertMethod, entity, ref, daoPackageName));
@@ -366,7 +368,9 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     private void createConvertToDomainMappings(Clazz mapperClass, Method convertMethod, Entity entity) {
         addConvertDefaultMappings(convertMethod, entity, DOMAIN_POSTFIX, AccessMapperCreator::isFieldRelevant);
 
-        entity.getReferences().stream()
+        List<Reference> allReferences = determineAllReferences(entity);
+
+        allReferences.stream()
                 .filter(ref -> !ref.isList())
                 .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
                 .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant));
@@ -374,12 +378,12 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity, AccessMapperCreator::isEntityRelevant);
 
-        if (hasIncludeChildrenParameter && entity.getReferences().stream()
+        if (hasIncludeChildrenParameter && allReferences.stream()
                 .anyMatch(ref -> ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))) {
 
             convertMethod.addLine("if (includeChildren) {");
 
-            entity.getReferences().stream()
+            allReferences.stream()
                     .filter(Reference::isList)
                     .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
                     .forEach(ref -> addMultiRefConvertToDomain(mapperClass, convertMethod, entity, ref));

@@ -812,6 +812,52 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
+    public void testCreateDataAccessObjectUseIdGeneratorWithParent() {
+        when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
+        when(entity.getParent()).thenReturn("AnotherDummy");
+        when(entity.hasParent()).thenReturn(Boolean.TRUE);
+        when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
+        when(entity.getRealParent()).thenReturn(parentEntity);
+        when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.mv.ape.utils.generators.IdGenerator;");
+        expected.add("import de.test.package.dao.AnotherDummyDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@Entity()");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao extends AnotherDummyDao {");
+        expected.add("");
+        expected.add("	@Override()");
+        expected.add("	public String getIdentification() {");
+        expected.add("		return IdGenerator.generateIdentification(id, Dummy.ID_PREFIX);");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	@Override()");
+        expected.add("	public void setIdentification(String identification) {");
+        expected.add("		id = IdGenerator.generateId(identification, Dummy.ID_PREFIX);");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
     public void testCreateDataAccessObjectUseIdGeneratorWithoutDomain() {
         when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
         when(entity.getModels()).thenReturn(Models.DAO);
@@ -949,6 +995,75 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
         assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
         assertTrue(directoriesWhereRequestedToWrite.contains("group\\subgroup"), "Dot should be replaced by backslash");
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectIsAbstract() {
+        when(entity.isAbstract()).thenReturn(Boolean.TRUE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@MappedSuperclass()");
+        expected.add("public abstract class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id()");
+        expected.add("	protected Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectHasSuperClass() {
+        when(entity.getParent()).thenReturn("AnotherDummy");
+        when(entity.hasParent()).thenReturn(Boolean.TRUE);
+        when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
+        when(entity.getRealParent()).thenReturn(parentEntity);
+        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.test.package.dao.AnotherDummyDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data()");
+        expected.add("@Entity()");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao extends AnotherDummyDao {");
+        expected.add("");
+        expected.add("	@Column()");
+        expected.add("	private String anyField;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
 
         checkSingleFile("DummyDao.java", expected);
     }

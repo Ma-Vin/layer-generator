@@ -10,7 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.maven.plugin.logging.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -112,7 +114,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         convertMethod.addLine("%1$s%2$s result = new %1$s%2$s();", getUpperFirst(entity.getBaseName()), classParameterPostFix);
         convertMethod.addEmptyLine();
 
-        entity.getFields().stream()
+        determineAlFields(entity).stream()
                 .filter(fieldChecker::isRelevant)
                 .forEach(f ->
                         convertMethod.addLine("result.set%1$s(%2$s.get%1$s());"
@@ -260,7 +262,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @return {@code true} if an indicator is to provide
      */
     protected boolean hasIncludeChildrenParameter(Entity entity, EntityRelevantChecker entityChecker) {
-        return entityChecker.isRelevant(entity) && entity.getReferences().stream()
+        return entityChecker.isRelevant(entity) && determineAllReferences(entity).stream()
                 .anyMatch(ref -> (ref.isList() && entityChecker.isRelevant(ref.getRealTargetEntity()))
                         || hasIncludeChildrenParameter(ref.getRealTargetEntity(), entityChecker));
     }
@@ -286,6 +288,40 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
             return String.format("%s.getIdentification()", getLowerFirst(entity.getBaseName()));
         }
         return String.format("\"%s%s\" + %s.getId().longValue()", getUpperFirst(entity.getBaseName()), classParameterPostFix, getLowerFirst(entity.getBaseName()));
+    }
+
+    /**
+     * Determines all fields which are need by mapping
+     *
+     * @param entity Entity whose fields should be determined
+     * @return List of direct fields and those provided by super class of {@code entity}
+     */
+    protected List<Field> determineAlFields(Entity entity) {
+        if (entity.hasNoParent()) {
+            return entity.getFields();
+        }
+        List<Field> result = new ArrayList<>();
+        result.addAll(entity.getFields());
+        result.addAll(determineAlFields(entity.getRealParent()));
+
+        return result;
+    }
+
+    /**
+     * Determines all references which are need by mapping
+     *
+     * @param entity Entity whose References should be determined
+     * @return List of direct references and those provided by super class of {@code entity}
+     */
+    protected List<Reference> determineAllReferences(Entity entity) {
+        if (entity.hasNoParent()) {
+            return entity.getReferences();
+        }
+        List<Reference> result = new ArrayList<>();
+        result.addAll(entity.getReferences());
+        result.addAll(determineAllReferences(entity.getRealParent()));
+
+        return result;
     }
 
     @FunctionalInterface
