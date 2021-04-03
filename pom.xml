@@ -1,26 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.mv.ape.layer.generator</groupId>
+    <groupId>de.ma_vin.util.layer.generator</groupId>
     <artifactId>layer-generator</artifactId>
     <packaging>maven-plugin</packaging>
     <version>1.0-SNAPSHOT</version>
 
-    <name>APE Layer Generator</name>
-    <description>Generator to create domain model, data transport or data access objects</description>
-    <url>https://github.com/Ma-Vin</url>
-
-    <organization>
-        <name>mv</name>
-        <url>https://github.com/Ma-Vin</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <name>Ma-Vin</name>
-            <organizationUrl>https://github.com/Ma-Vin</organizationUrl>
-        </developer>
-    </developers>
+    <name>Util Layer Generator</name>
+    <description>Generator to create domain model, data transport and/or data access objects</description>
 
     <properties>
         <maven.compiler.target>12</maven.compiler.target>
@@ -47,7 +34,7 @@
         <sonar.language>java</sonar.language>
         <sonar.java.libraries>target</sonar.java.libraries>
         <sonar.java.source>12</sonar.java.source>
-        <sonar.projectName>de.mv.ape.modelgenerator</sonar.projectName>
+        <sonar.projectName>de.ma_vin.util.layerGenerator</sonar.projectName>
         <sonar.test.exclusions>src/test/**/*</sonar.test.exclusions>
         <sonar.scm.provider>git</sonar.scm.provider>
     </properties>
@@ -56,7 +43,7 @@
         <profile>
             <id>sonar-cloud</id>
             <properties>
-                <sonar.projectKey>Ma-Vin_de.mv.ape.layerGenerator</sonar.projectKey>
+                <sonar.projectKey>Ma-Vin_de.ma_vin.util.layerGenerator</sonar.projectKey>
                 <sonar.organization>ma-vin</sonar.organization>
                 <sonar.host.url>https://sonarcloud.io</sonar.host.url>
             </properties>
@@ -66,7 +53,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>de.mv.ape</groupId>
+                <groupId>de.ma_vin.ape</groupId>
                 <artifactId>ape</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <type>pom</type>
@@ -257,7 +244,7 @@
                 <configuration>
                     <transformSchemas>
                         <transformSchema>
-                            <uri>de.mv.ape.gen.model</uri>
+                            <uri>de.ma_vin.util.gen.model</uri>
                             <toFile>config.xsd</toFile>
                         </transformSchema>
                     </transformSchemas>

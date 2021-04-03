@@ -19,7 +19,7 @@ jobs:
     - name: Checkout ape
       uses: actions/checkout@v2
       with:
-        repository: Ma-Vin/de.mv.ape
+        repository: Ma-Vin/de.ma_vin.ape
         token: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
         path: ape
     - name: Set up JDK 1.12
