@@ -25,6 +25,7 @@
                            isList="true"/>
                 <reference referenceName="multiRefIndirectOtherParent" targetEntity="MultiRefOtherIndirectParent"
                            isOwner="true" isList="true"/>
+                <reference referenceName="extending" targetEntity="ExtendingClass" isOwner="true" isList="true"/>
                 <reference referenceName="ext" targetEntity="RootExt" isOwner="true"/>
             </references>
         </entity>

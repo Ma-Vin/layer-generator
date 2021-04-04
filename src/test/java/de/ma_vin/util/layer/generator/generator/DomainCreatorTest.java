@@ -479,7 +479,9 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("import de.test.package.domain.AnotherDummy;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.NoArgsConstructor;");
+        expected.add("import lombok.ToString;");
         expected.add("");
         expected.add("/**");
         expected.add(" * Generated domain class of Dummy");
@@ -487,8 +489,10 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * Dummy description");
         expected.add(" */");
         expected.add("@Data()");
+        expected.add("@EqualsAndHashCode(callSuper = true)");
         expected.add("@NoArgsConstructor()");
         expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("@ToString(callSuper = true)");
         expected.add("public class Dummy extends AnotherDummy {");
         expected.add("");
         expected.add("	private String anyField;");

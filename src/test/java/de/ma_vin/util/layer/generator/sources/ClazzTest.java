@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.sources;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class ClazzTest {
     @Mock
@@ -337,6 +339,21 @@ public class ClazzTest {
         List<String> result = cut.generate();
 
         TestUtil.checkList(expected, result);
+    }
+
+    @Test
+    public void testGetAnnotation() {
+        cut.addAnnotation(annotation);
+        when(annotation.getAnnotationName()).thenReturn("AnyName");
+
+        Optional<Annotation> result = cut.getAnnotation("AnyName");
+        assertNotNull(result, "There should be some result");
+        assertTrue(result.isPresent(), "The result should contain some element");
+        assertEquals("AnyName", result.get().getAnnotationName(), "The annotation has the wrong name");
+
+        result = cut.getAnnotation("AnyOtherName");
+        assertNotNull(result, "There should be some result");
+        assertTrue(result.isEmpty(), "The result should not contain any element");
     }
 
     @Test

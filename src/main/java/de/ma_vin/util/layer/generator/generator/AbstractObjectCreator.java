@@ -40,6 +40,19 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
         if (entity.hasParent()) {
             clazz.setExtension(entity.getRealParent().getBaseName() + classPostfix);
             clazz.addImport(getPackageAndClass(entity.getRealParent(), basePackageName, classPostfix));
+
+            Annotation toStringAnnotation = clazz.getAnnotation(ToString.class.getSimpleName())
+                    .orElse(new Annotation(ToString.class));
+            Annotation equalsAndHashCodeAnnotation = clazz.getAnnotation(EqualsAndHashCode.class.getSimpleName())
+                    .orElse(new Annotation(EqualsAndHashCode.class));
+
+            toStringAnnotation.addParameter("callSuper", "true");
+            equalsAndHashCodeAnnotation.addParameter("callSuper", "true");
+
+            clazz.addImport(EqualsAndHashCode.class.getName());
+            clazz.addImport(ToString.class.getName());
+            clazz.addAnnotation(toStringAnnotation);
+            clazz.addAnnotation(equalsAndHashCodeAnnotation);
         }
     }
 
@@ -125,8 +138,10 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
                 .map(a -> a.startsWith("\"") && a.endsWith("\"") ? a : "\"" + a + "\"")
                 .collect(Collectors.toList());
 
-        Annotation toStringAnnotation = new Annotation(ToString.class);
-        Annotation equalsAndHashCodeAnnotation = new Annotation(EqualsAndHashCode.class);
+        Annotation toStringAnnotation = daoClazz.getAnnotation(ToString.class.getSimpleName())
+                .orElse(new Annotation(ToString.class));
+        Annotation equalsAndHashCodeAnnotation = daoClazz.getAnnotation(EqualsAndHashCode.class.getSimpleName())
+                .orElse(new Annotation(EqualsAndHashCode.class));
 
         toStringAnnotation.addParameterArray("exclude", excludeAttributes);
         equalsAndHashCodeAnnotation.addParameterArray("exclude", excludeAttributes);

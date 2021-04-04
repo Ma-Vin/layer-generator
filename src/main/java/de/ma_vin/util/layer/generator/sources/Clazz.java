@@ -172,4 +172,8 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
     public void addInterface(String interfaceName) {
         interfaces.add(interfaceName);
     }
+
+    public Optional<Annotation> getAnnotation(String annotationName){
+        return annotations.stream().filter(a-> a.getAnnotationName().equals(annotationName)).findFirst();
+    }
 }

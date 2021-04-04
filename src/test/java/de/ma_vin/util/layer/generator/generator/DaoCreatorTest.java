@@ -815,7 +815,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void testCreateDataAccessObjectUseIdGeneratorWithParent() {
+    public void testCreateDataAccessObjectUseIdGeneratorHasSuperClass() {
         when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
         when(entity.getParent()).thenReturn("AnotherDummy");
         when(entity.hasParent()).thenReturn(Boolean.TRUE);
@@ -832,6 +832,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.test.package.domain.group.Dummy;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
         expected.add("");
         expected.add("/**");
         expected.add(" * Generated dao class of Dummy");
@@ -840,7 +842,9 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" */");
         expected.add("@Data()");
         expected.add("@Entity()");
+        expected.add("@EqualsAndHashCode(callSuper = true)");
         expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(callSuper = true)");
         expected.add("public class DummyDao extends AnotherDummyDao {");
         expected.add("");
         expected.add("	@Override()");
@@ -1050,6 +1054,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
         expected.add("");
         expected.add("/**");
         expected.add(" * Generated dao class of Dummy");
@@ -1058,7 +1064,9 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" */");
         expected.add("@Data()");
         expected.add("@Entity()");
+        expected.add("@EqualsAndHashCode(callSuper = true)");
         expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(callSuper = true)");
         expected.add("public class DummyDao extends AnotherDummyDao {");
         expected.add("");
         expected.add("	@Column()");
