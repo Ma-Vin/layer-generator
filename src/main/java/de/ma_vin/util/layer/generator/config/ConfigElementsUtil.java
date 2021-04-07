@@ -1,8 +1,8 @@
 package de.ma_vin.util.layer.generator.config;
 
-public class ValidationUtil {
+public class ConfigElementsUtil {
 
-    private ValidationUtil() {
+    private ConfigElementsUtil() {
     }
 
     public static boolean validateRequired(String value) {

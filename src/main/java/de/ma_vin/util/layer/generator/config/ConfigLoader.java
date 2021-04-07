@@ -1,9 +1,6 @@
 package de.ma_vin.util.layer.generator.config;
 
-import de.ma_vin.util.layer.generator.config.elements.Config;
-import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Grouping;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.*;
 import lombok.Data;
 
 import javax.xml.XMLConstants;
@@ -17,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.maven.plugin.logging.Log;
 import org.xml.sax.SAXException;
@@ -65,6 +63,7 @@ public class ConfigLoader {
 
     public boolean complete() {
         removeNullLists();
+        completeOwner();
         if (!completeReferences()) {
             logger.error("Completion of references could not be completed");
             return false;
@@ -73,17 +72,33 @@ public class ConfigLoader {
             logger.error("Completion of parents could not be completed");
             return false;
         }
+        if (!completeFilterFields()) {
+            logger.error("Completion of filter fields at references could not be completed");
+            return false;
+        }
         return true;
     }
 
     private void removeNullLists() {
         if (config.getEntities() == null) {
             config.setEntities(new ArrayList<>());
+        } else {
+            removeNullList(config.getEntities());
         }
         if (config.getGroupings() == null) {
             config.setGroupings(new ArrayList<>());
+            return;
         }
-        config.getEntities().forEach(e -> {
+        config.getGroupings().forEach(g -> {
+            if (g.getEntities() == null) {
+                g.setEntities(new ArrayList<>());
+            }
+            removeNullList(g.getEntities());
+        });
+    }
+
+    private void removeNullList(List<Entity> entities) {
+        entities.forEach(e -> {
             if (e.getReferences() == null) {
                 e.setReferences(new ArrayList<>());
             }
@@ -92,40 +107,24 @@ public class ConfigLoader {
             }
             e.setParentRefs(new ArrayList<>());
         });
-        config.getGroupings().forEach(g -> {
-            if (g.getEntities() == null) {
-                g.setEntities(new ArrayList<>());
-            }
-            g.getEntities().forEach(e -> {
-                if (e.getReferences() == null) {
-                    e.setReferences(new ArrayList<>());
-                }
-                if (e.getFields() == null) {
-                    e.setFields(new ArrayList<>());
-                }
-                e.setParentRefs(new ArrayList<>());
-            });
-        });
+    }
+
+    private void completeOwner() {
+        config.getGroupings().forEach(g -> g.getEntities().forEach(e -> e.setGrouping(g)));
+        completeEntities(this::completeFieldOwner);
+    }
+
+    private boolean completeFieldOwner(List<Entity> entityList) {
+        entityList.forEach(e -> e.getFields().forEach(f -> f.setParentEntity(e)));
+        return true;
     }
 
     private boolean completeReferences() {
-        if (!completeReferencesOfEntities(config.getEntities())) {
-            return false;
-        }
-        for (Grouping g : config.getGroupings()) {
-            g.getEntities().forEach(e -> e.setGrouping(g));
-            if (!completeReferencesOfEntities(g.getEntities())) {
-                return false;
-            }
-        }
-        return true;
+        return completeEntities(this::completeReferencesOfEntities);
     }
 
     private boolean completeReferencesOfEntities(List<Entity> entityList) {
         for (Entity e : entityList) {
-            if (e.getReferences() == null) {
-                continue;
-            }
             for (Reference r : e.getReferences()) {
                 if (!completeReferences(r.getTargetEntity(), e, r)) {
                     return false;
@@ -136,19 +135,10 @@ public class ConfigLoader {
     }
 
     private boolean completeReferences(String targetEntityName, Entity actualEntity, Reference actualReference) {
-        for (Entity e : config.getEntities()) {
-            if (e.getBaseName().equals(targetEntityName)) {
-                addParentReferenceAndTarget(actualEntity, actualReference, e);
-                return true;
-            }
-        }
-        for (Grouping g : config.getGroupings()) {
-            for (Entity e : g.getEntities()) {
-                if (e.getBaseName().equals(targetEntityName)) {
-                    addParentReferenceAndTarget(actualEntity, actualReference, e);
-                    return true;
-                }
-            }
+        Optional<Entity> entity = getEntity(targetEntityName);
+        if (entity.isPresent()) {
+            addParentReferenceAndTarget(actualEntity, actualReference, entity.get());
+            return true;
         }
         logger.error(String.format("The target of reference %s could not be found", actualReference.getTargetEntity()));
         return false;
@@ -162,6 +152,7 @@ public class ConfigLoader {
         parentRef.setOwner(actualReference.isOwner());
         parentRef.setList(actualReference.isList());
         parentRef.setReferenceName(actualReference.getReferenceName());
+        parentRef.setReverse(true);
 
         targetEntity.getParentRefs().add(parentRef);
 
@@ -171,15 +162,7 @@ public class ConfigLoader {
     }
 
     private boolean completeParentEntities() {
-        if (!completeParentEntities(config.getEntities())) {
-            return false;
-        }
-        for (Grouping g : config.getGroupings()) {
-            if (!completeParentEntities(g.getEntities())) {
-                return false;
-            }
-        }
-        return true;
+        return completeEntities(this::completeParentEntities);
     }
 
     private boolean completeParentEntities(List<Entity> entities) {
@@ -193,25 +176,80 @@ public class ConfigLoader {
     }
 
     private boolean completeParentEntities(Entity actualEntity, String parentName) {
-        if (completeParentEntities(actualEntity, parentName, config.getEntities())) {
+        Optional<Entity> entity = getEntity(parentName);
+        if (entity.isPresent() && entity.get().isAbstract()) {
+            actualEntity.setRealParent(entity.get());
             return true;
-        }
-        for (Grouping g : config.getGroupings()) {
-            if (completeParentEntities(actualEntity, parentName, g.getEntities())) {
-                return true;
-            }
         }
         logger.error(String.format("The parent %s of entity %s could not be found", parentName, actualEntity.getBaseName()));
         return false;
     }
 
-    private boolean completeParentEntities(Entity actualEntity, String parentName, List<Entity> entities) {
+    Optional<Entity> getEntity(String entityName) {
+        Optional<Entity> result = config.getEntities().stream()
+                .filter(e -> e.getBaseName().equals(entityName))
+                .findFirst();
+        if (result.isEmpty()) {
+            result = config.getGroupings().stream()
+                    .flatMap(g -> g.getEntities().stream())
+                    .filter(e -> e.getBaseName().equals(entityName))
+                    .findFirst();
+        }
+        return result;
+    }
+
+    private boolean completeFilterFields() {
+        return completeEntities(this::completeFilterFields);
+    }
+
+    private boolean completeFilterFields(List<Entity> entities) {
+        boolean result = true;
         for (Entity e : entities) {
-            if (e.getBaseName().equals(parentName)) {
-                actualEntity.setRealParent(e);
-                return true;
+            for (Reference ref : e.getReferences()) {
+                if (ref.getFilterField() == null) {
+                    continue;
+                }
+                result = completeFilterFields(ref) && result;
             }
         }
-        return false;
+        return result;
+    }
+
+    private boolean completeFilterFields(Reference reference) {
+        Optional<Field> filterField = reference.getRealTargetEntity().getFields().stream()
+                .filter(f -> f.getFieldName().equals(reference.getFilterField()))
+                .findFirst();
+
+        if (filterField.isEmpty() || !filterField.get().isTypeEnum()) {
+            logger.error(String.format("The filter field %s of reference %s could not be found at entity %s or is not an enum type"
+                    , reference.getFilterField(), reference.getReferenceName(), reference.getTargetEntity()));
+            return false;
+        }
+        reference.setRealFilterField(filterField.get());
+
+        if (filterField.get().getDaoInfo() != null && Boolean.TRUE.equals(filterField.get().getDaoInfo().getNullable())) {
+            logger.warn(String.format("The filter field %s at %s is marked as nullable. This is not allowed and will be set to not nullable."
+                    , filterField.get(), reference.getTargetEntity()));
+            filterField.get().getDaoInfo().setNullable(Boolean.FALSE);
+        }
+
+        return true;
+    }
+
+    private boolean completeEntities(EntitiesCompleter entitiesCompleter) {
+        if (!entitiesCompleter.complete(config.getEntities())) {
+            return false;
+        }
+        for (Grouping g : config.getGroupings()) {
+            if (!entitiesCompleter.complete(g.getEntities())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @FunctionalInterface
+    private interface EntitiesCompleter {
+        boolean complete(List<Entity> entities);
     }
 }

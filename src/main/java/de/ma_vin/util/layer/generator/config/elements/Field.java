@@ -1,7 +1,10 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
-import de.ma_vin.util.layer.generator.config.ValidationUtil;
+import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.xml.bind.annotation.*;
 
@@ -11,6 +14,8 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
+@EqualsAndHashCode(exclude = {"parentEntity"})
+@ToString(exclude = {"parentEntity"})
 public class Field {
     /**
      * Name of the attribute
@@ -52,7 +57,11 @@ public class Field {
      */
     private DaoInfo daoInfo;
 
+    @XmlTransient
+    private Entity parentEntity;
+
     public boolean isValid() {
-        return ValidationUtil.validateRequired(fieldName) && ValidationUtil.validateRequired(type) && ValidationUtil.validateNonRequired(description) && ValidationUtil.validateNonRequired(typePackage) && (daoInfo == null || daoInfo.isValid());
+        return validateRequired(fieldName) && validateRequired(type) && validateNonRequired(description)
+                && validateNonRequired(typePackage) && (daoInfo == null || daoInfo.isValid());
     }
 }

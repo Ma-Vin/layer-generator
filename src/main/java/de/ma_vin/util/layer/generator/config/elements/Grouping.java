@@ -1,6 +1,7 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
-import de.ma_vin.util.layer.generator.config.ValidationUtil;
+import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -32,6 +33,6 @@ public class Grouping {
     private List<Entity> entities;
 
     public boolean isValid() {
-        return ValidationUtil.validateRequired(groupingPackage) && (entities == null || entities.stream().allMatch(Entity::isValid));
+        return validateRequired(groupingPackage) && (entities == null || entities.stream().allMatch(Entity::isValid));
     }
 }

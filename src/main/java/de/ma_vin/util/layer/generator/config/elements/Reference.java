@@ -1,9 +1,13 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
-import de.ma_vin.util.layer.generator.config.ValidationUtil;
+import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.xml.bind.annotation.*;
+import java.util.List;
 
 /**
  * Describes the reference to som Entity
@@ -11,6 +15,8 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
+@EqualsAndHashCode(exclude = {"realFilterField", "realTargetEntity", "parent"})
+@ToString(exclude = {"realFilterField", "realTargetEntity", "parent"})
 public class Reference {
 
     /**
@@ -24,6 +30,21 @@ public class Reference {
      */
     @XmlAttribute(required = true)
     private String targetEntity;
+
+    /**
+     * Field of enum type to filter references from one entity to another multiple times
+     */
+    @XmlAttribute
+    private String filterField;
+
+    @XmlTransient
+    private Field realFilterField;
+
+    /**
+     * Value which should be used for filtering.
+     */
+    @XmlAttribute
+    private String filterFieldValue;
 
     @XmlTransient
     private Entity realTargetEntity;
@@ -43,7 +64,102 @@ public class Reference {
     @XmlAttribute
     private boolean isList;
 
+    /**
+     * Indicator if this reference is created while aggregation and represents two or more references
+     */
+    @XmlTransient
+    private boolean isAggregated;
+
+    /**
+     * Indicator if this reference is pointing to the parent
+     */
+    @XmlTransient
+    private boolean isReverse;
+
     public boolean isValid() {
-        return ValidationUtil.validateRequired(targetEntity) && ValidationUtil.validateRequired(referenceName);
+        return validateRequired(targetEntity) && validateRequired(referenceName)
+                && validateNonRequired(filterField) && (filterField == null || validateNonRequired(filterFieldValue));
+    }
+
+    /**
+     * Util method since schemagen is called before getter will be created by lombok
+     * If more than one references point to the same entity only one is allowed to have a {@code null} at {@link Reference#filterField}
+     *
+     * @param references references to check
+     * @return {@code true} if valid
+     */
+    public static boolean isFilterFieldValid(List<Reference> references) {
+        return references.stream().filter(ref -> ref.isList).noneMatch(ref -> references.stream()
+                .filter(ref2 -> ref2.isList && ref.targetEntity.equals(ref2.targetEntity) && ref2.filterField == null)
+                .count() > 1);
+    }
+
+    /**
+     * Copies the the references to a new object
+     * This is just a workaround since schemagen is called before getter will be created by lombok ("cannot find symbol" errors)
+     * and methods are to use to be able to call doCallRealMethod
+     *
+     * @return The copy
+     */
+    public Reference copy() {
+        Reference result = new Reference();
+
+        result.referenceName = getReferenceName();
+        result.targetEntity = getTargetEntity();
+        result.filterField = getFilterField();
+        result.realFilterField = getRealFilterField();
+        result.filterFieldValue = getFilterFieldValue();
+        result.realTargetEntity = getRealTargetEntity();
+        result.parent = getParent();
+        result.isOwner = isOwner();
+        result.isList = isList();
+        result.isAggregated = isAggregated();
+        result.isReverse = isReverse();
+
+        return result;
+    }
+
+    public String getReferenceName() {
+        return referenceName;
+    }
+
+    public String getTargetEntity() {
+        return targetEntity;
+    }
+
+    public String getFilterField() {
+        return filterField;
+    }
+
+    public Field getRealFilterField() {
+        return realFilterField;
+    }
+
+    public String getFilterFieldValue() {
+        return filterFieldValue;
+    }
+
+    public Entity getRealTargetEntity() {
+        return realTargetEntity;
+    }
+
+    public Entity getParent() {
+        return parent;
+    }
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public boolean isList() {
+        return isList;
+    }
+
+    public boolean isAggregated() {
+        return isAggregated;
+    }
+
+    public boolean isReverse() {
+        return isReverse;
     }
 }

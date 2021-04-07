@@ -1,6 +1,7 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
-import de.ma_vin.util.layer.generator.config.ValidationUtil;
+import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -65,7 +66,7 @@ public class Config {
     private List<Entity> entities;
 
     public boolean isValid() {
-        return ValidationUtil.validateRequired(basePackage) && ValidationUtil.validateRequired(dtoPackage) && ValidationUtil.validateRequired(domainPackage) && ValidationUtil.validateRequired(daoPackage)
+        return validateRequired(basePackage) && validateRequired(dtoPackage) && validateRequired(domainPackage) && validateRequired(daoPackage)
                 && (groupings == null || groupings.stream().allMatch(Grouping::isValid))
                 && (entities == null || entities.stream().allMatch(Entity::isValid));
     }

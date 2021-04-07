@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,8 +36,13 @@ public class Annotation extends AbstractGenerateLines implements Comparable<Anno
 
     @Override
     public List<String> generate() {
+        Collections.sort(parameters);
         List<String> result = new ArrayList<>();
-        result.add(String.format("@%s(%s)", annotationName, getParametersText(parameters)));
+        if (parameters.isEmpty()) {
+            result.add(String.format("@%s", annotationName));
+        } else {
+            result.add(String.format("@%s(%s)", annotationName, getParametersText(parameters)));
+        }
         return result;
     }
 

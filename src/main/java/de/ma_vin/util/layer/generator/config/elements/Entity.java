@@ -1,6 +1,7 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
-import de.ma_vin.util.layer.generator.config.ValidationUtil;
+import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,8 +15,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
-@EqualsAndHashCode(exclude = {"references", "parentRefs"})
-@ToString(exclude = {"references", "parentRefs"})
+@EqualsAndHashCode(exclude = {"references", "parentRefs", "fields", "realParent"})
+@ToString(exclude = {"references", "parentRefs", "fields", "realParent"})
 public class Entity {
 
     /**
@@ -86,9 +87,9 @@ public class Entity {
     }
 
     public boolean isValid() {
-        return ValidationUtil.validateRequired(baseName) && models != null && ValidationUtil.validateNonRequired(description)
-                && ValidationUtil.validateNonRequired(identificationPrefix) && ValidationUtil.validateNonRequired(parent)
+        return validateRequired(baseName) && models != null && validateNonRequired(description)
+                && validateNonRequired(identificationPrefix) && validateNonRequired(parent)
                 && (fields == null || fields.stream().allMatch(Field::isValid))
-                && (references == null || references.stream().allMatch(Reference::isValid));
+                && (references == null || (references.stream().allMatch(Reference::isValid) && Reference.isFilterFieldValid(references)));
     }
 }
