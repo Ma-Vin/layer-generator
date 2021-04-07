@@ -96,11 +96,13 @@ public class AccessMapperCreator extends AbstractMapperCreator {
                     , referenceToParent.getTargetEntity(), entity.getBaseName()));
             return;
         }
-        Method convertMethod = createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, daoPackageName, DAO_POSTFIX
-                , DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant, true);
 
-        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent
-                , daoPackageName, DAO_POSTFIX, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant);
+        CreateMethodParameterContainer createMethodParams = getDaoCreateMethodParameterContainer(entity);
+
+        Method convertMethod = createConvertMethodWithParentWithoutMap(mapperClass, createMethodParams
+                , referenceToParent, daoPackageName, true);
+
+        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, createMethodParams, referenceToParent, daoPackageName);
 
         addFilterValueParameter(mapperClass, referenceToParent, convertMethod, convertMethodWithMap);
 
@@ -168,9 +170,10 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param daoPackageName name of base dao package
      */
     private void createConvertToDaoMethod(Clazz mapperClass, Entity entity, String daoPackageName) {
-        Method convertMethod = createConvertMethodWithoutMap(mapperClass, entity, DAO_POSTFIX, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant, true);
+        CreateMethodParameterContainer createMethodParams = getDaoCreateMethodParameterContainer(entity);
 
-        Method convertMethodWithMap = createConvertMethodBase(entity, DAO_POSTFIX, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant);
+        Method convertMethod = createConvertMethodWithoutMap(mapperClass, createMethodParams, true);
+        Method convertMethodWithMap = createConvertMethodBase(createMethodParams);
 
         addFilterValueParameter(mapperClass, entity, convertMethod, convertMethodWithMap);
 
@@ -427,11 +430,13 @@ public class AccessMapperCreator extends AbstractMapperCreator {
                     , referenceToParent.getTargetEntity(), entity.getBaseName()));
             return;
         }
-        createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, domainPackageName, DOMAIN_POSTFIX
-                , DAO_POSTFIX, AccessMapperCreator::isEntityRelevant);
 
-        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, domainPackageName
-                , DOMAIN_POSTFIX, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant);
+        CreateMethodParameterContainer createMethodParams = getDomainCreateMethodParameterContainer(entity);
+
+        createConvertMethodWithParentWithoutMap(mapperClass, createMethodParams, referenceToParent, domainPackageName);
+
+        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, createMethodParams, referenceToParent, domainPackageName);
+
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethodWithMap.addLine("%s result = %s(%s,%s %s);"
                 , entity.getBaseName()
@@ -546,9 +551,11 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param entity      entity whose properties are to map
      */
     private void createConvertToDomainMethod(Clazz mapperClass, Entity entity) {
-        createConvertMethodWithoutMap(mapperClass, entity, DOMAIN_POSTFIX, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant);
+        CreateMethodParameterContainer createMethodParams = getDomainCreateMethodParameterContainer(entity);
 
-        Method convertMethodWithMap = createConvertMethodBase(entity, DOMAIN_POSTFIX, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant);
+        createConvertMethodWithoutMap(mapperClass, createMethodParams);
+
+        Method convertMethodWithMap = createConvertMethodBase(createMethodParams);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE)
                 , MAPPED_OBJECTS_PARAMETER_TEXT);
 
@@ -674,5 +681,25 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         private String connectionTableName = null;
         private String sourceConnectionName = null;
         private String targetConnectionName = null;
+    }
+
+    /**
+     * Creates the parameter container for dao convert methods
+     *
+     * @param entity the entity which should be converted
+     * @return the parameter container
+     */
+    private CreateMethodParameterContainer getDaoCreateMethodParameterContainer(Entity entity) {
+        return new CreateMethodParameterContainer(entity, DAO_POSTFIX, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant);
+    }
+
+    /**
+     * Creates the parameter container for domain convert methods
+     *
+     * @param entity the entity which should be converted
+     * @return the parameter container
+     */
+    private CreateMethodParameterContainer getDomainCreateMethodParameterContainer(Entity entity) {
+        return new CreateMethodParameterContainer(entity, DOMAIN_POSTFIX, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant);
     }
 }
