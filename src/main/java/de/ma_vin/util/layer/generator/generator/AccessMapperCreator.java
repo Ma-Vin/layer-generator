@@ -7,7 +7,7 @@ import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Field;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
 import de.ma_vin.util.layer.generator.sources.Method;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
@@ -486,8 +486,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
                 , getLowerFirst(referenceToParent.getParent().getBaseName()), getUpperFirst(referenceToParent.getFilterField()));
         convertMethod.addLine("}", 1);
 
-        mapperClass.addImport(Slf4j.class.getName());
-        mapperClass.addAnnotation(Slf4j.class.getSimpleName());
+        mapperClass.addImport(Log4j2.class.getName());
+        mapperClass.addAnnotation(Log4j2.class.getSimpleName());
     }
 
     /**

@@ -9,7 +9,7 @@ import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
 import de.ma_vin.util.layer.generator.log.LogImpl;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-@Slf4j
+@Log4j2
 public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Mock

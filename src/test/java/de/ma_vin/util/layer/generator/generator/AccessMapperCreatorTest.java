@@ -2610,9 +2610,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
-        expected.add("import lombok.extern.slf4j.Slf4j;");
+        expected.add("import lombok.extern.log4j.Log4j2;");
         expected.add("");
-        expected.add("@Slf4j");
+        expected.add("@Log4j2");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
         expected.add("	private GroupingAccessMapper() {");
@@ -2751,9 +2751,9 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import de.test.package.enums.SomeEnum;");
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
-        expected.add("import lombok.extern.slf4j.Slf4j;");
+        expected.add("import lombok.extern.log4j.Log4j2;");
         expected.add("");
-        expected.add("@Slf4j");
+        expected.add("@Log4j2");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
         expected.add("	private GroupingAccessMapper() {");

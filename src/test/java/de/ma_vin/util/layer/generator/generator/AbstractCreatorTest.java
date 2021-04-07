@@ -2,7 +2,7 @@ package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.mockito.Mock;
 import org.opentest4j.AssertionFailedError;
 
@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@Slf4j
+@Log4j2
 public class AbstractCreatorTest {
     public static final String BASE_PACKAGE = "de.test.package";
     public static final String ENTITY_NAME = "Dummy";
