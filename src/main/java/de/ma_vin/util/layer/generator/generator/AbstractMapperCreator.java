@@ -69,7 +69,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     /**
      * Creates the singleton and get instance method
      *
-     * @param mapperClass
+     * @param mapperClass class which should get the getter
      */
     protected void createGetInstance(Clazz mapperClass) {
         Attribute instanceAttribute = new Attribute("instance", mapperClass.getClassName());
@@ -158,18 +158,40 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param classParameterPostFix       postfix for classes and parameters
      * @param sourceClassParameterPostFix postfix for classes and parameters which is to map
      * @param entityChecker               checker for relevance verification
+     * @return the created method
      */
-    protected void createConvertMethodWithoutMap(Clazz mapperClass, Entity entity, String classParameterPostFix
+    protected Method createConvertMethodWithoutMap(Clazz mapperClass, Entity entity, String classParameterPostFix
             , String sourceClassParameterPostFix, EntityRelevantChecker entityChecker) {
 
+        return createConvertMethodWithoutMap(mapperClass, entity, classParameterPostFix, sourceClassParameterPostFix, entityChecker, false);
+    }
+
+
+    /**
+     * Creates mapping methods without a map parameter
+     *
+     * @param mapperClass                 class where to add methods at
+     * @param entity                      entity whose properties are to map
+     * @param classParameterPostFix       postfix for classes and parameters
+     * @param sourceClassParameterPostFix postfix for classes and parameters which is to map
+     * @param entityChecker               checker for relevance verification
+     * @param singleValueModelRelevant    {@code true} if values, which are provided by only one model, should be passed as parameter.
+     * @return the created method
+     */
+    protected Method createConvertMethodWithoutMap(Clazz mapperClass, Entity entity, String classParameterPostFix
+            , String sourceClassParameterPostFix, EntityRelevantChecker entityChecker, boolean singleValueModelRelevant) {
+
         Method convertMethod = createConvertMethodBase(entity, classParameterPostFix, sourceClassParameterPostFix, entityChecker);
-        convertMethod.addLine("return %s(%s,%s new %s<>());"
+        convertMethod.addLine("return %s(%s,%s%s new %s<>());"
                 , getConvertMethodName(entity, classParameterPostFix)
                 , getLowerFirst(entity.getBaseName())
                 , hasIncludeChildrenParameter(entity, entityChecker) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , singleValueModelRelevant ? getParameterOfRelevantSingleModelValuesText(entity) : ""
                 , HashMap.class.getSimpleName());
         mapperClass.addMethod(convertMethod);
         mapperClass.addImport(HashMap.class.getName());
+
+        return convertMethod;
     }
 
     /**
@@ -182,22 +204,53 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param classParameterPostFix       postfix for classes and parameters
      * @param sourceClassParameterPostFix postfix for classes and parameters which is to map
      * @param entityChecker               checker for relevance verification
+     * @return the created method
      */
-    protected void createConvertMethodWithParentWithoutMap(Clazz mapperClass, Entity entity, Reference referenceToParent, String packageName
+    protected Method createConvertMethodWithParentWithoutMap(Clazz mapperClass, Entity entity, Reference referenceToParent, String packageName
             , String classParameterPostFix, String sourceClassParameterPostFix, EntityRelevantChecker entityChecker) {
+        return createConvertMethodWithParentWithoutMap(mapperClass, entity, referenceToParent, packageName
+                , classParameterPostFix, sourceClassParameterPostFix, entityChecker, false);
+    }
+
+    /**
+     * Creates mapping methods with a given parent but without a map parameter
+     *
+     * @param mapperClass                 class where to add methods at
+     * @param entity                      entity whose properties are to map
+     * @param referenceToParent           reference to parent which should be used for the parent parameter
+     * @param packageName                 name of base package
+     * @param classParameterPostFix       postfix for classes and parameters
+     * @param sourceClassParameterPostFix postfix for classes and parameters which is to map
+     * @param entityChecker               checker for relevance verification
+     * @param singleValueModelRelevant    {@code true} if values, which are provided by only one model, should be passed as parameter.
+     * @return the created method
+     */
+    protected Method createConvertMethodWithParentWithoutMap(Clazz mapperClass, Entity entity, Reference referenceToParent, String packageName
+            , String classParameterPostFix, String sourceClassParameterPostFix, EntityRelevantChecker entityChecker, boolean singleValueModelRelevant) {
 
         Method convertMethod = createConvertMethodWithParentBase(mapperClass, entity, referenceToParent, packageName
                 , classParameterPostFix, sourceClassParameterPostFix, entityChecker);
 
-        convertMethod.addLine("return %s(%s,%s parent, new %s<>());"
+        convertMethod.addLine("return %s(%s,%s parent,%s new %s<>());"
                 , getConvertMethodName(entity, classParameterPostFix)
                 , getLowerFirst(entity.getBaseName())
                 , hasIncludeChildrenParameter(entity, entityChecker) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
+                , singleValueModelRelevant ? getParameterOfRelevantSingleModelValuesText(entity) : ""
                 , HashMap.class.getSimpleName()
         );
         mapperClass.addMethod(convertMethod);
         mapperClass.addImport(HashMap.class.getName());
+
+        return convertMethod;
     }
+
+    /**
+     * Determines the values of parameters which are provided by only one model and should be set at some convert method call
+     *
+     * @param entity entity which is filtered
+     * @return Text which can be added as parameter
+     */
+    protected abstract String getParameterOfRelevantSingleModelValuesText(Entity entity);
 
     /**
      * Creates a basic convert method with parent parameter

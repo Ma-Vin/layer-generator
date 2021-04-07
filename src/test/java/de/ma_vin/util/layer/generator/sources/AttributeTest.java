@@ -85,7 +85,7 @@ public class AttributeTest {
         List<String> result = cut.generate();
         assertNotNull(result, "There should be any result");
         assertEquals(2, result.size(), "Wrong number of lines");
-        assertEquals("@TestAnnotation()", result.get(0));
+        assertEquals("@TestAnnotation", result.get(0));
         assertEquals("private String attributeName;", result.get(1));
     }
 

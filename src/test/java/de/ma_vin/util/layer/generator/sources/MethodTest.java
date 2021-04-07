@@ -115,7 +115,7 @@ public class MethodTest {
         List<String> result = cut.generate();
         assertNotNull(result, "There should be any result");
         assertEquals(3, result.size(), "Wrong number of lines");
-        assertEquals("@TestAnnotation()", result.get(0));
+        assertEquals("@TestAnnotation", result.get(0));
         assertEquals("private void methodName() {", result.get(1));
         assertEquals("}", result.get(2));
     }

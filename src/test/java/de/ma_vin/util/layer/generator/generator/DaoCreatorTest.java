@@ -31,7 +31,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     private DaoCreator cut;
 
-    private List<String> directoriesWhereRequestedToWrite = new ArrayList<>();
+    private final List<String> directoriesWhereRequestedToWrite = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
@@ -74,10 +74,11 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(parentEntity.getGrouping()).thenReturn(null);
 
-        when(parentReference.getTargetEntity()).thenReturn("Owner");
-        when(parentReference.getRealTargetEntity()).thenReturn(parentEntity);
-        when(parentReference.isList()).thenReturn(Boolean.TRUE);
-        when(parentReference.isOwner()).thenReturn(Boolean.TRUE);
+        setMockReturnsReference(parentReference, "owner", "Owner", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(parentReference, null, parentEntity, null);
+
+        doAnswer(a -> when(parentReference.getReferenceName()).thenReturn(a.getArgument(0)))
+                .when(parentReference).setReferenceName(anyString());
     }
 
     @Test
@@ -94,14 +95,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
@@ -135,14 +136,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
@@ -154,7 +155,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectUniqueRelation() {
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
 
@@ -172,8 +173,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"targetRef\"})");
@@ -181,10 +182,10 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@OneToOne(targetEntity = TargetDao.class, mappedBy = \"parentDummy\")");
+        expected.add("	@OneToOne(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
         expected.add("	private TargetDao targetRef;");
         expected.add("");
         expected.add("}");
@@ -196,7 +197,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectRelation() {
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
 
         List<String> expected = new ArrayList<>();
@@ -214,8 +215,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"targetRefs\"})");
@@ -223,10 +224,10 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@OneToMany(targetEntity = TargetDao.class, mappedBy = \"parentDummy\")");
+        expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
         expected.add("	private Collection<TargetDao> targetRefs;");
         expected.add("");
         expected.add("}");
@@ -238,7 +239,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectUniqueParentRelation() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(parentReference.isList()).thenReturn(Boolean.FALSE);
 
@@ -257,8 +258,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"parentOwner\"})");
@@ -266,7 +267,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("	@JoinColumn(name = \"OwnerId\", nullable = false)");
@@ -282,7 +283,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectParentRelation() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
 
         List<String> expected = new ArrayList<>();
@@ -300,8 +301,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"parentOwner\"})");
@@ -309,7 +310,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("	@JoinColumn(name = \"OwnerId\", nullable = false)");
@@ -359,8 +360,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\", \"parentAnotherOwner\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"parentOwner\", \"parentAnotherOwner\"})");
@@ -368,7 +369,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("	@JoinColumn(name = \"AnotherOwnerId\")");
@@ -389,7 +390,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectUniqueRelationNotOwner() {
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
@@ -408,8 +409,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"targetRef\"})");
@@ -417,7 +418,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("	@JoinColumn(name = \"targetRefId\")");
@@ -433,7 +434,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectRelationNotOwner() {
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
 
@@ -452,8 +453,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\"})");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(exclude = {\"targetRefs\"})");
@@ -461,10 +462,10 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@OneToMany(targetEntity = DummyToTargetDao.class, mappedBy = \"target\")");
+        expected.add("	@OneToMany(mappedBy = \"target\", targetEntity = DummyToTargetDao.class)");
         expected.add("	private Collection<DummyToTargetDao> targetRefs;");
         expected.add("");
         expected.add("}");
@@ -478,28 +479,28 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expectedConnection.add("import lombok.Data;");
         expectedConnection.add("import lombok.NoArgsConstructor;");
         expectedConnection.add("");
-        expectedConnection.add("@AllArgsConstructor()");
-        expectedConnection.add("@Data()");
-        expectedConnection.add("@Entity()");
+        expectedConnection.add("@AllArgsConstructor");
+        expectedConnection.add("@Data");
+        expectedConnection.add("@Entity");
         expectedConnection.add("@IdClass(DummyToTargetDao.DummyToTargetId.class)");
-        expectedConnection.add("@NoArgsConstructor()");
+        expectedConnection.add("@NoArgsConstructor");
         expectedConnection.add("@SuppressWarnings(\"java:S1948\")");
         expectedConnection.add("@Table(name = \"DummyToTargets\")");
         expectedConnection.add("public class DummyToTargetDao {");
         expectedConnection.add("");
-        expectedConnection.add("	@Id()");
+        expectedConnection.add("	@Id");
         expectedConnection.add("	@JoinColumn(name = \"DummyId\")");
         expectedConnection.add("	@ManyToOne(targetEntity = DummyDao.class)");
         expectedConnection.add("	private DummyDao dummy;");
         expectedConnection.add("");
-        expectedConnection.add("	@Id()");
+        expectedConnection.add("	@Id");
         expectedConnection.add("	@JoinColumn(name = \"TargetId\")");
         expectedConnection.add("	@OneToOne(targetEntity = TargetDao.class)");
         expectedConnection.add("	private TargetDao target;");
         expectedConnection.add("");
-        expectedConnection.add("	@AllArgsConstructor()");
-        expectedConnection.add("	@Data()");
-        expectedConnection.add("	@NoArgsConstructor()");
+        expectedConnection.add("	@AllArgsConstructor");
+        expectedConnection.add("	@Data");
+        expectedConnection.add("	@NoArgsConstructor");
         expectedConnection.add("	@SuppressWarnings(\"java:S1068\")");
         expectedConnection.add("	public static class DummyToTargetId implements Serializable {");
         expectedConnection.add("");
@@ -527,7 +528,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectUniqueParentRelationNotOwner() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(parentReference.isList()).thenReturn(Boolean.FALSE);
         when(parentReference.isOwner()).thenReturn(Boolean.FALSE);
@@ -544,14 +545,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
@@ -563,7 +564,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectParentRelationNotOwner() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(parentReference.isOwner()).thenReturn(Boolean.FALSE);
 
@@ -579,14 +580,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
@@ -598,7 +599,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectField() {
-        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
@@ -612,17 +613,17 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
-        expected.add("	@Column()");
+        expected.add("	@Column");
         expected.add("	private String anyField;");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
@@ -634,7 +635,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectFieldWithDaoInfo() {
-        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
         when(field.getDaoInfo()).thenReturn(daoInfo);
         when(field.getType()).thenReturn("CustomEnum");
         when(field.getTypePackage()).thenReturn("de.test.custom");
@@ -642,9 +643,9 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
         when(daoInfo.getColumnName()).thenReturn("differentName");
         when(daoInfo.getNullable()).thenReturn(Boolean.FALSE);
-        when(daoInfo.getLength()).thenReturn(Integer.valueOf(5));
-        when(daoInfo.getPrecision()).thenReturn(Integer.valueOf(4));
-        when(daoInfo.getScale()).thenReturn(Integer.valueOf(2));
+        when(daoInfo.getLength()).thenReturn(5);
+        when(daoInfo.getPrecision()).thenReturn(4);
+        when(daoInfo.getScale()).thenReturn(2);
         when(daoInfo.getUseEnumText()).thenReturn(Boolean.TRUE);
 
         List<String> expected = new ArrayList<>();
@@ -660,18 +661,18 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
-        expected.add("	@Column(name = \"differentName\", nullable = false, length = 5, precision = 4, scale = 2)");
+        expected.add("	@Column(length = 5, name = \"differentName\", nullable = false, precision = 4, scale = 2)");
         expected.add("	@Enumerated(EnumType.STRING)");
         expected.add("	private CustomEnum anyField;");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
@@ -683,7 +684,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectFieldWithDaoInfoDoNotUseEnumText() {
-        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
         when(field.getDaoInfo()).thenReturn(daoInfo);
         when(field.getType()).thenReturn("CustomEnum");
         when(field.getTypePackage()).thenReturn("de.test.custom");
@@ -708,17 +709,17 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
-        expected.add("	@Column()");
+        expected.add("	@Column");
         expected.add("	private CustomEnum anyField;");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
@@ -730,7 +731,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectFieldEnum() {
-        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
         when(field.isTypeEnum()).thenReturn(Boolean.TRUE);
         when(field.getType()).thenReturn("AnyEnum");
         when(field.getTypePackage()).thenReturn("the.enum.package");
@@ -748,18 +749,18 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
-        expected.add("	@Column()");
+        expected.add("	@Column");
         expected.add("	@Enumerated(EnumType.STRING)");
         expected.add("	private AnyEnum anyField;");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
@@ -787,22 +788,22 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@Override()");
+        expected.add("	@Override");
         expected.add("	public String getIdentification() {");
         expected.add("		return IdGenerator.generateIdentification(id, Dummy.ID_PREFIX);");
         expected.add("	}");
         expected.add("");
-        expected.add("	@Override()");
+        expected.add("	@Override");
         expected.add("	public void setIdentification(String identification) {");
         expected.add("		id = IdGenerator.generateId(identification, Dummy.ID_PREFIX);");
         expected.add("	}");
@@ -840,19 +841,19 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@EqualsAndHashCode(callSuper = true)");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(callSuper = true)");
         expected.add("public class DummyDao extends AnotherDummyDao {");
         expected.add("");
-        expected.add("	@Override()");
+        expected.add("	@Override");
         expected.add("	public String getIdentification() {");
         expected.add("		return IdGenerator.generateIdentification(id, Dummy.ID_PREFIX);");
         expected.add("	}");
         expected.add("");
-        expected.add("	@Override()");
+        expected.add("	@Override");
         expected.add("	public void setIdentification(String identification) {");
         expected.add("		id = IdGenerator.generateId(identification, Dummy.ID_PREFIX);");
         expected.add("	}");
@@ -882,22 +883,22 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@Override()");
+        expected.add("	@Override");
         expected.add("	public String getIdentification() {");
         expected.add("		return IdGenerator.generateIdentification(id, \"\");");
         expected.add("	}");
         expected.add("");
-        expected.add("	@Override()");
+        expected.add("	@Override");
         expected.add("	public void setIdentification(String identification) {");
         expected.add("		id = IdGenerator.generateId(identification, \"\");");
         expected.add("	}");
@@ -986,14 +987,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
@@ -1022,13 +1023,13 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@MappedSuperclass()");
+        expected.add("@Data");
+        expected.add("@MappedSuperclass");
         expected.add("public abstract class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
-        expected.add("	@Id()");
+        expected.add("	@Id");
         expected.add("	protected Long id;");
         expected.add("");
         expected.add("}");
@@ -1044,7 +1045,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         when(entity.hasParent()).thenReturn(Boolean.TRUE);
         when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
         when(entity.getRealParent()).thenReturn(parentEntity);
-        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
         when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
 
         List<String> expected = new ArrayList<>();
@@ -1062,15 +1063,258 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
-        expected.add("@Data()");
-        expected.add("@Entity()");
+        expected.add("@Data");
+        expected.add("@Entity");
         expected.add("@EqualsAndHashCode(callSuper = true)");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(callSuper = true)");
         expected.add("public class DummyDao extends AnotherDummyDao {");
         expected.add("");
-        expected.add("	@Column()");
+        expected.add("	@Column");
         expected.add("	private String anyField;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectAggregatedChildRef() {
+        Reference sameTargetReference = mock(Reference.class);
+
+        setMockReturnsReference(sameTargetReference, "AnotherTargetRef", "Target", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(sameTargetReference, entity, targetEntity, null);
+
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference, sameTargetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import java.util.Collection;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@EqualsAndHashCode(exclude = {\"aggTargets\"})");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(exclude = {\"aggTargets\"})");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
+        expected.add("	private Collection<TargetDao> aggTargets;");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectNotAggregatedChildRef() {
+        Reference sameTargetReference = mock(Reference.class);
+
+        setMockReturnsReference(sameTargetReference, "AnotherTargetRef", "Target", null, null, Boolean.FALSE, Boolean.FALSE);
+        setMockReturnsReference(sameTargetReference, entity, targetEntity, null);
+
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference, sameTargetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import java.util.Collection;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@JoinColumn(name = \"anotherTargetRefId\")");
+        expected.add("	@ManyToOne(targetEntity = TargetDao.class)");
+        expected.add("	private TargetDao anotherTargetRef;");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
+        expected.add("	private Collection<TargetDao> targetRefs;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectAggregatedParentRef() {
+        Reference sameParentReference = mock(Reference.class);
+        setMockReturnsReference(sameParentReference, "AnotherReferenceToParent", "Owner", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(sameParentReference, entity, parentEntity, null);
+
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, sameParentReference));
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.dao.OwnerDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(exclude = {\"parentOwner\"})");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	@JoinColumn(name = \"OwnerId\", nullable = false)");
+        expected.add("	@ManyToOne(targetEntity = OwnerDao.class)");
+        expected.add("	private OwnerDao parentOwner;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectNotAggregatedParentRef() {
+        Reference sameParentReference = mock(Reference.class);
+
+        setMockReturnsReference(sameParentReference, "AnotherReferenceToParent", "Owner", null, null, Boolean.FALSE, Boolean.FALSE);
+        setMockReturnsReference(sameParentReference, entity, parentEntity, null);
+
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, sameParentReference));
+        when(parentReference.getParent()).thenReturn(entity);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.dao.OwnerDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(exclude = {\"parentOwner\"})");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	@JoinColumn(name = \"OwnerId\", nullable = false)");
+        expected.add("	@ManyToOne(targetEntity = OwnerDao.class)");
+        expected.add("	private OwnerDao parentOwner;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectMoveOwnershipChildRef() {
+        Reference sameTargetReference = mock(Reference.class);
+
+        setMockReturnsReference(sameTargetReference, "AnotherTargetRef", "Target", null, null, Boolean.FALSE, Boolean.TRUE);
+        setMockReturnsReference(sameTargetReference, entity, targetEntity, null);
+
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference, sameTargetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import java.util.Collection;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@JoinColumn(name = \"anotherTargetRefId\")");
+        expected.add("	@ManyToOne(targetEntity = TargetDao.class)");
+        expected.add("	private TargetDao anotherTargetRef;");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
+        expected.add("	private Collection<TargetDao> targetRefs;");
         expected.add("");
         expected.add("}");
 

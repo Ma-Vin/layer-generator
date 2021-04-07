@@ -14,9 +14,8 @@ import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class to create sources of data access objects
@@ -125,14 +124,12 @@ public class DaoCreator extends AbstractObjectCreator {
         if (field.isTypeEnum() && (field.getDaoInfo() == null || Boolean.TRUE.equals(field.getDaoInfo().getUseEnumText()))) {
             attribute.addAnnotation("Enumerated", null, "EnumType.STRING");
         }
+        Annotation columnAnnotation = getOrCreateAndAddAnnotation(attribute, Column.class.getSimpleName());
+        if (isFieldNotNullable(field)) {
+            columnAnnotation.addParameter("nullable", "false");
+        }
         if (field.getDaoInfo() != null) {
-            Annotation columnAnnotation = attribute.getAnnotations().stream()
-                    .filter(a -> Column.class.getSimpleName().equals(a.getAnnotationName()))
-                    .findFirst()
-                    .orElse(new Annotation(Column.class));
-
             addParamIfExists(columnAnnotation, "name", field.getDaoInfo().getColumnName());
-            addParamIfExists(columnAnnotation, "nullable", field.getDaoInfo().getNullable());
             addParamIfExists(columnAnnotation, "length", field.getDaoInfo().getLength());
             addParamIfExists(columnAnnotation, "precision", field.getDaoInfo().getPrecision());
             addParamIfExists(columnAnnotation, "scale", field.getDaoInfo().getScale());
@@ -152,10 +149,15 @@ public class DaoCreator extends AbstractObjectCreator {
         }
     }
 
-    private void addParamIfExists(Annotation annotation, String annotationPropertyName, Boolean annotationPropertyValue) {
-        if (annotationPropertyValue != null) {
-            annotation.addParameter(annotationPropertyName, annotationPropertyValue.toString());
-        }
+    /**
+     * Checks whether a field is nullable or not
+     *
+     * @param field field to check
+     * @return {@code true} if the field is not nullable
+     */
+    private boolean isFieldNotNullable(Field field) {
+        return (field.isTypeEnum() && field.getParentEntity().getReferences().stream().anyMatch(ref -> field.equals(ref.getRealFilterField()))
+                || (field.getDaoInfo() != null && Boolean.FALSE.equals(field.getDaoInfo().getNullable())));
     }
 
     @Override
@@ -180,13 +182,93 @@ public class DaoCreator extends AbstractObjectCreator {
 
         List<String> attributes = new ArrayList<>();
 
-        boolean isSingle = entity.getParentRefs().size() == 1;
-        entity.getParentRefs().stream()
+        List<Reference> treatedParentReferences = getTreatedReferences(entity.getParentRefs());
+        boolean isSingle = treatedParentReferences.stream().filter(Reference::isOwner).count() == 1;
+        treatedParentReferences.stream()
                 .filter(Reference::isOwner)
                 .forEach(ref -> addParentRef(daoClazz, packageName, ref, isSingle, attributes));
-        entity.getReferences().forEach(ref -> addChildRef(daoClazz, packageName, ref, attributes, packageDir));
+        getTreatedReferences(entity.getReferences()).forEach(ref -> addChildRef(daoClazz, packageName, ref, attributes, packageDir));
 
         addExcludeAttributes(daoClazz, attributes);
+    }
+
+    /**
+     * Returns an aggregated list of references. Multi references to the same target will be reduced to a single one.
+     * Single reference will lose their ownership.
+     * The model should provide some filter {@link Field} to be able to distinguish them at mapper
+     *
+     * @param references The list to treated
+     * @return the treated list of references
+     */
+    public static List<Reference> getTreatedReferences(List<Reference> references) {
+        List<Reference> tempList = getAggregatedReferences(references);
+        return getMovedOwnershipReferences(tempList);
+    }
+
+    /**
+     * Sets the ownership at single reference to {@link Boolean#FALSE} if there exists some other reference to the same target
+     *
+     * @param references The list to check ownership
+     * @return List of modified references
+     */
+    public static List<Reference> getMovedOwnershipReferences(List<Reference> references) {
+        Set<Reference> referencesToModify = new HashSet<>();
+        references.stream().filter(ref ->
+                references.stream().anyMatch(ref2 -> ref.isOwner() && !ref.equals(ref2) && !ref.isList() && ref.getTargetEntity().equals(ref2.getTargetEntity()))
+        ).forEach(referencesToModify::add);
+
+        List<Reference> result = references.stream().filter(ref -> !referencesToModify.contains(ref)).collect(Collectors.toList());
+
+        referencesToModify.forEach(ref -> {
+            Reference modifiedReference = ref.copy();
+            modifiedReference.setOwner(false);
+            result.add(modifiedReference);
+        });
+
+        return result;
+    }
+
+    /**
+     * Returns an aggregated list of references. Multi references to the same target will be reduced to a single one.
+     * The model should provide some filter {@link Field} to be able to distinguish them at mapper
+     *
+     * @param references The list to aggregate
+     * @return the aggregated list of references
+     */
+    public static List<Reference> getAggregatedReferences(List<Reference> references) {
+        Map<AggregationKey, List<Reference>> sameTargetReferenceMap = new HashMap<>();
+
+        references.forEach(ref -> {
+            if (isToAggregate(ref, references)) {
+                AggregationKey key = new AggregationKey(ref);
+                if (!sameTargetReferenceMap.containsKey(key)) {
+                    sameTargetReferenceMap.put(key, new ArrayList<>());
+                }
+                sameTargetReferenceMap.get(key).add(ref);
+            }
+        });
+
+        List<Reference> result = references.stream().filter(ref -> !ref.isList() || !sameTargetReferenceMap.containsKey(new AggregationKey(ref))).collect(Collectors.toList());
+
+        sameTargetReferenceMap.forEach((key, refList) -> {
+            Reference aggReference = refList.get(0).copy();
+            aggReference.setReferenceName("agg" + getUpperFirst(aggReference.isReverse() ? aggReference.getParent().getBaseName() : aggReference.getTargetEntity()));
+            aggReference.setAggregated(true);
+            result.add(aggReference);
+        });
+
+        return result;
+    }
+
+    /**
+     * Checks whether a reference need to be aggregate or not
+     *
+     * @param reference     reference to check
+     * @param allReferences list of available references
+     * @return {@code true} if the reference need to be aggregated
+     */
+    public static boolean isToAggregate(Reference reference, List<Reference> allReferences) {
+        return allReferences.stream().anyMatch(ref2 -> !reference.equals(ref2) && reference.isList() && ref2.isList() && AggregationKey.isEqualKey(reference, ref2));
     }
 
     /**
@@ -429,5 +511,21 @@ public class DaoCreator extends AbstractObjectCreator {
         innerIdClazz.addAttribute(new Attribute(targetIdName, Long.class.getSimpleName()));
 
         return innerIdClazz;
+    }
+
+    @Data
+    private static class AggregationKey {
+        String targetName;
+        boolean isOwner;
+
+        AggregationKey(Reference reference) {
+            targetName = reference.getTargetEntity();
+            isOwner = reference.isOwner();
+        }
+
+        private static boolean isEqualKey(Reference ref1, Reference ref2) {
+            return ref1.getTargetEntity().equals(ref2.getTargetEntity())
+                    && ref1.isOwner() == ref2.isOwner();
+        }
     }
 }

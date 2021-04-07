@@ -183,7 +183,7 @@ public class ClazzTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.abc;");
         expected.add("");
-        expected.add("@Annotation()");
+        expected.add("@Annotation");
         expected.add("public class Dummy {");
         expected.add("");
         expected.add("}");

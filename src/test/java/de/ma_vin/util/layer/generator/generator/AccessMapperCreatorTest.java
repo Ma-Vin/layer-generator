@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,21 +29,27 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public static final String DAO_PACKAGE_NAME = BASE_PACKAGE + ".dao";
     public static final String DOMAIN_PACKAGE_NAME = BASE_PACKAGE + ".domain";
     private AccessMapperCreator cut;
-    private List<Entity> entities = new ArrayList<>();
+    private final List<Entity> entities = new ArrayList<>();
 
     @Mock
     private Entity parentEntity;
     @Mock
-    private Reference parentReference;
+    private Reference toParentReference;
+    @Mock
+    private Reference fromParentReference;
     @Mock
     private Entity anotherParentEntity;
     @Mock
-    private Reference anotherParentReference;
+    private Reference anotherToParentReference;
+    @Mock
+    private Reference anotherFromParentReference;
 
     @Mock
     private Entity subEntity;
     @Mock
-    private Reference subReference;
+    private Reference toSubReference;
+    @Mock
+    private Reference fromSubReference;
 
     @Override
     @BeforeEach
@@ -88,12 +95,12 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(parentEntity.getGrouping()).thenReturn(null);
         when(parentEntity.hasParent()).thenReturn(Boolean.FALSE);
         when(parentEntity.hasNoParent()).thenReturn(Boolean.TRUE);
+        when(parentEntity.getReferences()).thenReturn(Collections.singletonList(fromParentReference));
 
-        when(parentReference.getTargetEntity()).thenReturn("Owner");
-        when(parentReference.getRealTargetEntity()).thenReturn(parentEntity);
-        when(parentReference.getReferenceName()).thenReturn("dummy");
-        when(parentReference.isList()).thenReturn(Boolean.TRUE);
-        when(parentReference.isOwner()).thenReturn(Boolean.TRUE);
+        setMockReturnsReference(toParentReference, "dummy", "Owner", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(toParentReference, null, parentEntity, null);
+        setMockReturnsReference(fromParentReference, "dummy", null, null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(fromParentReference, parentEntity, null, null);
 
         when(anotherParentEntity.getBaseName()).thenReturn("AnotherOwner");
         when(anotherParentEntity.getDescription()).thenReturn("Another owner description");
@@ -102,12 +109,13 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(anotherParentEntity.getGrouping()).thenReturn(null);
         when(anotherParentEntity.hasParent()).thenReturn(Boolean.FALSE);
         when(anotherParentEntity.hasNoParent()).thenReturn(Boolean.TRUE);
+        when(anotherParentEntity.getReferences()).thenReturn(Collections.singletonList(anotherFromParentReference));
 
-        when(anotherParentReference.getTargetEntity()).thenReturn("AnotherOwner");
-        when(anotherParentReference.getRealTargetEntity()).thenReturn(anotherParentEntity);
-        when(anotherParentReference.getReferenceName()).thenReturn("anotherDummy");
-        when(anotherParentReference.isList()).thenReturn(Boolean.TRUE);
-        when(anotherParentReference.isOwner()).thenReturn(Boolean.TRUE);
+        setMockReturnsReference(anotherToParentReference, "anotherDummy", "AnotherOwner", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(anotherToParentReference, null, anotherParentEntity, null);
+        when(anotherToParentReference.isReverse()).thenReturn(Boolean.TRUE);
+        setMockReturnsReference(anotherFromParentReference, "anotherDummy", null, null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(anotherFromParentReference, anotherParentEntity, null, null);
 
         when(subEntity.getBaseName()).thenReturn("Child");
         when(subEntity.getDescription()).thenReturn("child description");
@@ -116,12 +124,13 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(subEntity.getGrouping()).thenReturn(grouping);
         when(subEntity.hasParent()).thenReturn(Boolean.FALSE);
         when(subEntity.hasNoParent()).thenReturn(Boolean.TRUE);
+        when(subEntity.getParentRefs()).thenReturn(Collections.singletonList(fromSubReference));
 
-        when(subReference.getTargetEntity()).thenReturn("Child");
-        when(subReference.getRealTargetEntity()).thenReturn(subEntity);
-        when(subReference.getReferenceName()).thenReturn("child");
-        when(subReference.isList()).thenReturn(Boolean.TRUE);
-        when(subReference.isOwner()).thenReturn(Boolean.TRUE);
+        setMockReturnsReference(toSubReference, "child", "Child", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(toSubReference, null, subEntity, null);
+        setMockReturnsReference(fromSubReference, "child", null, null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(fromSubReference, subEntity, null, null);
+        when(fromSubReference.isReverse()).thenReturn(Boolean.TRUE);
     }
 
     @Test
@@ -211,7 +220,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperField() {
-        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -298,7 +307,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperSingleRef() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -386,7 +395,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -472,7 +481,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiRef() {
         when(targetReference.getParent()).thenReturn(entity);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -568,25 +577,23 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiRefOwnerAndNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
-        when(subReference.getTargetEntity()).thenReturn("Target");
-        when(subReference.getReferenceName()).thenReturn("targetRef");
-        when(subReference.getRealTargetEntity()).thenReturn(targetEntity);
-        when(subReference.isOwner()).thenReturn(Boolean.FALSE);
-        when(subReference.getParent()).thenReturn(subEntity);
+        Reference fromTargetReference = mock(Reference.class);
+        setMockReturnsReference(fromTargetReference, "TargetRef", "Dummy", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(fromTargetReference, targetEntity, entity, null);
 
-        when(parentReference.getParent()).thenReturn(targetEntity);
-        when(parentReference.getRealTargetEntity()).thenReturn(entity);
-        when(parentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
+        Reference anotherTargetReference = mock(Reference.class);
+        setMockReturnsReference(anotherTargetReference, "TargetRef", "Target", null, null, Boolean.TRUE, Boolean.FALSE);
+        setMockReturnsReference(anotherTargetReference, subEntity, targetEntity, null);
 
-        when(anotherParentReference.getParent()).thenReturn(targetEntity);
-        when(anotherParentReference.getRealTargetEntity()).thenReturn(subEntity);
-        when(anotherParentReference.getTargetEntity()).thenReturn("Child");
-        when(anotherParentReference.getReferenceName()).thenReturn("targetRef");
-        when(anotherParentReference.isOwner()).thenReturn(Boolean.FALSE);
+        Reference fromAnotherTargetReference = mock(Reference.class);
+        setMockReturnsReference(fromAnotherTargetReference, "TargetRef", "Child", null, null, Boolean.TRUE, Boolean.FALSE);
+        setMockReturnsReference(fromAnotherTargetReference, targetEntity, subEntity, null);
 
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
-        when(subEntity.getReferences()).thenReturn(Arrays.asList(subReference));
-        when(targetEntity.getParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
+
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(subEntity.getReferences()).thenReturn(Collections.singletonList(anotherTargetReference));
+        when(subEntity.getParentRefs()).thenReturn(Collections.emptyList());
+        when(targetEntity.getParentRefs()).thenReturn(Arrays.asList(fromTargetReference, fromAnotherTargetReference));
         entities.add(subEntity);
         entities.add(targetEntity);
 
@@ -765,7 +772,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	public static Target convertToTarget(TargetDao target, Dummy parent, Map<String, IIdentifiable> mappedObjects) {");
         expected.add("		Target result = convertToTarget(target, mappedObjects);");
         expected.add("		if (result != null) {");
-        expected.add("			parent.getDummys().add(result);");
+        expected.add("			parent.getTargetRefs().add(result);");
         expected.add("		}");
         expected.add("		return result;");
         expected.add("	}");
@@ -813,7 +820,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		TargetDao result = convertToTargetDao(target, mappedObjects);");
         expected.add("		if (result != null) {");
         expected.add("			result.setParentDummy(parent);");
-        expected.add("			parent.getDummys().add(result);");
+        expected.add("			parent.getTargetRefs().add(result);");
         expected.add("		}");
         expected.add("		return result;");
         expected.add("	}");
@@ -839,7 +846,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperMultiRefNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -938,8 +945,12 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperParentSingleRef() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(toParentReference));
+        when(toParentReference.getParent()).thenReturn(entity);
+        when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
+        when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
+
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
 
@@ -1052,9 +1063,16 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperMultiParentSingleRef() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
-        when(parentReference.isList()).thenReturn(Boolean.FALSE);
-        when(anotherParentReference.isList()).thenReturn(Boolean.FALSE);
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(toParentReference.getParent()).thenReturn(entity);
+        when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
+        when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
+        when(anotherToParentReference.getParent()).thenReturn(entity);
+        when(anotherFromParentReference.getRealTargetEntity()).thenReturn(entity);
+        when(anotherFromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
+
+        when(toParentReference.isList()).thenReturn(Boolean.FALSE);
+        when(anotherToParentReference.isList()).thenReturn(Boolean.FALSE);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -1188,8 +1206,12 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperParentMultiRef() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(toParentReference));
+        when(toParentReference.getParent()).thenReturn(entity);
+        when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
+        when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
+
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
 
         List<String> expected = new ArrayList<>();
@@ -1312,7 +1334,13 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperMultiParentMultiRef() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(toParentReference.getParent()).thenReturn(entity);
+        when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
+        when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
+        when(anotherToParentReference.getParent()).thenReturn(entity);
+        when(anotherFromParentReference.getRealTargetEntity()).thenReturn(entity);
+        when(anotherFromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -1447,10 +1475,15 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperMultiParentMultiRefOwnerAndNotOwner() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
-        when(parentReference.getParent()).thenReturn(entity);
-        when(anotherParentReference.isOwner()).thenReturn(Boolean.FALSE);
-        when(anotherParentReference.getParent()).thenReturn(entity);
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(toParentReference.getParent()).thenReturn(entity);
+        when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
+        when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
+        when(anotherToParentReference.getParent()).thenReturn(entity);
+        when(anotherFromParentReference.getRealTargetEntity()).thenReturn(entity);
+        when(anotherFromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
+
+        when(anotherToParentReference.isOwner()).thenReturn(Boolean.FALSE);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -1670,9 +1703,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperSingleRefWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
-        when(targetEntity.getReferences()).thenReturn(Arrays.asList(subReference));
-        when(subReference.getParent()).thenReturn(targetEntity);
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetEntity.getReferences()).thenReturn(Collections.singletonList(toSubReference));
+        when(toSubReference.getParent()).thenReturn(targetEntity);
+        when(fromSubReference.getRealTargetEntity()).thenReturn(targetEntity);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -1761,9 +1795,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
-        when(targetEntity.getReferences()).thenReturn(Arrays.asList(subReference));
-        when(subReference.getParent()).thenReturn(targetEntity);
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetEntity.getReferences()).thenReturn(Collections.singletonList(toSubReference));
+        when(toSubReference.getParent()).thenReturn(targetEntity);
+        when(fromSubReference.getRealTargetEntity()).thenReturn(targetEntity);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -1849,9 +1884,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiRefWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
-        when(targetEntity.getReferences()).thenReturn(Arrays.asList(subReference));
-        when(subReference.getParent()).thenReturn(targetEntity);
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetEntity.getReferences()).thenReturn(Collections.singletonList(toSubReference));
+        when(toSubReference.getParent()).thenReturn(targetEntity);
+        when(fromSubReference.getRealTargetEntity()).thenReturn(targetEntity);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -1949,9 +1985,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperMultiRefNotOwnerWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
-        when(targetEntity.getReferences()).thenReturn(Arrays.asList(subReference));
-        when(subReference.getParent()).thenReturn(targetEntity);
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetEntity.getReferences()).thenReturn(Collections.singletonList(toSubReference));
+        when(toSubReference.getParent()).thenReturn(targetEntity);
+        when(fromSubReference.getRealTargetEntity()).thenReturn(targetEntity);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -2161,7 +2198,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiRefParentNotRelevant() {
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(toParentReference));
 
         List<String> expected = getDefaultExpected();
 
@@ -2172,8 +2209,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperSingleRefParentNotRelevant() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference));
-        when(parentReference.isList()).thenReturn(Boolean.FALSE);
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(toParentReference));
+        when(toParentReference.isList()).thenReturn(Boolean.FALSE);
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
 
         List<String> expected = getDefaultExpected();
@@ -2187,7 +2224,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperMultiRefChildNotRelevant() {
         when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
         when(targetReference.getParent()).thenReturn(entity);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
 
         List<String> expected = getDefaultExpected();
 
@@ -2201,7 +2238,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
 
         List<String> expected = getDefaultExpected();
 
@@ -2226,9 +2263,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
         when(parentEntity.isAbstract()).thenReturn(Boolean.TRUE);
         when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
-        when(parentEntity.getReferences()).thenReturn(Arrays.asList(subReference));
-        when(parentEntity.getFields()).thenReturn(Arrays.asList(field));
-        when(subReference.getParent()).thenReturn(parentEntity);
+        when(parentEntity.getReferences()).thenReturn(Collections.singletonList(toSubReference));
+        when(parentEntity.getFields()).thenReturn(Collections.singletonList(field));
+        when(toSubReference.getParent()).thenReturn(parentEntity);
+        when(fromSubReference.getRealTargetEntity()).thenReturn(parentEntity);
+        when(fromSubReference.getTargetEntity()).thenReturn("AnotherDummy");
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -2325,4 +2364,496 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
 
+    @Test
+    public void testCreateAccessMapperAggregateRef() {
+        setMockReturnsReference(targetReference, entity, targetEntity, field);
+        setMockReturnsReference(targetReference, "TargetRef", "Target", "anyField", "ENUM_VALUE_A", Boolean.TRUE, Boolean.TRUE);
+        Reference sameTargetReference = mock(Reference.class);
+        setMockReturnsReference(sameTargetReference, entity, targetEntity, field);
+        setMockReturnsReference(sameTargetReference, "AnotherTargetRef", "Target", "anyField", "ENUM_VALUE_B", Boolean.TRUE, Boolean.TRUE);
+
+        when(field.getType()).thenReturn("SomeEnum");
+        when(field.getTypePackage()).thenReturn("de.test.package.enums");
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference, sameTargetReference));
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
+        expected.add("import java.util.ArrayList;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public class GroupingAccessMapper {");
+        expected.add("");
+        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingAccessMapper instance;");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, boolean includeChildren) {");
+        expected.add("		return convertToDummy(dummy, includeChildren, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"Dummy\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (Dummy) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		Dummy result = new Dummy();");
+        expected.add("");
+        expected.add("		if (includeChildren) {");
+        expected.add("			dummy.getAggTargets().forEach(arg ->");
+        expected.add("					GroupingAccessMapper.convertToTarget(arg, result, mappedObjects)");
+        expected.add("			);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, boolean includeChildren) {");
+        expected.add("		return convertToDummyDao(dummy, includeChildren, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"DummyDao\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (DummyDao) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setAggTargets(new ArrayList<>());");
+        expected.add("		if (includeChildren) {");
+        expected.add("			dummy.getTargetRefs().forEach(arg ->");
+        expected.add("					GroupingAccessMapper.convertToTargetDao(arg, result, mappedObjects)");
+        expected.add("			);");
+        expected.add("			dummy.getAnotherTargetRefs().forEach(arg ->");
+        expected.add("					GroupingAccessMapper.convertToTargetDao(arg, result, mappedObjects)");
+        expected.add("			);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingAccessMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperAggregateRefFilterIsNotDomain() {
+        setMockReturnsReference(targetReference, entity, targetEntity, field);
+        setMockReturnsReference(targetReference, "TargetRef", "Target", "anyField", "ENUM_VALUE_A", Boolean.TRUE, Boolean.TRUE);
+        Reference sameTargetReference = mock(Reference.class);
+        setMockReturnsReference(sameTargetReference, entity, targetEntity, field);
+        setMockReturnsReference(sameTargetReference, "AnotherTargetRef", "Target", "anyField", "ENUM_VALUE_B", Boolean.TRUE, Boolean.TRUE);
+
+        when(field.getModels()).thenReturn(Models.DAO);
+        when(field.getType()).thenReturn("SomeEnum");
+        when(field.getTypePackage()).thenReturn("de.test.package.enums");
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference, sameTargetReference));
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
+        expected.add("import de.test.package.enums.SomeEnum;");
+        expected.add("import java.util.ArrayList;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public class GroupingAccessMapper {");
+        expected.add("");
+        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingAccessMapper instance;");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, boolean includeChildren) {");
+        expected.add("		return convertToDummy(dummy, includeChildren, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"Dummy\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (Dummy) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		Dummy result = new Dummy();");
+        expected.add("");
+        expected.add("		if (includeChildren) {");
+        expected.add("			dummy.getAggTargets().forEach(arg ->");
+        expected.add("					GroupingAccessMapper.convertToTarget(arg, result, mappedObjects)");
+        expected.add("			);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, boolean includeChildren) {");
+        expected.add("		return convertToDummyDao(dummy, includeChildren, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"DummyDao\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (DummyDao) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setAggTargets(new ArrayList<>());");
+        expected.add("		if (includeChildren) {");
+        expected.add("			dummy.getTargetRefs().forEach(arg ->");
+        expected.add("					GroupingAccessMapper.convertToTargetDao(arg, result, SomeEnum.ENUM_VALUE_A, mappedObjects)");
+        expected.add("			);");
+        expected.add("			dummy.getAnotherTargetRefs().forEach(arg ->");
+        expected.add("					GroupingAccessMapper.convertToTargetDao(arg, result, SomeEnum.ENUM_VALUE_B, mappedObjects)");
+        expected.add("			);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingAccessMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+
+    @Test
+    public void testCreateAccessMapperParentAggregateRef() {
+        setMockReturnsReference(toParentReference, "someDummy", "Owner", "anyField", "ENUM_VALUE_A", Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(toParentReference, entity, parentEntity, field);
+        when(toParentReference.isReverse()).thenReturn(Boolean.TRUE);
+        setMockReturnsReference(anotherToParentReference, "anotherDummy", "Owner", "anyField", "ENUM_VALUE_B", Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(anotherToParentReference, entity, parentEntity, field);
+        when(anotherToParentReference.isReverse()).thenReturn(Boolean.TRUE);
+
+        setMockReturnsReference(fromParentReference, "someDummy", "Dummy", "anyField", "ENUM_VALUE_A", Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(fromParentReference, parentEntity, entity, field);
+        setMockReturnsReference(anotherFromParentReference, "anotherDummy", "Dummy", "anyField", "ENUM_VALUE_B", Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(anotherFromParentReference, parentEntity, entity, field);
+
+        when(field.getType()).thenReturn("SomeEnum");
+        when(field.getTypePackage()).thenReturn("de.test.package.enums");
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
+        when(parentEntity.getReferences()).thenReturn(Arrays.asList(fromParentReference, anotherFromParentReference));
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.dao.OwnerDao;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.domain.Owner;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("import lombok.extern.slf4j.Slf4j;");
+        expected.add("");
+        expected.add("@Slf4j");
+        expected.add("public class GroupingAccessMapper {");
+        expected.add("");
+        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingAccessMapper instance;");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy) {");
+        expected.add("		return convertToDummy(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"Dummy\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (Dummy) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		Dummy result = new Dummy();");
+        expected.add("");
+        expected.add("		result.setAnyField(dummy.getAnyField());");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Owner parent) {");
+        expected.add("		return convertToDummy(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Owner parent, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			switch (dummy.getAnyField()) {");
+        expected.add("				case ENUM_VALUE_A:");
+        expected.add("					parent.addSomeDummy(result);");
+        expected.add("					break;");
+        expected.add("				case ENUM_VALUE_B:");
+        expected.add("					parent.addAnotherDummy(result);");
+        expected.add("					break;");
+        expected.add("				default:");
+        expected.add("					log.error(\"There is not any mapping rule for dummy of type {}\", dummy.getAnyField());");
+        expected.add("			}");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy) {");
+        expected.add("		return convertToDummyDao(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"DummyDao\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (DummyDao) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setAnyField(dummy.getAnyField());");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, OwnerDao parent) {");
+        expected.add("		return convertToDummyDao(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, OwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		DummyDao result = convertToDummyDao(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			result.setParentOwner(parent);");
+        expected.add("			parent.getAggDummys().add(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingAccessMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAccessMapperParentAggregateRefFilterIsNotDomain() {
+        setMockReturnsReference(toParentReference, "someDummy", "Owner", "anyField", "ENUM_VALUE_A", Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(toParentReference, entity, parentEntity, field);
+        when(toParentReference.isReverse()).thenReturn(Boolean.TRUE);
+        setMockReturnsReference(anotherToParentReference, "anotherDummy", "Owner", "anyField", "ENUM_VALUE_B", Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(anotherToParentReference, entity, parentEntity, field);
+        when(anotherToParentReference.isReverse()).thenReturn(Boolean.TRUE);
+
+        setMockReturnsReference(fromParentReference, "someDummy", "Dummy", "anyField", "ENUM_VALUE_A", Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(fromParentReference, parentEntity, entity, field);
+        setMockReturnsReference(anotherFromParentReference, "anotherDummy", "Dummy", "anyField", "ENUM_VALUE_B", Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(anotherFromParentReference, parentEntity, entity, field);
+
+        when(field.getType()).thenReturn("SomeEnum");
+        when(field.getTypePackage()).thenReturn("de.test.package.enums");
+        when(field.getModels()).thenReturn(Models.DAO);
+        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
+        when(parentEntity.getReferences()).thenReturn(Arrays.asList(fromParentReference, anotherFromParentReference));
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.dao.OwnerDao;");
+        expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.domain.Owner;");
+        expected.add("import de.test.package.domain.grouping.Dummy;");
+        expected.add("import de.test.package.enums.SomeEnum;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("import lombok.extern.slf4j.Slf4j;");
+        expected.add("");
+        expected.add("@Slf4j");
+        expected.add("public class GroupingAccessMapper {");
+        expected.add("");
+        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingAccessMapper instance;");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy) {");
+        expected.add("		return convertToDummy(dummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"Dummy\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (Dummy) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		Dummy result = new Dummy();");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Owner parent) {");
+        expected.add("		return convertToDummy(dummy, parent, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static Dummy convertToDummy(DummyDao dummy, Owner parent, Map<String, IIdentifiable> mappedObjects) {");
+        expected.add("		Dummy result = convertToDummy(dummy, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			switch (dummy.getAnyField()) {");
+        expected.add("				case ENUM_VALUE_A:");
+        expected.add("					parent.addSomeDummy(result);");
+        expected.add("					break;");
+        expected.add("				case ENUM_VALUE_B:");
+        expected.add("					parent.addAnotherDummy(result);");
+        expected.add("					break;");
+        expected.add("				default:");
+        expected.add("					log.error(\"There is not any mapping rule for dummy of type {}\", dummy.getAnyField());");
+        expected.add("			}");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, SomeEnum anyField) {");
+        expected.add("		return convertToDummyDao(dummy, anyField, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, SomeEnum anyField, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		if (dummy == null) {");
+        expected.add("			return null;");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		String identification = \"DummyDao\" + dummy.getId().longValue();");
+        expected.add("		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
+        expected.add("			return (DummyDao) mappedObjects.get(identification);");
+        expected.add("		}");
+        expected.add("");
+        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setAnyField(anyField);");
+        expected.add("");
+        expected.add("		mappedObjects.put(identification, result);");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, OwnerDao parent, SomeEnum anyField) {");
+        expected.add("		return convertToDummyDao(dummy, parent, anyField, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, OwnerDao parent, SomeEnum anyField, Map<String, IIdentifiableDao> mappedObjects) {");
+        expected.add("		DummyDao result = convertToDummyDao(dummy, anyField, mappedObjects);");
+        expected.add("		if (result != null) {");
+        expected.add("			result.setParentOwner(parent);");
+        expected.add("			parent.getAggDummys().add(result);");
+        expected.add("		}");
+        expected.add("		return result;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingAccessMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
 }

@@ -59,6 +59,11 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         return getMapperName(MAPPER_TYPE_NAME, groupingName);
     }
 
+    @Override
+    protected String getParameterOfRelevantSingleModelValuesText(Entity entity) {
+        return "";
+    }
+
     /**
      * Determines the name of the converting method
      *

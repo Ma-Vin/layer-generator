@@ -4,6 +4,7 @@ import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.mockito.Mock;
+import org.opentest4j.AssertionFailedError;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,7 +14,8 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @Slf4j
@@ -58,13 +60,12 @@ public class AbstractCreatorTest {
         when(field.getFieldName()).thenReturn("anyField");
         when(field.getType()).thenReturn("String");
         when(field.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(field.getParentEntity()).thenReturn(entity);
 
         when(grouping.getGroupingPackage()).thenReturn("group");
-        when(targetReference.getTargetEntity()).thenReturn("Target");
-        when(targetReference.getRealTargetEntity()).thenReturn(targetEntity);
-        when(targetReference.isList()).thenReturn(Boolean.TRUE);
-        when(targetReference.isOwner()).thenReturn(Boolean.TRUE);
-        when(targetReference.getReferenceName()).thenReturn("TargetRef");
+
+        setMockReturnsReference(targetReference, "TargetRef", "Target", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(targetReference, null, targetEntity, null);
 
         when(targetEntity.getBaseName()).thenReturn("Target");
         when(targetEntity.getDescription()).thenReturn("Target description");
@@ -97,17 +98,56 @@ public class AbstractCreatorTest {
                     break;
                 }
             }
-            logFileContents();
         }
-        TestUtil.checkList(expectedLines, writtenFileContents.get(fileName));
+        try {
+            TestUtil.checkList(expectedLines, writtenFileContents.get(fileName));
+        } catch (AssertionFailedError e) {
+            logFileContents();
+            throw e;
+        }
     }
 
     protected void logFileContents() {
         writtenFileContents.entrySet().forEach(entry -> {
             log.error("File {} was written:", entry.getKey());
             log.error("");
-            entry.getValue().forEach(line -> log.error(line));
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                log.error("{}\t{}", i, entry.getValue().get(i));
+            }
             log.error("-------------");
         });
+    }
+
+    protected void setMockReturnsReference(Reference referenceMock, String referenceName, String targetEntity, String filterField
+            , String filterFieldValue, Boolean isList, Boolean isOwner) {
+        when(referenceMock.getReferenceName()).thenReturn(referenceName);
+        when(referenceMock.getTargetEntity()).thenReturn(targetEntity);
+        when(referenceMock.getFilterField()).thenReturn(filterField);
+        when(referenceMock.getFilterFieldValue()).thenReturn(filterFieldValue);
+        when(referenceMock.isList()).thenReturn(isList);
+        when(referenceMock.isOwner()).thenReturn(isOwner);
+        when(referenceMock.isAggregated()).thenReturn(false);
+        when(referenceMock.isReverse()).thenReturn(false);
+
+        doCallRealMethod().when(referenceMock).copy();
+
+        doAnswer(a -> when(referenceMock.getReferenceName()).thenReturn(a.getArgument(0))).when(referenceMock).setReferenceName(anyString());
+        doAnswer(a -> when(referenceMock.getTargetEntity()).thenReturn(a.getArgument(0))).when(referenceMock).setTargetEntity(anyString());
+        doAnswer(a -> when(referenceMock.getFilterField()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterField(anyString());
+        doAnswer(a -> when(referenceMock.getFilterFieldValue()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterFieldValue(anyString());
+        doAnswer(a -> when(referenceMock.isList()).thenReturn(a.getArgument(0))).when(referenceMock).setList(anyBoolean());
+        doAnswer(a -> when(referenceMock.isOwner()).thenReturn(a.getArgument(0))).when(referenceMock).setOwner(anyBoolean());
+        doAnswer(a -> when(referenceMock.isAggregated()).thenReturn(a.getArgument(0))).when(referenceMock).setAggregated(anyBoolean());
+        doAnswer(a -> when(referenceMock.isReverse()).thenReturn(a.getArgument(0))).when(referenceMock).setReverse(anyBoolean());
+    }
+
+    protected void setMockReturnsReference(Reference mock, Entity parent, Entity realTargetEntity, Field realFilterField) {
+        when(mock.getParent()).thenReturn(parent);
+        when(mock.getRealTargetEntity()).thenReturn(realTargetEntity);
+        when(mock.getRealFilterField()).thenReturn(realFilterField);
+
+        doAnswer(a -> when(mock.getParent()).thenReturn(a.getArgument(0))).when(mock).setParent(any());
+        doAnswer(a -> when(mock.getRealTargetEntity()).thenReturn(a.getArgument(0))).when(mock).setRealTargetEntity(any());
+        doAnswer(a -> when(mock.getRealFilterField()).thenReturn(a.getArgument(0))).when(mock).setRealFilterField(any());
     }
 }

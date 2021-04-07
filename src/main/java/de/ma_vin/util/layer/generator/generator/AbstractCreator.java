@@ -4,6 +4,8 @@ import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.sources.Annotation;
+import de.ma_vin.util.layer.generator.sources.Attribute;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +17,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -157,5 +160,24 @@ public abstract class AbstractCreator {
      */
     protected String getPackageAndClass(Reference ref, String basePackage) {
         return getPackageAndClass(ref.getRealTargetEntity(), basePackage, "");
+    }
+
+    /**
+     * Returns a {@link Annotation} at a given {@link Attribute}. If there is not any at attribute, a new will be created and added to the attribute
+     *
+     * @param attribute      Attribute where to search at
+     * @param annotationName Name of annotation
+     * @return The found annotation or new created one
+     */
+    protected Annotation getOrCreateAndAddAnnotation(Attribute attribute, String annotationName) {
+        Optional<Annotation> columnAnnotationOpt = attribute.getAnnotations().stream()
+                .filter(a -> annotationName.equals(a.getAnnotationName()))
+                .findFirst();
+        if (columnAnnotationOpt.isPresent()) {
+            return columnAnnotationOpt.get();
+        }
+        Annotation annotation = new Annotation(annotationName);
+        attribute.addAnnotation(annotationName);
+        return annotation;
     }
 }

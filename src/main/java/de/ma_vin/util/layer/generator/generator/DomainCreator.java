@@ -138,7 +138,7 @@ public class DomainCreator extends AbstractObjectCreator {
             addMethodDescription.addLine("");
             addMethodDescription.addLine(String.format("@param %s %s to add", propertyBaseName, childClassName));
 
-            Method addMethod = new Method(String.format("add%s", childClassName));
+            Method addMethod = new Method(String.format("add%s", getUpperFirst(child.getAttributeName())));
             addMethod.addParameter(childClassName, propertyBaseName);
             addMethod.setMethodType("boolean");
             addMethod.setQualifier(Qualifier.PUBLIC);
@@ -150,7 +150,7 @@ public class DomainCreator extends AbstractObjectCreator {
             removeMethodDescription.addLine("");
             removeMethodDescription.addLine(String.format("@param %s %s to remove", propertyBaseName, childClassName));
 
-            Method removeMethod = new Method(String.format("remove%s", childClassName));
+            Method removeMethod = new Method(String.format("remove%s", getUpperFirst(child.getAttributeName())));
             removeMethod.addParameter(childClassName, propertyBaseName);
             removeMethod.setMethodType("boolean");
             removeMethod.setQualifier(Qualifier.PUBLIC);

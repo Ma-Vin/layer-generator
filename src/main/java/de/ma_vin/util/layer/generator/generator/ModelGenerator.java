@@ -9,7 +9,7 @@ import org.apache.maven.plugin.logging.Log;
 import java.io.File;
 import java.util.Optional;
 
-@Data()
+@Data
 public class ModelGenerator {
 
     private Config config;

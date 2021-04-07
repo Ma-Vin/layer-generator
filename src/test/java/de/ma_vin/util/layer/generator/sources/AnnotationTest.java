@@ -22,7 +22,7 @@ public class AnnotationTest {
         List<String> result = cut.generate();
         assertNotNull(result, "There should be any result");
         assertEquals(1, result.size(), "Wrong number of lines");
-        assertEquals("@AnnotationName()", result.get(0));
+        assertEquals("@AnnotationName", result.get(0));
     }
 
     @Test
