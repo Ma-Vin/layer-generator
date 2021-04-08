@@ -34,11 +34,9 @@
 
         <maven.plugin.version>3.8.1</maven.plugin.version>
         <maven.plugin-annotations.version>3.6.0</maven.plugin-annotations.version>
-        <maven.plugin-dependency.version>3.1.2</maven.plugin-dependency.version>
         <maven.plugin-plugin.version>3.6.0</maven.plugin-plugin.version>
         <maven.plugin-source.version>3.2.1</maven.plugin-source.version>
         <maven.plugin-resource.version>3.2.0</maven.plugin-resource.version>
-        <maven.project.version>2.2.1</maven.project.version>
         <maven.surefire.failsafe.version>3.0.0-M5</maven.surefire.failsafe.version>
         <jacoco.plugin.version>0.8.6</jacoco.plugin.version>
         <javax-persistence.version>2.2</javax-persistence.version>
@@ -96,14 +94,9 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.maven</groupId>
-                <artifactId>maven-project</artifactId>
-                <version>${maven.project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven.plugin-dependency.version}</version>
-                <scope>test</scope>
+                <artifactId>maven-core</artifactId>
+                <version>${maven.plugin.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>javax.persistence</groupId>
@@ -169,11 +162,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
-            <artifactId>maven-project</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
+            <artifactId>maven-core</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>

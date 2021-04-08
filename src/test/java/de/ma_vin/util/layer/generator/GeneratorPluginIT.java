@@ -30,7 +30,7 @@ public class GeneratorPluginIT {
         cut.setLog(new LogImpl());
 
         project = new MavenProject();
-        project.setBasedir(new File(System.getProperty("user.dir")));
+        project.setFile(new File(System.getProperty("user.dir"), "dummyPom.xml"));
 
         cut.setProject(project);
         File targetDir = new File(project.getBasedir(), TARGET_DIR);

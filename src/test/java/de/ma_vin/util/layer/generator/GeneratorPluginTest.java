@@ -19,6 +19,7 @@ import java.io.IOException;
 
 public class GeneratorPluginTest {
 
+    @Mock
     private MavenProject project;
     @Mock
     private File baseDir;
@@ -68,7 +69,6 @@ public class GeneratorPluginTest {
         cut.setLog(new LogImpl());
 
         initMocks(this);
-        project = new MavenProject();
         cut.setProject(project);
         cut.setGenerateTargetDirectory("target/temp/generated");
         cut.setGenerateDto(true);
@@ -77,7 +77,7 @@ public class GeneratorPluginTest {
         cut.setModelDefinitionDirectory("src/test/resources/references/config");
         cut.setModelDefinitionFilename("exampleModel.xml");
 
-        project.setBasedir(baseDir);
+        when(project.getBasedir()).thenReturn(baseDir);
         when(baseDir.getAbsolutePath()).thenReturn("AnyBaseDir");
 
         when(targetDir.exists()).thenReturn(Boolean.TRUE);
@@ -206,6 +206,7 @@ public class GeneratorPluginTest {
             assertTrue(e.getMessage().contains("The model file could not be used to configure the generator"), "Missing exception text");
         }
     }
+
     @Test
     public void testGenerateFailed() {
         when(modelGenerator.generate()).thenReturn(Boolean.FALSE);
