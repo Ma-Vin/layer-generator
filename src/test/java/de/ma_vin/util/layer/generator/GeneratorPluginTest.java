@@ -16,6 +16,9 @@ import org.mockito.Mock;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
+import java.nio.file.spi.FileSystemProvider;
 
 public class GeneratorPluginTest {
 
@@ -29,6 +32,22 @@ public class GeneratorPluginTest {
     private File modelDir;
     @Mock
     private File modelFile;
+    @Mock
+    private File packageBaseDir;
+    @Mock
+    private File packageBaseSubDir;
+    @Mock
+    private File packageBaseExistingFile;
+    @Mock
+    private FileSystemProvider provider;
+    @Mock
+    private FileSystem fileSystem;
+    @Mock
+    private Path packageBaseDirPath;
+    @Mock
+    private Path packageBaseSubDirPath;
+    @Mock
+    private Path packageBaseExistingFilePath;
     @Mock
     private ModelGenerator modelGenerator;
     @Mock
@@ -61,8 +80,10 @@ public class GeneratorPluginTest {
                         return targetDir;
                     case 2:
                         return modelDir;
-                    default:
+                    case 3:
                         return modelFile;
+                    default:
+                        return packageBaseDir;
                 }
             }
         };
@@ -76,19 +97,49 @@ public class GeneratorPluginTest {
         cut.setGenerateDao(true);
         cut.setModelDefinitionDirectory("src/test/resources/references/config");
         cut.setModelDefinitionFilename("exampleModel.xml");
+        cut.setCleanTargetDirectory(false);
+        cut.setCleanBasePackage(false);
 
         when(project.getBasedir()).thenReturn(baseDir);
         when(baseDir.getAbsolutePath()).thenReturn("AnyBaseDir");
 
         when(targetDir.exists()).thenReturn(Boolean.TRUE);
+        when(targetDir.listFiles()).thenReturn(new File[]{packageBaseDir});
         when(modelDir.exists()).thenReturn(Boolean.TRUE);
         when(modelFile.exists()).thenReturn(Boolean.TRUE);
         when(modelFile.getAbsolutePath()).thenReturn("AnyModelFilePath");
+        when(packageBaseDir.exists()).thenReturn(Boolean.TRUE);
+        when(packageBaseDir.getAbsolutePath()).thenReturn("BasePackagePath");
+        when(packageBaseDir.listFiles()).thenReturn(new File[]{packageBaseSubDir});
+        when(packageBaseSubDir.exists()).thenReturn(Boolean.TRUE);
+        when(packageBaseSubDir.getAbsolutePath()).thenReturn("SubBasePackagePath");
+        when(packageBaseSubDir.listFiles()).thenReturn(new File[]{packageBaseExistingFile});
+        when(packageBaseExistingFile.exists()).thenReturn(Boolean.TRUE);
+        when(packageBaseExistingFile.isFile()).thenReturn(Boolean.TRUE);
+        when(packageBaseExistingFile.getAbsolutePath()).thenReturn("FileBasePackagePath");
+        when(packageBaseExistingFile.listFiles()).thenReturn(new File[0]);
+
+        mockDeletion(packageBaseDir, packageBaseDirPath);
+        mockDeletion(packageBaseSubDir, packageBaseSubDirPath);
+        mockDeletion(packageBaseExistingFile, packageBaseExistingFilePath);
 
         when(configLoader.load()).thenReturn(Boolean.TRUE);
         when(configLoader.getConfig()).thenReturn(config);
+        when(config.getBasePackage()).thenReturn("de.ma_vin.test");
 
         when(modelGenerator.generate()).thenReturn(Boolean.TRUE);
+    }
+
+    private void mockDeletion(File fileToDelete, Path path) {
+        when(fileToDelete.delete()).thenReturn(Boolean.TRUE);
+        when(fileToDelete.toPath()).thenReturn(path);
+        when(path.getFileSystem()).thenReturn(fileSystem);
+        when(fileSystem.provider()).thenReturn(provider);
+        try {
+            when(provider.deleteIfExists(any())).thenReturn(Boolean.TRUE);
+        } catch (IOException e) {
+            fail("Mocking deleteIfExists failed");
+        }
     }
 
     @Test
@@ -215,6 +266,214 @@ public class GeneratorPluginTest {
             fail("Exception not occurs but expected");
         } catch (MojoExecutionException e) {
             assertTrue(e.getMessage().contains("The generation of the java sources could not be completed"), "Missing exception text");
+        }
+    }
+
+    @Test
+    public void testGenerateDeleteTargetDir() {
+        cut.setCleanTargetDirectory(true);
+        try {
+            cut.execute();
+
+            verify(targetDir, times(2)).exists();
+            verify(targetDir).isFile();
+            verify(targetDir).listFiles();
+            verify(targetDir, never()).delete();
+
+            verify(packageBaseDir).exists();
+            verify(packageBaseDir).isFile();
+            verify(packageBaseDir).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseDirPath));
+
+            verify(packageBaseSubDir).exists();
+            verify(packageBaseSubDir).isFile();
+            verify(packageBaseSubDir).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseSubDirPath));
+
+            verify(packageBaseExistingFile).exists();
+            verify(packageBaseExistingFile).isFile();
+            verify(packageBaseExistingFile, never()).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseExistingFilePath));
+        } catch (MojoExecutionException | IOException e) {
+            fail("Exception occurs but not expected: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGenerateDeleteTargetDirSubDeletionFailure() throws IOException {
+        cut.setCleanTargetDirectory(true);
+        when(provider.deleteIfExists(eq(packageBaseDirPath))).thenReturn(Boolean.FALSE);
+        try {
+            cut.execute();
+            fail("Exception not occurs but expected");
+        } catch (MojoExecutionException e) {
+            assertTrue(e.getMessage().contains("The cleaning of the target directory or base package could not be completed"), "Missing exception text");
+        }
+    }
+
+    @Test
+    public void testGenerateDeleteOnlyOnce() {
+        cut.setCleanTargetDirectory(true);
+        cut.setCleanBasePackage(true);
+        try {
+            cut.execute();
+
+            verify(targetDir, times(2)).exists();
+            verify(targetDir).isFile();
+            verify(targetDir).listFiles();
+            verify(targetDir, never()).delete();
+
+            verify(packageBaseDir).exists();
+            verify(packageBaseDir).isFile();
+            verify(packageBaseDir).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseDirPath));
+
+            verify(packageBaseSubDir).exists();
+            verify(packageBaseSubDir).isFile();
+            verify(packageBaseSubDir).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseSubDirPath));
+
+            verify(packageBaseExistingFile).exists();
+            verify(packageBaseExistingFile).isFile();
+            verify(packageBaseExistingFile, never()).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseExistingFilePath));
+        } catch (MojoExecutionException | IOException e) {
+            fail("Exception occurs but not expected: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGenerateDeletePackageBase() {
+        cut.setCleanBasePackage(true);
+        try {
+            cut.execute();
+
+            verify(targetDir).exists();
+            verify(targetDir, never()).isFile();
+            verify(targetDir, never()).listFiles();
+            verify(targetDir, never()).delete();
+
+            verify(packageBaseDir).exists();
+            verify(packageBaseDir).isFile();
+            verify(packageBaseDir).listFiles();
+            verify(provider, never()).deleteIfExists(eq(packageBaseDirPath));
+
+            verify(packageBaseSubDir).exists();
+            verify(packageBaseSubDir).isFile();
+            verify(packageBaseSubDir).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseSubDirPath));
+
+            verify(packageBaseExistingFile).exists();
+            verify(packageBaseExistingFile).isFile();
+            verify(packageBaseExistingFile, never()).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseExistingFilePath));
+        } catch (MojoExecutionException | IOException e) {
+            fail("Exception occurs but not expected: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGenerateDeletePackageBaseNotExisting() throws IOException {
+        cut.setCleanBasePackage(true);
+        when(packageBaseDir.exists()).thenReturn(Boolean.FALSE);
+        try {
+            cut.execute();
+            fail("Exception not occurs but expected");
+        } catch (MojoExecutionException e) {
+            assertTrue(e.getMessage().contains("The cleaning of the target directory or base package could not be completed"), "Missing exception text");
+            verify(packageBaseDir, never()).isFile();
+            verify(packageBaseDir, never()).listFiles();
+            verify(provider, never()).deleteIfExists(eq(packageBaseDirPath));
+
+            verify(packageBaseSubDir, never()).exists();
+            verify(packageBaseSubDir, never()).isFile();
+            verify(packageBaseSubDir, never()).listFiles();
+            verify(provider, never()).deleteIfExists(eq(packageBaseSubDirPath));
+
+            verify(packageBaseExistingFile, never()).exists();
+            verify(packageBaseExistingFile, never()).isFile();
+            verify(packageBaseExistingFile, never()).listFiles();
+            verify(provider, never()).deleteIfExists(eq(packageBaseExistingFilePath));
+        }
+    }
+
+    @Test
+    public void testGenerateDeletePackageBaseIsFile() throws IOException {
+        cut.setCleanBasePackage(true);
+        when(packageBaseDir.isFile()).thenReturn(Boolean.TRUE);
+        try {
+            cut.execute();
+            fail("Exception not occurs but expected");
+        } catch (MojoExecutionException e) {
+            assertTrue(e.getMessage().contains("The cleaning of the target directory or base package could not be completed"), "Missing exception text");
+            verify(packageBaseDir, never()).listFiles();
+            verify(packageBaseDir, never()).delete();
+            verify(provider, never()).deleteIfExists(eq(packageBaseDirPath));
+
+            verify(packageBaseSubDir, never()).exists();
+            verify(packageBaseSubDir, never()).isFile();
+            verify(packageBaseSubDir, never()).listFiles();
+            verify(packageBaseSubDir, never()).delete();
+            verify(provider, never()).deleteIfExists(eq(packageBaseSubDirPath));
+
+            verify(packageBaseExistingFile, never()).exists();
+            verify(packageBaseExistingFile, never()).isFile();
+            verify(packageBaseExistingFile, never()).listFiles();
+            verify(packageBaseExistingFile, never()).delete();
+            verify(provider, never()).deleteIfExists(eq(packageBaseExistingFilePath));
+        }
+    }
+
+    @Test
+    public void testGenerateDeletePackageBaseFileNotExisting() throws IOException {
+        cut.setCleanBasePackage(true);
+        when(packageBaseExistingFile.exists()).thenReturn(Boolean.FALSE);
+        try {
+            cut.execute();
+
+            verify(packageBaseExistingFile).exists();
+            verify(packageBaseExistingFile, never()).isFile();
+            verify(packageBaseExistingFile, never()).listFiles();
+            verify(provider, never()).deleteIfExists(eq(packageBaseExistingFilePath));
+        } catch (MojoExecutionException e) {
+            fail("Exception occurs but not expected: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGenerateDeletePackageBaseFileDeletionFailure() throws IOException {
+        cut.setCleanBasePackage(true);
+        when(packageBaseExistingFile.delete()).thenReturn(Boolean.FALSE);
+        when(provider.deleteIfExists(eq(packageBaseExistingFilePath))).thenReturn(Boolean.FALSE);
+        try {
+            cut.execute();
+            fail("Exception not occurs but expected");
+        } catch (MojoExecutionException e) {
+            assertTrue(e.getMessage().contains("The cleaning of the target directory or base package could not be completed"), "Missing exception text");
+
+
+            verify(packageBaseExistingFile).exists();
+            verify(packageBaseExistingFile).isFile();
+            verify(packageBaseExistingFile, never()).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseExistingFilePath));
+        }
+    }
+
+    @Test
+    public void testGenerateDeletePackageBaseSubDeletionFailure() throws IOException {
+        cut.setCleanBasePackage(true);
+        when(provider.deleteIfExists(eq(packageBaseSubDirPath))).thenReturn(Boolean.FALSE);
+        try {
+            cut.execute();
+            fail("Exception not occurs but expected");
+        } catch (MojoExecutionException e) {
+            assertTrue(e.getMessage().contains("The cleaning of the target directory or base package could not be completed"), "Missing exception text");
+
+
+            verify(packageBaseSubDir).exists();
+            verify(packageBaseSubDir).isFile();
+            verify(packageBaseSubDir).listFiles();
+            verify(provider).deleteIfExists(eq(packageBaseSubDirPath));
         }
     }
 }

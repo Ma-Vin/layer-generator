@@ -13,6 +13,7 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 @Mojo(name = "generate-model", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 @Data
@@ -39,6 +40,12 @@ public class GeneratorPlugin extends AbstractMojo {
     @Parameter(property = "model-file", defaultValue = "model.xml")
     private String modelDefinitionFilename;
 
+    @Parameter(property = "clean-target-dir", defaultValue = "false")
+    private boolean cleanTargetDirectory;
+
+    @Parameter(property = "clean-base-package", defaultValue = "true")
+    private boolean cleanBasePackage;
+
     private File targetDir;
     private File modelFile;
     private Config config;
@@ -59,6 +66,11 @@ public class GeneratorPlugin extends AbstractMojo {
         }
         getLog().info("Model file loaded");
 
+        if (!cleanDirectories()) {
+            throw new MojoExecutionException("The cleaning of the target directory or base package could not be completed");
+        }
+        getLog().info("Directories cleaned");
+
         if (!generate()) {
             throw new MojoExecutionException("The generation of the java sources could not be completed");
         }
@@ -77,6 +89,8 @@ public class GeneratorPlugin extends AbstractMojo {
         getLog().info("generate-dao          = " + generateDao);
         getLog().info("model-dir             = " + modelDefinitionDirectory);
         getLog().info("model-file            = " + modelDefinitionFilename);
+        getLog().info("clean-target-dir      = " + cleanTargetDirectory);
+        getLog().info("clean-base-package    = " + cleanBasePackage);
     }
 
     /**
@@ -167,6 +181,79 @@ public class GeneratorPlugin extends AbstractMojo {
         }
         getLog().debug("Generation of java sources completed");
         return true;
+    }
+
+    private boolean cleanDirectories() {
+        if (cleanTargetDirectory) {
+            getLog().debug("Start cleaning target directory");
+            if (!deleteAllWithin(targetDir)) {
+                getLog().error("Failed to clean target directory");
+                return false;
+            }
+            getLog().debug("Cleaning target directory completed");
+        }
+        if (!cleanTargetDirectory && cleanBasePackage) {
+            getLog().debug("Start cleaning target directory");
+            File basePackageDir = createFile(targetDir, config.getBasePackage().replace(".", File.separator));
+            if (!deleteAllWithin(basePackageDir)) {
+                getLog().error("Failed to clean target directory");
+                return false;
+            }
+            getLog().debug("Cleaning target directory completed");
+        }
+        return true;
+    }
+
+    /**
+     * Deletes all files and directories within a directory but not itself
+     *
+     * @param file file or directory whose content is to delete
+     * @return {@code true} if removing was successful
+     */
+    private boolean deleteAllWithin(File file) {
+        if (!file.exists()) {
+            getLog().debug(String.format("The directory \"%s\" does not exists and could not be deleted", file.getAbsolutePath()));
+            return false;
+        }
+        if (file.isFile()) {
+            getLog().debug(String.format("The directory \"%s\" is a file and will not be deleted", file.getAbsolutePath()));
+            return false;
+        }
+        boolean result = true;
+        getLog().debug(String.format("Start deleting files within directory \"%s\"", file.getAbsolutePath()));
+        for (File subFile : file.listFiles()) {
+            try {
+                result = deleteAll(subFile) && result;
+            } catch (IOException e) {
+                result = false;
+                getLog().debug(String.format("Exception occur while deleting within directory \"%s\": %s", file.getAbsolutePath(), e.getMessage()));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Deletes all files and directories within a directory and itself
+     *
+     * @param file file or directory to delete
+     * @return {@code true} if removing was successful
+     */
+    private boolean deleteAll(File file) throws IOException {
+        if (!file.exists()) {
+            return true;
+        }
+        if (file.isFile()) {
+            getLog().debug(String.format("delete file \"%s\"", file.getAbsolutePath()));
+            return Files.deleteIfExists(file.toPath());
+        }
+        boolean result = true;
+        for (File subFile : file.listFiles()) {
+            if (!deleteAll(subFile)) {
+                result = false;
+            }
+        }
+        getLog().debug(String.format("delete directory \"%s\"", file.getAbsolutePath()));
+        return Files.deleteIfExists(file.toPath()) && result;
     }
 
     /**

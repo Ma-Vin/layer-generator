@@ -44,3 +44,5 @@ generate-domain | true | Indicator to generate domain objects
 generate-dao | true | Indicator to generate data access objects
 model-dir | src/main/resources/ | relative project directory where to get model file from
 model-file | model.xml | xml which provides the model definition. Has to satisfy the config.xsd
+clean-target-dir | false | if true all files and directories within the *generate-target*
+clean-base-package | true | if true all files and directories within the corresponding directory of *basePackage* (defined in the *model-file*)
