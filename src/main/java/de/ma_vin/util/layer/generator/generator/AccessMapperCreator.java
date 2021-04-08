@@ -42,7 +42,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     public boolean createAccessMapper(List<Entity> entities, String groupingName, String mapperPackageName, String daoPackageName
             , String domainPackageName, File mapperPackageDir) {
 
-        if (entities.stream().noneMatch(e -> isEntityRelevant(e) && !e.isAbstract())) {
+        if (entities.stream().noneMatch(e -> isEntityRelevant(e) && !e.getIsAbstract())) {
             logger.debug("No access mapper need for " + mapperPackageName);
             return true;
         }
@@ -51,7 +51,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         createGetInstance(mapperClass);
 
-        entities.stream().filter(e -> !e.isAbstract()).forEach(e -> {
+        entities.stream().filter(e -> !e.getIsAbstract()).forEach(e -> {
             createConvertToDaoMethods(mapperClass, e, daoPackageName, domainPackageName);
             createConvertToDomainMethods(mapperClass, e, daoPackageName, domainPackageName);
         });

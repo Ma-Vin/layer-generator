@@ -16,8 +16,8 @@ public class ReferenceTest {
         cut = new Reference();
         cut.setReferenceName("Ref");
         cut.setTargetEntity("Target");
-        cut.setOwner(true);
-        cut.setList(true);
+        cut.setIsOwner(true);
+        cut.setIsList(true);
         cut.setFilterField("filterField");
         cut.setFilterFieldValue("filterValue");
     }
@@ -26,12 +26,12 @@ public class ReferenceTest {
     public void testIsFilterFieldValidDifferentTargets() {
         Reference ref1 = new Reference();
         ref1.setTargetEntity("t1");
-        ref1.setList(true);
+        ref1.setIsList(true);
         ref1.setFilterField(null);
 
         Reference ref2 = new Reference();
         ref2.setTargetEntity("t2");
-        ref2.setList(true);
+        ref2.setIsList(true);
         ref2.setFilterField(null);
 
         assertTrue(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should be successful");
@@ -41,12 +41,12 @@ public class ReferenceTest {
     public void testIsFilterFieldValidEqualTargets() {
         Reference ref1 = new Reference();
         ref1.setTargetEntity("t1");
-        ref1.setList(true);
+        ref1.setIsList(true);
         ref1.setFilterField(null);
 
         Reference ref2 = new Reference();
         ref2.setTargetEntity("t1");
-        ref2.setList(true);
+        ref2.setIsList(true);
         ref2.setFilterField(null);
 
         assertFalse(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should not be successful");
@@ -56,12 +56,12 @@ public class ReferenceTest {
     public void testIsFilterFieldValidEqualTargetsWithOneFilter() {
         Reference ref1 = new Reference();
         ref1.setTargetEntity("t1");
-        ref1.setList(true);
+        ref1.setIsList(true);
         ref1.setFilterField("f1");
 
         Reference ref2 = new Reference();
         ref2.setTargetEntity("t1");
-        ref2.setList(true);
+        ref2.setIsList(true);
         ref2.setFilterField(null);
 
         assertTrue(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should be successful");
@@ -71,12 +71,12 @@ public class ReferenceTest {
     public void testIsFilterFieldValidEqualTargetsWithAllFilter() {
         Reference ref1 = new Reference();
         ref1.setTargetEntity("t1");
-        ref1.setList(true);
+        ref1.setIsList(true);
         ref1.setFilterField("f1");
 
         Reference ref2 = new Reference();
         ref2.setTargetEntity("t1");
-        ref2.setList(true);
+        ref2.setIsList(true);
         ref2.setFilterField("f2");
 
         assertTrue(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should be successful");
@@ -86,12 +86,12 @@ public class ReferenceTest {
     public void testIsFilterFieldValidEqualTargetsButOnlyOneIsList() {
         Reference ref1 = new Reference();
         ref1.setTargetEntity("t1");
-        ref1.setList(true);
+        ref1.setIsList(true);
         ref1.setFilterField(null);
 
         Reference ref2 = new Reference();
         ref2.setTargetEntity("t1");
-        ref2.setList(false);
+        ref2.setIsList(false);
         ref2.setFilterField(null);
 
         assertTrue(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should be successful");

@@ -81,7 +81,7 @@ public class DaoCreator extends AbstractObjectCreator {
         daoClazz.addImport(Data.class.getName());
 
         daoClazz.addAnnotation(Data.class);
-        if (entity.isAbstract()) {
+        if (entity.getIsAbstract()) {
             daoClazz.addAnnotation(MappedSuperclass.class);
         } else {
             daoClazz.addAnnotation(javax.persistence.Entity.class);
@@ -109,7 +109,7 @@ public class DaoCreator extends AbstractObjectCreator {
             idAttribute.addAnnotation(Id.class);
             idAttribute.addAnnotation(GeneratedValue.class, "strategy", "GenerationType.IDENTITY");
             idAttribute.addAnnotation(Column.class, "name", "\"Id\"");
-            if (entity.isAbstract()) {
+            if (entity.getIsAbstract()) {
                 idAttribute.setQualifier(Qualifier.PROTECTED);
             }
             daoClazz.addAttribute(idAttribute);
@@ -121,7 +121,7 @@ public class DaoCreator extends AbstractObjectCreator {
     @Override
     protected Attribute createAttribute(Field field, String... annotations) {
         Attribute attribute = super.createAttribute(field, annotations);
-        if (field.isTypeEnum() && (field.getDaoInfo() == null || Boolean.TRUE.equals(field.getDaoInfo().getUseEnumText()))) {
+        if (field.getIsTypeEnum() && (field.getDaoInfo() == null || Boolean.TRUE.equals(field.getDaoInfo().getUseEnumText()))) {
             attribute.addAnnotation("Enumerated", null, "EnumType.STRING");
         }
         Annotation columnAnnotation = getOrCreateAndAddAnnotation(attribute, Column.class.getSimpleName());
@@ -156,7 +156,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @return {@code true} if the field is not nullable
      */
     private boolean isFieldNotNullable(Field field) {
-        return (field.isTypeEnum() && field.getParentEntity().getReferences().stream().anyMatch(ref -> field.equals(ref.getRealFilterField()))
+        return (field.getIsTypeEnum() && field.getParentEntity().getReferences().stream().anyMatch(ref -> field.equals(ref.getRealFilterField()))
                 || (field.getDaoInfo() != null && Boolean.FALSE.equals(field.getDaoInfo().getNullable())));
     }
 
@@ -221,7 +221,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
         referencesToModify.forEach(ref -> {
             Reference modifiedReference = ref.copy();
-            modifiedReference.setOwner(false);
+            modifiedReference.setIsOwner(false);
             result.add(modifiedReference);
         });
 
@@ -278,7 +278,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param entity   Entity which is used for generating
      */
     private void addDaoIdentificationMethods(Clazz daoClazz, Entity entity) {
-        if (!config.isUseIdGenerator() || entity.isAbstract()) {
+        if (!config.isUseIdGenerator() || entity.getIsAbstract()) {
             return;
         }
         logger.debug("Identification methods will be created for " + daoClazz.getClassName());

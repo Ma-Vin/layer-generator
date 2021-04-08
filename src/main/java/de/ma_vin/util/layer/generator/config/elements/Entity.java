@@ -53,7 +53,7 @@ public class Entity {
      * indication if the generated java class should be abstract
      */
     @XmlAttribute
-    private boolean isAbstract;
+    private Boolean isAbstract = Boolean.FALSE;
 
     /**
      * Attributes of the entity

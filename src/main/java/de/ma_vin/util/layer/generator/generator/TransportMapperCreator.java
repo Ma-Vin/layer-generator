@@ -37,7 +37,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
     public boolean createTransportMapper(List<Entity> entities, String groupingName, String mapperPackageName, String dtoPackageName
             , String domainPackageName, File mapperPackageDir) {
 
-        if (entities.stream().noneMatch(e -> isEntityRelevant(e) && !e.isAbstract())) {
+        if (entities.stream().noneMatch(e -> isEntityRelevant(e) && !e.getIsAbstract())) {
             logger.debug("No access mapper need for " + mapperPackageName);
             return true;
         }
@@ -46,7 +46,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         createGetInstance(mapperClass);
 
-        entities.stream().filter(e -> !e.isAbstract()).forEach(e -> {
+        entities.stream().filter(e -> !e.getIsAbstract()).forEach(e -> {
             createConvertToDtoMethods(mapperClass, e, dtoPackageName, domainPackageName);
             createConvertToDomainMethods(mapperClass, e, dtoPackageName, domainPackageName);
         });

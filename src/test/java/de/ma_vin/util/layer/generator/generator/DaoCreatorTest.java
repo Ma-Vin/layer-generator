@@ -639,7 +639,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         when(field.getDaoInfo()).thenReturn(daoInfo);
         when(field.getType()).thenReturn("CustomEnum");
         when(field.getTypePackage()).thenReturn("de.test.custom");
-        when(field.isTypeEnum()).thenReturn(Boolean.TRUE);
+        when(field.getIsTypeEnum()).thenReturn(Boolean.TRUE);
 
         when(daoInfo.getColumnName()).thenReturn("differentName");
         when(daoInfo.getNullable()).thenReturn(Boolean.FALSE);
@@ -688,7 +688,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         when(field.getDaoInfo()).thenReturn(daoInfo);
         when(field.getType()).thenReturn("CustomEnum");
         when(field.getTypePackage()).thenReturn("de.test.custom");
-        when(field.isTypeEnum()).thenReturn(Boolean.TRUE);
+        when(field.getIsTypeEnum()).thenReturn(Boolean.TRUE);
 
         when(daoInfo.getNullable()).thenReturn(null);
         when(daoInfo.getLength()).thenReturn(null);
@@ -732,7 +732,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateDataAccessObjectFieldEnum() {
         when(entity.getFields()).thenReturn(Collections.singletonList(field));
-        when(field.isTypeEnum()).thenReturn(Boolean.TRUE);
+        when(field.getIsTypeEnum()).thenReturn(Boolean.TRUE);
         when(field.getType()).thenReturn("AnyEnum");
         when(field.getTypePackage()).thenReturn("the.enum.package");
 
@@ -1009,7 +1009,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectIsAbstract() {
-        when(entity.isAbstract()).thenReturn(Boolean.TRUE);
+        when(entity.getIsAbstract()).thenReturn(Boolean.TRUE);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");

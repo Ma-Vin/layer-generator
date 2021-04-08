@@ -32,14 +32,14 @@ public class Field {
     /**
      * package of the type if necessary
      */
-    @XmlAttribute()
+    @XmlAttribute
     private String typePackage;
 
     /**
      * package of the type if necessary
      */
-    @XmlAttribute()
-    private boolean isTypeEnum;
+    @XmlAttribute
+    private Boolean isTypeEnum = Boolean.FALSE;;
 
     /**
      * Description of the attribute
@@ -49,7 +49,7 @@ public class Field {
     /**
      * For which object is this field relevant
      */
-    @XmlAttribute()
+    @XmlAttribute
     private Models models;
 
     /**

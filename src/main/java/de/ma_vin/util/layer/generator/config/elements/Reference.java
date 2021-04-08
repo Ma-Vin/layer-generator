@@ -56,13 +56,13 @@ public class Reference {
      * {@code true} if the parent should also be the parent at database. Otherwise some connection table will be generated
      */
     @XmlAttribute
-    private boolean isOwner;
+    private Boolean isOwner = Boolean.FALSE;
 
     /**
      * Indicator if a one to one relation or an one to many relation exists
      */
     @XmlAttribute
-    private boolean isList;
+    private Boolean isList = Boolean.FALSE;
 
     /**
      * Indicator if this reference is created while aggregation and represents two or more references

@@ -52,18 +52,18 @@ public class Config {
     private boolean useIdGenerator;
 
     /**
-     * Groupings of entities
-     */
-    @XmlElementWrapper
-    @XmlElement(name = "grouping")
-    private List<Grouping> groupings;
-
-    /**
      * Entities which will be used to generate domain objects, dto or dao.
      */
     @XmlElementWrapper
     @XmlElement(name = "entity")
     private List<Entity> entities;
+
+    /**
+     * Groupings of entities
+     */
+    @XmlElementWrapper
+    @XmlElement(name = "grouping")
+    private List<Grouping> groupings;
 
     public boolean isValid() {
         return validateRequired(basePackage) && validateRequired(dtoPackage) && validateRequired(domainPackage) && validateRequired(daoPackage)

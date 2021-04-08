@@ -243,7 +243,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateDataTransportObjectFieldEnum() {
         when(entity.getFields()).thenReturn(Arrays.asList(field));
-        when(field.isTypeEnum()).thenReturn(Boolean.TRUE);
+        when(field.getIsTypeEnum()).thenReturn(Boolean.TRUE);
         when(field.getType()).thenReturn("AnyEnum");
         when(field.getTypePackage()).thenReturn("the.enum.package");
 
@@ -402,7 +402,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataTransportObjectIsAbstract() {
-        when(entity.isAbstract()).thenReturn(Boolean.TRUE);
+        when(entity.getIsAbstract()).thenReturn(Boolean.TRUE);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");

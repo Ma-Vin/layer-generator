@@ -36,7 +36,7 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
      * @param classPostfix    Postfix which will be append to super class name
      */
     protected void checkAndAddParent(Clazz clazz, Entity entity, String basePackageName, String classPostfix) {
-        clazz.setAbstract(entity.isAbstract());
+        clazz.setAbstract(entity.getIsAbstract());
         if (entity.hasParent()) {
             clazz.setExtension(entity.getRealParent().getBaseName() + classPostfix);
             clazz.addImport(getPackageAndClass(entity.getRealParent(), basePackageName, classPostfix));

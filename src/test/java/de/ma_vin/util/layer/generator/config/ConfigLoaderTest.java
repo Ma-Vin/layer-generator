@@ -214,7 +214,7 @@ public class ConfigLoaderTest {
     public void testCompleteSuperClass() {
         Entity parentEntity = mock(Entity.class);
         defaultMockEntity(parentEntity, "ParentEntity", null, null, new ArrayList<>());
-        when(parentEntity.isAbstract()).thenReturn(Boolean.TRUE);
+        when(parentEntity.getIsAbstract()).thenReturn(Boolean.TRUE);
         when(entity.getParent()).thenReturn("ParentEntity");
         when(config.getEntities()).thenReturn(Arrays.asList(entity, parentEntity));
 
@@ -228,7 +228,7 @@ public class ConfigLoaderTest {
     public void testCompleteSuperClassNotAbstract() {
         Entity parentEntity = mock(Entity.class);
         defaultMockEntity(parentEntity, "ParentEntity", null, null, new ArrayList<>());
-        when(parentEntity.isAbstract()).thenReturn(Boolean.FALSE);
+        when(parentEntity.getIsAbstract()).thenReturn(Boolean.FALSE);
         when(entity.getParent()).thenReturn("ParentEntity");
         when(config.getEntities()).thenReturn(Arrays.asList(entity, parentEntity));
 
@@ -242,7 +242,7 @@ public class ConfigLoaderTest {
     public void testCompleteSuperClassNotExisting() {
         Entity parentEntity = mock(Entity.class);
         defaultMockEntity(parentEntity, "ParentEntity", null, null, new ArrayList<>());
-        when(parentEntity.isAbstract()).thenReturn(Boolean.TRUE);
+        when(parentEntity.getIsAbstract()).thenReturn(Boolean.TRUE);
         when(entity.getParent()).thenReturn("OtherParentEntity");
         when(config.getEntities()).thenReturn(Arrays.asList(entity, parentEntity));
 
@@ -255,7 +255,7 @@ public class ConfigLoaderTest {
     @Test
     public void testCompleteFilterField() {
         when(reference.getFilterField()).thenReturn(GROUPING_FIELD_NAME);
-        when(groupingEntityField.isTypeEnum()).thenReturn(Boolean.TRUE);
+        when(groupingEntityField.getIsTypeEnum()).thenReturn(Boolean.TRUE);
 
         boolean result = cut.complete();
         assertTrue(result, "The result of completion should be true");
@@ -277,7 +277,7 @@ public class ConfigLoaderTest {
     @Test
     public void testCompleteFilterFieldNotExisting() {
         when(reference.getFilterField()).thenReturn(GROUPING_FIELD_NAME + "1");
-        when(groupingEntityField.isTypeEnum()).thenReturn(Boolean.TRUE);
+        when(groupingEntityField.getIsTypeEnum()).thenReturn(Boolean.TRUE);
 
         boolean result = cut.complete();
         assertFalse(result, "The result of completion should be false");
@@ -288,7 +288,7 @@ public class ConfigLoaderTest {
     @Test
     public void testCompleteFilterFieldNullable() {
         when(reference.getFilterField()).thenReturn(GROUPING_FIELD_NAME);
-        when(groupingEntityField.isTypeEnum()).thenReturn(Boolean.TRUE);
+        when(groupingEntityField.getIsTypeEnum()).thenReturn(Boolean.TRUE);
         DaoInfo daoInfo = mock(DaoInfo.class);
         when(groupingEntityField.getDaoInfo()).thenReturn(daoInfo);
         when(daoInfo.getNullable()).thenReturn(Boolean.TRUE);
@@ -303,7 +303,7 @@ public class ConfigLoaderTest {
     @Test
     public void testCompleteFilterFieldNotNullable() {
         when(reference.getFilterField()).thenReturn(GROUPING_FIELD_NAME);
-        when(groupingEntityField.isTypeEnum()).thenReturn(Boolean.TRUE);
+        when(groupingEntityField.getIsTypeEnum()).thenReturn(Boolean.TRUE);
         DaoInfo daoInfo = mock(DaoInfo.class);
         when(groupingEntityField.getDaoInfo()).thenReturn(daoInfo);
         when(daoInfo.getNullable()).thenReturn(Boolean.FALSE);

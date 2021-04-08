@@ -135,8 +135,8 @@ public class AbstractCreatorTest {
         doAnswer(a -> when(referenceMock.getTargetEntity()).thenReturn(a.getArgument(0))).when(referenceMock).setTargetEntity(anyString());
         doAnswer(a -> when(referenceMock.getFilterField()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterField(anyString());
         doAnswer(a -> when(referenceMock.getFilterFieldValue()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterFieldValue(anyString());
-        doAnswer(a -> when(referenceMock.isList()).thenReturn(a.getArgument(0))).when(referenceMock).setList(anyBoolean());
-        doAnswer(a -> when(referenceMock.isOwner()).thenReturn(a.getArgument(0))).when(referenceMock).setOwner(anyBoolean());
+        doAnswer(a -> when(referenceMock.isList()).thenReturn(a.getArgument(0))).when(referenceMock).setIsList(anyBoolean());
+        doAnswer(a -> when(referenceMock.isOwner()).thenReturn(a.getArgument(0))).when(referenceMock).setIsOwner(anyBoolean());
         doAnswer(a -> when(referenceMock.isAggregated()).thenReturn(a.getArgument(0))).when(referenceMock).setAggregated(anyBoolean());
         doAnswer(a -> when(referenceMock.isReverse()).thenReturn(a.getArgument(0))).when(referenceMock).setReverse(anyBoolean());
     }

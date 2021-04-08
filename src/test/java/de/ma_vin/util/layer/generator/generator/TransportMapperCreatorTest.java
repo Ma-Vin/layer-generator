@@ -1478,7 +1478,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperAbstract() {
-        when(entity.isAbstract()).thenReturn(Boolean.TRUE);
+        when(entity.getIsAbstract()).thenReturn(Boolean.TRUE);
 
         assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
@@ -1490,7 +1490,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(entity.getRealParent()).thenReturn(parentEntity);
         when(entity.hasParent()).thenReturn(Boolean.TRUE);
         when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
-        when(parentEntity.isAbstract()).thenReturn(Boolean.TRUE);
+        when(parentEntity.getIsAbstract()).thenReturn(Boolean.TRUE);
         when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
         when(parentEntity.getReferences()).thenReturn(Arrays.asList(subReference));
         when(parentEntity.getFields()).thenReturn(Arrays.asList(field));

@@ -1,5 +1,4 @@
-<conf:config xmlns:conf="de.ma_vin.util.gen.model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="de.ma_vin.util.gen.model ">
+<conf:config xmlns:conf="de.ma_vin.util.gen.model">
     <basePackage>de.ma_vin.util.test.content</basePackage>
     <dtoPackage>dto</dtoPackage>
     <domainPackage>domain</domainPackage>

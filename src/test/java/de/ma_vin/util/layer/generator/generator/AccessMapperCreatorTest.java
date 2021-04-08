@@ -2249,7 +2249,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperAbstract() {
-        when(entity.isAbstract()).thenReturn(Boolean.TRUE);
+        when(entity.getIsAbstract()).thenReturn(Boolean.TRUE);
 
         assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
@@ -2261,7 +2261,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(entity.getRealParent()).thenReturn(parentEntity);
         when(entity.hasParent()).thenReturn(Boolean.TRUE);
         when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
-        when(parentEntity.isAbstract()).thenReturn(Boolean.TRUE);
+        when(parentEntity.getIsAbstract()).thenReturn(Boolean.TRUE);
         when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
         when(parentEntity.getReferences()).thenReturn(Collections.singletonList(toSubReference));
         when(parentEntity.getFields()).thenReturn(Collections.singletonList(field));
