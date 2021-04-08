@@ -39,7 +39,7 @@ public class Field {
      * package of the type if necessary
      */
     @XmlAttribute
-    private Boolean isTypeEnum = Boolean.FALSE;;
+    private Boolean isTypeEnum = Boolean.FALSE;
 
     /**
      * Description of the attribute

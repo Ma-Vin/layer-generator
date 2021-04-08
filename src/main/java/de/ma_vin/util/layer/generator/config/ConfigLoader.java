@@ -177,7 +177,7 @@ public class ConfigLoader {
 
     private boolean completeParentEntities(Entity actualEntity, String parentName) {
         Optional<Entity> entity = getEntity(parentName);
-        if (entity.isPresent() && entity.get().getIsAbstract()) {
+        if (entity.isPresent() && Boolean.TRUE.equals(entity.get().getIsAbstract())) {
             actualEntity.setRealParent(entity.get());
             return true;
         }
@@ -220,7 +220,7 @@ public class ConfigLoader {
                 .filter(f -> f.getFieldName().equals(reference.getFilterField()))
                 .findFirst();
 
-        if (filterField.isEmpty() || !filterField.get().getIsTypeEnum()) {
+        if (filterField.isEmpty() || Boolean.FALSE.equals(filterField.get().getIsTypeEnum())) {
             logger.error(String.format("The filter field %s of reference %s could not be found at entity %s or is not an enum type"
                     , reference.getFilterField(), reference.getReferenceName(), reference.getTargetEntity()));
             return false;
