@@ -434,7 +434,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
-    public void testCreateDataTransportHasSuperClass() {
+    public void testCreateDataTransportObjectHasSuperClass() {
         when(entity.getParent()).thenReturn("AnotherDummy");
         when(entity.getRealParent()).thenReturn(parentEntity);
         when(entity.getFields()).thenReturn(Arrays.asList(field));
@@ -448,7 +448,6 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dto.group;");
         expected.add("");
         expected.add("import de.test.package.dto.AnotherDummyDto;");
-        expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.NoArgsConstructor;");

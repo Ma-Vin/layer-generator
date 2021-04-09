@@ -60,6 +60,7 @@ public class DtoCreator extends AbstractObjectCreator {
         Clazz dtoClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName() + DTO_POSTFIX);
         if (entity.hasNoParent()) {
             dtoClazz.addInterface(DTO_INTERFACE);
+            dtoClazz.addImport(String.format("%s.%s", packageName, DTO_INTERFACE));
         }
         checkAndAddParent(dtoClazz, entity, packageName, DTO_POSTFIX);
 
@@ -70,7 +71,6 @@ public class DtoCreator extends AbstractObjectCreator {
         }
         dtoClazz.setDescription(javaDoc);
 
-        dtoClazz.addImport(String.format("%s.%s", packageName, DTO_INTERFACE));
         dtoClazz.addImport(Data.class.getName());
         dtoClazz.addImport(NoArgsConstructor.class.getName());
 

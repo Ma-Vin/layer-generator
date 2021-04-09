@@ -59,6 +59,7 @@ public class DomainCreator extends AbstractObjectCreator {
         Clazz domainClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName());
         if (entity.hasNoParent()) {
             domainClazz.addInterface(DOMAIN_INTERFACE);
+            domainClazz.addImport(String.format("%s.%s", packageName, DOMAIN_INTERFACE));
         }
         checkAndAddParent(domainClazz, entity, packageName, "");
 
@@ -69,7 +70,6 @@ public class DomainCreator extends AbstractObjectCreator {
         }
         domainClazz.setDescription(javaDoc);
 
-        domainClazz.addImport(String.format("%s.%s", packageName, DOMAIN_INTERFACE));
         domainClazz.addImport(Data.class.getName());
         domainClazz.addImport(NoArgsConstructor.class.getName());
 

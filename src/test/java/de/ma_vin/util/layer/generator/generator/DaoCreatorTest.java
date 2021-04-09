@@ -829,7 +829,6 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.ape.utils.generators.IdGenerator;");
         expected.add("import de.test.package.dao.AnotherDummyDao;");
-        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.domain.group.Dummy;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -1052,7 +1051,6 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.test.package.dao.AnotherDummyDao;");
-        expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");

@@ -477,7 +477,6 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.domain.group;");
         expected.add("");
         expected.add("import de.test.package.domain.AnotherDummy;");
-        expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.NoArgsConstructor;");

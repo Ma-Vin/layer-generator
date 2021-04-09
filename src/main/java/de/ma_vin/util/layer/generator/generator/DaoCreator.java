@@ -64,6 +64,7 @@ public class DaoCreator extends AbstractObjectCreator {
         Clazz daoClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName() + DAO_POSTFIX);
         if (entity.hasNoParent()) {
             daoClazz.addInterface(DAO_INTERFACE);
+            daoClazz.addImport(String.format("%s.%s", packageName, DAO_INTERFACE));
         }
         checkAndAddParent(daoClazz, entity, packageName, DAO_POSTFIX);
 
@@ -74,7 +75,6 @@ public class DaoCreator extends AbstractObjectCreator {
         }
         daoClazz.setDescription(javaDoc);
 
-        daoClazz.addImport(String.format("%s.%s", packageName, DAO_INTERFACE));
         daoClazz.addImport("javax.persistence.*");
         daoClazz.addImport(Data.class.getName());
 
