@@ -153,6 +153,9 @@ public class ConfigLoader {
         parentRef.setIsList(actualReference.isList());
         parentRef.setReferenceName(actualReference.getReferenceName());
         parentRef.setReverse(true);
+        parentRef.setFilterField(actualReference.getFilterField());
+        parentRef.setRealFilterField(actualReference.getRealFilterField());
+        parentRef.setFilterFieldValue(actualReference.getFilterFieldValue());
 
         targetEntity.getParentRefs().add(parentRef);
 
@@ -211,12 +214,19 @@ public class ConfigLoader {
                 }
                 result = completeFilterFields(ref) && result;
             }
+            for (Reference ref : e.getParentRefs()) {
+                if (ref.getFilterField() == null) {
+                    continue;
+                }
+                result = completeFilterFields(ref) && result;
+            }
         }
         return result;
     }
 
     private boolean completeFilterFields(Reference reference) {
-        Optional<Field> filterField = reference.getRealTargetEntity().getFields().stream()
+        Entity filterOwnerEntity = reference.isReverse() ? reference.getParent() : reference.getRealTargetEntity();
+        Optional<Field> filterField = filterOwnerEntity.getFields().stream()
                 .filter(f -> f.getFieldName().equals(reference.getFilterField()))
                 .findFirst();
 
@@ -227,7 +237,7 @@ public class ConfigLoader {
         }
         reference.setRealFilterField(filterField.get());
 
-        if (filterField.get().getDaoInfo() != null && Boolean.TRUE.equals(filterField.get().getDaoInfo().getNullable())) {
+        if (!reference.isReverse() && filterField.get().getDaoInfo() != null && Boolean.TRUE.equals(filterField.get().getDaoInfo().getNullable())) {
             logger.warn(String.format("The filter field %s at %s is marked as nullable. This is not allowed and will be set to not nullable."
                     , filterField.get(), reference.getTargetEntity()));
             filterField.get().getDaoInfo().setNullable(Boolean.FALSE);

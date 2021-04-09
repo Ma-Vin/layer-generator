@@ -64,4 +64,8 @@ public class Field {
         return validateRequired(fieldName) && validateRequired(type) && validateNonRequired(description)
                 && validateNonRequired(typePackage) && (daoInfo == null || daoInfo.isValid());
     }
+
+    public Models getModels() {
+        return models != null ? models : Models.DOMAIN_DAO_DTO;
+    }
 }

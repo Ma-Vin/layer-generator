@@ -647,7 +647,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @return {@code true} if the entity is relevant for the mapper
      */
     private static boolean isEntityRelevant(Entity entity) {
-        return entity.getModels() == null || (entity.getModels().isDao() && entity.getModels().isDomain());
+        return entity.getModels().isDao() && entity.getModels().isDomain();
     }
 
     /**
@@ -657,7 +657,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @return {@code true} if the field is relevant for the mapper
      */
     private static boolean isFieldRelevant(Field field) {
-        return field.getModels() == null || (field.getModels().isDao() && field.getModels().isDomain());
+        return field.getModels().isDao() && field.getModels().isDomain();
     }
 
     /**

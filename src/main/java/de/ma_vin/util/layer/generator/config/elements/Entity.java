@@ -92,4 +92,8 @@ public class Entity {
                 && (fields == null || fields.stream().allMatch(Field::isValid))
                 && (references == null || (references.stream().allMatch(Reference::isValid) && Reference.isFilterFieldValid(references)));
     }
+
+    public Models getModels() {
+        return models != null ? models : Models.DOMAIN_DAO_DTO;
+    }
 }

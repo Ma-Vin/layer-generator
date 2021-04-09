@@ -76,7 +76,7 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
      */
     protected void addAttributes(Entity entity, Clazz clazz, String... annotations) {
         entity.getFields().stream()
-                .filter(f -> f.getModels() == null || f.getModels().isDomain())
+                .filter(f -> f.getModels().isDomain())
                 .forEach(f -> {
                     if (f.getTypePackage() != null && !f.getTypePackage().isEmpty()) {
                         clazz.addImport(String.format("%s.%s", f.getTypePackage(), f.getType()));

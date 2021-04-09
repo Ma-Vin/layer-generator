@@ -284,7 +284,7 @@ public class DaoCreator extends AbstractObjectCreator {
         logger.debug("Identification methods will be created for " + daoClazz.getClassName());
 
         daoClazz.addImport("de.ma_vin.ape.utils.generators.IdGenerator");
-        if (entity.getModels() == null || entity.getModels().isDomain()) {
+        if (entity.getModels().isDomain()) {
             daoClazz.addImport(getPackageAndClass(entity, config.getBasePackage() + "." + config.getDomainPackage(), ""));
         }
 
@@ -292,7 +292,7 @@ public class DaoCreator extends AbstractObjectCreator {
         getIdentificationMethod.addAnnotation(Override.class.getSimpleName());
         getIdentificationMethod.setQualifier(Qualifier.PUBLIC);
         getIdentificationMethod.setMethodType(String.class.getSimpleName());
-        if (entity.getModels() == null || entity.getModels().isDomain()) {
+        if (entity.getModels().isDomain()) {
             getIdentificationMethod.addLine(String.format("return IdGenerator.generateIdentification(id, %s.ID_PREFIX);", entity.getBaseName()));
         } else {
             getIdentificationMethod.addLine("return IdGenerator.generateIdentification(id, \"\");");
@@ -303,7 +303,7 @@ public class DaoCreator extends AbstractObjectCreator {
         setIdentificationMethod.addAnnotation(Override.class.getSimpleName());
         setIdentificationMethod.setQualifier(Qualifier.PUBLIC);
         setIdentificationMethod.addParameter(String.class.getSimpleName(), "identification");
-        if (entity.getModels() == null || entity.getModels().isDomain()) {
+        if (entity.getModels().isDomain()) {
             setIdentificationMethod.addLine(String.format("id = IdGenerator.generateId(identification, %s.ID_PREFIX);", entity.getBaseName()));
         } else {
             setIdentificationMethod.addLine("id = IdGenerator.generateId(identification, \"\");");
