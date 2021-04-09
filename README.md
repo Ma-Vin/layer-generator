@@ -1,6 +1,6 @@
 ![Maven Workflow Action](https://github.com/Ma-Vin/de.ma_vin.util.layerGenerator/actions/workflows/maven.yml/badge.svg)
 
-# APE Layer Generator
+# Util Layer Generator
 A maven plugin generator to create domain model, data transport or data access objects.
 
 ## Sonarcloud analysis
