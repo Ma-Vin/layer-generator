@@ -477,7 +477,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         references.forEach(ref -> {
             convertMethod.addLine("case %s:", 2, ref.getFilterFieldValue());
-            convertMethod.addLine("parent.add%s(result);", 3, getUpperFirst(ref.getReferenceName()));
+            convertMethod.addLine("parent.add%ss(result);", 3, getUpperFirst(ref.getReferenceName()));
             convertMethod.addLine("break;", 3);
         });
 
