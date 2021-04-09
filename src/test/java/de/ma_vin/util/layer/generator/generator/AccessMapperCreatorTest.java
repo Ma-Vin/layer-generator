@@ -179,6 +179,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -198,6 +200,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -258,6 +262,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -279,6 +285,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
@@ -345,6 +353,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -366,6 +376,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
@@ -433,6 +445,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		result.setTargetRef(GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), mappedObjects));");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -454,6 +468,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRef(GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), mappedObjects));");
         expected.add("");
@@ -520,6 +536,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
         expected.add("					GroupingAccessMapper.convertToTarget(arg, result, mappedObjects)");
@@ -545,6 +563,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
@@ -640,6 +660,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Child result = new Child();");
         expected.add("");
+        expected.add("		result.setId(child.getId());");
+        expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			child.getTargetRefs().forEach(arg ->");
         expected.add("					GroupingAccessMapper.convertToTarget(arg.getTarget(), result, mappedObjects)");
@@ -665,6 +687,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		ChildDao result = new ChildDao();");
+        expected.add("");
+        expected.add("		result.setId(child.getId());");
         expected.add("");
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
@@ -696,6 +720,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
         expected.add("					GroupingAccessMapper.convertToTarget(arg, result, mappedObjects)");
@@ -721,6 +747,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
@@ -748,6 +776,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		Target result = new Target();");
+        expected.add("");
+        expected.add("		result.setId(target.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -792,6 +822,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		TargetDao result = new TargetDao();");
+        expected.add("");
+        expected.add("		result.setId(target.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -886,6 +918,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
         expected.add("					GroupingAccessMapper.convertToTarget(arg.getTarget(), result, mappedObjects)");
@@ -911,6 +945,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
@@ -992,6 +1028,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -1025,6 +1063,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
@@ -1114,6 +1154,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -1157,6 +1199,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1253,6 +1297,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
         expected.add("					GroupingAccessMapper.convertToTarget(arg, result, mappedObjects)");
@@ -1290,6 +1336,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
@@ -1382,6 +1430,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -1425,6 +1475,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1525,6 +1577,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -1568,6 +1622,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1658,6 +1714,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setIdentification(identification);");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -1677,6 +1735,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setIdentification(identification);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1744,6 +1804,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), includeChildren, result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -1765,6 +1827,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), includeChildren, result, mappedObjects);");
         expected.add("");
@@ -1836,6 +1900,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		result.setTargetRef(GroupingAccessMapper.convertToTarget(dummy.getTargetRef(), includeChildren, mappedObjects));");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -1857,6 +1923,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRef(GroupingAccessMapper.convertToTargetDao(dummy.getTargetRef(), includeChildren, mappedObjects));");
         expected.add("");
@@ -1926,6 +1994,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
         expected.add("					GroupingAccessMapper.convertToTarget(arg, true, result, mappedObjects)");
@@ -1951,6 +2021,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
@@ -2028,6 +2100,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getTargetRefs().forEach(arg ->");
         expected.add("					GroupingAccessMapper.convertToTarget(arg.getTarget(), true, result, mappedObjects)");
@@ -2053,6 +2127,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRefs(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
@@ -2125,6 +2201,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -2144,6 +2222,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -2306,6 +2386,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
         expected.add("		if (includeChildren) {");
@@ -2333,6 +2415,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
@@ -2413,6 +2497,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getAggTargets().forEach(arg ->");
         expected.add("					GroupingAccessMapper.convertToTarget(arg, result, mappedObjects)");
@@ -2438,6 +2524,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setAggTargets(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
@@ -2521,6 +2609,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		if (includeChildren) {");
         expected.add("			dummy.getAggTargets().forEach(arg ->");
         expected.add("					GroupingAccessMapper.convertToTarget(arg, result, mappedObjects)");
@@ -2546,6 +2636,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setAggTargets(new ArrayList<>());");
         expected.add("		if (includeChildren) {");
@@ -2639,6 +2731,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -2681,6 +2775,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
@@ -2780,6 +2876,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -2820,6 +2918,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDao result = new DummyDao();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setAnyField(anyField);");
         expected.add("");

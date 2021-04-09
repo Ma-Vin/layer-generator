@@ -115,6 +115,8 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         convertMethod.addLine("%1$s%2$s result = new %1$s%2$s();", getUpperFirst(entity.getBaseName()), classParameterPostFix);
         convertMethod.addEmptyLine();
 
+        addIdentificationSetting(convertMethod, entity);
+
         determineAlFields(entity).stream()
                 .filter(fieldChecker::isRelevant)
                 .forEach(f ->
@@ -319,6 +321,21 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
             return String.format("%s.getIdentification()", getLowerFirst(entity.getBaseName()));
         }
         return String.format("\"%s%s\" + %s.getId().longValue()", getUpperFirst(entity.getBaseName()), classParameterPostFix, getLowerFirst(entity.getBaseName()));
+    }
+
+    /**
+     * Adds the setting of the identification to the convert method
+     *
+     * @param convertMethod Method where to add lines
+     * @param entity        entity which is to convert
+     */
+    protected void addIdentificationSetting(Method convertMethod, Entity entity) {
+        if (config.isUseIdGenerator()) {
+            convertMethod.addLine("result.setIdentification(identification);");
+        } else {
+            convertMethod.addLine("result.setId(%s.getId());", getLowerFirst(entity.getBaseName()));
+        }
+        convertMethod.addEmptyLine();
     }
 
     /**

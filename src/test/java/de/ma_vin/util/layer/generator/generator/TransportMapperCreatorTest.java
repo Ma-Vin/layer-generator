@@ -167,6 +167,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -186,6 +188,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -246,6 +250,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -267,6 +273,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
@@ -334,6 +342,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		GroupTransportMapper.convertToTarget(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -355,6 +365,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		GroupTransportMapper.convertToTargetDto(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
@@ -422,6 +434,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		result.setTargetRef(GroupTransportMapper.convertToTarget(dummy.getTargetRef(), mappedObjects));");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -443,6 +457,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRef(GroupTransportMapper.convertToTargetDto(dummy.getTargetRef(), mappedObjects));");
         expected.add("");
@@ -508,6 +524,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -527,6 +545,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -591,6 +611,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -610,6 +632,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -678,6 +702,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		GroupTransportMapper.convertToTarget(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -711,6 +737,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		GroupTransportMapper.convertToTargetDto(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
@@ -792,6 +820,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -835,6 +865,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -922,6 +954,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -941,6 +975,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1004,6 +1040,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setIdentification(identification);");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -1023,6 +1061,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setIdentification(identification);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1089,6 +1129,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		GroupTransportMapper.convertToTarget(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -1110,6 +1152,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		GroupTransportMapper.convertToTargetDto(dummy.getTargetRef(), result, mappedObjects);");
         expected.add("");
@@ -1180,6 +1224,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		result.setTargetRef(GroupTransportMapper.convertToTarget(dummy.getTargetRef(), mappedObjects));");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
@@ -1201,6 +1247,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setTargetRef(GroupTransportMapper.convertToTargetDto(dummy.getTargetRef(), mappedObjects));");
         expected.add("");
@@ -1268,6 +1316,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -1287,6 +1337,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1354,6 +1406,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
         expected.add("	}");
@@ -1373,6 +1427,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		mappedObjects.put(identification, result);");
         expected.add("		return result;");
@@ -1533,6 +1589,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("		Dummy result = new Dummy();");
         expected.add("");
+        expected.add("		result.setId(dummy.getId());");
+        expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
         expected.add("		GroupTransportMapper.convertToChild(dummy.getChild(), result, mappedObjects);");
@@ -1556,6 +1614,8 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		}");
         expected.add("");
         expected.add("		DummyDto result = new DummyDto();");
+        expected.add("");
+        expected.add("		result.setId(dummy.getId());");
         expected.add("");
         expected.add("		result.setAnyField(dummy.getAnyField());");
         expected.add("");
