@@ -14,20 +14,30 @@ jobs:
     steps:
       - name: Checkout layerGenerator
         uses: actions/checkout@v2
+        with:
+          path: main
+      - name: Checkout ape
+        uses: actions/checkout@v2
+        with:
+          repository: Ma-Vin/de.ma_vin.ape
+          token: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
+          path: ape
       - name: Checkout ape utils
         uses: actions/checkout@v2
         with:
           repository: Ma-Vin/de.ma_vin.ape.utils
           token: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
-          path: apeutils
+          path: ape/apeutils
       - name: Set up JDK 1.14
         uses: actions/setup-java@v1
         with:
           java-version: 1.14
+      - name: Build ape
+        run: mvn -B clean install --file ape/pom.xml
       - name: Build apeutils
-        run: mvn -B clean install --file apeutils/pom.xml
+        run: mvn -B clean install --file ape/apeutils/pom.xml
       - name: Build layerGenerator
-        run: mvn -B clean install
+        run: mvn -B clean install --file main/pom.xml
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
@@ -44,4 +54,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P sonar-cloud --file sample/pom.xml
+        run: mvn -B clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P sonar-cloud --file main/sample/pom.xml
