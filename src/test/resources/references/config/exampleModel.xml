@@ -200,11 +200,11 @@
                                    isList="true" filterField="someEnum" filterFieldValue="ENUM_VALUE_B"/>
                         <reference referenceName="filterC" targetEntity="Filtered" isOwner="true"
                                    isList="true" filterField="someEnum" filterFieldValue="ENUM_VALUE_C"/>
-                        <reference referenceName="filterA" targetEntity="FilteredOnlyDaoField" isOwner="true"
+                        <reference referenceName="filterDaoA" targetEntity="FilteredOnlyDaoField" isOwner="true"
                                    isList="true" filterField="someEnum" filterFieldValue="ENUM_VALUE_A"/>
-                        <reference referenceName="filterB" targetEntity="FilteredOnlyDaoField" isOwner="true"
+                        <reference referenceName="filterDaoB" targetEntity="FilteredOnlyDaoField" isOwner="true"
                                    isList="true" filterField="someEnum" filterFieldValue="ENUM_VALUE_B"/>
-                        <reference referenceName="filterC" targetEntity="FilteredOnlyDaoField" isOwner="true"
+                        <reference referenceName="filterDaoC" targetEntity="FilteredOnlyDaoField" isOwner="true"
                                    isList="true" filterField="someEnum" filterFieldValue="ENUM_VALUE_C"/>
                     </references>
                 </entity>

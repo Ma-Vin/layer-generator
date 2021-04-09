@@ -1,10 +1,8 @@
 package de.ma_vin.util.layer.generator.generator;
 
-import de.ma_vin.util.layer.generator.sources.*;
-import de.ma_vin.util.layer.generator.config.elements.Config;
+import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Field;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.exceptions.NotSupportedMethodException;
 
 import javax.persistence.*;
@@ -88,7 +86,7 @@ public class DaoCreator extends AbstractObjectCreator {
             daoClazz.addAnnotation(new Annotation(Table.class, "name", String.format("\"%ss\"", entity.getBaseName())));
         }
 
-        addAttributes(entity, daoClazz);
+        addAttributes(entity, daoClazz, Models.DAO);
         addReferences(entity, daoClazz, packageName, packageDir);
 
         addDaoIdentificationMethods(daoClazz, entity);
@@ -96,14 +94,8 @@ public class DaoCreator extends AbstractObjectCreator {
         return writeClassFile(getPackageDir(entity, packageDir), daoClazz.getClassName(), daoClazz);
     }
 
-    /**
-     * Adds all necessary attributes to the class
-     *
-     * @param entity   entity whose fields should be added as attribute
-     * @param daoClazz Class where to add attributes
-     */
     @Override
-    protected void addAttributes(Entity entity, Clazz daoClazz) {
+    protected void addAttributes(Entity entity, Clazz daoClazz, Models actualModel) {
         if (entity.hasNoParent()) {
             Attribute idAttribute = new Attribute("id", Long.class.getSimpleName());
             idAttribute.addAnnotation(Id.class);
@@ -115,7 +107,7 @@ public class DaoCreator extends AbstractObjectCreator {
             daoClazz.addAttribute(idAttribute);
         }
 
-        addAttributes(entity, daoClazz, "Column");
+        addAttributes(entity, daoClazz, actualModel, "Column");
     }
 
     @Override

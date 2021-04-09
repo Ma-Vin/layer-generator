@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
@@ -78,7 +79,7 @@ public class DtoCreator extends AbstractObjectCreator {
         dtoClazz.addAnnotation(new Annotation("SuppressWarnings", null, "\"java:S1068\""));
 
         addIdentificationAttribute(dtoClazz, entity);
-        addAttributes(entity, dtoClazz);
+        addAttributes(entity, dtoClazz, Models.DTO);
         addReferences(entity, dtoClazz, packageName);
 
         return writeClassFile(getPackageDir(entity, packageDir), dtoClazz.getClassName(), dtoClazz);

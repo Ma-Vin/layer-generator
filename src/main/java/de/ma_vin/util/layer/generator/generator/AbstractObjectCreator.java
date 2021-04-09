@@ -1,9 +1,6 @@
 package de.ma_vin.util.layer.generator.generator;
 
-import de.ma_vin.util.layer.generator.config.elements.Config;
-import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Field;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.sources.Annotation;
 import de.ma_vin.util.layer.generator.sources.Attribute;
 import de.ma_vin.util.layer.generator.sources.Clazz;
@@ -59,12 +56,13 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
     /**
      * Adds all necessary attributes to the class
      *
-     * @param entity entity whose fields should be added as attribute
-     * @param clazz  Class where to add attributes
+     * @param entity      entity whose fields should be added as attribute
+     * @param clazz       Class where to add attributes
+     * @param actualModel The model whose model objects are actually created
      */
     @SuppressWarnings("java:S3878")
-    protected void addAttributes(Entity entity, Clazz clazz) {
-        addAttributes(entity, clazz, new String[]{});
+    protected void addAttributes(Entity entity, Clazz clazz, Models actualModel) {
+        addAttributes(entity, clazz, actualModel, new String[]{});
     }
 
     /**
@@ -72,11 +70,13 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
      *
      * @param entity      entity whose fields should be added as attribute
      * @param clazz       Class where to add attributes
+     * @param actualModel The model whose model objects are actually created
+     *                    (Only {@link Models#DAO}, {@link Models#DOMAIN}, {@link Models#DTO} should be used here)
      * @param annotations annotations which should be added
      */
-    protected void addAttributes(Entity entity, Clazz clazz, String... annotations) {
+    protected void addAttributes(Entity entity, Clazz clazz, Models actualModel, String... annotations) {
         entity.getFields().stream()
-                .filter(f -> f.getModels().isDomain())
+                .filter(f -> f.getModels().includes(actualModel))
                 .forEach(f -> {
                     if (f.getTypePackage() != null && !f.getTypePackage().isEmpty()) {
                         clazz.addImport(String.format("%s.%s", f.getTypePackage(), f.getType()));

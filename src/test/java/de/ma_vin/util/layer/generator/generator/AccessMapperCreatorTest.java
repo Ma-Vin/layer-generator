@@ -2654,10 +2654,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		if (result != null) {");
         expected.add("			switch (dummy.getAnyField()) {");
         expected.add("				case ENUM_VALUE_A:");
-        expected.add("					parent.addSomeDummy(result);");
+        expected.add("					parent.addSomeDummys(result);");
         expected.add("					break;");
         expected.add("				case ENUM_VALUE_B:");
-        expected.add("					parent.addAnotherDummy(result);");
+        expected.add("					parent.addAnotherDummys(result);");
         expected.add("					break;");
         expected.add("				default:");
         expected.add("					log.error(\"There is not any mapping rule for dummy of type {}\", dummy.getAnyField());");
@@ -2793,10 +2793,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("		if (result != null) {");
         expected.add("			switch (dummy.getAnyField()) {");
         expected.add("				case ENUM_VALUE_A:");
-        expected.add("					parent.addSomeDummy(result);");
+        expected.add("					parent.addSomeDummys(result);");
         expected.add("					break;");
         expected.add("				case ENUM_VALUE_B:");
-        expected.add("					parent.addAnotherDummy(result);");
+        expected.add("					parent.addAnotherDummys(result);");
         expected.add("					break;");
         expected.add("				default:");
         expected.add("					log.error(\"There is not any mapping rule for dummy of type {}\", dummy.getAnyField());");

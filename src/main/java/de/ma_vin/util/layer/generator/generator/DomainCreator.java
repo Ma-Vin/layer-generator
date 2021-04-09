@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
@@ -77,7 +78,7 @@ public class DomainCreator extends AbstractObjectCreator {
         domainClazz.addAnnotation(new Annotation("SuppressWarnings", null, "\"java:S1068\""));
 
         addIdentificationAttribute(domainClazz, entity);
-        addAttributes(entity, domainClazz);
+        addAttributes(entity, domainClazz, Models.DOMAIN);
         addReferences(entity, domainClazz, packageName);
 
         return writeClassFile(getPackageDir(entity, packageDir), domainClazz.getClassName(), domainClazz);
