@@ -163,7 +163,7 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
         if (entity.getGrouping() != null) {
             String dir = entity.getGrouping().getGroupingPackage();
             if (dir.contains(".")) {
-                dir = dir.replace(".", "\\");
+                dir = dir.replace(".", File.separator);
             }
             return createFile(basePackageDir, dir);
         }

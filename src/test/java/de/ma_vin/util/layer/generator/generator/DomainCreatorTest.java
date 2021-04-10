@@ -424,7 +424,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
 
         assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
-        assertTrue(directoriesWhereRequestedToWrite.contains("group\\subgroup"), "Dot should be replaced by backslash");
+        assertTrue(directoriesWhereRequestedToWrite.contains(String.format("group%ssubgroup", File.separator)), "Dot should be replaced by backslash");
 
         checkSingleFile("Dummy.java", expected);
     }
