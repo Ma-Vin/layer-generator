@@ -13,11 +13,9 @@ import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MultiTransportMapperTest {
-    private RootDto rootDto;
     private MultiRefOneParentDto multiRefOneParentDto;
     private MultiRefTwoParentsDto multiRefTwoParentsDto;
 
-    private Root root;
     private MultiRefOneParent multiRefOneParent;
     private MultiRefTwoParents multiRefTwoParents;
 
@@ -26,12 +24,10 @@ public class MultiTransportMapperTest {
         initObjectFactory();
         multiRefOneParentDto = createMultiRefOneParentDto(getNextId());
         multiRefTwoParentsDto = createMultiRefTwoParentsDto(getNextId());
-        rootDto = createRootDto(getNextId());
 
         initObjectFactory();
         multiRefOneParent = createMultiRefOneParentWithChildren(getNextId());
         multiRefTwoParents = createMultiRefTwoParents(getNextId());
-        root = createRoot(getNextId());
     }
 
     @Test
