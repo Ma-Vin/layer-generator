@@ -74,15 +74,15 @@ public class ObjectFactory {
         updateMaxId(id);
     }
 
-    private static void addToCreatedMap(IIdentifiableDao dao) {
+    public static void addToCreatedMap(IIdentifiableDao dao) {
         createdDaoObjects.put(dao.getIdentification(), dao);
     }
 
-    private static void addToCreatedMap(IIdentifiable domain) {
+    public static void addToCreatedMap(IIdentifiable domain) {
         createdDomainObjects.put(domain.getIdentification(), domain);
     }
 
-    private static void addToCreatedMap(ITransportable dto) {
+    public static void addToCreatedMap(ITransportable dto) {
         createdDtoObjects.put(dto.getIdentification(), dto);
     }
 
