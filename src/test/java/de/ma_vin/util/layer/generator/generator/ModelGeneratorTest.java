@@ -318,7 +318,7 @@ public class ModelGeneratorTest {
         assertTrue(cut.generate(), "The generation should be successful");
 
         assertFalse(requestFilesToCreate.contains("group.subgroup"), "Not any directories with dots should be created");
-        assertTrue(requestFilesToCreate.contains("group\\subgroup"), "Dot should be replaced by backslash");
+        assertTrue(requestFilesToCreate.contains(String.format("group%ssubgroup",File.separator)), "Dot should be replaced by backslash");
 
         verify(daoCreator).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
