@@ -1,4 +1,4 @@
-![Maven Workflow Action](https://github.com/Ma-Vin/de.ma_vin.util.sampleLayerGenerator/actions/workflows/sampleMaven.yml/badge.svg)
+![Maven Sample Workflow Action](https://github.com/Ma-Vin/de.ma_vin.util.layerGenerator/actions/workflows/sampleMaven.yml/badge.svg)
 
 # APE Sample Layer Generator
 
