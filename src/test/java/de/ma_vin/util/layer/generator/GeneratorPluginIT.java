@@ -10,10 +10,9 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-//@Disabled
 public class GeneratorPluginIT {
-    private static final String TARGET_DIR = "target/gen-temp";
-    private static final String MODEL_DIR = "src/test/resources/references/config";
+    private static final String TARGET_DIR = String.format("target%sgen-temp", File.separator);
+    private static final String MODEL_DIR = String.format("src%1$stest%1$sresources%1$sreferences%1$sconfig", File.separator);
 
     private GeneratorPlugin cut;
     private MavenProject project;

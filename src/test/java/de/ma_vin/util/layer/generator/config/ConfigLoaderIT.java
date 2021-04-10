@@ -22,7 +22,7 @@ public class ConfigLoaderIT {
     public void setUp() {
         logger = new LogImpl();
         classLoader = getClass().getClassLoader();
-        resourcesDirectory = new File("src/test/resources/references/config");
+        resourcesDirectory = new File(String.format("src%1$stest%1$sresources%1$sreferences%1$sconfig", File.separator));
     }
 
     @Test()
@@ -71,7 +71,7 @@ public class ConfigLoaderIT {
     @Test()
     public void testLoadSchemaInvalid() {
         File exampleModelFile = new File(resourcesDirectory, "schemaInvalidModel.xml");
-        File schemaFile = new File("target\\classes\\xsd\\config.xsd");
+        File schemaFile = new File(String.format("target%1$sclasses%1$sxsd%1$sconfig.xsd", File.separator));
         ConfigLoader configLoader = new ConfigLoader(exampleModelFile, logger, schemaFile);
 
         assertFalse(configLoader.load(), "result should be false");
