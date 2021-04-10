@@ -139,7 +139,7 @@ public class ModelGenerator {
      */
     private Optional<File> createDirForPackage(File baseDir, String dir, String messageTextOfPackage) {
         if (dir.contains(".")) {
-            dir = dir.replace(".", "\\");
+            dir = dir.replace(".", File.separator);
         }
         File packageDir = createFile(baseDir, dir);
         if (!packageDir.exists()) {
