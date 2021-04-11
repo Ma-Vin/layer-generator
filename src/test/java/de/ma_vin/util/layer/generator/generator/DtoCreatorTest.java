@@ -461,7 +461,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data");
         expected.add("@EqualsAndHashCode(callSuper = true)");
         expected.add("@NoArgsConstructor");
-        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("@SuppressWarnings({\"java:S2160\", \"java:S1068\"})");
         expected.add("@ToString(callSuper = true)");
         expected.add("public class DummyDto extends AnotherDummyDto {");
         expected.add("");

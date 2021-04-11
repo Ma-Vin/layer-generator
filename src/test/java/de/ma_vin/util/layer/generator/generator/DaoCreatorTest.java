@@ -843,6 +843,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(callSuper = true)");
+        expected.add("@SuppressWarnings(\"java:S2160\")");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(callSuper = true)");
         expected.add("public class DummyDao extends AnotherDummyDao {");
@@ -1064,6 +1065,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(callSuper = true)");
+        expected.add("@SuppressWarnings(\"java:S2160\")");
         expected.add("@Table(name = \"Dummys\")");
         expected.add("@ToString(callSuper = true)");
         expected.add("public class DummyDao extends AnotherDummyDao {");

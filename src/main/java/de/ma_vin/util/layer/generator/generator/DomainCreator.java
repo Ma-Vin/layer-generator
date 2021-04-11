@@ -75,7 +75,10 @@ public class DomainCreator extends AbstractObjectCreator {
 
         domainClazz.addAnnotation(Data.class);
         domainClazz.addAnnotation(NoArgsConstructor.class);
-        domainClazz.addAnnotation(new Annotation("SuppressWarnings", null, "\"java:S1068\""));
+        Annotation unusedParameterSuppressing = domainClazz.getAnnotation(SuppressWarnings.class.getSimpleName())
+                .orElse(new Annotation(SuppressWarnings.class.getSimpleName()));
+        unusedParameterSuppressing.appendValue("\"java:S1068\"");
+        domainClazz.addAnnotation(unusedParameterSuppressing);
 
         addIdentificationAttribute(domainClazz, entity);
         addAttributes(entity, domainClazz, Models.DOMAIN);

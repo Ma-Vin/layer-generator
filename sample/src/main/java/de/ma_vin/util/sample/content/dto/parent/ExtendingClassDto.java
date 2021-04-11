@@ -11,7 +11,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@SuppressWarnings("java:S1068")
+@SuppressWarnings({"java:S2160", "java:S1068"})
 @ToString(callSuper = true)
 public class ExtendingClassDto extends SuperClassDto {
 

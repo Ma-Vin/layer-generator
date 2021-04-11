@@ -14,6 +14,7 @@ import lombok.ToString;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true, exclude = {"parentRoot"})
+@SuppressWarnings("java:S2160")
 @Table(name = "ExtendingClasss")
 @ToString(callSuper = true, exclude = {"parentRoot"})
 public class ExtendingClassDao extends SuperClassDao {

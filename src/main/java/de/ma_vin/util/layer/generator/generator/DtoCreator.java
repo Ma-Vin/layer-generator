@@ -76,7 +76,10 @@ public class DtoCreator extends AbstractObjectCreator {
 
         dtoClazz.addAnnotation(Data.class);
         dtoClazz.addAnnotation(NoArgsConstructor.class);
-        dtoClazz.addAnnotation(new Annotation("SuppressWarnings", null, "\"java:S1068\""));
+        Annotation unusedParameterSuppressing = dtoClazz.getAnnotation(SuppressWarnings.class.getSimpleName())
+                .orElse(new Annotation(SuppressWarnings.class.getSimpleName()));
+        unusedParameterSuppressing.appendValue("\"java:S1068\"");
+        dtoClazz.addAnnotation(unusedParameterSuppressing);
 
         addIdentificationAttribute(dtoClazz, entity);
         addAttributes(entity, dtoClazz, Models.DTO);

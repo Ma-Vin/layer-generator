@@ -3,9 +3,7 @@ package de.ma_vin.util.layer.generator.sources;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class to generate sources of annotations
@@ -92,7 +90,7 @@ public class Annotation extends AbstractGenerateLines implements Comparable<Anno
                 return attributeName == null ? values[0] : String.format("%s = %s", attributeName, values[0]);
             }
             StringBuilder sb = new StringBuilder();
-            sb.append(String.format("%s = {", attributeName));
+            sb.append(attributeName == null ? "{" : String.format("%s = {", attributeName));
             sb.append(values[0]);
             for (int i = 1; i < values.length; i++) {
                 sb.append(", ");
@@ -107,5 +105,50 @@ public class Annotation extends AbstractGenerateLines implements Comparable<Anno
         public int compareTo(AttributeValue o) {
             return attributeName.compareTo(o.attributeName);
         }
+    }
+
+    /**
+     * Appends a value to existing values of the parameter without name. If the parameter without name does not exists a new one will be added
+     *
+     * @param paraValue The value to add
+     */
+    public void appendValue(String paraValue) {
+        Optional<AttributeValue> attributeValue = parameters.stream().filter(av -> av.getAttributeName() == null).findFirst();
+        if (attributeValue.isEmpty()) {
+            addValue(paraValue);
+            return;
+        }
+        addValue(attributeValue.get(), paraValue);
+    }
+
+    /**
+     * Appends a value to existing values of the parameter. If the parameter without name does not exists a new one will be added
+     *
+     * @param paraName  name of the parameter where to add value
+     * @param paraValue The value to add
+     */
+    public void appendParameter(String paraName, String paraValue) {
+        Optional<AttributeValue> attributeValue = parameters.stream().filter(av -> av.getAttributeName() != null && av.getAttributeName().equals(paraName)).findFirst();
+        if (attributeValue.isEmpty()) {
+            addParameter(paraName, paraValue);
+            return;
+        }
+        addValue(attributeValue.get(), paraValue);
+    }
+
+    /**
+     * Adds a value to the value array at an {@link AttributeValue}
+     *
+     * @param attributeValue where to add value
+     * @param value          value to add
+     */
+    private void addValue(AttributeValue attributeValue, String value) {
+        List<String> values = new ArrayList<>();
+        values.addAll(Arrays.asList(attributeValue.values));
+        if (!values.contains(value)) {
+            values.add(value);
+            attributeValue.isArray = true;
+        }
+        attributeValue.values = values.toArray(String[]::new);
     }
 }

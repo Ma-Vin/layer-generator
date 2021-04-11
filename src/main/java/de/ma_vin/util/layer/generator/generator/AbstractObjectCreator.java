@@ -42,14 +42,18 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
                     .orElse(new Annotation(ToString.class));
             Annotation equalsAndHashCodeAnnotation = clazz.getAnnotation(EqualsAndHashCode.class.getSimpleName())
                     .orElse(new Annotation(EqualsAndHashCode.class));
+            Annotation suppressWarnings = clazz.getAnnotation(SuppressWarnings.class.getSimpleName())
+                    .orElse(new Annotation(SuppressWarnings.class.getSimpleName()));
 
             toStringAnnotation.addParameter("callSuper", "true");
             equalsAndHashCodeAnnotation.addParameter("callSuper", "true");
+            suppressWarnings.appendValue("\"java:S2160\"");
 
             clazz.addImport(EqualsAndHashCode.class.getName());
             clazz.addImport(ToString.class.getName());
             clazz.addAnnotation(toStringAnnotation);
             clazz.addAnnotation(equalsAndHashCodeAnnotation);
+            clazz.addAnnotation(suppressWarnings);
         }
     }
 
