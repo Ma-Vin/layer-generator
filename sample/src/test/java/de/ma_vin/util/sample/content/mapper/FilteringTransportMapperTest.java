@@ -1,12 +1,17 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.filtering.*;
+import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.filtering.*;
 import de.ma_vin.util.sample.given.AnyEnumType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,8 +28,14 @@ public class FilteringTransportMapperTest {
     private FilteredDto filteredDto;
     private FilteredOnlyDaoFieldDto filteredOnlyDaoFieldDto;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, ITransportable> mappedDtoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDtoObjects.clear();
+
         initObjectFactory();
         filteredDto = createFilteredDto(getNextId(), AnyEnumType.ENUM_VALUE_A);
         filteredOnlyDaoFieldDto = createFilteredOnlyDaoFieldDto(getNextId(), AnyEnumType.ENUM_VALUE_B);
@@ -67,6 +78,13 @@ public class FilteringTransportMapperTest {
     }
 
     @Test
+    public void testConvertToSomeFilteringOwnerAgain() {
+        SomeFilteringOwner result = FilteringTransportMapper.convertToSomeFilteringOwner(someFilteringOwnerDto, mappedObjects);
+        SomeFilteringOwner convertAgainResult = FilteringTransportMapper.convertToSomeFilteringOwner(someFilteringOwnerDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToFiltered() {
         Filtered result = FilteringTransportMapper.convertToFiltered(filteredDto);
         assertNotNull(result, "There should be any result");
@@ -81,6 +99,13 @@ public class FilteringTransportMapperTest {
     }
 
     @Test
+    public void testConvertToFilteredAgain() {
+        Filtered result = FilteringTransportMapper.convertToFiltered(filteredDto, mappedObjects);
+        Filtered convertAgainResult = FilteringTransportMapper.convertToFiltered(filteredDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToFilteredOnlyDaoField() {
         FilteredOnlyDaoField result = FilteringTransportMapper.convertToFilteredOnlyDaoField(filteredOnlyDaoFieldDto);
         assertNotNull(result, "There should be any result");
@@ -91,6 +116,13 @@ public class FilteringTransportMapperTest {
     @Test
     public void testConvertToFilteredOnlyDaoFieldNull() {
         assertNull(FilteringTransportMapper.convertToFilteredOnlyDaoField(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToFilteredOnlyDaoFieldAgain() {
+        FilteredOnlyDaoField result = FilteringTransportMapper.convertToFilteredOnlyDaoField(filteredOnlyDaoFieldDto, mappedObjects);
+        FilteredOnlyDaoField convertAgainResult = FilteringTransportMapper.convertToFilteredOnlyDaoField(filteredOnlyDaoFieldDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -115,6 +147,13 @@ public class FilteringTransportMapperTest {
     }
 
     @Test
+    public void testConvertToSomeFilteringOwnerDtoAgain() {
+        SomeFilteringOwnerDto result = FilteringTransportMapper.convertToSomeFilteringOwnerDto(someFilteringOwner, mappedDtoObjects);
+        SomeFilteringOwnerDto convertAgainResult = FilteringTransportMapper.convertToSomeFilteringOwnerDto(someFilteringOwner, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToFilteredDto() {
         FilteredDto result = FilteringTransportMapper.convertToFilteredDto(filtered);
         assertNotNull(result, "There should be any result");
@@ -129,6 +168,13 @@ public class FilteringTransportMapperTest {
     }
 
     @Test
+    public void ttestConvertToFilteredDtoAgain() {
+        FilteredDto result = FilteringTransportMapper.convertToFilteredDto(filtered, mappedDtoObjects);
+        FilteredDto convertAgainResult = FilteringTransportMapper.convertToFilteredDto(filtered, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToFilteredOnlyDaoFieldDto() {
         FilteredOnlyDaoFieldDto result = FilteringTransportMapper.convertToFilteredOnlyDaoFieldDto(filteredOnlyDaoField);
         assertNotNull(result, "There should be any result");
@@ -139,6 +185,13 @@ public class FilteringTransportMapperTest {
     @Test
     public void testConvertToFilteredOnlyDaoFieldDtoNull() {
         assertNull(FilteringTransportMapper.convertToFilteredOnlyDaoFieldDto(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToFilteredOnlyDaoFieldDtoAgain() {
+        FilteredOnlyDaoFieldDto result = FilteringTransportMapper.convertToFilteredOnlyDaoFieldDto(filteredOnlyDaoField, mappedDtoObjects);
+        FilteredOnlyDaoFieldDto convertAgainResult = FilteringTransportMapper.convertToFilteredOnlyDaoFieldDto(filteredOnlyDaoField, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

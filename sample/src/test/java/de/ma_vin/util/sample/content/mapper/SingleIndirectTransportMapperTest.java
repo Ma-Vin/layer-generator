@@ -1,11 +1,16 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.single.indirect.*;
+import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.single.indirect.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static de.ma_vin.util.sample.content.ObjectFactory.getNextId;
@@ -21,8 +26,14 @@ public class SingleIndirectTransportMapperTest {
     private SingleRefIndirectParentDto singleRefIndirectParentDto;
     private SingleRefOtherIndirectParentDto singleRefOtherIndirectParentDto;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, ITransportable> mappedDtoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDtoObjects.clear();
+
         initObjectFactory();
         singleRefIndirectParent = createSingleRefIndirectParent(getNextId());
         singleRefOtherIndirectParent = createSingleRefOtherIndirectParent(getNextId());
@@ -55,6 +66,13 @@ public class SingleIndirectTransportMapperTest {
     @Test
     public void testConvertToSingleRefIndirectParentNull() {
         assertNull(SingleIndirectTransportMapper.convertToSingleRefIndirectParent(null), "The result should be null");
+    }
+
+    @Test
+    public void estConvertToSingleRefIndirectParentAgain() {
+        SingleRefIndirectParent result = SingleIndirectTransportMapper.convertToSingleRefIndirectParent(singleRefIndirectParentDto, mappedObjects);
+        SingleRefIndirectParent convertAgainResult = SingleIndirectTransportMapper.convertToSingleRefIndirectParent(singleRefIndirectParentDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -95,6 +113,14 @@ public class SingleIndirectTransportMapperTest {
     }
 
     @Test
+    public void testConvertToSingleRefOtherIndirectParentAgain() {
+        SingleRefOtherIndirectParent result = SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParentDto, mappedObjects);
+        SingleRefOtherIndirectParent convertAgainResult = SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParentDto, mappedObjects);
+        SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParentDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToSingleRefIndirectParentDto() {
         SingleRefIndirectParentDto result = SingleIndirectTransportMapper.convertToSingleRefIndirectParentDto(singleRefIndirectParent);
         assertNotNull(result, "There should be any result");
@@ -115,6 +141,13 @@ public class SingleIndirectTransportMapperTest {
     @Test
     public void testConvertToSingleRefIndirectParentDtoNull() {
         assertNull(SingleIndirectTransportMapper.convertToSingleRefIndirectParentDto(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefIndirectParentDtoAgain() {
+        SingleRefIndirectParentDto result = SingleIndirectTransportMapper.convertToSingleRefIndirectParentDto(singleRefIndirectParent, mappedDtoObjects);
+        SingleRefIndirectParentDto convertAgainResult = SingleIndirectTransportMapper.convertToSingleRefIndirectParentDto(singleRefIndirectParent, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -152,6 +185,13 @@ public class SingleIndirectTransportMapperTest {
     @Test
     public void testConvertToSingleRefOtherIndirectParentDtoNull() {
         assertNull(SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParentDto(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefOtherIndirectParentDtoAgain() {
+        SingleRefOtherIndirectParentDto result = SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParentDto(singleRefOtherIndirectParent, mappedDtoObjects);
+        SingleRefOtherIndirectParentDto convertAgainResult = SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParentDto(singleRefOtherIndirectParent, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

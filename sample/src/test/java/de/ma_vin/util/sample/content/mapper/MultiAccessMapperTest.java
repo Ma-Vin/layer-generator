@@ -1,13 +1,18 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefTwoParentsDao;
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefOneParent;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static de.ma_vin.util.sample.content.ObjectFactory.getNextId;
@@ -22,8 +27,14 @@ public class MultiAccessMapperTest {
     private MultiRefOneParent multiRefOneParent;
     private MultiRefTwoParents multiRefTwoParents;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, IIdentifiableDao> mappedDaoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDaoObjects.clear();
+
         initObjectFactory();
         multiRefOneParentDao = createMultiRefOneParentDaoWithChildren(getNextId());
         multiRefTwoParentsDao = createMultiRefTwoParentsDao(getNextId());
@@ -71,6 +82,13 @@ public class MultiAccessMapperTest {
     }
 
     @Test
+    public void testConvertToMultiRefOneParentAgain() {
+        MultiRefOneParent result = MultiAccessMapper.convertToMultiRefOneParent(multiRefOneParentDao, false, mappedObjects);
+        MultiRefOneParent convertAgainResult = MultiAccessMapper.convertToMultiRefOneParent(multiRefOneParentDao, false, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToMultiRefTwoParents() {
         MultiRefTwoParents result = MultiAccessMapper.convertToMultiRefTwoParents(multiRefTwoParentsDao);
         assertNotNull(result, "There should be any result");
@@ -101,6 +119,13 @@ public class MultiAccessMapperTest {
     @Test
     public void testConvertToMultiRefTwoParentsNull() {
         assertNull(MultiAccessMapper.convertToMultiRefTwoParents(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefTwoParentsAgain() {
+        MultiRefTwoParents result = MultiAccessMapper.convertToMultiRefTwoParents(multiRefTwoParentsDao, mappedObjects);
+        MultiRefTwoParents convertAgainResult = MultiAccessMapper.convertToMultiRefTwoParents(multiRefTwoParentsDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -139,6 +164,13 @@ public class MultiAccessMapperTest {
     }
 
     @Test
+    public void testConvertToMultiRefOneParentDaoAgain() {
+        MultiRefOneParentDao result = MultiAccessMapper.convertToMultiRefOneParentDao(multiRefOneParent, false, mappedDaoObjects);
+        MultiRefOneParentDao convertAgainResult = MultiAccessMapper.convertToMultiRefOneParentDao(multiRefOneParent, false, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToMultiRefTwoParentsDao() {
         MultiRefTwoParentsDao result = MultiAccessMapper.convertToMultiRefTwoParentsDao(multiRefTwoParents);
         assertNotNull(result, "There should be any result");
@@ -169,6 +201,13 @@ public class MultiAccessMapperTest {
     @Test
     public void testConvertToMultiRefTwoParentsDaoNull() {
         assertNull(MultiAccessMapper.convertToMultiRefTwoParentsDao(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefTwoParentsDaoAgain() {
+        MultiRefTwoParentsDao result = MultiAccessMapper.convertToMultiRefTwoParentsDao(multiRefTwoParents, mappedDaoObjects);
+        MultiRefTwoParentsDao convertAgainResult = MultiAccessMapper.convertToMultiRefTwoParentsDao(multiRefTwoParents, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

@@ -1,13 +1,18 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.single.SingleRefOneParent;
 import de.ma_vin.util.sample.content.domain.single.SingleRefTwoParents;
+import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefTwoParentsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,8 +26,14 @@ public class SingleTransportMapperTest {
     private SingleRefOneParentDto singleRefOneParentDto;
     private SingleRefTwoParentsDto singleRefTwoParentsDto;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, ITransportable> mappedDtoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDtoObjects.clear();
+
         initObjectFactory();
         singleRefOneParent = createSingleRefOneParentWithChildren(getNextId());
         singleRefTwoParents = createSingleRefTwoParents(getNextId());
@@ -55,6 +66,13 @@ public class SingleTransportMapperTest {
     @Test
     public void testConvertToSingleRefOneParentNull() {
         assertNull(SingleTransportMapper.convertToSingleRefOneParent(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefOneParentAgain() {
+        SingleRefOneParent result = SingleTransportMapper.convertToSingleRefOneParent(singleRefOneParentDto, mappedObjects);
+        SingleRefOneParent convertAgainResult = SingleTransportMapper.convertToSingleRefOneParent(singleRefOneParentDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -91,6 +109,13 @@ public class SingleTransportMapperTest {
     }
 
     @Test
+    public void testConvertToSingleRefTwoParentsAgain() {
+        SingleRefTwoParents result = SingleTransportMapper.convertToSingleRefTwoParents(singleRefTwoParentsDto, mappedObjects);
+        SingleRefTwoParents convertAgainResult = SingleTransportMapper.convertToSingleRefTwoParents(singleRefTwoParentsDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToSingleRefOneParentDto() {
         SingleRefOneParentDto result = SingleTransportMapper.convertToSingleRefOneParentDto(singleRefOneParent);
         assertNotNull(result, "There should be any result");
@@ -111,6 +136,13 @@ public class SingleTransportMapperTest {
     @Test
     public void testConvertToSingleRefOneParentDtoNull() {
         assertNull(SingleTransportMapper.convertToSingleRefOneParentDto(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefOneParentDtoAgain() {
+        SingleRefOneParentDto result = SingleTransportMapper.convertToSingleRefOneParentDto(singleRefOneParent, mappedDtoObjects);
+        SingleRefOneParentDto convertAgainResult = SingleTransportMapper.convertToSingleRefOneParentDto(singleRefOneParent, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -144,6 +176,13 @@ public class SingleTransportMapperTest {
     @Test
     public void testConvertToSingleRefTwoParentsDtoNull() {
         assertNull(SingleTransportMapper.convertToSingleRefTwoParentsDto(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefTwoParentsDtoAgain() {
+        SingleRefTwoParentsDto result = SingleTransportMapper.convertToSingleRefTwoParentsDto(singleRefTwoParents, mappedDtoObjects);
+        SingleRefTwoParentsDto convertAgainResult = SingleTransportMapper.convertToSingleRefTwoParentsDto(singleRefTwoParents, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

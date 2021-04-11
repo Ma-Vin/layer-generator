@@ -1,12 +1,17 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.filtering.*;
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.filtering.*;
 import de.ma_vin.util.sample.given.AnyEnumType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,8 +28,14 @@ public class FilteringAccessMapperTest {
     private SomeFilteringOwner someFilteringOwner;
     private FilteredOnlyDaoField filteredOnlyDaoField;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, IIdentifiableDao> mappedDaoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDaoObjects.clear();
+
         initObjectFactory();
         filteredDao = createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_A);
         filteredOnlyDaoFieldDao = createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_B);
@@ -84,6 +95,13 @@ public class FilteringAccessMapperTest {
     }
 
     @Test
+    public void testConvertToSomeFilteringOwnerAgain() {
+        SomeFilteringOwner result = FilteringAccessMapper.convertToSomeFilteringOwner(someFilteringOwnerDao, false, mappedObjects);
+        SomeFilteringOwner convertAgainResult = FilteringAccessMapper.convertToSomeFilteringOwner(someFilteringOwnerDao, false, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToFiltered() {
         Filtered result = FilteringAccessMapper.convertToFiltered(filteredDao);
         assertNotNull(result, "There should be any result");
@@ -111,6 +129,13 @@ public class FilteringAccessMapperTest {
     }
 
     @Test
+    public void testConvertToFilteredAgain() {
+        Filtered result = FilteringAccessMapper.convertToFiltered(filteredDao, mappedObjects);
+        Filtered convertAgainResult = FilteringAccessMapper.convertToFiltered(filteredDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToFilteredOnlyDaoField() {
         FilteredOnlyDaoField result = FilteringAccessMapper.convertToFilteredOnlyDaoField(filteredOnlyDaoFieldDao);
         assertNotNull(result, "There should be any result");
@@ -133,6 +158,13 @@ public class FilteringAccessMapperTest {
     @Test
     public void testConvertToFilteredOnlyDaoFieldNull() {
         assertNull(FilteringAccessMapper.convertToFilteredOnlyDaoField(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToFilteredOnlyDaoFieldAgain() {
+        FilteredOnlyDaoField result = FilteringAccessMapper.convertToFilteredOnlyDaoField(filteredOnlyDaoFieldDao, mappedObjects);
+        FilteredOnlyDaoField convertAgainResult = FilteringAccessMapper.convertToFilteredOnlyDaoField(filteredOnlyDaoFieldDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -170,6 +202,13 @@ public class FilteringAccessMapperTest {
     }
 
     @Test
+    public void testConvertToSomeFilteringOwnerDaoAgain() {
+        SomeFilteringOwnerDao result = FilteringAccessMapper.convertToSomeFilteringOwnerDao(someFilteringOwner, false, mappedDaoObjects);
+        SomeFilteringOwnerDao convertAgainResult = FilteringAccessMapper.convertToSomeFilteringOwnerDao(someFilteringOwner, false, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToFilteredDao() {
         FilteredDao result = FilteringAccessMapper.convertToFilteredDao(filtered);
         assertNotNull(result, "There should be any result");
@@ -195,6 +234,13 @@ public class FilteringAccessMapperTest {
     }
 
     @Test
+    public void testConvertToFilteredDaAgain() {
+        FilteredDao result = FilteringAccessMapper.convertToFilteredDao(filtered, mappedDaoObjects);
+        FilteredDao convertAgainResult = FilteringAccessMapper.convertToFilteredDao(filtered, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToFilteredOnlyDaoFieldDao() {
         FilteredOnlyDaoFieldDao result = FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(filteredOnlyDaoField, AnyEnumType.ENUM_VALUE_A);
         assertNotNull(result, "There should be any result");
@@ -217,6 +263,13 @@ public class FilteringAccessMapperTest {
     @Test
     public void testConvertToFilteredOnlyDaoFieldDaoNull() {
         assertNull(FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(null, AnyEnumType.ENUM_VALUE_B), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToFilteredOnlyDaoFieldDaoAgain() {
+        FilteredOnlyDaoFieldDao result = FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(filteredOnlyDaoField, AnyEnumType.ENUM_VALUE_A, mappedDaoObjects);
+        FilteredOnlyDaoFieldDao convertAgainResult = FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(filteredOnlyDaoField, AnyEnumType.ENUM_VALUE_A, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

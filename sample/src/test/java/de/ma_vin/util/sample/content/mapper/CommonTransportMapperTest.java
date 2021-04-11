@@ -1,11 +1,16 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.RootExt;
+import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.RootExtDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static de.ma_vin.util.sample.content.ObjectFactory.getNextId;
@@ -19,8 +24,15 @@ public class CommonTransportMapperTest {
     private RootDto rootDto;
     private RootExtDto rootExtDto;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, ITransportable> mappedDtoObjects = new HashMap<>();
+
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDtoObjects.clear();
+
         initObjectFactory();
         root = createRootWithChildren(getNextId());
         rootExt = createRootExt(getNextId());
@@ -69,6 +81,13 @@ public class CommonTransportMapperTest {
     }
 
     @Test
+    public void testConvertToRootAgain() {
+        Root result = CommonTransportMapper.convertToRoot(rootDto, mappedObjects);
+        Root convertAgainResult = CommonTransportMapper.convertToRoot(rootDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testCreateRootExt() {
         RootExt result = CommonTransportMapper.convertToRootExt(rootExtDto);
 
@@ -110,6 +129,14 @@ public class CommonTransportMapperTest {
     }
 
     @Test
+    public void testConvertToRootExtAgain() {
+        RootExt result = CommonTransportMapper.convertToRootExt(rootExtDto, mappedObjects);
+        RootExt convertAgainResult = CommonTransportMapper.convertToRootExt(rootExtDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+
+    @Test
     public void testConvertToRootDto() {
         RootDto result = CommonTransportMapper.convertToRootDto(root);
 
@@ -137,6 +164,13 @@ public class CommonTransportMapperTest {
     }
 
     @Test
+    public void testConvertToRootDtoAgain() {
+        RootDto result = CommonTransportMapper.convertToRootDto(root, mappedDtoObjects);
+        RootDto convertAgainResult = CommonTransportMapper.convertToRootDto(root, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testCreateRootExtDto() {
         RootExtDto result = CommonTransportMapper.convertToRootExtDto(rootExt);
 
@@ -156,6 +190,13 @@ public class CommonTransportMapperTest {
     @Test
     public void testConvertToRootDtoExtNull() {
         assertNull(CommonTransportMapper.convertToRootExtDto(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToRootExtDtoAgain() {
+        RootExtDto result = CommonTransportMapper.convertToRootExtDto(rootExt, mappedDtoObjects);
+        RootExtDto convertAgainResult = CommonTransportMapper.convertToRootExtDto(rootExt, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

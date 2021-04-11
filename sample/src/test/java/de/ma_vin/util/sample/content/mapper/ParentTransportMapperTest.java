@@ -1,9 +1,14 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
+import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.parent.ExtendingClassDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,8 +18,14 @@ public class ParentTransportMapperTest {
 
     private ExtendingClass extendingClass;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, ITransportable> mappedDtoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDtoObjects.clear();
+
         initObjectFactory();
         extendingClassDto = createExtendingClassDto(getNextId());
 
@@ -37,6 +48,13 @@ public class ParentTransportMapperTest {
     }
 
     @Test
+    public void testConvertToMultiRefOneParentAgain() {
+        ExtendingClass result = ParentTransportMapper.convertToExtendingClass(extendingClassDto, mappedObjects);
+        ExtendingClass convertAgainResult = ParentTransportMapper.convertToExtendingClass(extendingClassDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToExtendingClassDto() {
         ExtendingClassDto result = ParentTransportMapper.convertToExtendingClassDto(extendingClass);
         assertNotNull(result, "There should be any result");
@@ -48,6 +66,13 @@ public class ParentTransportMapperTest {
     @Test
     public void testConvertToMultiRefOneParentDtoNull() {
         assertNull(ParentTransportMapper.convertToExtendingClassDto(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefOneParentDtoAgain() {
+        ExtendingClassDto result = ParentTransportMapper.convertToExtendingClassDto(extendingClass, mappedDtoObjects);
+        ExtendingClassDto convertAgainResult = ParentTransportMapper.convertToExtendingClassDto(extendingClass, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

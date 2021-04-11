@@ -3,13 +3,18 @@ package de.ma_vin.util.sample.content.mapper;
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.single.indirect.*;
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.single.indirect.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SingleIndirectAccessMapperTest {
 
@@ -21,8 +26,14 @@ public class SingleIndirectAccessMapperTest {
     private SingleRefIndirectParent singleRefIndirectParent;
     private SingleRefOtherIndirectParent singleRefOtherIndirectParent;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, IIdentifiableDao> mappedDaoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDaoObjects.clear();
+
         initObjectFactory();
         singleRefIndirectParentDao = createSingleRefIndirectParentDao(getNextId());
         singleRefOtherIndirectParentDao = createSingleRefOtherIndirectParentDao(getNextId());
@@ -68,6 +79,13 @@ public class SingleIndirectAccessMapperTest {
     }
 
     @Test
+    public void testConvertToSingleRefIndirectParentAgain() {
+        SingleRefIndirectParent result = SingleIndirectAccessMapper.convertToSingleRefIndirectParent(singleRefIndirectParentDao, mappedObjects);
+        SingleRefIndirectParent convertAgainResult = SingleIndirectAccessMapper.convertToSingleRefIndirectParent(singleRefIndirectParentDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToSingleRefOtherIndirectParent() {
         SingleRefOtherIndirectParent result = SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParentDao);
         assertNotNull(result, "There should be any result");
@@ -105,6 +123,13 @@ public class SingleIndirectAccessMapperTest {
     }
 
     @Test
+    public void testConvertToSingleRefOtherIndirectParentAgain() {
+        SingleRefOtherIndirectParent result = SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParentDao, mappedObjects);
+        SingleRefOtherIndirectParent convertAgainResult = SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParentDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToSingleRefIndirectParentDao() {
         SingleRefIndirectParentDao result = SingleIndirectAccessMapper.convertToSingleRefIndirectParentDao(singleRefIndirectParent);
         assertNotNull(result, "There should be any result");
@@ -135,6 +160,13 @@ public class SingleIndirectAccessMapperTest {
     @Test
     public void testConvertToSingleRefIndirectParentDaoNull() {
         assertNull(SingleIndirectAccessMapper.convertToSingleRefIndirectParentDao(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefIndirectParentDaoAgain() {
+        SingleRefIndirectParentDao result = SingleIndirectAccessMapper.convertToSingleRefIndirectParentDao(singleRefIndirectParent, mappedDaoObjects);
+        SingleRefIndirectParentDao convertAgainResult = SingleIndirectAccessMapper.convertToSingleRefIndirectParentDao(singleRefIndirectParent, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -172,6 +204,13 @@ public class SingleIndirectAccessMapperTest {
     @Test
     public void testConvertToSingleRefOtherIndirectParentDaoNull() {
         assertNull(SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParentDao(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefOtherIndirectParentDaoAgain() {
+        SingleRefOtherIndirectParentDao result = SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParentDao(singleRefOtherIndirectParent, mappedDaoObjects);
+        SingleRefOtherIndirectParentDao convertAgainResult = SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParentDao(singleRefOtherIndirectParent, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

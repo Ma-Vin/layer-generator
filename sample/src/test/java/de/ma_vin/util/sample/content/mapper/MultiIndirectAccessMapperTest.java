@@ -1,11 +1,16 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.*;
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.multi.indirect.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static de.ma_vin.util.sample.content.ObjectFactory.getNextId;
@@ -21,8 +26,14 @@ public class MultiIndirectAccessMapperTest {
     private MultiRefIndirectParent multiRefIndirectParent;
     private MultiRefOtherIndirectParent multiRefOtherIndirectParent;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, IIdentifiableDao> mappedDaoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDaoObjects.clear();
+
         initObjectFactory();
         multiRefIndirectParentDao = createMultiRefIndirectParentDao(getNextId());
         addToCreatedMap(multiRefIndirectParentDao);
@@ -70,6 +81,13 @@ public class MultiIndirectAccessMapperTest {
     }
 
     @Test
+    public void testConvertToMultiRefIndirectParentAgain() {
+        MultiRefIndirectParent result = MultiIndirectAccessMapper.convertToMultiRefIndirectParent(multiRefIndirectParentDao, mappedObjects);
+        MultiRefIndirectParent convertAgainResult = MultiIndirectAccessMapper.convertToMultiRefIndirectParent(multiRefIndirectParentDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToMultiRefOtherIndirectParent() {
         MultiRefOtherIndirectParent result = MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParent(multiRefOtherIndirectParentDao, false);
         assertNotNull(result, "There should be any result");
@@ -106,6 +124,13 @@ public class MultiIndirectAccessMapperTest {
     }
 
     @Test
+    public void testConvertToMultiRefOtherIndirectParentAgain() {
+        MultiRefOtherIndirectParent result = MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParent(multiRefOtherIndirectParentDao, false, mappedObjects);
+        MultiRefOtherIndirectParent convertAgainResult = MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParent(multiRefOtherIndirectParentDao, false, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToMultiRefIndirectParentDao() {
         MultiRefIndirectParentDao result = MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(multiRefIndirectParent);
         assertNotNull(result, "There should be any result");
@@ -136,6 +161,13 @@ public class MultiIndirectAccessMapperTest {
     @Test
     public void testConvertToMultiRefIndirectParentDaoNull() {
         assertNull(MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectParentDaoAgain() {
+        MultiRefIndirectParentDao result = MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(multiRefIndirectParent, mappedDaoObjects);
+        MultiRefIndirectParentDao convertAgainResult = MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(multiRefIndirectParent, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -172,6 +204,13 @@ public class MultiIndirectAccessMapperTest {
     @Test
     public void testConvertToMultiRefOtherIndirectParentDaoNull() {
         assertNull(MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParentDao(null, false), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefOtherIndirectParentDaoAgain() {
+        MultiRefOtherIndirectParentDao result = MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParentDao(multiRefOtherIndirectParent, false, mappedDaoObjects);
+        MultiRefOtherIndirectParentDao convertAgainResult = MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParentDao(multiRefOtherIndirectParent, false, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

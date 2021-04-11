@@ -1,11 +1,16 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.parent.ExtendingClassDao;
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static de.ma_vin.util.sample.content.ObjectFactory.getNextId;
@@ -18,8 +23,14 @@ public class ParentAccessMapperTest {
     private Root root;
     private ExtendingClass extendingClass;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, IIdentifiableDao> mappedDaoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDaoObjects.clear();
+
         initObjectFactory();
         extendingClassDao = createExtendingClassDao(getNextId());
         rootDao = createRootDao(getNextId());
@@ -55,6 +66,13 @@ public class ParentAccessMapperTest {
     }
 
     @Test
+    public void testConvertToMultiRefOneParentAgain() {
+        ExtendingClass result = ParentAccessMapper.convertToExtendingClass(extendingClassDao, mappedObjects);
+        ExtendingClass convertAgainResult = ParentAccessMapper.convertToExtendingClass(extendingClassDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToExtendingClassDao() {
         ExtendingClassDao result = ParentAccessMapper.convertToExtendingClassDao(extendingClass);
         assertNotNull(result, "There should be any result");
@@ -64,7 +82,7 @@ public class ParentAccessMapperTest {
     }
 
     @Test
-    public void testConvertToExtendingClassWDaoithParent() {
+    public void testConvertToExtendingClassDaoWithParent() {
         ExtendingClassDao result = ParentAccessMapper.convertToExtendingClassDao(extendingClass, rootDao);
         assertNotNull(result, "There should be any result");
         assertEquals(extendingClass.getIdentification(), result.getIdentification(), "Wrong identification");
@@ -77,6 +95,13 @@ public class ParentAccessMapperTest {
     @Test
     public void testConvertToMultiRefOneParentDaoNull() {
         assertNull(ParentAccessMapper.convertToExtendingClassDao(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefOneParentDaoAgain() {
+        ExtendingClassDao result =  ParentAccessMapper.convertToExtendingClassDao(extendingClass, mappedDaoObjects);
+        ExtendingClassDao convertAgainResult =  ParentAccessMapper.convertToExtendingClassDao(extendingClass, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

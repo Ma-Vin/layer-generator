@@ -8,6 +8,9 @@ import de.ma_vin.util.sample.content.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CommonAccessMapperTest {
 
     private RootDao rootDao;
@@ -16,8 +19,14 @@ public class CommonAccessMapperTest {
     private Root root;
     private RootExt rootExt;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, IIdentifiableDao> mappedDaoObjects = new HashMap<>();
+
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDaoObjects.clear();
+
         initObjectFactory();
         rootDao = createRootDaoWithChildren(getNextId());
         rootExtDao = createRootExtDao(getNextId());
@@ -99,6 +108,13 @@ public class CommonAccessMapperTest {
     }
 
     @Test
+    public void testConvertToRootAgain() {
+        Root result = CommonAccessMapper.convertToRoot(rootDao, false, mappedObjects);
+        Root convertAgainResult = CommonAccessMapper.convertToRoot(rootDao, false, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testCreateRootExt() {
         RootExt result = CommonAccessMapper.convertToRootExt(rootExtDao);
 
@@ -137,6 +153,13 @@ public class CommonAccessMapperTest {
     @Test
     public void testCreateRootExtNull() {
         assertNull(CommonAccessMapper.convertToRootExt(null), "The result should be null");
+    }
+
+    @Test
+    public void testCreateRootExtAgain() {
+        RootExt result = CommonAccessMapper.convertToRootExt(rootExtDao, mappedObjects);
+        RootExt convertAgainResult = CommonAccessMapper.convertToRootExt(rootExtDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -222,6 +245,13 @@ public class CommonAccessMapperTest {
     }
 
     @Test
+    public void testConvertToRootDaoAgain() {
+        RootDao result = CommonAccessMapper.convertToRootDao(root, false, mappedDaoObjects);
+        RootDao convertAgainResult = CommonAccessMapper.convertToRootDao(root, false, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testCreateRootExtDao() {
         RootExtDao result = CommonAccessMapper.convertToRootExtDao(rootExt);
 
@@ -261,6 +291,13 @@ public class CommonAccessMapperTest {
     @Test
     public void testCreateRootDaoExtNull() {
         assertNull(CommonAccessMapper.convertToRootExtDao(null), "The result should be null");
+    }
+
+    @Test
+    public void testCreateRootExtDaoAgain() {
+        RootExtDao result = CommonAccessMapper.convertToRootExtDao(rootExt, mappedDaoObjects);
+        RootExtDao convertAgainResult = CommonAccessMapper.convertToRootExtDao(rootExt, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test

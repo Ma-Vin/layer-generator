@@ -3,14 +3,19 @@ package de.ma_vin.util.sample.content.mapper;
 import static de.ma_vin.util.sample.content.ObjectFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.single.SingleRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.single.SingleRefTwoParentsDao;
+import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.single.SingleRefOneParent;
 import de.ma_vin.util.sample.content.domain.single.SingleRefTwoParents;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SingleAccessMapperTest {
     private RootDao rootDao;
@@ -21,9 +26,14 @@ public class SingleAccessMapperTest {
     private SingleRefOneParent singleRefOneParent;
     private SingleRefTwoParents singleRefTwoParents;
 
+    Map<String, IIdentifiable> mappedObjects = new HashMap<>();
+    Map<String, IIdentifiableDao> mappedDaoObjects = new HashMap<>();
 
     @BeforeEach
     public void setUp() {
+        mappedObjects.clear();
+        mappedDaoObjects.clear();
+
         initObjectFactory();
         singleRefOneParentDao = createSingleRefOneParentDaoWithChildren(getNextId());
         singleRefTwoParentsDao = createSingleRefTwoParentsDao(getNextId());
@@ -56,6 +66,13 @@ public class SingleAccessMapperTest {
     @Test
     public void testConvertToSingleRefOneParentNull() {
         assertNull(SingleAccessMapper.convertToSingleRefOneParent(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefOneParentAgain() {
+        SingleRefOneParent result = SingleAccessMapper.convertToSingleRefOneParent(singleRefOneParentDao, mappedObjects);
+        SingleRefOneParent convertAgainResult = SingleAccessMapper.convertToSingleRefOneParent(singleRefOneParentDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -92,6 +109,13 @@ public class SingleAccessMapperTest {
     }
 
     @Test
+    public void testConvertToSingleRefTwoParentsAgain() {
+        SingleRefTwoParents result = SingleAccessMapper.convertToSingleRefTwoParents(singleRefTwoParentsDao, mappedObjects);
+        SingleRefTwoParents convertAgainResult = SingleAccessMapper.convertToSingleRefTwoParents(singleRefTwoParentsDao, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToSingleRefOneParentDao() {
         SingleRefOneParentDao result = SingleAccessMapper.convertToSingleRefOneParentDao(singleRefOneParent);
         assertNotNull(result, "There should be any result");
@@ -113,6 +137,13 @@ public class SingleAccessMapperTest {
     @Test
     public void testConvertToSingleRefOneParentDaoNull() {
         assertNull(SingleAccessMapper.convertToSingleRefOneParentDao(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefOneParentDaoAgain() {
+        SingleRefOneParentDao result = SingleAccessMapper.convertToSingleRefOneParentDao(singleRefOneParent, mappedDaoObjects);
+        SingleRefOneParentDao convertAgainResult = SingleAccessMapper.convertToSingleRefOneParentDao(singleRefOneParent, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
@@ -148,6 +179,13 @@ public class SingleAccessMapperTest {
     @Test
     public void testConvertToSingleRefTwoParentsDaoNull() {
         assertNull(SingleAccessMapper.convertToSingleRefTwoParentsDao(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSingleRefTwoParentsDaoAgain() {
+        SingleRefTwoParentsDao result = SingleAccessMapper.convertToSingleRefTwoParentsDao(singleRefTwoParents, mappedDaoObjects);
+        SingleRefTwoParentsDao convertAgainResult = SingleAccessMapper.convertToSingleRefTwoParentsDao(singleRefTwoParents, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
     @Test
