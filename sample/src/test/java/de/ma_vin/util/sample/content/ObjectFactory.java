@@ -509,7 +509,7 @@ public class ObjectFactory {
         return result;
     }
 
-    public static DomainAndDao createDomainAnd(long id) {
+    public static DomainAndDao createDomainAndDao(long id) {
         DomainAndDao result = new DomainAndDao();
         setId(result, id, DomainAndDao.ID_PREFIX);
         result.setDescription(String.format("Description_%d", id));
@@ -673,6 +673,13 @@ public class ObjectFactory {
 
     public static DomainAndDtoDto createDomainAndDtoDto(long id) {
         DomainAndDtoDto result = new DomainAndDtoDto();
+        setId(result, id, DomainAndDto.ID_PREFIX);
+        result.setDescription(String.format("Description_%d", id));
+        return result;
+    }
+
+    public static DomainAndDto createDomainAndDto(long id) {
+        DomainAndDto result = new DomainAndDto();
         setId(result, id, DomainAndDto.ID_PREFIX);
         result.setDescription(String.format("Description_%d", id));
         return result;
