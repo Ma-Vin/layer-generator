@@ -1,6 +1,6 @@
 ![Maven Sample Workflow Action](https://github.com/Ma-Vin/de.ma_vin.util.layerGenerator/actions/workflows/sampleMaven.yml/badge.svg)
 
-# APE Sample Layer Generator
+# Util Sample Layer Generator
 
 An example of using the maven plugin ***Util Layer Generator*** plugin
 

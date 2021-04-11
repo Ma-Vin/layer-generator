@@ -664,7 +664,7 @@ public class ObjectFactory {
         return result;
     }
 
-    public static FilteredOnlyDaoFieldDto createFilteredOnlyDtoFieldDto(long id, AnyEnumType enumType) {
+    public static FilteredOnlyDaoFieldDto createFilteredOnlyDaoFieldDto(long id, AnyEnumType enumType) {
         FilteredOnlyDaoFieldDto result = new FilteredOnlyDaoFieldDto();
         setId(result, id, FilteredOnlyDaoField.ID_PREFIX);
         result.setDescription(String.format("Description_%d", id));
