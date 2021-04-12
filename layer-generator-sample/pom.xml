@@ -2,12 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>layer-generator</artifactId>
+        <groupId>de.ma_vin.util.layer.generator</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.ma_vin.util.layer.generator</groupId>
-    <artifactId>sample-layer-generator</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>layer-generator-sample</artifactId>
 
+    <name>Util Layer Generator Sample</name>
+    <description>An example of usage of plugin and annotation</description>
 
     <properties>
         <maven.compiler.target>14</maven.compiler.target>
@@ -15,33 +20,9 @@
 
         <maven.plugin-dependency.version>3.1.2</maven.plugin-dependency.version>
         <maven.plugin-resource.version>3.2.0</maven.plugin-resource.version>
-        <maven.surefire.failsafe.version>3.0.0-M5</maven.surefire.failsafe.version>
-        <jacoco.plugin.version>0.8.6</jacoco.plugin.version>
         <javax-persistence.version>2.2</javax-persistence.version>
-        <junit.jupiter.version>5.8.0-M1</junit.jupiter.version>
-        <lombok.version>1.18.20</lombok.version>
-        <log4j.version>2.14.1</log4j.version>
-        <mockito.version>3.8.0</mockito.version>
-        <sonar.plugin.version>3.8.0.2131</sonar.plugin.version>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <skip.it>false</skip.it>
-        <sonar.search.port>9002</sonar.search.port>
-        <sonar.sources>src/main</sonar.sources>
-        <sonar.tests>src/test</sonar.tests>
-        <sonar.test.exclusions>src/test/**/*</sonar.test.exclusions>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.coverage.jacoco.xmlReportPaths>
-            ${project.basedir}/target/site/jacoco/jacoco.xml,${project.basedir}/target/site/jacoco-it/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.junit.reportPaths>${project.basedir}/target/surefire-reports,${project.basedir}/target/failsafe-reports
-        </sonar.junit.reportPaths>
-        <sonar.language>java</sonar.language>
-        <sonar.java.libraries>target</sonar.java.libraries>
-        <sonar.java.source>14</sonar.java.source>
         <sonar.projectName>de.ma_vin.util.sampleLayerGenerator</sonar.projectName>
-        <sonar.test.exclusions>src/test/**/*</sonar.test.exclusions>
-        <sonar.scm.provider>git</sonar.scm.provider>
     </properties>
 
     <profiles>
@@ -59,7 +40,7 @@
         <plugins>
             <plugin>
                 <groupId>de.ma_vin.util.layer.generator</groupId>
-                <artifactId>layer-generator</artifactId>
+                <artifactId>layer-generator-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <executions>
                     <execution>
@@ -77,27 +58,6 @@
                     <modelDefinitionFilename>exampleModel.xml</modelDefinitionFilename>
                     <cleanTargetDirectory>false</cleanTargetDirectory>
                     <cleanBasePackage>true</cleanBasePackage>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.failsafe.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven.surefire.failsafe.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <skip>${skip.it}</skip>
                 </configuration>
             </plugin>
             <plugin>
@@ -151,48 +111,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>${sonar.plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>prepare-agent-integration</id>
-                        <goals>
-                            <goal>prepare-agent-integration</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skip.it}</skip>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>>report-integration</id>
-                        <goals>
-                            <goal>report-integration</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skip.it}</skip>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -207,39 +125,6 @@
                 <groupId>javax.persistence</groupId>
                 <artifactId>javax.persistence-api</artifactId>
                 <version>${javax-persistence.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit.jupiter.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit.jupiter.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${mockito.version}</version>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
