@@ -48,4 +48,4 @@ cleanTargetDirectory | false | if true all files and directories within the *gen
 cleanBasePackage | true | if true all files and directories within the corresponding directory of *basePackage* (defined in the *model-file*)
 
 ## Example
-An example of usage is shown at [Sample README.md](/layer-generator-sample/README.md)
+An example of usage is shown at [Sample](../layer-generator-sample/README.md)

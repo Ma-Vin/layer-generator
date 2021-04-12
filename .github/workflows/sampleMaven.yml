@@ -2,7 +2,7 @@ name: Build and analyze sample
 
 on:
   workflow_run:
-    workflows: [ "Build and analyze" ]
+    workflows: [ "Build and analyze plugin" ]
     branches: [master]
     types:
       - completed
