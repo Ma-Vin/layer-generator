@@ -5,7 +5,9 @@
     <artifactId>layer-generator</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
+        <module>layer-generator-sources</module>
         <module>layer-generator-plugin</module>
         <module>layer-generator-sample</module>
     </modules>
@@ -39,7 +41,9 @@
         <maven.plugin.version>3.8.1</maven.plugin.version>
         <maven.plugin-annotations.version>3.6.0</maven.plugin-annotations.version>
         <maven.plugin-plugin.version>3.6.0</maven.plugin-plugin.version>
+        <maven.plugin-resource.version>3.2.0</maven.plugin-resource.version>
         <maven.plugin-source.version>3.2.1</maven.plugin-source.version>
+        <maven.plugin-jar.version>3.2.0</maven.plugin-jar.version>
         <maven.surefire.failsafe.version>3.0.0-M5</maven.surefire.failsafe.version>
         <jacoco.plugin.version>0.8.6</jacoco.plugin.version>
         <junit.jupiter.version>5.8.0-M1</junit.jupiter.version>
@@ -49,6 +53,7 @@
         <sonar.plugin.version>3.8.0.2131</sonar.plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <skip.test>false</skip.test>
         <skip.it>false</skip.it>
         <sonar.search.port>9002</sonar.search.port>
         <sonar.sources>src/main</sonar.sources>
@@ -74,6 +79,13 @@
                 <sonar.projectKey>Ma-Vin_de.ma_vin.util.layerGenerator</sonar.projectKey>
                 <sonar.organization>ma-vin</sonar.organization>
                 <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+            </properties>
+        </profile>
+        <profile>
+            <id>skipTests</id>
+            <properties>
+                <skip.test>true</skip.test>
+                <skip.it>true</skip.it>
             </properties>
         </profile>
     </profiles>
@@ -155,6 +167,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefire.failsafe.version}</version>
+                    <configuration>
+                        <skip>${skip.test}</skip>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -193,6 +208,16 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven.plugin-resource.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven.plugin-jar.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
