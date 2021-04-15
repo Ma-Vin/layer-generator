@@ -19,7 +19,6 @@
         <maven.compiler.source>14</maven.compiler.source>
 
         <maven.plugin-dependency.version>3.1.2</maven.plugin-dependency.version>
-        <maven.plugin-resource.version>3.2.0</maven.plugin-resource.version>
         <javax-persistence.version>2.2</javax-persistence.version>
 
         <sonar.projectName>de.ma_vin.util.sampleLayerGenerator</sonar.projectName>
@@ -29,7 +28,7 @@
         <profile>
             <id>sonar-cloud</id>
             <properties>
-                <sonar.projectKey>Ma-Vin_de.ma_vin.util.sampleLayerGenerator</sonar.projectKey>
+                <sonar.projectKey>Ma-Vin_de.ma_vin.util.layerGenerator-sample</sonar.projectKey>
                 <sonar.organization>ma-vin</sonar.organization>
                 <sonar.host.url>https://sonarcloud.io</sonar.host.url>
             </properties>
@@ -88,7 +87,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven.plugin-resource.version}</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
@@ -137,30 +135,6 @@
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 </project>

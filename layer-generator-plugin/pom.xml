@@ -35,7 +35,7 @@
         <profile>
             <id>sonar-cloud</id>
             <properties>
-                <sonar.projectKey>Ma-Vin_de.ma_vin.util.layerGenerator</sonar.projectKey>
+                <sonar.projectKey>Ma-Vin_de.ma_vin.util.layerGenerator-plugin</sonar.projectKey>
                 <sonar.organization>ma-vin</sonar.organization>
                 <sonar.host.url>https://sonarcloud.io</sonar.host.url>
             </properties>
@@ -120,30 +120,6 @@
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.persistence</groupId>

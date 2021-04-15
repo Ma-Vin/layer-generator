@@ -8,6 +8,7 @@
 
     <modules>
         <module>layer-generator-sources</module>
+        <module>layer-generator-annotation</module>
         <module>layer-generator-plugin</module>
         <module>layer-generator-sample</module>
     </modules>
@@ -127,7 +128,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>

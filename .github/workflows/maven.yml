@@ -1,4 +1,4 @@
-name: Build and analyze plugin
+name: Build and analyze
 
 on:
   push:
@@ -30,6 +30,16 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
+    - name: Build and analyze layer generator sources
+      env:
+        GITHUB_TOKEN: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn clean -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P sonar-cloud --file layer-generator-sources/pom.xml
+    - name: Build and analyze layer generator annotation
+      env:
+        GITHUB_TOKEN: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn clean -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P sonar-cloud --file layer-generator-annotation/pom.xml
     - name: Build and analyze layer generator plugin
       env:
         GITHUB_TOKEN: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}

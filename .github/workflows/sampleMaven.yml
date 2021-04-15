@@ -2,7 +2,7 @@ name: Build and analyze sample
 
 on:
   workflow_run:
-    workflows: [ "Build and analyze plugin" ]
+    workflows: [ "Build and analyze" ]
     branches: [master]
     types:
       - completed
@@ -38,7 +38,7 @@ jobs:
       - name: Build apeutils
         run: mvn -B clean install --file ape/apeutils/pom.xml
       - name: Build layerGenerator
-        run: mvn -B clean install --file main/pom.xml
+        run: mvn -B clean install --file main/pom.xml -P skipTests -pl !layer-generator-sample
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
