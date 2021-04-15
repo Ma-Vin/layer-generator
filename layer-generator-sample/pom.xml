@@ -28,7 +28,7 @@
             <plugin>
                 <groupId>de.ma_vin.util.layer.generator</groupId>
                 <artifactId>layer-generator-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -62,8 +62,8 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>de.ma_vin.util.layer.generator</groupId>
-                                    <artifactId>layer-generator</artifactId>
-                                    <version>1.0-SNAPSHOT</version>
+                                    <artifactId>layer-generator-plugin</artifactId>
+                                    <version>${project.version}</version>
                                     <outputDirectory>${project.build.directory}</outputDirectory>
                                     <includes>**\/*.xsd</includes>
                                 </artifactItem>
