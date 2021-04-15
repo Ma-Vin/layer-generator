@@ -28,19 +28,7 @@
         <jaxb.api.version>2.3.1</jaxb.api.version>
 
         <sonar.java.source>12</sonar.java.source>
-        <sonar.projectName>de.ma_vin.util.layerGenerator</sonar.projectName>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>sonar-cloud</id>
-            <properties>
-                <sonar.projectKey>Ma-Vin_de.ma_vin.util.layerGenerator-plugin</sonar.projectKey>
-                <sonar.organization>ma-vin</sonar.organization>
-                <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-            </properties>
-        </profile>
-    </profiles>
 
     <dependencyManagement>
         <dependencies>
