@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
 import de.ma_vin.util.layer.generator.sources.Clazz;
 import de.ma_vin.util.layer.generator.sources.Method;
@@ -43,6 +44,9 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         }
         Clazz mapperClass = new Clazz(mapperPackageName, getMapperName(groupingName));
         logger.debug("Create transport mapper " + mapperClass.getClassName());
+
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, dtoPackageName, ModelType.DTO.getFactoryClassName()));
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, ModelType.DOMAIN.getFactoryClassName()));
 
         createGetInstance(mapperClass);
 
@@ -94,7 +98,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         }
         mapperClass.addImport(getPackageAndClass(entity, dtoPackageName, DTO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
-        mapperClass.addImport(String.format("%s.%s", domainPackageName, DomainCreator.DOMAIN_INTERFACE));
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
         entity.getParentRefs().stream()
                 .filter(ref -> ref.isOwner() && !ref.isList())
@@ -157,7 +161,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE)
                 , MAPPED_OBJECTS_PARAMETER_TEXT);
 
-        addConvertDefaultMappings(convertMethodWithMap, entity, DOMAIN_POSTFIX, TransportMapperCreator::isFieldRelevant);
+        addConvertDefaultMappings(convertMethodWithMap, entity, DOMAIN_POSTFIX, TransportMapperCreator::isFieldRelevant, ModelType.DOMAIN);
 
         determineAllReferences(entity).stream()
                 .filter(ref -> !ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))
@@ -187,7 +191,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         }
         mapperClass.addImport(getPackageAndClass(entity, dtoPackageName, DTO_POSTFIX));
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
-        mapperClass.addImport(String.format("%s.%s", dtoPackageName, DtoCreator.DTO_INTERFACE));
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, dtoPackageName, DtoCreator.DTO_INTERFACE));
 
         entity.getParentRefs().stream()
                 .filter(ref -> ref.isOwner() && !ref.isList())
@@ -249,7 +253,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         Method convertMethodWithMap = createConvertMethodBase(createMethodParams);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
 
-        addConvertDefaultMappings(convertMethodWithMap, entity, DTO_POSTFIX, TransportMapperCreator::isFieldRelevant);
+        addConvertDefaultMappings(convertMethodWithMap, entity, DTO_POSTFIX, TransportMapperCreator::isFieldRelevant, ModelType.DTO);
 
         determineAllReferences(entity).stream()
                 .filter(ref -> !ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))

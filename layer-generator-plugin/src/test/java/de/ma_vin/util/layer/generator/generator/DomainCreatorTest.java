@@ -60,6 +60,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -69,6 +70,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -103,6 +105,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -111,6 +114,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -137,6 +141,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -148,6 +153,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
         expected.add("@Data");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
         expected.add("@NoArgsConstructor");
@@ -177,6 +183,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import java.util.Collection;");
         expected.add("import java.util.HashSet;");
@@ -192,6 +199,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
         expected.add("@Data");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\"})");
         expected.add("@NoArgsConstructor");
@@ -239,6 +247,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -248,6 +257,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -277,6 +287,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -287,6 +298,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -314,6 +326,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -323,6 +336,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -400,6 +414,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group.subgroup;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -409,6 +424,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -476,6 +492,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.domain.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
         expected.add("import de.test.package.domain.AnotherDummy;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -487,6 +504,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
         expected.add("@Data");
         expected.add("@EqualsAndHashCode(callSuper = true)");
         expected.add("@NoArgsConstructor");

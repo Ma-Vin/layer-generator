@@ -146,8 +146,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
@@ -177,7 +179,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -199,7 +201,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -229,8 +231,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
@@ -260,7 +264,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -284,7 +288,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -320,8 +324,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
@@ -351,7 +357,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -375,7 +381,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -412,8 +418,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
@@ -443,7 +451,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -467,7 +475,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -502,8 +510,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
@@ -534,7 +544,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -562,7 +572,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -621,11 +631,13 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.ChildDao;");
         expected.add("import de.test.package.dao.grouping.ChildToTargetDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.dao.grouping.TargetDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Child;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
@@ -658,7 +670,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Child) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Child result = new Child();");
+        expected.add("		Child result = DomainObjectFactory.createChild();");
         expected.add("");
         expected.add("		result.setId(child.getId());");
         expected.add("");
@@ -686,7 +698,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (ChildDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		ChildDao result = new ChildDao();");
+        expected.add("		ChildDao result = DaoObjectFactory.createChildDao();");
         expected.add("");
         expected.add("		result.setId(child.getId());");
         expected.add("");
@@ -718,7 +730,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -746,7 +758,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -775,7 +787,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Target) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Target result = new Target();");
+        expected.add("		Target result = DomainObjectFactory.createTarget();");
         expected.add("");
         expected.add("		result.setId(target.getId());");
         expected.add("");
@@ -821,7 +833,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (TargetDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		TargetDao result = new TargetDao();");
+        expected.add("		TargetDao result = DaoObjectFactory.createTargetDao();");
         expected.add("");
         expected.add("		result.setId(target.getId());");
         expected.add("");
@@ -836,7 +848,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	public static TargetDao convertToTargetDao(Target target, ChildDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
         expected.add("		TargetDao result = convertToTargetDao(target, mappedObjects);");
         expected.add("		if (result != null) {");
-        expected.add("			ChildToTargetDao connectionTable = new ChildToTargetDao();");
+        expected.add("			ChildToTargetDao connectionTable = DaoObjectFactory.createChildToTargetDao();");
         expected.add("			connectionTable.setTarget(result);");
         expected.add("			connectionTable.setChild(parent);");
         expected.add("			parent.getTargetRefs().add(connectionTable);");
@@ -883,9 +895,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.dao.grouping.DummyToTargetDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
@@ -916,7 +930,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -944,7 +958,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -993,9 +1007,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
@@ -1026,7 +1042,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1062,7 +1078,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1118,10 +1134,12 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.mapper;");
         expected.add("");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.domain.AnotherOwner;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
@@ -1152,7 +1170,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1198,7 +1216,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1261,9 +1279,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
@@ -1295,7 +1315,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1335,7 +1355,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1394,10 +1414,12 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.mapper;");
         expected.add("");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.domain.AnotherOwner;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
@@ -1428,7 +1450,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1474,7 +1496,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1541,10 +1563,12 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.mapper;");
         expected.add("");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.domain.AnotherOwner;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
@@ -1575,7 +1599,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1621,7 +1645,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1636,7 +1660,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	public static DummyDao convertToDummyDao(Dummy dummy, AnotherOwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {");
         expected.add("		DummyDao result = convertToDummyDao(dummy, mappedObjects);");
         expected.add("		if (result != null) {");
-        expected.add("			AnotherOwnerToDummyDao connectionTable = new AnotherOwnerToDummyDao();");
+        expected.add("			AnotherOwnerToDummyDao connectionTable = DaoObjectFactory.createAnotherOwnerToDummyDao();");
         expected.add("			connectionTable.setDummy(result);");
         expected.add("			connectionTable.setAnotherOwner(parent);");
         expected.add("			parent.getAnotherDummys().add(connectionTable);");
@@ -1681,8 +1705,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
@@ -1712,7 +1738,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setIdentification(identification);");
         expected.add("");
@@ -1734,7 +1760,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setIdentification(identification);");
         expected.add("");
@@ -1771,8 +1797,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
@@ -1802,7 +1830,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1826,7 +1854,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1867,8 +1895,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.HashMap;");
@@ -1898,7 +1928,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1922,7 +1952,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1960,8 +1990,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
@@ -1992,7 +2024,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2020,7 +2052,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2065,9 +2097,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.dao.grouping.DummyToTargetDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
@@ -2098,7 +2132,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2126,7 +2160,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2168,8 +2202,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.group.subgroup.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.subgroup.Dummy;");
         expected.add("import java.util.HashMap;");
@@ -2199,7 +2235,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2221,7 +2257,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2352,8 +2388,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
@@ -2384,7 +2422,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2414,7 +2452,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2463,8 +2501,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import java.util.ArrayList;");
@@ -2495,7 +2535,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2523,7 +2563,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2574,8 +2614,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
         expected.add("import de.test.package.enums.SomeEnum;");
@@ -2607,7 +2649,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2635,7 +2677,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2694,9 +2736,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
@@ -2729,7 +2773,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2774,7 +2818,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2838,9 +2882,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.grouping.Dummy;");
@@ -2874,7 +2920,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -2917,7 +2963,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDao) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDao result = new DummyDao();");
+        expected.add("		DummyDao result = DaoObjectFactory.createDummyDao();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");

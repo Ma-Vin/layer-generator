@@ -134,8 +134,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -165,7 +167,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -187,7 +189,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -217,8 +219,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -248,7 +252,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -272,7 +276,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -309,8 +313,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -340,7 +346,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -364,7 +370,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -401,8 +407,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -432,7 +440,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -456,7 +464,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -491,8 +499,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -522,7 +532,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -544,7 +554,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -578,8 +588,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -609,7 +621,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -631,7 +643,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -667,9 +679,11 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.OwnerDto;");
         expected.add("import de.test.package.dto.group.DummyDto;");
@@ -700,7 +714,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -736,7 +750,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -784,10 +798,12 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.mapper;");
         expected.add("");
         expected.add("import de.test.package.domain.AnotherOwner;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
         expected.add("import de.test.package.domain.group.Dummy;");
         expected.add("import de.test.package.dto.AnotherOwnerDto;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.OwnerDto;");
         expected.add("import de.test.package.dto.group.DummyDto;");
@@ -818,7 +834,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -864,7 +880,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -921,8 +937,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -952,7 +970,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -974,7 +992,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1007,8 +1025,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -1038,7 +1058,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setIdentification(identification);");
         expected.add("");
@@ -1060,7 +1080,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setIdentification(identification);");
         expected.add("");
@@ -1096,8 +1116,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -1127,7 +1149,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1151,7 +1173,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1191,8 +1213,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -1222,7 +1246,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1246,7 +1270,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1283,8 +1307,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -1314,7 +1340,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1336,7 +1362,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1373,8 +1399,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -1404,7 +1432,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1426,7 +1454,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1556,8 +1584,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import de.test.package.dto.group.DummyDto;");
         expected.add("import java.util.HashMap;");
@@ -1587,7 +1617,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (Dummy) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		Dummy result = new Dummy();");
+        expected.add("		Dummy result = DomainObjectFactory.createDummy();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");
@@ -1613,7 +1643,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("			return (DummyDto) mappedObjects.get(identification);");
         expected.add("		}");
         expected.add("");
-        expected.add("		DummyDto result = new DummyDto();");
+        expected.add("		DummyDto result = DtoObjectFactory.createDummyDto();");
         expected.add("");
         expected.add("		result.setId(dummy.getId());");
         expected.add("");

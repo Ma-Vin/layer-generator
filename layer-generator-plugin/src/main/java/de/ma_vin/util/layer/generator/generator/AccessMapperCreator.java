@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
 import de.ma_vin.util.layer.generator.sources.Clazz;
 import de.ma_vin.util.layer.generator.config.elements.Config;
@@ -22,7 +23,6 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     public static final String MAPPER_TYPE_NAME = "Access";
     public static final String DAO_POSTFIX = "Dao";
     public static final String DOMAIN_POSTFIX = "";
-    public static final String PACKAGE_AND_CLASS_NAME_FORMAT = "%s.%s";
 
     public AccessMapperCreator(Config config, Log logger) {
         super(config, logger);
@@ -48,6 +48,9 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         }
         Clazz mapperClass = new Clazz(mapperPackageName, getMapperName(groupingName));
         logger.debug("Create access mapper " + mapperClass.getClassName());
+
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, ModelType.DAO.getFactoryClassName()));
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, ModelType.DOMAIN.getFactoryClassName()));
 
         createGetInstance(mapperClass);
 
@@ -142,7 +145,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             if (referenceToParent.isOwner()) {
                 convertMethod.addLine("%sparent.get%ss().add(result);", AbstractGenerateLines.TAB, getterMethodName);
             } else {
-                convertMethod.addLine("%s%2$s connectionTable = new %2$s();", AbstractGenerateLines.TAB, DaoCreator.getConnectionTableNameParentRef(referenceToParent));
+                convertMethod.addLine("%1$s%2$s connectionTable = %3$s.create%2$s();", AbstractGenerateLines.TAB
+                        , DaoCreator.getConnectionTableNameParentRef(referenceToParent), ModelType.DAO.getFactoryClassName());
                 convertMethod.addLine("%sconnectionTable.set%s(result);", AbstractGenerateLines.TAB, entity.getBaseName());
                 convertMethod.addLine("%sconnectionTable.set%s(parent);", AbstractGenerateLines.TAB, referenceToParent.getTargetEntity());
                 convertMethod.addLine("%sparent.get%ss().add(connectionTable);", AbstractGenerateLines.TAB, getterMethodName);
@@ -195,7 +199,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param daoPackageName name of base dao package
      */
     private void createConvertToDaoMappings(Clazz mapperClass, Method convertMethod, Entity entity, String daoPackageName) {
-        addConvertDefaultMappings(convertMethod, entity, DAO_POSTFIX, AccessMapperCreator::isFieldRelevant);
+        addConvertDefaultMappings(convertMethod, entity, DAO_POSTFIX, AccessMapperCreator::isFieldRelevant, ModelType.DAO);
 
         addSetterOfRelevantSingleModelValues(convertMethod, entity);
 
@@ -573,7 +577,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param entity        entity whose properties are to map
      */
     private void createConvertToDomainMappings(Clazz mapperClass, Method convertMethod, Entity entity) {
-        addConvertDefaultMappings(convertMethod, entity, DOMAIN_POSTFIX, AccessMapperCreator::isFieldRelevant);
+        addConvertDefaultMappings(convertMethod, entity, DOMAIN_POSTFIX, AccessMapperCreator::isFieldRelevant, ModelType.DOMAIN);
 
         List<Reference> allReferences = DaoCreator.getAggregatedReferences(determineAllReferences(entity));
 

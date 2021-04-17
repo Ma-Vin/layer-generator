@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
@@ -24,6 +25,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     public static final String MAPPED_OBJECTS_PARAMETER_TEXT = "mappedObjects";
     public static final String MAP_DECLARATION_TEXT = "%s<String, %s>";
     public static final String RETURN_RESULT_TEXT = "return result;";
+    public static final String PACKAGE_AND_CLASS_NAME_FORMAT = "%s.%s";
 
     AbstractMapperCreator(Config config, Log logger) {
         super(config, logger);
@@ -100,8 +102,10 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param convertMethod         method where to add lines for default mapping instructions
      * @param entity                entity whose properties are to map
      * @param classParameterPostFix postfix for classes and parameters
+     * @param fieldChecker          checks whether a field of entity is relevant or not
+     * @param modelType             type of model to determine the correct object factory
      */
-    protected void addConvertDefaultMappings(Method convertMethod, Entity entity, String classParameterPostFix, FieldRelevantChecker fieldChecker) {
+    protected void addConvertDefaultMappings(Method convertMethod, Entity entity, String classParameterPostFix, FieldRelevantChecker fieldChecker, ModelType modelType) {
         convertMethod.addLine("if (%s == null) {", getLowerFirst(entity.getBaseName()));
         convertMethod.addLine("return null;", 1);
         convertMethod.addLine("}");
@@ -112,7 +116,8 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
                 , classParameterPostFix, MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethod.addLine("}");
         convertMethod.addEmptyLine();
-        convertMethod.addLine("%1$s%2$s result = new %1$s%2$s();", getUpperFirst(entity.getBaseName()), classParameterPostFix);
+        convertMethod.addLine("%1$s%2$s result = %3$s.create%1$s%2$s();", getUpperFirst(entity.getBaseName()), classParameterPostFix
+                , modelType.getFactoryClassName());
         convertMethod.addEmptyLine();
 
         addIdentificationSetting(convertMethod, entity);

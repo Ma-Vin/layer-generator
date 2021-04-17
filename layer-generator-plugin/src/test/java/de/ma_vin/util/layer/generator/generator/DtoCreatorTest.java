@@ -62,6 +62,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -71,6 +72,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -105,6 +107,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -113,6 +116,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -139,6 +143,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -150,6 +155,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
         expected.add("@Data");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
         expected.add("@NoArgsConstructor");
@@ -179,6 +185,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -188,6 +195,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -212,6 +220,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -221,6 +230,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -250,6 +260,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -260,6 +271,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -287,6 +299,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -296,6 +309,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -371,6 +385,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group.subgroup;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -380,6 +395,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
         expected.add("@Data");
         expected.add("@NoArgsConstructor");
         expected.add("@SuppressWarnings(\"java:S1068\")");
@@ -447,6 +463,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
         expected.add("import de.test.package.dto.AnotherDummyDto;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -458,6 +475,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
         expected.add("@Data");
         expected.add("@EqualsAndHashCode(callSuper = true)");
         expected.add("@NoArgsConstructor");

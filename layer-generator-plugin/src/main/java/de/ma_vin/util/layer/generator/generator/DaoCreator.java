@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.sources.*;
@@ -82,6 +83,8 @@ public class DaoCreator extends AbstractObjectCreator {
         if (Boolean.TRUE.equals(entity.getIsAbstract())) {
             daoClazz.addAnnotation(MappedSuperclass.class);
         } else {
+            daoClazz.addImport(BaseDao.class.getName());
+            daoClazz.addAnnotation(new Annotation(BaseDao.class, null, "\"" + packageName + "\""));
             daoClazz.addAnnotation(javax.persistence.Entity.class);
             daoClazz.addAnnotation(new Annotation(Table.class, "name", String.format("\"%ss\"", entity.getBaseName())));
         }
@@ -444,6 +447,7 @@ public class DaoCreator extends AbstractObjectCreator {
         String baseClassName = clazzName.substring(0, clazzName.length() - 3);
         Clazz connectionClazz = new Clazz(packageName, clazzName);
 
+        connectionClazz.addImport(BaseDao.class.getName());
         connectionClazz.addImport(AllArgsConstructor.class.getName());
         connectionClazz.addImport(Data.class.getName());
         connectionClazz.addImport(NoArgsConstructor.class.getName());
@@ -452,7 +456,8 @@ public class DaoCreator extends AbstractObjectCreator {
         connectionClazz.addImport(getPackageAndClass(reference, basePackageName, DAO_POSTFIX));
         connectionClazz.addImport(getPackageAndClass(reference.getParent(), basePackageName, DAO_POSTFIX));
 
-        connectionClazz.addAnnotation("Entity");
+        connectionClazz.addAnnotation(new Annotation(BaseDao.class, null, "\"" + basePackageName + "\""));
+        connectionClazz.addAnnotation(javax.persistence.Entity.class.getSimpleName());
         connectionClazz.addAnnotation(AllArgsConstructor.class.getSimpleName());
         connectionClazz.addAnnotation(Data.class.getSimpleName());
         connectionClazz.addAnnotation(NoArgsConstructor.class.getSimpleName());

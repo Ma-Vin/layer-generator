@@ -86,6 +86,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -95,6 +96,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -128,6 +130,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
@@ -136,6 +139,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -162,6 +166,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -173,6 +178,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
@@ -203,6 +209,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import java.util.Collection;");
         expected.add("import javax.persistence.*;");
@@ -215,6 +222,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\"})");
@@ -246,6 +254,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import javax.persistence.*;");
@@ -258,6 +267,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
@@ -289,6 +299,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import javax.persistence.*;");
@@ -301,6 +312,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
@@ -347,6 +359,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -360,6 +373,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\", \"parentAnotherOwner\"})");
@@ -398,6 +412,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -409,6 +424,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
@@ -441,6 +457,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import java.util.Collection;");
         expected.add("import javax.persistence.*;");
@@ -453,6 +470,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\"})");
@@ -473,6 +491,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expectedConnection = new ArrayList<>();
         expectedConnection.add("package de.test.package.dao.group;");
         expectedConnection.add("");
+        expectedConnection.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expectedConnection.add("import java.io.Serializable;");
         expectedConnection.add("import javax.persistence.*;");
         expectedConnection.add("import lombok.AllArgsConstructor;");
@@ -480,6 +499,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expectedConnection.add("import lombok.NoArgsConstructor;");
         expectedConnection.add("");
         expectedConnection.add("@AllArgsConstructor");
+        expectedConnection.add("@BaseDao(\"de.test.package.dao\")");
         expectedConnection.add("@Data");
         expectedConnection.add("@Entity");
         expectedConnection.add("@IdClass(DummyToTargetDao.DummyToTargetId.class)");
@@ -536,6 +556,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -545,6 +566,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -571,6 +593,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -580,6 +603,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -604,6 +628,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -613,6 +638,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -651,6 +677,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.custom.CustomEnum;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
@@ -661,6 +688,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -699,6 +727,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.custom.CustomEnum;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
@@ -709,6 +738,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -739,6 +769,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -749,6 +780,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -778,6 +810,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.ma_vin.ape.utils.generators.IdGenerator;");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.domain.group.Dummy;");
         expected.add("import javax.persistence.*;");
@@ -788,6 +821,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -828,6 +862,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.ma_vin.ape.utils.generators.IdGenerator;");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.AnotherDummyDao;");
         expected.add("import de.test.package.domain.group.Dummy;");
         expected.add("import javax.persistence.*;");
@@ -840,6 +875,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(callSuper = true)");
@@ -874,6 +910,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.ma_vin.ape.utils.generators.IdGenerator;");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -883,6 +920,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -978,6 +1016,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group.subgroup;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -987,6 +1026,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@Table(name = \"Dummys\")");
@@ -1051,6 +1091,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.AnotherDummyDao;");
         expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
@@ -1062,6 +1103,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(callSuper = true)");
@@ -1093,6 +1135,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import java.util.Collection;");
         expected.add("import javax.persistence.*;");
@@ -1105,6 +1148,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"aggTargets\"})");
@@ -1140,6 +1184,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import java.util.Collection;");
         expected.add("import javax.persistence.*;");
@@ -1152,6 +1197,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
@@ -1189,6 +1235,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import javax.persistence.*;");
@@ -1201,6 +1248,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
@@ -1237,6 +1285,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
         expected.add("import javax.persistence.*;");
@@ -1249,6 +1298,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"parentOwner\"})");
@@ -1285,6 +1335,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import java.util.Collection;");
         expected.add("import javax.persistence.*;");
@@ -1297,6 +1348,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add(" * <br>");
         expected.add(" * Dummy description");
         expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
         expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
