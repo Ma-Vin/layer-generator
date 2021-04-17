@@ -8,8 +8,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface BaseTransportMapper {
-    /**
-     * @return The name of package for transport mapper
-     */
-    String value();
+
 }

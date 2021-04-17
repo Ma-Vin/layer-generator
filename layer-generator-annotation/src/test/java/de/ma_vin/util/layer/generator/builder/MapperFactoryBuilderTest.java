@@ -56,11 +56,10 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyBaseAccessMapper() {
-        final String mapperPackageName = "de.ma_vin.mapper";
+        final String mapperPackageName = "de.ma_vin.mapper.test";
 
         TypeElement baseAccessMapperTypeElement = createTypeElementForAnnotationMock(BaseAccessMapper.class);
-        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseAccessMapper.class, "TestClassAccessMapper", "de.ma_vin.mapper.test"
-                , (s, c) -> when(c.value()).thenReturn(s), mapperPackageName);
+        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseAccessMapper.class, "TestClassAccessMapper", mapperPackageName);
 
         when(roundEnv.getElementsAnnotatedWith(eq(baseAccessMapperTypeElement))).then(a -> Set.of(annotatedClassTypeElement));
 
@@ -72,9 +71,7 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(mapperPackageName + "." + MapperType.ACCESS.getFactoryClassName()), "The mapper object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.mapper;");
-        expected.add("");
-        expected.add("import de.ma_vin.mapper.test.TestClassAccessMapper;");
+        expected.add("package de.ma_vin.mapper.test;");
         expected.add("");
         expected.add("public class AccessMapperFactory {");
         expected.add("");
@@ -92,11 +89,8 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyExtendingAccessMapper() {
-        final String mapperPackageName = "de.ma_vin.mapper";
-
         TypeElement baseAccessMapperTypeElement = createTypeElementForAnnotationMock(BaseAccessMapper.class);
-        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseAccessMapper.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
-                , (s, c) -> when(c.value()).thenReturn(s), mapperPackageName);
+        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseAccessMapper.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         TypeElement extendingAccessMapperTypeElement = createTypeElementForAnnotationMock(ExtendingAccessMapper.class);
         TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingAccessMapper.class, "TestClassAccessMapper", "de.ma_vin.mapper.test"
@@ -111,13 +105,12 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         boolean result = cut.process(annotations, roundEnv);
         assertTrue(result, "The result should be true");
         assertEquals(1, writtenFileContents.size(), "Wrong number of written sources");
-        assertTrue(writtenFileContents.containsKey(mapperPackageName + "." + MapperType.ACCESS.getFactoryClassName()), "The mapper object factory should be contained");
+        assertTrue(writtenFileContents.containsKey(DUMMY_PACKAGE_NAME + "." + MapperType.ACCESS.getFactoryClassName()), "The mapper object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.mapper;");
+        expected.add("package de.ma_vin.util.layer.generator.builder;");
         expected.add("");
         expected.add("import de.ma_vin.mapper.test.TestClassAccessMapper;");
-        expected.add("import de.ma_vin.util.layer.generator.builder.DummyBaseClass;");
         expected.add("");
         expected.add("public class AccessMapperFactory {");
         expected.add("");
@@ -130,16 +123,15 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         expected.add("");
         expected.add("}");
 
-        checkSingleFile(mapperPackageName + "." + MapperType.ACCESS.getFactoryClassName(), expected);
+        checkSingleFile(DUMMY_PACKAGE_NAME + "." + MapperType.ACCESS.getFactoryClassName(), expected);
     }
 
     @Test
     public void testProcessOnlyBaseTransportMapper() {
-        final String mapperPackageName = "de.ma_vin.mapper";
+        final String mapperPackageName = "de.ma_vin.mapper.test";
 
         TypeElement baseTransportMapperTypeElement = createTypeElementForAnnotationMock(BaseTransportMapper.class);
-        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseTransportMapper.class, "TestClassTransportMapper", "de.ma_vin.mapper.test"
-                , (s, c) -> when(c.value()).thenReturn(s), mapperPackageName);
+        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseTransportMapper.class, "TestClassTransportMapper", mapperPackageName);
 
         when(roundEnv.getElementsAnnotatedWith(eq(baseTransportMapperTypeElement))).then(a -> Set.of(annotatedClassTypeElement));
 
@@ -151,9 +143,7 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(mapperPackageName + "." + MapperType.TRANSPORT.getFactoryClassName()), "The mapper object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.mapper;");
-        expected.add("");
-        expected.add("import de.ma_vin.mapper.test.TestClassTransportMapper;");
+        expected.add("package de.ma_vin.mapper.test;");
         expected.add("");
         expected.add("public class TransportMapperFactory {");
         expected.add("");
@@ -171,11 +161,8 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyExtendingTransportMapper() {
-        final String mapperPackageName = "de.ma_vin.mapper";
-
         TypeElement baseTransportMapperTypeElement = createTypeElementForAnnotationMock(BaseTransportMapper.class);
-        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseTransportMapper.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
-                , (s, c) -> when(c.value()).thenReturn(s), mapperPackageName);
+        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseTransportMapper.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         TypeElement extendingTransportMapperTypeElement = createTypeElementForAnnotationMock(ExtendingTransportMapper.class);
         TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingTransportMapper.class, "TestClassTransportMapper", "de.ma_vin.mapper.test"
@@ -190,13 +177,12 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         boolean result = cut.process(annotations, roundEnv);
         assertTrue(result, "The result should be true");
         assertEquals(1, writtenFileContents.size(), "Wrong number of written sources");
-        assertTrue(writtenFileContents.containsKey(mapperPackageName + "." + MapperType.TRANSPORT.getFactoryClassName()), "The mapper object factory should be contained");
+        assertTrue(writtenFileContents.containsKey(DUMMY_PACKAGE_NAME + "." + MapperType.TRANSPORT.getFactoryClassName()), "The mapper object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.mapper;");
+        expected.add("package de.ma_vin.util.layer.generator.builder;");
         expected.add("");
         expected.add("import de.ma_vin.mapper.test.TestClassTransportMapper;");
-        expected.add("import de.ma_vin.util.layer.generator.builder.DummyBaseClass;");
         expected.add("");
         expected.add("public class TransportMapperFactory {");
         expected.add("");
@@ -209,6 +195,6 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         expected.add("");
         expected.add("}");
 
-        checkSingleFile(mapperPackageName + "." + MapperType.TRANSPORT.getFactoryClassName(), expected);
+        checkSingleFile(DUMMY_PACKAGE_NAME + "." + MapperType.TRANSPORT.getFactoryClassName(), expected);
     }
 }

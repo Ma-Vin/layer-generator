@@ -117,6 +117,23 @@ public abstract class AbstractBuilderTest {
         return typeElement;
     }
 
+    protected <T> TypeElement createTypeElementForAnnotatedBaseClassMock(Class<T> annotationClass, String className, String packageName) {
+
+        TypeElement annotatedClassTypeElement = mock(TypeElement.class);
+
+        Name annotatedClassSimpleName = mock(Name.class);
+        Name annotatedClassQualifiedName = mock(Name.class);
+        T annotation = mock(annotationClass);
+
+        when(annotatedClassTypeElement.getSimpleName()).thenReturn(annotatedClassSimpleName);
+        when(annotatedClassTypeElement.getQualifiedName()).thenReturn(annotatedClassQualifiedName);
+        when(annotatedClassSimpleName.toString()).thenReturn(className);
+        when(annotatedClassQualifiedName.toString()).thenReturn(packageName + "." + className);
+        when(annotatedClassTypeElement.getAnnotation(any())).thenReturn(annotation);
+
+        return annotatedClassTypeElement;
+    }
+
     protected <T> TypeElement createTypeElementForAnnotatedBaseClassMock(Class<T> annotationClass, String className, String packageName
             , ValueBaseAnnotationMock<T> valueMock, String factoryPackage) {
 

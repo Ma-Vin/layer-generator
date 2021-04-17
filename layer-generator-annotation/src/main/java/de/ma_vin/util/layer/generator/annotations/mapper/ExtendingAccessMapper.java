@@ -8,8 +8,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface ExtendingAccessMapper {
-    /**
-     * @return the class which is extended
-     */
-    Class<?> value();
+
 }

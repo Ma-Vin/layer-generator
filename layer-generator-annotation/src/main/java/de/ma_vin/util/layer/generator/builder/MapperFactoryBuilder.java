@@ -79,9 +79,9 @@ public class MapperFactoryBuilder extends AbstractFactoryBuilder {
         Set<GenerateInformation> baseClasses =
                 switch (mapperType) {
                     case ACCESS -> determineBaseClasses(annotatedClasses, BaseAccessMapper.class,
-                            e -> e.getAnnotation(BaseAccessMapper.class).value());
+                            e -> getPackageNameFromQualified(e.getQualifiedName().toString()));
                     case TRANSPORT -> determineBaseClasses(annotatedClasses, BaseTransportMapper.class,
-                            e -> e.getAnnotation(BaseTransportMapper.class).value());
+                            e -> getPackageNameFromQualified(e.getQualifiedName().toString()));
                 };
 
         return aggregateBaseAndExtendingInformation(classesToGenerate, baseClasses);

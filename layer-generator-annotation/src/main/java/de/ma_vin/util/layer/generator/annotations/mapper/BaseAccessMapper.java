@@ -8,8 +8,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface BaseAccessMapper {
-    /**
-     * @return The name of package for access mapper
-     */
-    String value();
+
 }
