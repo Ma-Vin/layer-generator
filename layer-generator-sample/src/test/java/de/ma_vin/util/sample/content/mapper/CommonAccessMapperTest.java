@@ -5,6 +5,7 @@ import static de.ma_vin.util.sample.content.ObjectFactory.*;
 
 import de.ma_vin.util.sample.content.dao.*;
 import de.ma_vin.util.sample.content.domain.*;
+import de.ma_vin.util.sample.extending.ExtendedCommonAccessMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -304,6 +305,7 @@ public class CommonAccessMapperTest {
     public void testGetInstance() {
         CommonAccessMapper firstInstance = CommonAccessMapper.getInstance();
         assertNotNull(firstInstance, "An instance should be created");
+        assertTrue(firstInstance instanceof ExtendedCommonAccessMapper, "There should be an extended instance");
         assertSame(firstInstance, CommonAccessMapper.getInstance(), "Any other instance should be the same");
     }
 }

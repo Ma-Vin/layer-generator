@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;
 import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
@@ -18,10 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 
+@BaseAccessMapper
 @Log4j2
 public class FilteringAccessMapper {
 
-	private FilteringAccessMapper() {
+	public FilteringAccessMapper() {
 	}
 
 	/**
@@ -309,7 +311,7 @@ public class FilteringAccessMapper {
 	 */
 	public static FilteringAccessMapper getInstance() {
 		if (instance == null) {
-			instance = new FilteringAccessMapper();
+			instance = AccessMapperFactory.createFilteringAccessMapper();
 		}
 		return instance;
 	}

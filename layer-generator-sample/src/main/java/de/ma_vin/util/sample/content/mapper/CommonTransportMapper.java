@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
 import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
@@ -11,9 +12,10 @@ import de.ma_vin.util.sample.content.dto.RootExtDto;
 import java.util.HashMap;
 import java.util.Map;
 
+@BaseTransportMapper
 public class CommonTransportMapper {
 
-	private CommonTransportMapper() {
+	public CommonTransportMapper() {
 	}
 
 	/**
@@ -180,7 +182,7 @@ public class CommonTransportMapper {
 	 */
 	public static CommonTransportMapper getInstance() {
 		if (instance == null) {
-			instance = new CommonTransportMapper();
+			instance = TransportMapperFactory.createCommonTransportMapper();
 		}
 		return instance;
 	}

@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
 import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
@@ -13,9 +14,10 @@ import de.ma_vin.util.sample.content.dto.single.indirect.SingleRefOtherIndirectP
 import java.util.HashMap;
 import java.util.Map;
 
+@BaseTransportMapper
 public class SingleIndirectTransportMapper {
 
-	private SingleIndirectTransportMapper() {
+	public SingleIndirectTransportMapper() {
 	}
 
 	/**
@@ -176,7 +178,7 @@ public class SingleIndirectTransportMapper {
 	 */
 	public static SingleIndirectTransportMapper getInstance() {
 		if (instance == null) {
-			instance = new SingleIndirectTransportMapper();
+			instance = TransportMapperFactory.createSingleIndirectTransportMapper();
 		}
 		return instance;
 	}

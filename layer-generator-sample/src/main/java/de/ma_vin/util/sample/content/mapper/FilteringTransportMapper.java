@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
 import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
@@ -15,9 +16,10 @@ import de.ma_vin.util.sample.content.dto.filtering.SomeFilteringOwnerDto;
 import java.util.HashMap;
 import java.util.Map;
 
+@BaseTransportMapper
 public class FilteringTransportMapper {
 
-	private FilteringTransportMapper() {
+	public FilteringTransportMapper() {
 	}
 
 	/**
@@ -196,7 +198,7 @@ public class FilteringTransportMapper {
 	 */
 	public static FilteringTransportMapper getInstance() {
 		if (instance == null) {
-			instance = new FilteringTransportMapper();
+			instance = TransportMapperFactory.createFilteringTransportMapper();
 		}
 		return instance;
 	}

@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;
 import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
@@ -13,9 +14,10 @@ import de.ma_vin.util.sample.content.domain.single.SingleRefTwoParents;
 import java.util.HashMap;
 import java.util.Map;
 
+@BaseAccessMapper
 public class SingleAccessMapper {
 
-	private SingleAccessMapper() {
+	public SingleAccessMapper() {
 	}
 
 	/**
@@ -203,7 +205,7 @@ public class SingleAccessMapper {
 	 */
 	public static SingleAccessMapper getInstance() {
 		if (instance == null) {
-			instance = new SingleAccessMapper();
+			instance = AccessMapperFactory.createSingleAccessMapper();
 		}
 		return instance;
 	}

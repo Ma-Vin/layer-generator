@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
 import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.domain.dto.DomainAndDto;
@@ -9,9 +10,10 @@ import de.ma_vin.util.sample.content.dto.domain.dto.DomainAndDtoDto;
 import java.util.HashMap;
 import java.util.Map;
 
+@BaseTransportMapper
 public class DomainDtoTransportMapper {
 
-	private DomainDtoTransportMapper() {
+	public DomainDtoTransportMapper() {
 	}
 
 	/**
@@ -72,7 +74,7 @@ public class DomainDtoTransportMapper {
 	 */
 	public static DomainDtoTransportMapper getInstance() {
 		if (instance == null) {
-			instance = new DomainDtoTransportMapper();
+			instance = TransportMapperFactory.createDomainDtoTransportMapper();
 		}
 		return instance;
 	}

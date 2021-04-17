@@ -6,6 +6,7 @@ import de.ma_vin.util.sample.content.domain.RootExt;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.RootExtDto;
+import de.ma_vin.util.sample.extending.ExtendedCommonTransportMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -203,6 +204,7 @@ public class CommonTransportMapperTest {
     public void testGetInstance() {
         CommonTransportMapper firstInstance = CommonTransportMapper.getInstance();
         assertNotNull(firstInstance, "An instance should be created");
+        assertTrue(firstInstance instanceof ExtendedCommonTransportMapper, "There should be an extended instance");
         assertSame(firstInstance, CommonTransportMapper.getInstance(), "Any other instance should be the same");
     }
 }
