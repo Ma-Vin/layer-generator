@@ -12,9 +12,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SupportedAnnotationTypes(
         "de.ma_vin.util.layer.generator.annotations.mapper.*")
@@ -74,70 +72,20 @@ public class MapperFactoryBuilder extends AbstractFactoryBuilder {
     private Set<GenerateInformation> determineClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses, MapperType mapperType) {
         Set<GenerateInformation> classesToGenerate =
                 switch (mapperType) {
-                    case ACCESS -> determineExtendingClasses(annotatedClasses, ExtendingAccessMapper.class);
-                    case TRANSPORT -> determineExtendingClasses(annotatedClasses, ExtendingTransportMapper.class);
+                    case ACCESS -> determineExtendingClasses(annotatedClasses, ExtendingAccessMapper.class,
+                            e -> e.getAnnotation(ExtendingAccessMapper.class).value());
+                    case TRANSPORT -> determineExtendingClasses(annotatedClasses, ExtendingTransportMapper.class,
+                            e -> e.getAnnotation(ExtendingTransportMapper.class).value());
                 };
 
         Set<GenerateInformation> baseClasses =
                 switch (mapperType) {
-                    case ACCESS -> determineBaseClasses(annotatedClasses, BaseAccessMapper.class);
-                    case TRANSPORT -> determineBaseClasses(annotatedClasses, BaseTransportMapper.class);
+                    case ACCESS -> determineBaseClasses(annotatedClasses, BaseAccessMapper.class,
+                            e -> e.getAnnotation(BaseAccessMapper.class).value());
+                    case TRANSPORT -> determineBaseClasses(annotatedClasses, BaseTransportMapper.class,
+                            e -> e.getAnnotation(BaseTransportMapper.class).value());
                 };
 
         return aggregateBaseAndExtendingInformation(classesToGenerate, baseClasses);
-    }
-
-    /**
-     * Determines the set of information for generating for a given annotation of extending type
-     *
-     * @param annotatedClasses the map which contains the annotation and their set of annotated classes
-     * @param extendingClass   The extending annotation
-     * @param <A>              Class of the extending annotation
-     * @return A set of information for generating the given extending type
-     */
-    private <A extends Annotation> Set<GenerateInformation> determineExtendingClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses, Class<A> extendingClass) {
-        return annotatedClasses.get(extendingClass).stream()
-                .map(e -> {
-                    GenerateInformation generateInformation = new GenerateInformation();
-                    generateInformation.setClassName(e.getSimpleName().toString());
-                    generateInformation.setPackageName(e.getQualifiedName().toString().substring(0, e.getQualifiedName().toString().lastIndexOf(".")));
-                    Class<?> extendedClass;
-                    if (ExtendingAccessMapper.class.equals(extendingClass)) {
-                        extendedClass = e.getAnnotation(ExtendingAccessMapper.class).value();
-                    } else if (ExtendingTransportMapper.class.equals(extendingClass)) {
-                        extendedClass = e.getAnnotation(ExtendingTransportMapper.class).value();
-                    } else {
-                        return generateInformation;
-                    }
-                    generateInformation.setBaseClassName(extendedClass.getSimpleName());
-                    generateInformation.setBasePackageName(extendedClass.getPackageName());
-                    generateInformation.setModelPackage(null);
-                    return generateInformation;
-                }).collect(Collectors.toSet());
-    }
-
-    /**
-     * Determines the set of information for generating for a given annotation of base type
-     *
-     * @param annotatedClasses the map which contains the annotation and their set of annotated classes
-     * @param extendingClass   The base annotation
-     * @param <A>              Class of the base annotation
-     * @return A set of information for generating the given base type
-     */
-    private <A extends Annotation> Set<GenerateInformation> determineBaseClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses, Class<A> extendingClass) {
-        return annotatedClasses.get(extendingClass).stream()
-                .map(e -> {
-                    GenerateInformation generateInformation = new GenerateInformation();
-                    generateInformation.setClassName(e.getSimpleName().toString());
-                    generateInformation.setPackageName(e.getQualifiedName().toString().substring(0, e.getQualifiedName().toString().lastIndexOf(".")));
-                    generateInformation.setBaseClassName(generateInformation.getClassName());
-                    generateInformation.setBasePackageName(generateInformation.getPackageName());
-                    if (BaseAccessMapper.class.equals(extendingClass)) {
-                        generateInformation.setModelPackage(e.getAnnotation(BaseAccessMapper.class).value());
-                    } else if (BaseTransportMapper.class.equals(extendingClass)) {
-                        generateInformation.setModelPackage(e.getAnnotation(BaseTransportMapper.class).value());
-                    }
-                    return generateInformation;
-                }).collect(Collectors.toSet());
     }
 }

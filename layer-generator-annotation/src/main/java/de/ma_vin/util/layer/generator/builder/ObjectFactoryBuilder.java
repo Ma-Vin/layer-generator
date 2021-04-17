@@ -9,9 +9,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SupportedAnnotationTypes(
         "de.ma_vin.util.layer.generator.annotations.model.*")
@@ -78,76 +76,18 @@ public class ObjectFactoryBuilder extends AbstractFactoryBuilder {
     private Set<GenerateInformation> determineClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses, ModelType modelType) {
         Set<GenerateInformation> classesToGenerate =
                 switch (modelType) {
-                    case DAO -> determineExtendingClasses(annotatedClasses, ExtendingDao.class);
-                    case DOMAIN -> determineExtendingClasses(annotatedClasses, ExtendingDomain.class);
-                    case DTO -> determineExtendingClasses(annotatedClasses, ExtendingDto.class);
+                    case DAO -> determineExtendingClasses(annotatedClasses, ExtendingDao.class, e -> e.getAnnotation(ExtendingDao.class).value());
+                    case DOMAIN -> determineExtendingClasses(annotatedClasses, ExtendingDomain.class, e -> e.getAnnotation(ExtendingDomain.class).value());
+                    case DTO -> determineExtendingClasses(annotatedClasses, ExtendingDto.class, e -> e.getAnnotation(ExtendingDto.class).value());
                 };
 
         Set<GenerateInformation> baseClasses =
                 switch (modelType) {
-                    case DAO -> determineBaseClasses(annotatedClasses, BaseDao.class);
-                    case DOMAIN -> determineBaseClasses(annotatedClasses, BaseDomain.class);
-                    case DTO -> determineBaseClasses(annotatedClasses, BaseDto.class);
+                    case DAO -> determineBaseClasses(annotatedClasses, BaseDao.class, e -> e.getAnnotation(BaseDao.class).value());
+                    case DOMAIN -> determineBaseClasses(annotatedClasses, BaseDomain.class, e -> e.getAnnotation(BaseDomain.class).value());
+                    case DTO -> determineBaseClasses(annotatedClasses, BaseDto.class, e -> e.getAnnotation(BaseDto.class).value());
                 };
 
         return aggregateBaseAndExtendingInformation(classesToGenerate, baseClasses);
-    }
-
-    /**
-     * Determines the set of information for generating for a given annotation of extending type
-     *
-     * @param annotatedClasses the map which contains the annotation and their set of annotated classes
-     * @param extendingClass   The extending annotation
-     * @param <A>              Class of the extending annotation
-     * @return A set of information for generating the given extending type
-     */
-    private <A extends Annotation> Set<GenerateInformation> determineExtendingClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses, Class<A> extendingClass) {
-        return annotatedClasses.get(extendingClass).stream()
-                .map(e -> {
-                    GenerateInformation generateInformation = new GenerateInformation();
-                    generateInformation.setClassName(e.getSimpleName().toString());
-                    generateInformation.setPackageName(e.getQualifiedName().toString().substring(0, e.getQualifiedName().toString().lastIndexOf(".")));
-                    Class<?> extendedClass;
-                    if (ExtendingDao.class.equals(extendingClass)) {
-                        extendedClass = e.getAnnotation(ExtendingDao.class).value();
-                    } else if (ExtendingDomain.class.equals(extendingClass)) {
-                        extendedClass = e.getAnnotation(ExtendingDomain.class).value();
-                    } else if (ExtendingDto.class.equals(extendingClass)) {
-                        extendedClass = e.getAnnotation(ExtendingDto.class).value();
-                    } else {
-                        return generateInformation;
-                    }
-                    generateInformation.setBaseClassName(extendedClass.getSimpleName());
-                    generateInformation.setBasePackageName(extendedClass.getPackageName());
-                    generateInformation.setModelPackage(null);
-                    return generateInformation;
-                }).collect(Collectors.toSet());
-    }
-
-    /**
-     * Determines the set of information for generating for a given annotation of base type
-     *
-     * @param annotatedClasses the map which contains the annotation and their set of annotated classes
-     * @param extendingClass   The base annotation
-     * @param <A>              Class of the base annotation
-     * @return A set of information for generating the given base type
-     */
-    private <A extends Annotation> Set<GenerateInformation> determineBaseClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses, Class<A> extendingClass) {
-        return annotatedClasses.get(extendingClass).stream()
-                .map(e -> {
-                    GenerateInformation generateInformation = new GenerateInformation();
-                    generateInformation.setClassName(e.getSimpleName().toString());
-                    generateInformation.setPackageName(e.getQualifiedName().toString().substring(0, e.getQualifiedName().toString().lastIndexOf(".")));
-                    generateInformation.setBaseClassName(generateInformation.getClassName());
-                    generateInformation.setBasePackageName(generateInformation.getPackageName());
-                    if (BaseDao.class.equals(extendingClass)) {
-                        generateInformation.setModelPackage(e.getAnnotation(BaseDao.class).value());
-                    } else if (BaseDomain.class.equals(extendingClass)) {
-                        generateInformation.setModelPackage(e.getAnnotation(BaseDomain.class).value());
-                    } else if (BaseDto.class.equals(extendingClass)) {
-                        generateInformation.setModelPackage(e.getAnnotation(BaseDto.class).value());
-                    }
-                    return generateInformation;
-                }).collect(Collectors.toSet());
     }
 }
