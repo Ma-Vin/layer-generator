@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import de.ma_vin.util.layer.generator.builder.MapperType;
 import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
@@ -73,15 +74,16 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * Creates the singleton and get instance method
      *
      * @param mapperClass class which should get the getter
+     * @param mapperType  type of mapper to determine the correct object factory
      */
-    protected void createGetInstance(Clazz mapperClass) {
+    protected void createGetInstance(Clazz mapperClass, MapperType mapperType) {
         Attribute instanceAttribute = new Attribute("instance", mapperClass.getClassName());
         instanceAttribute.setStatic(true);
         instanceAttribute.setJavaDoc(new JavaDoc("singleton"));
         mapperClass.addAttribute(instanceAttribute);
 
         Constructor constructor = new Constructor(mapperClass.getClassName());
-        constructor.setQualifier(Qualifier.PRIVATE);
+        constructor.setQualifier(Qualifier.PUBLIC);
         mapperClass.addConstructor(constructor);
 
         Method getInstanceMethod = new Method("getInstance");
@@ -90,7 +92,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         getInstanceMethod.setQualifier(Qualifier.PUBLIC);
         getInstanceMethod.setJavaDoc(new JavaDoc("@return the singleton"));
         getInstanceMethod.addLine("if (instance == null) {");
-        getInstanceMethod.addLine("instance = new %s();", 1, mapperClass.getClassName());
+        getInstanceMethod.addLine("instance = %s.create%s();", 1, mapperType.getFactoryClassName(), mapperClass.getClassName());
         getInstanceMethod.addLine("}");
         getInstanceMethod.addLine("return instance;");
         mapperClass.addMethod(getInstanceMethod);

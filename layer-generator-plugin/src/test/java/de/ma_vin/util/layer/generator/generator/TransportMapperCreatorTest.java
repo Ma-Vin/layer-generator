@@ -134,6 +134,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -143,9 +144,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -202,7 +204,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -219,6 +221,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -228,9 +231,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -291,7 +295,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -313,6 +317,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -322,9 +327,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -385,7 +391,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -407,6 +413,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -416,9 +423,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -479,7 +487,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -499,6 +507,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -508,9 +517,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -567,7 +577,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -588,6 +598,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -597,9 +608,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -656,7 +668,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -679,6 +691,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
@@ -690,9 +703,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -777,7 +791,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -797,6 +811,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.AnotherOwner;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
@@ -810,9 +825,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -917,7 +933,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -937,6 +953,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -946,9 +963,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1005,7 +1023,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1025,6 +1043,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1034,9 +1053,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1093,7 +1113,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1116,6 +1136,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1125,9 +1146,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1188,7 +1210,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1213,6 +1235,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1222,9 +1245,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1285,7 +1309,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1307,6 +1331,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1316,9 +1341,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1375,7 +1401,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1399,6 +1425,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1408,9 +1435,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1467,7 +1495,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1584,6 +1612,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1593,9 +1622,10 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper {");
         expected.add("");
-        expected.add("	private GroupingTransportMapper() {");
+        expected.add("	public GroupingTransportMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1660,7 +1690,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingTransportMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingTransportMapper();");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");

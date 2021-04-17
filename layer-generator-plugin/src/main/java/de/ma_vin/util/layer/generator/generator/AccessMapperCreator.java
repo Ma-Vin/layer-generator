@@ -1,5 +1,7 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;
+import de.ma_vin.util.layer.generator.builder.MapperType;
 import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
 import de.ma_vin.util.layer.generator.sources.Clazz;
@@ -51,8 +53,10 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, ModelType.DAO.getFactoryClassName()));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, ModelType.DOMAIN.getFactoryClassName()));
+        mapperClass.addImport(BaseAccessMapper.class.getName());
 
-        createGetInstance(mapperClass);
+        mapperClass.addAnnotation(BaseAccessMapper.class.getSimpleName());
+        createGetInstance(mapperClass, MapperType.ACCESS);
 
         entities.stream().filter(e -> !e.getIsAbstract()).forEach(e -> {
             createConvertToDaoMethods(mapperClass, e, daoPackageName, domainPackageName);

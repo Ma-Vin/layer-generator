@@ -1,5 +1,7 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
+import de.ma_vin.util.layer.generator.builder.MapperType;
 import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
 import de.ma_vin.util.layer.generator.sources.Clazz;
@@ -47,8 +49,11 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, dtoPackageName, ModelType.DTO.getFactoryClassName()));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, ModelType.DOMAIN.getFactoryClassName()));
+        mapperClass.addImport(BaseTransportMapper.class.getName());
 
-        createGetInstance(mapperClass);
+        mapperClass.addAnnotation(BaseTransportMapper.class.getSimpleName());
+
+        createGetInstance(mapperClass, MapperType.TRANSPORT);
 
         entities.stream().filter(e -> !e.getIsAbstract()).forEach(e -> {
             createConvertToDtoMethods(mapperClass, e, dtoPackageName, domainPackageName);

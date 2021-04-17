@@ -146,6 +146,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -155,9 +156,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -214,7 +216,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -231,6 +233,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -240,9 +243,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -303,7 +307,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -324,6 +328,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -333,9 +338,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -396,7 +402,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -418,6 +424,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -427,9 +434,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -490,7 +498,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -510,6 +518,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -520,9 +529,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -592,7 +602,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -631,6 +641,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.ChildDao;");
@@ -646,9 +657,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -874,7 +886,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -895,6 +907,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -906,9 +919,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -981,7 +995,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1007,6 +1021,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -1018,9 +1033,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1106,7 +1122,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1133,6 +1149,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
@@ -1146,9 +1163,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1255,7 +1273,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1279,6 +1297,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -1291,9 +1310,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1388,7 +1408,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1413,6 +1433,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
@@ -1426,9 +1447,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1535,7 +1557,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1562,6 +1584,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
@@ -1575,9 +1598,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1686,7 +1710,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1705,6 +1729,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -1714,9 +1739,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1773,7 +1799,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1797,6 +1823,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -1806,9 +1833,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1869,7 +1897,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1895,6 +1923,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -1904,9 +1933,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -1967,7 +1997,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -1990,6 +2020,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -2000,9 +2031,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -2072,7 +2104,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -2097,6 +2129,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -2108,9 +2141,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -2183,7 +2217,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -2202,6 +2236,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.group.subgroup.DummyDao;");
@@ -2211,9 +2246,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupSubgroupAccessMapper {");
         expected.add("");
-        expected.add("	private GroupSubgroupAccessMapper() {");
+        expected.add("	public GroupSubgroupAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -2270,7 +2306,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupSubgroupAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupSubgroupAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupSubgroupAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -2388,6 +2424,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -2398,9 +2435,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -2474,7 +2512,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -2501,6 +2539,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -2511,9 +2550,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -2586,7 +2626,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -2614,6 +2654,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -2625,9 +2666,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.HashMap;");
         expected.add("import java.util.Map;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -2700,7 +2742,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -2736,6 +2778,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -2748,10 +2791,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("import lombok.extern.log4j.Log4j2;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("@Log4j2");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -2846,7 +2890,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
@@ -2882,6 +2926,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -2895,10 +2940,11 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("import lombok.extern.log4j.Log4j2;");
         expected.add("");
+        expected.add("@BaseAccessMapper");
         expected.add("@Log4j2");
         expected.add("public class GroupingAccessMapper {");
         expected.add("");
-        expected.add("	private GroupingAccessMapper() {");
+        expected.add("	public GroupingAccessMapper() {");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -2991,7 +3037,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 */");
         expected.add("	public static GroupingAccessMapper getInstance() {");
         expected.add("		if (instance == null) {");
-        expected.add("			instance = new GroupingAccessMapper();");
+        expected.add("			instance = AccessMapperFactory.createGroupingAccessMapper();");
         expected.add("		}");
         expected.add("		return instance;");
         expected.add("	}");
