@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.domain.single;
 
+import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,7 @@ import lombok.ToString;
 /**
  * Generated domain class of SingleRefOneParent
  */
+@BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
 @EqualsAndHashCode(exclude = {"singleRef"})
 @NoArgsConstructor

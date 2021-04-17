@@ -1,8 +1,10 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.parent.ExtendingClassDao;
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
@@ -33,7 +35,7 @@ public class ParentAccessMapper {
 			return (ExtendingClass) mappedObjects.get(identification);
 		}
 
-		ExtendingClass result = new ExtendingClass();
+		ExtendingClass result = DomainObjectFactory.createExtendingClass();
 
 		result.setIdentification(identification);
 
@@ -70,7 +72,7 @@ public class ParentAccessMapper {
 			return (ExtendingClassDao) mappedObjects.get(identification);
 		}
 
-		ExtendingClassDao result = new ExtendingClassDao();
+		ExtendingClassDao result = DaoObjectFactory.createExtendingClassDao();
 
 		result.setIdentification(identification);
 

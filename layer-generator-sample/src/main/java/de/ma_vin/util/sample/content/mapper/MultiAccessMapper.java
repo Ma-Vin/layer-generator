@@ -1,9 +1,11 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefTwoParentsDao;
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefOneParent;
@@ -36,7 +38,7 @@ public class MultiAccessMapper {
 			return (MultiRefOneParent) mappedObjects.get(identification);
 		}
 
-		MultiRefOneParent result = new MultiRefOneParent();
+		MultiRefOneParent result = DomainObjectFactory.createMultiRefOneParent();
 
 		result.setIdentification(identification);
 
@@ -78,7 +80,7 @@ public class MultiAccessMapper {
 			return (MultiRefOneParentDao) mappedObjects.get(identification);
 		}
 
-		MultiRefOneParentDao result = new MultiRefOneParentDao();
+		MultiRefOneParentDao result = DaoObjectFactory.createMultiRefOneParentDao();
 
 		result.setIdentification(identification);
 
@@ -122,7 +124,7 @@ public class MultiAccessMapper {
 			return (MultiRefTwoParents) mappedObjects.get(identification);
 		}
 
-		MultiRefTwoParents result = new MultiRefTwoParents();
+		MultiRefTwoParents result = DomainObjectFactory.createMultiRefTwoParents();
 
 		result.setIdentification(identification);
 
@@ -170,7 +172,7 @@ public class MultiAccessMapper {
 			return (MultiRefTwoParentsDao) mappedObjects.get(identification);
 		}
 
-		MultiRefTwoParentsDao result = new MultiRefTwoParentsDao();
+		MultiRefTwoParentsDao result = DaoObjectFactory.createMultiRefTwoParentsDao();
 
 		result.setIdentification(identification);
 

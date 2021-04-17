@@ -1,7 +1,9 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.domain.dto.DomainAndDto;
+import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.domain.dto.DomainAndDtoDto;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ public class DomainDtoTransportMapper {
 			return (DomainAndDto) mappedObjects.get(identification);
 		}
 
-		DomainAndDto result = new DomainAndDto();
+		DomainAndDto result = DomainObjectFactory.createDomainAndDto();
 
 		result.setIdentification(identification);
 
@@ -55,7 +57,7 @@ public class DomainDtoTransportMapper {
 			return (DomainAndDtoDto) mappedObjects.get(identification);
 		}
 
-		DomainAndDtoDto result = new DomainAndDtoDto();
+		DomainAndDtoDto result = DtoObjectFactory.createDomainAndDtoDto();
 
 		result.setIdentification(identification);
 

@@ -1,9 +1,11 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.single.indirect.SingleRefIndirectParentDao;
 import de.ma_vin.util.sample.content.dao.single.indirect.SingleRefOtherIndirectParentDao;
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.single.indirect.SingleRefIndirectParent;
@@ -35,7 +37,7 @@ public class SingleIndirectAccessMapper {
 			return (SingleRefIndirectParent) mappedObjects.get(identification);
 		}
 
-		SingleRefIndirectParent result = new SingleRefIndirectParent();
+		SingleRefIndirectParent result = DomainObjectFactory.createSingleRefIndirectParent();
 
 		result.setIdentification(identification);
 
@@ -83,7 +85,7 @@ public class SingleIndirectAccessMapper {
 			return (SingleRefIndirectParentDao) mappedObjects.get(identification);
 		}
 
-		SingleRefIndirectParentDao result = new SingleRefIndirectParentDao();
+		SingleRefIndirectParentDao result = DaoObjectFactory.createSingleRefIndirectParentDao();
 
 		result.setIdentification(identification);
 
@@ -132,7 +134,7 @@ public class SingleIndirectAccessMapper {
 			return (SingleRefOtherIndirectParent) mappedObjects.get(identification);
 		}
 
-		SingleRefOtherIndirectParent result = new SingleRefOtherIndirectParent();
+		SingleRefOtherIndirectParent result = DomainObjectFactory.createSingleRefOtherIndirectParent();
 
 		result.setIdentification(identification);
 
@@ -170,7 +172,7 @@ public class SingleIndirectAccessMapper {
 			return (SingleRefOtherIndirectParentDao) mappedObjects.get(identification);
 		}
 
-		SingleRefOtherIndirectParentDao result = new SingleRefOtherIndirectParentDao();
+		SingleRefOtherIndirectParentDao result = DaoObjectFactory.createSingleRefOtherIndirectParentDao();
 
 		result.setIdentification(identification);
 

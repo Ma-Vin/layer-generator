@@ -1,8 +1,10 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefOneParent;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
+import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.multi.MultiRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.multi.MultiRefTwoParentsDto;
@@ -33,7 +35,7 @@ public class MultiTransportMapper {
 			return (MultiRefOneParent) mappedObjects.get(identification);
 		}
 
-		MultiRefOneParent result = new MultiRefOneParent();
+		MultiRefOneParent result = DomainObjectFactory.createMultiRefOneParent();
 
 		result.setIdentification(identification);
 
@@ -57,7 +59,7 @@ public class MultiTransportMapper {
 			return (MultiRefOneParentDto) mappedObjects.get(identification);
 		}
 
-		MultiRefOneParentDto result = new MultiRefOneParentDto();
+		MultiRefOneParentDto result = DtoObjectFactory.createMultiRefOneParentDto();
 
 		result.setIdentification(identification);
 
@@ -81,7 +83,7 @@ public class MultiTransportMapper {
 			return (MultiRefTwoParents) mappedObjects.get(identification);
 		}
 
-		MultiRefTwoParents result = new MultiRefTwoParents();
+		MultiRefTwoParents result = DomainObjectFactory.createMultiRefTwoParents();
 
 		result.setIdentification(identification);
 
@@ -105,7 +107,7 @@ public class MultiTransportMapper {
 			return (MultiRefTwoParentsDto) mappedObjects.get(identification);
 		}
 
-		MultiRefTwoParentsDto result = new MultiRefTwoParentsDto();
+		MultiRefTwoParentsDto result = DtoObjectFactory.createMultiRefTwoParentsDto();
 
 		result.setIdentification(identification);
 

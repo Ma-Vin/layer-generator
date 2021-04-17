@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.dto;
 
+import de.ma_vin.util.layer.generator.annotations.model.BaseDto;
 import de.ma_vin.util.sample.content.dto.filtering.SomeFilteringOwnerDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefTwoParentsDto;
@@ -13,6 +14,7 @@ import lombok.ToString;
 /**
  * Generated dto class of Root
  */
+@BaseDto("de.ma_vin.util.sample.content.dto")
 @Data
 @EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "filtering", "ext"})
 @NoArgsConstructor

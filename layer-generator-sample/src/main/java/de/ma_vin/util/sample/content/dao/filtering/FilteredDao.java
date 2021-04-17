@@ -1,6 +1,7 @@
 package de.ma_vin.util.sample.content.dao.filtering;
 
 import de.ma_vin.ape.utils.generators.IdGenerator;
+import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.domain.filtering.Filtered;
 import de.ma_vin.util.sample.given.AnyEnumType;
@@ -12,6 +13,7 @@ import lombok.ToString;
 /**
  * Generated dao class of Filtered
  */
+@BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
 @EqualsAndHashCode(exclude = {"parentSomeFilteringOwner"})

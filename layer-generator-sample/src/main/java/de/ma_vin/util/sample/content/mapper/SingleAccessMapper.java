@@ -1,9 +1,11 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.single.SingleRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.single.SingleRefTwoParentsDao;
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.single.SingleRefOneParent;
@@ -35,7 +37,7 @@ public class SingleAccessMapper {
 			return (SingleRefOneParent) mappedObjects.get(identification);
 		}
 
-		SingleRefOneParent result = new SingleRefOneParent();
+		SingleRefOneParent result = DomainObjectFactory.createSingleRefOneParent();
 
 		result.setIdentification(identification);
 
@@ -73,7 +75,7 @@ public class SingleAccessMapper {
 			return (SingleRefOneParentDao) mappedObjects.get(identification);
 		}
 
-		SingleRefOneParentDao result = new SingleRefOneParentDao();
+		SingleRefOneParentDao result = DaoObjectFactory.createSingleRefOneParentDao();
 
 		result.setIdentification(identification);
 
@@ -112,7 +114,7 @@ public class SingleAccessMapper {
 			return (SingleRefTwoParents) mappedObjects.get(identification);
 		}
 
-		SingleRefTwoParents result = new SingleRefTwoParents();
+		SingleRefTwoParents result = DomainObjectFactory.createSingleRefTwoParents();
 
 		result.setIdentification(identification);
 
@@ -160,7 +162,7 @@ public class SingleAccessMapper {
 			return (SingleRefTwoParentsDao) mappedObjects.get(identification);
 		}
 
-		SingleRefTwoParentsDao result = new SingleRefTwoParentsDao();
+		SingleRefTwoParentsDao result = DaoObjectFactory.createSingleRefTwoParentsDao();
 
 		result.setIdentification(identification);
 

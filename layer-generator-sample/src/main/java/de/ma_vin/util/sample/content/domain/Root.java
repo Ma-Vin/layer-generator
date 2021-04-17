@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.domain;
 
+import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;
 import de.ma_vin.util.sample.content.domain.filtering.SomeFilteringOwner;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefOneParent;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
@@ -22,6 +23,7 @@ import lombok.ToString;
 /**
  * Generated domain class of Root
  */
+@BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
 @EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRefs", "anotherMultiRefs", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParents", "multiRefIndirectOtherParents", "extendings", "filtering", "ext"})
 @NoArgsConstructor

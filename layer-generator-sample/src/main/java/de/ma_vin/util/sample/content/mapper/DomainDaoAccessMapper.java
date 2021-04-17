@@ -1,7 +1,9 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.domain.dao.DomainAndDaoDao;
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.domain.dao.DomainAndDao;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ public class DomainDaoAccessMapper {
 			return (DomainAndDao) mappedObjects.get(identification);
 		}
 
-		DomainAndDao result = new DomainAndDao();
+		DomainAndDao result = DomainObjectFactory.createDomainAndDao();
 
 		result.setIdentification(identification);
 
@@ -55,7 +57,7 @@ public class DomainDaoAccessMapper {
 			return (DomainAndDaoDao) mappedObjects.get(identification);
 		}
 
-		DomainAndDaoDao result = new DomainAndDaoDao();
+		DomainAndDaoDao result = DaoObjectFactory.createDomainAndDaoDao();
 
 		result.setIdentification(identification);
 

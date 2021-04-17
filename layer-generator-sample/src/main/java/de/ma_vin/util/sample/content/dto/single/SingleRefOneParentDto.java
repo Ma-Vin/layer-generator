@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.dto.single;
 
+import de.ma_vin.util.layer.generator.annotations.model.BaseDto;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,7 @@ import lombok.ToString;
 /**
  * Generated dto class of SingleRefOneParent
  */
+@BaseDto("de.ma_vin.util.sample.content.dto")
 @Data
 @EqualsAndHashCode(exclude = {"singleRef"})
 @NoArgsConstructor

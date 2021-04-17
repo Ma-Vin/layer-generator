@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.dao.multi.indirect;
 
+import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import java.io.Serializable;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
 @IdClass(MultiRefOtherIndirectParentToMultiRefIndirectParentDao.MultiRefOtherIndirectParentToMultiRefIndirectParentId.class)

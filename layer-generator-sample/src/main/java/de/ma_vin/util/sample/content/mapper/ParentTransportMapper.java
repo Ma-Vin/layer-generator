@@ -1,7 +1,9 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
+import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.parent.ExtendingClassDto;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ public class ParentTransportMapper {
 			return (ExtendingClass) mappedObjects.get(identification);
 		}
 
-		ExtendingClass result = new ExtendingClass();
+		ExtendingClass result = DomainObjectFactory.createExtendingClass();
 
 		result.setIdentification(identification);
 
@@ -56,7 +58,7 @@ public class ParentTransportMapper {
 			return (ExtendingClassDto) mappedObjects.get(identification);
 		}
 
-		ExtendingClassDto result = new ExtendingClassDto();
+		ExtendingClassDto result = DtoObjectFactory.createExtendingClassDto();
 
 		result.setIdentification(identification);
 

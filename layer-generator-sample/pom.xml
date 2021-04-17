@@ -20,6 +20,7 @@
 
         <maven.plugin-dependency.version>3.1.2</maven.plugin-dependency.version>
         <javax-persistence.version>2.2</javax-persistence.version>
+        <build.helper.maven.verson>3.2.0</build.helper.maven.verson>
 
     </properties>
 
@@ -37,6 +38,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <!-- src is used only for demonstration. Some target or like src-gen folder should be preferred -->
                     <generateTargetDirectory>src/main/java/</generateTargetDirectory>
                     <generateDto>true</generateDto>
                     <generateDomain>true</generateDomain>
@@ -97,6 +99,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <!-- src is used only for demonstration. A value like default at target should be preferred -->
+                            <generatedSourcesDirectory>${project.basedir}/src/main/java</generatedSourcesDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -106,6 +121,11 @@
                 <groupId>de.ma_vin.ape</groupId>
                 <artifactId>utils</artifactId>
                 <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>de.ma_vin.util.layer.generator</groupId>
+                <artifactId>layer-generator-annotation</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.persistence</groupId>
@@ -119,6 +139,10 @@
         <dependency>
             <groupId>de.ma_vin.ape</groupId>
             <artifactId>utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.ma_vin.util.layer.generator</groupId>
+            <artifactId>layer-generator-annotation</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.persistence</groupId>

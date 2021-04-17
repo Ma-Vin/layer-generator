@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.domain.domain;
 
+import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * Generated domain class of OnlyDomain
  */
+@BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")

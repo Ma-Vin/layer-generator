@@ -1,6 +1,7 @@
 package de.ma_vin.util.sample.content.dao;
 
 import de.ma_vin.ape.utils.generators.IdGenerator;
+import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.sample.content.dao.filtering.SomeFilteringOwnerDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefTwoParentsDao;
@@ -21,6 +22,7 @@ import lombok.ToString;
 /**
  * Generated dao class of Root
  */
+@BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
 @EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRefs", "anotherMultiRefs", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParents", "multiRefIndirectOtherParents", "extendings", "filtering", "ext"})

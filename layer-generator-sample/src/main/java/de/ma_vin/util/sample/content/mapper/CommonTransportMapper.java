@@ -1,8 +1,10 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.RootExt;
+import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.RootExtDto;
@@ -33,7 +35,7 @@ public class CommonTransportMapper {
 			return (Root) mappedObjects.get(identification);
 		}
 
-		Root result = new Root();
+		Root result = DomainObjectFactory.createRoot();
 
 		result.setIdentification(identification);
 
@@ -65,7 +67,7 @@ public class CommonTransportMapper {
 			return (RootDto) mappedObjects.get(identification);
 		}
 
-		RootDto result = new RootDto();
+		RootDto result = DtoObjectFactory.createRootDto();
 
 		result.setIdentification(identification);
 
@@ -97,7 +99,7 @@ public class CommonTransportMapper {
 			return (RootExt) mappedObjects.get(identification);
 		}
 
-		RootExt result = new RootExt();
+		RootExt result = DomainObjectFactory.createRootExt();
 
 		result.setIdentification(identification);
 
@@ -142,7 +144,7 @@ public class CommonTransportMapper {
 			return (RootExtDto) mappedObjects.get(identification);
 		}
 
-		RootExtDto result = new RootExtDto();
+		RootExtDto result = DtoObjectFactory.createRootExtDto();
 
 		result.setIdentification(identification);
 

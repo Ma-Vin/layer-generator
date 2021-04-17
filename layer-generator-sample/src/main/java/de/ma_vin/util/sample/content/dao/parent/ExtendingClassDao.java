@@ -1,6 +1,7 @@
 package de.ma_vin.util.sample.content.dao.parent;
 
 import de.ma_vin.ape.utils.generators.IdGenerator;
+import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import lombok.ToString;
 /**
  * Generated dao class of ExtendingClass
  */
+@BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true, exclude = {"parentRoot"})

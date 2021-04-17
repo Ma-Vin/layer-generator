@@ -1,10 +1,12 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.filtering.Filtered;
 import de.ma_vin.util.sample.content.domain.filtering.FilteredOnlyDaoField;
 import de.ma_vin.util.sample.content.domain.filtering.SomeFilteringOwner;
+import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.filtering.FilteredDto;
@@ -37,7 +39,7 @@ public class FilteringTransportMapper {
 			return (Filtered) mappedObjects.get(identification);
 		}
 
-		Filtered result = new Filtered();
+		Filtered result = DomainObjectFactory.createFiltered();
 
 		result.setIdentification(identification);
 
@@ -62,7 +64,7 @@ public class FilteringTransportMapper {
 			return (FilteredDto) mappedObjects.get(identification);
 		}
 
-		FilteredDto result = new FilteredDto();
+		FilteredDto result = DtoObjectFactory.createFilteredDto();
 
 		result.setIdentification(identification);
 
@@ -87,7 +89,7 @@ public class FilteringTransportMapper {
 			return (FilteredOnlyDaoField) mappedObjects.get(identification);
 		}
 
-		FilteredOnlyDaoField result = new FilteredOnlyDaoField();
+		FilteredOnlyDaoField result = DomainObjectFactory.createFilteredOnlyDaoField();
 
 		result.setIdentification(identification);
 
@@ -111,7 +113,7 @@ public class FilteringTransportMapper {
 			return (FilteredOnlyDaoFieldDto) mappedObjects.get(identification);
 		}
 
-		FilteredOnlyDaoFieldDto result = new FilteredOnlyDaoFieldDto();
+		FilteredOnlyDaoFieldDto result = DtoObjectFactory.createFilteredOnlyDaoFieldDto();
 
 		result.setIdentification(identification);
 
@@ -135,7 +137,7 @@ public class FilteringTransportMapper {
 			return (SomeFilteringOwner) mappedObjects.get(identification);
 		}
 
-		SomeFilteringOwner result = new SomeFilteringOwner();
+		SomeFilteringOwner result = DomainObjectFactory.createSomeFilteringOwner();
 
 		result.setIdentification(identification);
 
@@ -169,7 +171,7 @@ public class FilteringTransportMapper {
 			return (SomeFilteringOwnerDto) mappedObjects.get(identification);
 		}
 
-		SomeFilteringOwnerDto result = new SomeFilteringOwnerDto();
+		SomeFilteringOwnerDto result = DtoObjectFactory.createSomeFilteringOwnerDto();
 
 		result.setIdentification(identification);
 

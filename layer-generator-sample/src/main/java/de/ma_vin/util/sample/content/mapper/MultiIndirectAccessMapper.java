@@ -1,10 +1,12 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefIndirectParentDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefOtherIndirectParentDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefOtherIndirectParentToMultiRefIndirectParentDao;
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefIndirectParent;
@@ -37,7 +39,7 @@ public class MultiIndirectAccessMapper {
 			return (MultiRefIndirectParent) mappedObjects.get(identification);
 		}
 
-		MultiRefIndirectParent result = new MultiRefIndirectParent();
+		MultiRefIndirectParent result = DomainObjectFactory.createMultiRefIndirectParent();
 
 		result.setIdentification(identification);
 
@@ -85,7 +87,7 @@ public class MultiIndirectAccessMapper {
 			return (MultiRefIndirectParentDao) mappedObjects.get(identification);
 		}
 
-		MultiRefIndirectParentDao result = new MultiRefIndirectParentDao();
+		MultiRefIndirectParentDao result = DaoObjectFactory.createMultiRefIndirectParentDao();
 
 		result.setIdentification(identification);
 
@@ -102,7 +104,7 @@ public class MultiIndirectAccessMapper {
 	public static MultiRefIndirectParentDao convertToMultiRefIndirectParentDao(MultiRefIndirectParent multiRefIndirectParent, MultiRefOtherIndirectParentDao parent, Map<String, IIdentifiableDao> mappedObjects) {
 		MultiRefIndirectParentDao result = convertToMultiRefIndirectParentDao(multiRefIndirectParent, mappedObjects);
 		if (result != null) {
-			MultiRefOtherIndirectParentToMultiRefIndirectParentDao connectionTable = new MultiRefOtherIndirectParentToMultiRefIndirectParentDao();
+			MultiRefOtherIndirectParentToMultiRefIndirectParentDao connectionTable = DaoObjectFactory.createMultiRefOtherIndirectParentToMultiRefIndirectParentDao();
 			connectionTable.setMultiRefIndirectParent(result);
 			connectionTable.setMultiRefOtherIndirectParent(parent);
 			parent.getMultiIndirectRefs().add(connectionTable);
@@ -137,7 +139,7 @@ public class MultiIndirectAccessMapper {
 			return (MultiRefOtherIndirectParent) mappedObjects.get(identification);
 		}
 
-		MultiRefOtherIndirectParent result = new MultiRefOtherIndirectParent();
+		MultiRefOtherIndirectParent result = DomainObjectFactory.createMultiRefOtherIndirectParent();
 
 		result.setIdentification(identification);
 
@@ -179,7 +181,7 @@ public class MultiIndirectAccessMapper {
 			return (MultiRefOtherIndirectParentDao) mappedObjects.get(identification);
 		}
 
-		MultiRefOtherIndirectParentDao result = new MultiRefOtherIndirectParentDao();
+		MultiRefOtherIndirectParentDao result = DaoObjectFactory.createMultiRefOtherIndirectParentDao();
 
 		result.setIdentification(identification);
 

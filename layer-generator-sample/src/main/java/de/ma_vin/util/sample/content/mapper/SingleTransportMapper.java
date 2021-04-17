@@ -1,9 +1,11 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.single.SingleRefOneParent;
 import de.ma_vin.util.sample.content.domain.single.SingleRefTwoParents;
+import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefOneParentDto;
@@ -35,7 +37,7 @@ public class SingleTransportMapper {
 			return (SingleRefOneParent) mappedObjects.get(identification);
 		}
 
-		SingleRefOneParent result = new SingleRefOneParent();
+		SingleRefOneParent result = DomainObjectFactory.createSingleRefOneParent();
 
 		result.setIdentification(identification);
 
@@ -73,7 +75,7 @@ public class SingleTransportMapper {
 			return (SingleRefOneParentDto) mappedObjects.get(identification);
 		}
 
-		SingleRefOneParentDto result = new SingleRefOneParentDto();
+		SingleRefOneParentDto result = DtoObjectFactory.createSingleRefOneParentDto();
 
 		result.setIdentification(identification);
 
@@ -111,7 +113,7 @@ public class SingleTransportMapper {
 			return (SingleRefTwoParents) mappedObjects.get(identification);
 		}
 
-		SingleRefTwoParents result = new SingleRefTwoParents();
+		SingleRefTwoParents result = DomainObjectFactory.createSingleRefTwoParents();
 
 		result.setIdentification(identification);
 
@@ -159,7 +161,7 @@ public class SingleTransportMapper {
 			return (SingleRefTwoParentsDto) mappedObjects.get(identification);
 		}
 
-		SingleRefTwoParentsDto result = new SingleRefTwoParentsDto();
+		SingleRefTwoParentsDto result = DtoObjectFactory.createSingleRefTwoParentsDto();
 
 		result.setIdentification(identification);
 

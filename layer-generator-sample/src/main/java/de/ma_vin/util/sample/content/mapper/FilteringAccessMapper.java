@@ -1,10 +1,12 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.filtering.FilteredDao;
 import de.ma_vin.util.sample.content.dao.filtering.FilteredOnlyDaoFieldDao;
 import de.ma_vin.util.sample.content.dao.filtering.SomeFilteringOwnerDao;
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.filtering.Filtered;
@@ -41,7 +43,7 @@ public class FilteringAccessMapper {
 			return (Filtered) mappedObjects.get(identification);
 		}
 
-		Filtered result = new Filtered();
+		Filtered result = DomainObjectFactory.createFiltered();
 
 		result.setIdentification(identification);
 
@@ -90,7 +92,7 @@ public class FilteringAccessMapper {
 			return (FilteredDao) mappedObjects.get(identification);
 		}
 
-		FilteredDao result = new FilteredDao();
+		FilteredDao result = DaoObjectFactory.createFilteredDao();
 
 		result.setIdentification(identification);
 
@@ -128,7 +130,7 @@ public class FilteringAccessMapper {
 			return (FilteredOnlyDaoField) mappedObjects.get(identification);
 		}
 
-		FilteredOnlyDaoField result = new FilteredOnlyDaoField();
+		FilteredOnlyDaoField result = DomainObjectFactory.createFilteredOnlyDaoField();
 
 		result.setIdentification(identification);
 
@@ -189,7 +191,7 @@ public class FilteringAccessMapper {
 			return (FilteredOnlyDaoFieldDao) mappedObjects.get(identification);
 		}
 
-		FilteredOnlyDaoFieldDao result = new FilteredOnlyDaoFieldDao();
+		FilteredOnlyDaoFieldDao result = DaoObjectFactory.createFilteredOnlyDaoFieldDao();
 
 		result.setIdentification(identification);
 
@@ -215,7 +217,7 @@ public class FilteringAccessMapper {
 			return (SomeFilteringOwner) mappedObjects.get(identification);
 		}
 
-		SomeFilteringOwner result = new SomeFilteringOwner();
+		SomeFilteringOwner result = DomainObjectFactory.createSomeFilteringOwner();
 
 		result.setIdentification(identification);
 
@@ -258,7 +260,7 @@ public class FilteringAccessMapper {
 			return (SomeFilteringOwnerDao) mappedObjects.get(identification);
 		}
 
-		SomeFilteringOwnerDao result = new SomeFilteringOwnerDao();
+		SomeFilteringOwnerDao result = DaoObjectFactory.createSomeFilteringOwnerDao();
 
 		result.setIdentification(identification);
 

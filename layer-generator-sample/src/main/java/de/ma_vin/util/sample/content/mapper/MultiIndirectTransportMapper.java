@@ -1,8 +1,10 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefIndirectParent;
 import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefOtherIndirectParent;
+import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.multi.indirect.MultiRefIndirectParentDto;
 import de.ma_vin.util.sample.content.dto.multi.indirect.MultiRefOtherIndirectParentDto;
@@ -33,7 +35,7 @@ public class MultiIndirectTransportMapper {
 			return (MultiRefIndirectParent) mappedObjects.get(identification);
 		}
 
-		MultiRefIndirectParent result = new MultiRefIndirectParent();
+		MultiRefIndirectParent result = DomainObjectFactory.createMultiRefIndirectParent();
 
 		result.setIdentification(identification);
 
@@ -57,7 +59,7 @@ public class MultiIndirectTransportMapper {
 			return (MultiRefIndirectParentDto) mappedObjects.get(identification);
 		}
 
-		MultiRefIndirectParentDto result = new MultiRefIndirectParentDto();
+		MultiRefIndirectParentDto result = DtoObjectFactory.createMultiRefIndirectParentDto();
 
 		result.setIdentification(identification);
 
@@ -81,7 +83,7 @@ public class MultiIndirectTransportMapper {
 			return (MultiRefOtherIndirectParent) mappedObjects.get(identification);
 		}
 
-		MultiRefOtherIndirectParent result = new MultiRefOtherIndirectParent();
+		MultiRefOtherIndirectParent result = DomainObjectFactory.createMultiRefOtherIndirectParent();
 
 		result.setIdentification(identification);
 
@@ -105,7 +107,7 @@ public class MultiIndirectTransportMapper {
 			return (MultiRefOtherIndirectParentDto) mappedObjects.get(identification);
 		}
 
-		MultiRefOtherIndirectParentDto result = new MultiRefOtherIndirectParentDto();
+		MultiRefOtherIndirectParentDto result = DtoObjectFactory.createMultiRefOtherIndirectParentDto();
 
 		result.setIdentification(identification);
 

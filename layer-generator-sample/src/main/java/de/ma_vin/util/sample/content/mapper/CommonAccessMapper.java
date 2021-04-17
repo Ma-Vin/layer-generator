@@ -1,8 +1,10 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.dao.RootExtDao;
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.RootExt;
@@ -34,7 +36,7 @@ public class CommonAccessMapper {
 			return (Root) mappedObjects.get(identification);
 		}
 
-		Root result = new Root();
+		Root result = DomainObjectFactory.createRoot();
 
 		result.setIdentification(identification);
 
@@ -84,7 +86,7 @@ public class CommonAccessMapper {
 			return (RootDao) mappedObjects.get(identification);
 		}
 
-		RootDao result = new RootDao();
+		RootDao result = DaoObjectFactory.createRootDao();
 
 		result.setIdentification(identification);
 
@@ -139,7 +141,7 @@ public class CommonAccessMapper {
 			return (RootExt) mappedObjects.get(identification);
 		}
 
-		RootExt result = new RootExt();
+		RootExt result = DomainObjectFactory.createRootExt();
 
 		result.setIdentification(identification);
 
@@ -184,7 +186,7 @@ public class CommonAccessMapper {
 			return (RootExtDao) mappedObjects.get(identification);
 		}
 
-		RootExtDao result = new RootExtDao();
+		RootExtDao result = DaoObjectFactory.createRootExtDao();
 
 		result.setIdentification(identification);
 

@@ -1,9 +1,11 @@
 package de.ma_vin.util.sample.content.mapper;
 
+import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.single.indirect.SingleRefIndirectParent;
 import de.ma_vin.util.sample.content.domain.single.indirect.SingleRefOtherIndirectParent;
+import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.single.indirect.SingleRefIndirectParentDto;
@@ -35,7 +37,7 @@ public class SingleIndirectTransportMapper {
 			return (SingleRefIndirectParent) mappedObjects.get(identification);
 		}
 
-		SingleRefIndirectParent result = new SingleRefIndirectParent();
+		SingleRefIndirectParent result = DomainObjectFactory.createSingleRefIndirectParent();
 
 		result.setIdentification(identification);
 
@@ -71,7 +73,7 @@ public class SingleIndirectTransportMapper {
 			return (SingleRefIndirectParentDto) mappedObjects.get(identification);
 		}
 
-		SingleRefIndirectParentDto result = new SingleRefIndirectParentDto();
+		SingleRefIndirectParentDto result = DtoObjectFactory.createSingleRefIndirectParentDto();
 
 		result.setIdentification(identification);
 
@@ -107,7 +109,7 @@ public class SingleIndirectTransportMapper {
 			return (SingleRefOtherIndirectParent) mappedObjects.get(identification);
 		}
 
-		SingleRefOtherIndirectParent result = new SingleRefOtherIndirectParent();
+		SingleRefOtherIndirectParent result = DomainObjectFactory.createSingleRefOtherIndirectParent();
 
 		result.setIdentification(identification);
 
@@ -145,7 +147,7 @@ public class SingleIndirectTransportMapper {
 			return (SingleRefOtherIndirectParentDto) mappedObjects.get(identification);
 		}
 
-		SingleRefOtherIndirectParentDto result = new SingleRefOtherIndirectParentDto();
+		SingleRefOtherIndirectParentDto result = DtoObjectFactory.createSingleRefOtherIndirectParentDto();
 
 		result.setIdentification(identification);
 

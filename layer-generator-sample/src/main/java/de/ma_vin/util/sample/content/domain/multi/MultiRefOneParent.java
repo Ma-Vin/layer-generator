@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.domain.multi;
 
+import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import lombok.ToString;
 /**
  * Generated domain class of MultiRefOneParent
  */
+@BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
 @EqualsAndHashCode(exclude = {"multiRefs"})
 @NoArgsConstructor
