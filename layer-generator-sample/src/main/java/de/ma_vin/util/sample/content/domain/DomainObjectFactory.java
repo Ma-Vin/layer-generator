@@ -15,6 +15,7 @@ import de.ma_vin.util.sample.content.domain.single.SingleRefOneParent;
 import de.ma_vin.util.sample.content.domain.single.SingleRefTwoParents;
 import de.ma_vin.util.sample.content.domain.single.indirect.SingleRefIndirectParent;
 import de.ma_vin.util.sample.content.domain.single.indirect.SingleRefOtherIndirectParent;
+import de.ma_vin.util.sample.extending.ExtendedMultiRefTwoParents;
 
 public class DomainObjectFactory {
 
@@ -54,7 +55,7 @@ public class DomainObjectFactory {
 	}
 
 	public static MultiRefTwoParents createMultiRefTwoParents() {
-		return new MultiRefTwoParents();
+		return new ExtendedMultiRefTwoParents();
 	}
 
 	public static OnlyDomain createOnlyDomain() {

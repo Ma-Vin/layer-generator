@@ -8,6 +8,7 @@ import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefOneParent;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
+import de.ma_vin.util.sample.extending.ExtendedMultiRefTwoParents;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -94,6 +95,7 @@ public class MultiAccessMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(multiRefTwoParentsDao.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefTwoParentsDao.getDescription(), result.getDescription(), "Wrong description");
+        assertTrue(result instanceof ExtendedMultiRefTwoParents, "The result should be an extended one");
     }
 
     @Test

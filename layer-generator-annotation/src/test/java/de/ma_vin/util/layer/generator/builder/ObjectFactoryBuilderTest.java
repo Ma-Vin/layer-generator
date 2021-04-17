@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -89,12 +90,12 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
         final String daoPackageName = "de.ma_vin.dao";
 
         TypeElement baseDaoTypeElement = createTypeElementForAnnotationMock(BaseDao.class);
-        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDao.class, DummyBaseClass.class.getSimpleName(), DummyBaseClass.class.getPackageName()
+        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDao.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
                 , (s, c) -> when(c.value()).thenReturn(s), daoPackageName);
 
         TypeElement extendingDaoTypeElement = createTypeElementForAnnotationMock(ExtendingDao.class);
         TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingDao.class, "TestClassDao", "de.ma_vin.dao.test"
-                , (b, a) -> when(a.value()).then(i -> b), DummyBaseClass.class);
+                , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingDaoTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
         when(roundEnv.getElementsAnnotatedWith(eq(baseDaoTypeElement))).then(a -> Set.of(annotatedBaseClassTypeElement));
@@ -168,12 +169,12 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
         final String domainPackageName = "de.ma_vin.domain";
 
         TypeElement baseDomainTypeElement = createTypeElementForAnnotationMock(BaseDomain.class);
-        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDomain.class, DummyBaseClass.class.getSimpleName(), DummyBaseClass.class.getPackageName()
+        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDomain.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
                 , (s, c) -> when(c.value()).thenReturn(s), domainPackageName);
 
         TypeElement extendingDomainTypeElement = createTypeElementForAnnotationMock(ExtendingDomain.class);
         TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingDomain.class, "TestClassDomain", "de.ma_vin.domain.test"
-                , (b, a) -> when(a.value()).then(i -> b), DummyBaseClass.class);
+                , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingDomainTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
         when(roundEnv.getElementsAnnotatedWith(eq(baseDomainTypeElement))).then(a -> Set.of(annotatedBaseClassTypeElement));
@@ -248,12 +249,12 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
         final String dtoPackageName = "de.ma_vin.dto";
 
         TypeElement baseDtoTypeElement = createTypeElementForAnnotationMock(BaseDto.class);
-        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDto.class, DummyBaseClass.class.getSimpleName(), DummyBaseClass.class.getPackageName()
+        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDto.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
                 , (s, c) -> when(c.value()).thenReturn(s), dtoPackageName);
 
         TypeElement extendingDtoTypeElement = createTypeElementForAnnotationMock(ExtendingDto.class);
         TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingDto.class, "TestClassDto", "de.ma_vin.dto.test"
-                , (b, a) -> when(a.value()).then(i -> b), DummyBaseClass.class);
+                , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingDtoTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
         when(roundEnv.getElementsAnnotatedWith(eq(baseDtoTypeElement))).then(a -> Set.of(annotatedBaseClassTypeElement));

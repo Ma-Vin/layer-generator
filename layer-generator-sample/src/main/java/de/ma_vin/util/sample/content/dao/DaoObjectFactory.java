@@ -15,6 +15,7 @@ import de.ma_vin.util.sample.content.dao.single.SingleRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.single.SingleRefTwoParentsDao;
 import de.ma_vin.util.sample.content.dao.single.indirect.SingleRefIndirectParentDao;
 import de.ma_vin.util.sample.content.dao.single.indirect.SingleRefOtherIndirectParentDao;
+import de.ma_vin.util.sample.extending.ExtendedSingleRefOneParentDao;
 
 public class DaoObjectFactory {
 
@@ -74,7 +75,7 @@ public class DaoObjectFactory {
 	}
 
 	public static SingleRefOneParentDao createSingleRefOneParentDao() {
-		return new SingleRefOneParentDao();
+		return new ExtendedSingleRefOneParentDao();
 	}
 
 	public static SingleRefOtherIndirectParentDao createSingleRefOtherIndirectParentDao() {

@@ -9,8 +9,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 public @interface ExtendingDao {
 
-    /**
-     * @return the class which is extended
-     */
-    Class<?> value();
 }

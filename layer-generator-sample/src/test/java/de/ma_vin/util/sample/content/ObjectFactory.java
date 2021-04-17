@@ -29,6 +29,9 @@ import de.ma_vin.util.sample.content.dto.multi.indirect.*;
 import de.ma_vin.util.sample.content.dto.parent.*;
 import de.ma_vin.util.sample.content.dto.single.*;
 import de.ma_vin.util.sample.content.dto.single.indirect.*;
+import de.ma_vin.util.sample.extending.ExtendedExtendingClassDto;
+import de.ma_vin.util.sample.extending.ExtendedMultiRefTwoParents;
+import de.ma_vin.util.sample.extending.ExtendedSingleRefOneParentDao;
 import de.ma_vin.util.sample.given.*;
 
 import java.util.ArrayList;
@@ -167,7 +170,7 @@ public class ObjectFactory {
     }
 
     public static SingleRefOneParentDao createSingleRefOneParentDao(long id) {
-        SingleRefOneParentDao result = new SingleRefOneParentDao();
+        ExtendedSingleRefOneParentDao result = new ExtendedSingleRefOneParentDao();
         setId(result, id);
         result.setDescription(String.format("Description_%d", id));
         return result;
@@ -413,7 +416,7 @@ public class ObjectFactory {
     }
 
     public static MultiRefTwoParents createMultiRefTwoParents(long id) {
-        MultiRefTwoParents result = new MultiRefTwoParents();
+        ExtendedMultiRefTwoParents result = new ExtendedMultiRefTwoParents();
         setId(result, id, MultiRefTwoParents.ID_PREFIX);
         result.setDescription(String.format("Description_%d", id));
         return result;
@@ -643,7 +646,7 @@ public class ObjectFactory {
     }
 
     public static ExtendingClassDto createExtendingClassDto(long id) {
-        ExtendingClassDto result = new ExtendingClassDto();
+        ExtendedExtendingClassDto result = new ExtendedExtendingClassDto();
         setId(result, id, ExtendingClass.ID_PREFIX);
         result.setDescription(String.format("Description_%d", id));
         result.setAdditionalDescription(String.format("AdditionalDescription_%d", id));

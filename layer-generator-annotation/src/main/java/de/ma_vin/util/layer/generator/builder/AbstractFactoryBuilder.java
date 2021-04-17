@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -65,19 +66,21 @@ public abstract class AbstractFactoryBuilder extends AbstractProcessor {
      *
      * @param annotatedClasses      the map which contains the annotation and their set of annotated classes
      * @param extendingAnnotation   The extending annotation
-     * @param extendedClassesGetter FunctionalInterface to get annotation value with the extended class
      * @param <A>                   Class of the extending annotation
      * @return A set of information for generating the given extending type
      */
     protected <A extends Annotation> Set<GenerateInformation> determineExtendingClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses
-            , Class<A> extendingAnnotation, ExtendedClassesGetter extendedClassesGetter) {
+            , Class<A> extendingAnnotation) {
 
         return annotatedClasses.get(extendingAnnotation).stream()
                 .map(e -> {
+                    if (e.getSuperclass().getKind() != TypeKind.DECLARED) {
+                        return null;
+                    }
+                    TypeElement extendedClass = (TypeElement) processingEnv.getTypeUtils().asElement(e.getSuperclass());
                     GenerateInformation generateInformation = createCommonGenerateInformation(e);
-                    Class<?> extendedClass = extendedClassesGetter.getExtendedClass(e);
-                    generateInformation.setBaseClassName(extendedClass.getSimpleName());
-                    generateInformation.setBasePackageName(extendedClass.getPackageName());
+                    generateInformation.setBaseClassName(extendedClass.getSimpleName().toString());
+                    generateInformation.setBasePackageName(getPackageNameFromQualified(extendedClass.getQualifiedName().toString()));
                     generateInformation.setModelPackage(null);
                     return generateInformation;
                 }).collect(Collectors.toSet());
@@ -114,8 +117,12 @@ public abstract class AbstractFactoryBuilder extends AbstractProcessor {
     protected static GenerateInformation createCommonGenerateInformation(TypeElement classTypeElement) {
         GenerateInformation generateInformation = new GenerateInformation();
         generateInformation.setClassName(classTypeElement.getSimpleName().toString());
-        generateInformation.setPackageName(classTypeElement.getQualifiedName().toString().substring(0, classTypeElement.getQualifiedName().toString().lastIndexOf(".")));
+        generateInformation.setPackageName(getPackageNameFromQualified(classTypeElement.getQualifiedName().toString()));
         return generateInformation;
+    }
+
+    protected static String getPackageNameFromQualified(String qualifiedName) {
+        return qualifiedName.substring(0, qualifiedName.lastIndexOf("."));
     }
 
     /**
@@ -205,7 +212,7 @@ public abstract class AbstractFactoryBuilder extends AbstractProcessor {
 
     @FunctionalInterface
     protected interface ExtendedClassesGetter {
-        Class<?> getExtendedClass(TypeElement extendingClassTypeElement);
+        TypeElement getExtendedClass(TypeElement extendingClassTypeElement);
     }
 
     @FunctionalInterface

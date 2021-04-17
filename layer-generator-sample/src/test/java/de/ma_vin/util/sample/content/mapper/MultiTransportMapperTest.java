@@ -6,6 +6,7 @@ import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.multi.MultiRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.multi.MultiRefTwoParentsDto;
+import de.ma_vin.util.sample.extending.ExtendedMultiRefTwoParents;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -84,6 +85,7 @@ public class MultiTransportMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(multiRefTwoParentsDto.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefTwoParentsDto.getDescription(), result.getDescription(), "Wrong description");
+        assertTrue(result instanceof ExtendedMultiRefTwoParents, "The result should be an extended one");
     }
 
     @Test

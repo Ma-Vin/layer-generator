@@ -76,9 +76,9 @@ public class ObjectFactoryBuilder extends AbstractFactoryBuilder {
     private Set<GenerateInformation> determineClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses, ModelType modelType) {
         Set<GenerateInformation> classesToGenerate =
                 switch (modelType) {
-                    case DAO -> determineExtendingClasses(annotatedClasses, ExtendingDao.class, e -> e.getAnnotation(ExtendingDao.class).value());
-                    case DOMAIN -> determineExtendingClasses(annotatedClasses, ExtendingDomain.class, e -> e.getAnnotation(ExtendingDomain.class).value());
-                    case DTO -> determineExtendingClasses(annotatedClasses, ExtendingDto.class, e -> e.getAnnotation(ExtendingDto.class).value());
+                    case DAO -> determineExtendingClasses(annotatedClasses, ExtendingDao.class);
+                    case DOMAIN -> determineExtendingClasses(annotatedClasses, ExtendingDomain.class);
+                    case DTO -> determineExtendingClasses(annotatedClasses, ExtendingDto.class);
                 };
 
         Set<GenerateInformation> baseClasses =

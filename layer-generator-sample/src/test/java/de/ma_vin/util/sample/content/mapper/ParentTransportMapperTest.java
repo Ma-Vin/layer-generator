@@ -4,6 +4,7 @@ import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.parent.ExtendingClassDto;
+import de.ma_vin.util.sample.extending.ExtendedExtendingClassDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,6 +62,7 @@ public class ParentTransportMapperTest {
         assertEquals(extendingClass.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(extendingClass.getDescription(), result.getDescription(), "Wrong description");
         assertEquals(extendingClass.getAdditionalDescription(), result.getAdditionalDescription(), "Wrong additional description");
+        assertTrue(result instanceof ExtendedExtendingClassDto, "The result should be an extended one");
     }
 
     @Test

@@ -10,6 +10,9 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Types;
 import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,18 +20,25 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 @Log4j2
 public abstract class AbstractBuilderTest {
+
+    public static final String DUMMY_CLASS_NAME = "DummyBaseClass";
+    public static final String DUMMY_PACKAGE_NAME = "de.ma_vin.util.layer.generator.builder";
+
     protected AutoCloseable openMocks;
 
     @Mock
     protected RoundEnvironment roundEnv;
     @Mock
     protected ProcessingEnvironment processingEnv;
+    @Mock
+    protected Types utilTypes;
     @Mock
     protected Filer filer;
     @Mock
@@ -40,7 +50,7 @@ public abstract class AbstractBuilderTest {
 
     protected Map<String, List<String>> writtenFileContents = new HashMap<>();
 
-    protected void setUp(){
+    protected void setUp() {
         writtenFileContents.clear();
         annotations.clear();
         openMocks = openMocks(this);
@@ -53,6 +63,7 @@ public abstract class AbstractBuilderTest {
 
     protected void initDefaultMocks() {
         when(processingEnv.getFiler()).thenReturn(filer);
+        when(processingEnv.getTypeUtils()).thenReturn(utilTypes);
         try {
             when(filer.createSourceFile(any(), any())).then(a -> {
                 when(javaFileObject.getName()).thenReturn(a.getArgument(0));
@@ -125,13 +136,19 @@ public abstract class AbstractBuilderTest {
         return annotatedClassTypeElement;
     }
 
-    protected <T, S> TypeElement createTypeElementForAnnotatedExtendingClassMock(Class<T> annotationClass, String className, String packageName
-            , ValueExtendingAnnotationMock<T, S> valueMock, Class<S> dummy) {
+    protected <T> TypeElement createTypeElementForAnnotatedExtendingClassMock(Class<T> annotationClass, String className
+            , String packageName, TypeKind superTypeKind, String superClassName, String superPackageName) {
 
         TypeElement annotatedClassTypeElement = mock(TypeElement.class);
+        TypeElement superClassTypeElement = mock(TypeElement.class);
+
+        TypeMirror superTypeMirror = mock(TypeMirror.class);
 
         Name annotatedClassSimpleName = mock(Name.class);
         Name annotatedClassQualifiedName = mock(Name.class);
+        Name superClassSimpleName = mock(Name.class);
+        Name superClassQualifiedName = mock(Name.class);
+
         T annotation = mock(annotationClass);
 
         when(annotatedClassTypeElement.getSimpleName()).thenReturn(annotatedClassSimpleName);
@@ -139,7 +156,15 @@ public abstract class AbstractBuilderTest {
         when(annotatedClassSimpleName.toString()).thenReturn(className);
         when(annotatedClassQualifiedName.toString()).thenReturn(packageName + "." + className);
         when(annotatedClassTypeElement.getAnnotation(any())).thenReturn(annotation);
-        valueMock.mockValue(dummy, annotation);
+
+        when(superClassSimpleName.toString()).thenReturn(superClassName);
+        when(superClassQualifiedName.toString()).thenReturn(superPackageName + "." + superClassName);
+        when(superClassTypeElement.getSimpleName()).thenReturn(superClassSimpleName);
+        when(superClassTypeElement.getQualifiedName()).thenReturn(superClassQualifiedName);
+
+        when(annotatedClassTypeElement.getSuperclass()).thenReturn(superTypeMirror);
+        when(superTypeMirror.getKind()).thenReturn(superTypeKind);
+        when(utilTypes.asElement(eq(superTypeMirror))).thenReturn(superClassTypeElement);
 
         return annotatedClassTypeElement;
     }
@@ -149,12 +174,4 @@ public abstract class AbstractBuilderTest {
         void mockValue(String value, T annotation);
     }
 
-    @FunctionalInterface
-    protected interface ValueExtendingAnnotationMock<T, S> {
-        void mockValue(Class<S> baseClass, T annotation);
-    }
-
-    public static class DummyBaseClass {
-
-    }
 }

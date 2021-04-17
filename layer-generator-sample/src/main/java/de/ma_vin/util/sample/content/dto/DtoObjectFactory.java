@@ -14,6 +14,7 @@ import de.ma_vin.util.sample.content.dto.single.SingleRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefTwoParentsDto;
 import de.ma_vin.util.sample.content.dto.single.indirect.SingleRefIndirectParentDto;
 import de.ma_vin.util.sample.content.dto.single.indirect.SingleRefOtherIndirectParentDto;
+import de.ma_vin.util.sample.extending.ExtendedExtendingClassDto;
 
 public class DtoObjectFactory {
 
@@ -25,7 +26,7 @@ public class DtoObjectFactory {
 	}
 
 	public static ExtendingClassDto createExtendingClassDto() {
-		return new ExtendingClassDto();
+		return new ExtendedExtendingClassDto();
 	}
 
 	public static FilteredDto createFilteredDto() {

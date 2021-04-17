@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeKind;
 import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -23,7 +24,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
-public class MapperFactoryBuilderTest extends AbstractBuilderTest{
+public class MapperFactoryBuilderTest extends AbstractBuilderTest {
     private MapperFactoryBuilder cut;
 
     @BeforeEach
@@ -94,12 +95,12 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest{
         final String mapperPackageName = "de.ma_vin.mapper";
 
         TypeElement baseAccessMapperTypeElement = createTypeElementForAnnotationMock(BaseAccessMapper.class);
-        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseAccessMapper.class, DummyBaseClass.class.getSimpleName(), DummyBaseClass.class.getPackageName()
+        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseAccessMapper.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
                 , (s, c) -> when(c.value()).thenReturn(s), mapperPackageName);
 
         TypeElement extendingAccessMapperTypeElement = createTypeElementForAnnotationMock(ExtendingAccessMapper.class);
         TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingAccessMapper.class, "TestClassAccessMapper", "de.ma_vin.mapper.test"
-                , (b, a) -> when(a.value()).then(i -> b), DummyBaseClass.class);
+                , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingAccessMapperTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
         when(roundEnv.getElementsAnnotatedWith(eq(baseAccessMapperTypeElement))).then(a -> Set.of(annotatedBaseClassTypeElement));
@@ -173,12 +174,12 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest{
         final String mapperPackageName = "de.ma_vin.mapper";
 
         TypeElement baseTransportMapperTypeElement = createTypeElementForAnnotationMock(BaseTransportMapper.class);
-        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseTransportMapper.class, DummyBaseClass.class.getSimpleName(), DummyBaseClass.class.getPackageName()
+        TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseTransportMapper.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
                 , (s, c) -> when(c.value()).thenReturn(s), mapperPackageName);
 
         TypeElement extendingTransportMapperTypeElement = createTypeElementForAnnotationMock(ExtendingTransportMapper.class);
         TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingTransportMapper.class, "TestClassTransportMapper", "de.ma_vin.mapper.test"
-                , (b, a) -> when(a.value()).then(i -> b), DummyBaseClass.class);
+                , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingTransportMapperTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
         when(roundEnv.getElementsAnnotatedWith(eq(baseTransportMapperTypeElement))).then(a -> Set.of(annotatedBaseClassTypeElement));

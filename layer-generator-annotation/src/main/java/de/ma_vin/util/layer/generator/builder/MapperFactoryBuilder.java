@@ -72,10 +72,8 @@ public class MapperFactoryBuilder extends AbstractFactoryBuilder {
     private Set<GenerateInformation> determineClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses, MapperType mapperType) {
         Set<GenerateInformation> classesToGenerate =
                 switch (mapperType) {
-                    case ACCESS -> determineExtendingClasses(annotatedClasses, ExtendingAccessMapper.class,
-                            e -> e.getAnnotation(ExtendingAccessMapper.class).value());
-                    case TRANSPORT -> determineExtendingClasses(annotatedClasses, ExtendingTransportMapper.class,
-                            e -> e.getAnnotation(ExtendingTransportMapper.class).value());
+                    case ACCESS -> determineExtendingClasses(annotatedClasses, ExtendingAccessMapper.class);
+                    case TRANSPORT -> determineExtendingClasses(annotatedClasses, ExtendingTransportMapper.class);
                 };
 
         Set<GenerateInformation> baseClasses =

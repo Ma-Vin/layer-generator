@@ -11,6 +11,7 @@ import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.single.SingleRefOneParent;
 import de.ma_vin.util.sample.content.domain.single.SingleRefTwoParents;
+import de.ma_vin.util.sample.extending.ExtendedSingleRefOneParentDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -121,6 +122,7 @@ public class SingleAccessMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(singleRefOneParent.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(singleRefOneParent.getDescription(), result.getDescription(), "Wrong description");
+        assertTrue(result instanceof ExtendedSingleRefOneParentDao, "The result should be an extended one");
     }
 
     @Test
