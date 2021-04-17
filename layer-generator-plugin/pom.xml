@@ -16,9 +16,6 @@
     <description>Generator maven plugin to create domain model, data transport and/or data access objects</description>
 
     <properties>
-        <maven.compiler.target>12</maven.compiler.target>
-        <maven.compiler.source>12</maven.compiler.source>
-
         <maven.plugin-annotations.version>3.6.0</maven.plugin-annotations.version>
         <maven.plugin-plugin.version>3.6.0</maven.plugin-plugin.version>
         <maven.plugin-source.version>3.2.1</maven.plugin-source.version>
@@ -26,8 +23,8 @@
         <javax-persistence.version>2.2</javax-persistence.version>
         <jaxb2.plugin.version>2.5.0</jaxb2.plugin.version>
         <jaxb.api.version>2.3.1</jaxb.api.version>
+        <asm.version>9.1</asm.version>
 
-        <sonar.java.source>12</sonar.java.source>
     </properties>
 
     <dependencyManagement>
@@ -43,6 +40,11 @@
                 <version>${project.version}</version>
                 <classifier>tests</classifier>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.ma_vin.util.layer.generator</groupId>
+                <artifactId>layer-generator-annotation</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven</groupId>
@@ -90,6 +92,10 @@
             <classifier>tests</classifier>
         </dependency>
         <dependency>
+            <groupId>de.ma_vin.util.layer.generator</groupId>
+            <artifactId>layer-generator-annotation</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
         </dependency>
@@ -122,14 +128,18 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-plugin-plugin</artifactId>
                     <version>${maven.plugin-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.ow2.asm</groupId>
+                            <artifactId>asm</artifactId>
+                            <!-- The given version 7.0 does not support java 13 or higher -->
+                            <version>${asm.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
