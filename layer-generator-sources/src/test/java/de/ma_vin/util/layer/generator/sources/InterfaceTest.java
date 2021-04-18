@@ -193,6 +193,39 @@ public class InterfaceTest {
     }
 
     @Test
+    public void testGenerateInner() {
+        List<String> expected = new ArrayList<>();
+        expected.add("public interface Dummy {");
+        expected.add("");
+        expected.add("}");
+
+
+        cut = new Interface("Dummy");
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+    @Test
+    public void testGenerateGenerics() {
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.abc;");
+        expected.add("");
+        expected.add("public interface Dummy<S, T extends U> {");
+        expected.add("");
+        expected.add("}");
+
+        cut.addGeneric("S");
+        Generic secondGeneric = new Generic("T");
+        secondGeneric.setExtension("U");
+        cut.addGeneric(secondGeneric);
+
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+    @Test
     public void testCompare() {
         List<Interface> interfaces = new ArrayList<>();
         interfaces.add(cut);

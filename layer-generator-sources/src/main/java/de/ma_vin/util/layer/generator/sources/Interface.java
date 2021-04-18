@@ -17,12 +17,19 @@ public class Interface extends AbstractGenerateLines implements Comparable<Inter
     private Set<Import> imports = new TreeSet<>();
     private JavaDoc description = null;
     private Set<Annotation> annotations = new TreeSet<>();
+    private Set<Generic> generics = new TreeSet<>();
     private String extension = null;
     private Set<MethodDeclaration> methodDeclarations = new TreeSet<>();
+    private boolean isInner;
 
     public Interface(String packageName, String interfaceName) {
         this.packageName = packageName;
         this.interfaceName = interfaceName;
+    }
+
+    public Interface(String interfaceName) {
+        this(null, interfaceName);
+        isInner = true;
     }
 
     public void addMethodDeclaration(MethodDeclaration methodDeclaration) {
@@ -42,7 +49,7 @@ public class Interface extends AbstractGenerateLines implements Comparable<Inter
         if (parameterPairs.length % 2 != 0) {
             return;
         }
-        for (int i = 0; i < parameterPairs.length; i = +2) {
+        for (int i = 0; i < parameterPairs.length; i += 2) {
             toAdd.parameters.add(new Parameter(parameterPairs[i], parameterPairs[i + 1]));
         }
         addMethodDeclaration(toAdd);
@@ -52,17 +59,19 @@ public class Interface extends AbstractGenerateLines implements Comparable<Inter
     public List<String> generate() {
         List<String> result = new ArrayList<>();
 
-        result.add(String.format("package %s;", packageName));
-        result.add("");
-        if (!imports.isEmpty()) {
-            imports.stream().sorted().forEach(i -> result.addAll(i.generate()));
+        if (!isInner) {
+            result.add(String.format("package %s;", packageName));
             result.add("");
+            if (!imports.isEmpty()) {
+                imports.stream().sorted().forEach(i -> result.addAll(i.generate()));
+                result.add("");
+            }
         }
         if (description != null) {
             result.addAll(description.generate());
         }
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
-        result.add(String.format("%s interface %s%s {", Qualifier.PUBLIC.getText(), interfaceName, getExtensionText()));
+        result.add(String.format("%s interface %s%s%s {", Qualifier.PUBLIC.getText(), interfaceName, getGenericText(), getExtensionText()));
         result.add("");
         methodDeclarations.stream().sorted().forEach(m -> {
             result.addAll(m.generate(1));
@@ -80,12 +89,28 @@ public class Interface extends AbstractGenerateLines implements Comparable<Inter
         return String.format(" extends %s", extension.trim());
     }
 
+    private String getGenericText() {
+        return Generic.getText(generics);
+    }
+
     public void addAnnotation(Annotation annotation) {
         annotations.add(annotation);
     }
 
+    public void addAnnotation(String annotationName) {
+        addAnnotation(new Annotation(annotationName));
+    }
+
     public void addImport(String importedClass) {
         imports.add(new Import(importedClass, false));
+    }
+
+    public void addGeneric(String genericName) {
+        addGeneric(new Generic(genericName));
+    }
+
+    public void addGeneric(Generic generic) {
+        generics.add(generic);
     }
 
     @Override

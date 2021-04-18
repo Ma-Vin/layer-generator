@@ -23,6 +23,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
     private Set<Method> methods = new TreeSet<>();
     private Set<Clazz> innerClasses = new TreeSet<>();
     private Set<String> interfaces = new TreeSet<>();
+    private Set<Interface> innerInterfaces = new TreeSet<>();
     private String extension = null;
     private Qualifier qualifier = Qualifier.PUBLIC;
     private boolean isStatic;
@@ -78,21 +79,16 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
             result.addAll(ic.generate(1));
             result.add("");
         });
+        innerInterfaces.stream().sorted().forEach(ic -> {
+            result.addAll(ic.generate(1));
+            result.add("");
+        });
         result.add("}");
         return result;
     }
 
     private String getGenericText() {
-        if (generics.isEmpty()) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("<");
-        generics.forEach(g -> {
-            sb.append(g.getText());
-            sb.append(", ");
-        });
-        return sb.substring(0, sb.length() - 2) + ">";
+       return Generic.getText(generics);
     }
 
     private String getInterfaceText() {
@@ -185,6 +181,10 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
 
     public void addInterface(String interfaceName) {
         interfaces.add(interfaceName);
+    }
+
+    public void addInnerInterface(Interface inter) {
+        innerInterfaces.add(inter);
     }
 
     public void addGeneric(String genericName) {

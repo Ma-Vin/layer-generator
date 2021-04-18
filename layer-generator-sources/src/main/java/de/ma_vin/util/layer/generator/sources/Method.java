@@ -81,13 +81,7 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         if (generics.isEmpty()) {
             return "";
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append(" <");
-        generics.forEach(g -> {
-            sb.append(g.getText());
-            sb.append(", ");
-        });
-        return sb.substring(0, sb.length() - 2) + ">";
+        return " " + Generic.getText(generics);
     }
 
     protected String getDeclaration() {

@@ -29,6 +29,8 @@ public class ClazzTest {
     private Constructor constructor;
     @Mock
     private Clazz innerClazz;
+    @Mock
+    private Interface innerInterface;
 
     private Clazz cut;
 
@@ -302,6 +304,27 @@ public class ClazzTest {
         expected.add("package de.abc;");
         expected.add("");
         expected.add("public class Dummy implements Bam {");
+        expected.add("");
+        expected.add("}");
+
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+    @Test
+    public void testGenerateInnerInterface() {
+        when(innerInterface.generate()).thenReturn(Arrays.asList("innerInterfacePlaceHolder"));
+        doCallRealMethod().when(innerInterface).generate(anyInt());
+        doCallRealMethod().when(innerInterface).getTabs(anyInt());
+        cut.addInnerInterface(innerInterface);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.abc;");
+        expected.add("");
+        expected.add("public class Dummy {");
+        expected.add("");
+        expected.add(TAB + "innerInterfacePlaceHolder");
         expected.add("");
         expected.add("}");
 
