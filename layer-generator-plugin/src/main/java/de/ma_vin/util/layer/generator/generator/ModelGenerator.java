@@ -12,6 +12,9 @@ import java.util.Optional;
 @Data
 public class ModelGenerator {
 
+    public static final String MAPPER_DIRECTORY_NEEDED = "directory for mapper is empty but needed";
+    public static final String MAPPER_SUB_PACKAGE = ".mapper";
+
     private Config config;
     private Log logger;
     private File targetDir;
@@ -28,6 +31,7 @@ public class ModelGenerator {
     private DomainCreator domainCreator;
     private DtoCreator dtoCreator;
 
+    private CommonMapperCreator commonMapperCreator;
     private AccessMapperCreator accessMapperCreator;
     private TransportMapperCreator transportMapperCreator;
 
@@ -53,6 +57,7 @@ public class ModelGenerator {
         domainCreator = createDomainCreator();
         dtoCreator = createDtoCreator();
 
+        commonMapperCreator = createCommonMapperCreator();
         accessMapperCreator = createAccessMapperCreator();
         transportMapperCreator = createTransportMapperCreator();
     }
@@ -77,6 +82,10 @@ public class ModelGenerator {
         }
         if (!createDataTransportObjects()) {
             logger.error("data transport objects could not be created");
+            return false;
+        }
+        if (!createAbstractMapper()) {
+            logger.error("abstract mapper for access and transport mappers could not be created");
             return false;
         }
         if (!createAccessMapper()) {
@@ -302,17 +311,21 @@ public class ModelGenerator {
             return true;
         }
         if (mapperPackageDir.isEmpty()) {
-            logger.error("directory for mapper is empty but needed");
+            logger.error(MAPPER_DIRECTORY_NEEDED);
             return false;
         }
 
-        String mapperPackageName = config.getBasePackage() + ".mapper";
+        String mapperPackageName = config.getBasePackage() + MAPPER_SUB_PACKAGE;
         String daoPackageName = config.getBasePackage() + "." + config.getDaoPackage();
         String domainPackageName = config.getBasePackage() + "." + config.getDomainPackage();
 
+        logger.debug("create abstract access mapper");
+        boolean result = accessMapperCreator.createAbstractAccessMapper(mapperPackageName, mapperPackageDir.get(), daoPackageName, domainPackageName);
+
         logger.debug(String.format("%d entities are put at common access mapper", config.getEntities().size()));
-        boolean result = accessMapperCreator.createAccessMapper(config.getEntities(), null, mapperPackageName
-                , daoPackageName, domainPackageName, mapperPackageDir.get());
+        result = accessMapperCreator.createAccessMapper(config.getEntities(), null, mapperPackageName
+                , daoPackageName, domainPackageName, mapperPackageDir.get())
+                && result;
 
         logger.debug(String.format("%d groupings getting their own access mapper", config.getGroupings().size()));
         for (Grouping g : config.getGroupings()) {
@@ -336,17 +349,21 @@ public class ModelGenerator {
             return true;
         }
         if (mapperPackageDir.isEmpty()) {
-            logger.error("directory for mapper is empty but needed");
+            logger.error(MAPPER_DIRECTORY_NEEDED);
             return false;
         }
 
-        String mapperPackageName = config.getBasePackage() + ".mapper";
+        String mapperPackageName = config.getBasePackage() + MAPPER_SUB_PACKAGE;
         String dtoPackageName = config.getBasePackage() + "." + config.getDtoPackage();
         String domainPackageName = config.getBasePackage() + "." + config.getDomainPackage();
 
+        logger.debug("create abstract transport mapper");
+        boolean result = transportMapperCreator.createAbstractTransportMapper(mapperPackageName, mapperPackageDir.get(), dtoPackageName, domainPackageName);
+
         logger.debug(String.format("%d entities are put at common transport mapper", config.getEntities().size()));
-        boolean result = transportMapperCreator.createTransportMapper(config.getEntities(), null, mapperPackageName
-                , dtoPackageName, domainPackageName, mapperPackageDir.get());
+        result = transportMapperCreator.createTransportMapper(config.getEntities(), null, mapperPackageName
+                , dtoPackageName, domainPackageName, mapperPackageDir.get())
+                && result;
 
         logger.debug(String.format("%d groupings getting their own transport mapper", config.getGroupings().size()));
         for (Grouping g : config.getGroupings()) {
@@ -357,6 +374,27 @@ public class ModelGenerator {
             }
         }
         return result;
+    }
+
+    /**
+     * Creates the abstract mapper if "data transport and domain objects" or "data transport and domain objects" are to generate
+     *
+     * @return {@code true} if generation of the mapper was successful
+     */
+    private boolean createAbstractMapper() {
+        if ((!genDao || !genDomain) && (!genDto || !genDomain)) {
+            logger.debug("skip abstract mapper generation");
+            return true;
+        }
+        if (mapperPackageDir.isEmpty()) {
+            logger.error(MAPPER_DIRECTORY_NEEDED);
+            return false;
+        }
+
+        String mapperPackageName = config.getBasePackage() + MAPPER_SUB_PACKAGE;
+
+        logger.debug("create abstract transport mapper");
+        return commonMapperCreator.createAbstractMapper(mapperPackageName, mapperPackageDir.get());
     }
 
     @FunctionalInterface
@@ -389,6 +427,15 @@ public class ModelGenerator {
      */
     protected DomainCreator createDomainCreator() {
         return new DomainCreator(config, logger);
+    }
+
+    /**
+     * Creator Method to be make mocking easier at unit test
+     *
+     * @return created access mapper creator
+     */
+    protected CommonMapperCreator createCommonMapperCreator() {
+        return new CommonMapperCreator(config, logger);
     }
 
     /**

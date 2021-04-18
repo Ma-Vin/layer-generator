@@ -145,10 +145,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -232,10 +229,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -328,10 +322,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -424,10 +415,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -518,10 +506,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -609,10 +594,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -704,10 +686,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -826,10 +805,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -964,10 +940,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1054,10 +1027,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1147,10 +1117,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1246,10 +1213,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1342,10 +1306,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1436,10 +1397,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1623,10 +1581,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper {");
-        expected.add("");
-        expected.add("	public GroupingTransportMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1700,5 +1655,40 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAbstractTransportMapper() {
+        File mapperPackageDir = mock(File.class);
+        when(mapperPackageDir.getName()).thenReturn("mapperPackageDir");
+        when(mapperPackageDir.getParentFile()).thenReturn(null);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public abstract class AbstractTransportMapper extends AbstractMapper {");
+        expected.add("");
+        expected.add("	protected static <S extends ITransportable, T extends IIdentifiable> T convertToDomain(S convertFrom"
+                + ", Map<String, IIdentifiable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
+                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
+        expected.add("				, S::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	protected static <S extends IIdentifiable, T extends ITransportable> T convertToDto(S convertFrom"
+                + ", Map<String, ITransportable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
+                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
+        expected.add("				, S::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createAbstractTransportMapper(MAPPER_PACKAGE_NAME, mapperPackageDir, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
+        checkSingleFile(String.format("%s.java", TransportMapperCreator.ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME), expected);
     }
 }

@@ -7,10 +7,15 @@ import java.util.Set;
 @Data
 public class Generic implements IComparableWithText<Generic> {
     private String genericName;
-    private String extension = null;
+    private String extension;
 
     public Generic(String genericName) {
+        this(genericName, null);
+    }
+
+    public Generic(String genericName, String extension) {
         this.genericName = genericName;
+        this.extension = extension;
     }
 
     public String getText() {
@@ -23,7 +28,7 @@ public class Generic implements IComparableWithText<Generic> {
         return getText().compareTo(o.getText());
     }
 
-    public static String getText(Set<Generic> generics){
+    public static String getText(Set<Generic> generics) {
         if (generics.isEmpty()) {
             return "";
         }

@@ -1,23 +1,25 @@
 package de.ma_vin.util.layer.generator.generator;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static org.mockito.Mockito.*;
 
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Grouping;
 import de.ma_vin.util.layer.generator.log.LogImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ModelGeneratorTest {
+    private AutoCloseable openMocks;
 
     @Mock
     private Config config;
@@ -32,6 +34,8 @@ public class ModelGeneratorTest {
     @Mock
     private DomainCreator domainCreator;
     @Mock
+    private CommonMapperCreator commonMapperCreator;
+    @Mock
     private AccessMapperCreator accessMapperCreator;
     @Mock
     private TransportMapperCreator transportMapperCreator;
@@ -44,11 +48,11 @@ public class ModelGeneratorTest {
 
     private ModelGenerator cut;
 
-    private List<String> requestFilesToCreate = new ArrayList<>();
+    private final List<String> requestFilesToCreate = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
-        initMocks(this);
+        openMocks = openMocks(this);
         cut = new ModelGenerator(config, new LogImpl(), targetDir, true, true, true) {
 
             @Override
@@ -64,6 +68,11 @@ public class ModelGeneratorTest {
             @Override
             protected DomainCreator createDomainCreator() {
                 return domainCreator;
+            }
+
+            @Override
+            protected CommonMapperCreator createCommonMapperCreator() {
+                return commonMapperCreator;
             }
 
             @Override
@@ -92,10 +101,18 @@ public class ModelGeneratorTest {
         when(dtoCreator.createDataTransportObject(any(), any(), any())).thenReturn(Boolean.TRUE);
         when(domainCreator.createDomainObjectInterface(any(), any())).thenReturn(Boolean.TRUE);
         when(domainCreator.createDomainObject(any(), any(), any())).thenReturn(Boolean.TRUE);
+        when(commonMapperCreator.createAbstractMapper(anyString(), any())).thenReturn(Boolean.TRUE);
+        when(accessMapperCreator.createAbstractAccessMapper(anyString(), any(), anyString(), anyString())).thenReturn(Boolean.TRUE);
         when(accessMapperCreator.createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any())).thenReturn(Boolean.TRUE);
+        when(transportMapperCreator.createAbstractTransportMapper(anyString(), any(), anyString(), anyString())).thenReturn(Boolean.TRUE);
         when(transportMapperCreator.createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any())).thenReturn(Boolean.TRUE);
 
         requestFilesToCreate.clear();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        openMocks.close();
     }
 
     private void createDefaultConfigMock() {
@@ -104,11 +121,11 @@ public class ModelGeneratorTest {
         when(config.getDtoPackage()).thenReturn("transport");
         when(config.getDomainPackage()).thenReturn("domain");
 
-        when(config.getEntities()).thenReturn(Arrays.asList(entity));
-        when(config.getGroupings()).thenReturn(Arrays.asList(grouping));
+        when(config.getEntities()).thenReturn(Collections.singletonList(entity));
+        when(config.getGroupings()).thenReturn(Collections.singletonList(grouping));
         when(grouping.getGroupingPackage()).thenReturn("group");
 
-        when(grouping.getEntities()).thenReturn(Arrays.asList(groupingEntity));
+        when(grouping.getEntities()).thenReturn(Collections.singletonList(groupingEntity));
     }
 
     @Test
@@ -121,6 +138,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
         verify(domainCreator).createDomainObjectInterface(any(), any());
         verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, times(2)).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, times(2)).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -136,6 +158,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -151,6 +178,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -166,6 +198,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -182,6 +219,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -199,6 +241,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -215,6 +262,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -231,6 +283,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -247,6 +304,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -263,6 +325,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -279,6 +346,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
         verify(domainCreator, never()).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -294,6 +366,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator).createDomainObjectInterface(any(), any());
         verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -310,6 +387,11 @@ public class ModelGeneratorTest {
         verify(dtoCreator, never()).createDataTransportObject(any(), any(), any());
         verify(domainCreator).createDomainObjectInterface(any(), any());
         verify(domainCreator, never()).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator, never()).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
     @Test
@@ -318,7 +400,7 @@ public class ModelGeneratorTest {
         assertTrue(cut.generate(), "The generation should be successful");
 
         assertFalse(requestFilesToCreate.contains("group.subgroup"), "Not any directories with dots should be created");
-        assertTrue(requestFilesToCreate.contains(String.format("group%ssubgroup",File.separator)), "Dot should be replaced by backslash");
+        assertTrue(requestFilesToCreate.contains(String.format("group%ssubgroup", File.separator)), "Dot should be replaced by backslash");
 
         verify(daoCreator).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
@@ -326,6 +408,106 @@ public class ModelGeneratorTest {
         verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
         verify(domainCreator).createDomainObjectInterface(any(), any());
         verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, times(2)).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, times(2)).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
     }
 
+    @Test
+    public void testGenerateCreateAbstractMapperFailed() {
+        when(commonMapperCreator.createAbstractMapper(anyString(), any())).thenReturn(Boolean.FALSE);
+
+        assertFalse(cut.generate(), "The generation should not be successful");
+
+        verify(daoCreator).createDataAccessObjectInterface(any(), any());
+        verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
+        verify(dtoCreator).createDataTransportObjectInterface(any(), any());
+        verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(domainCreator).createDomainObjectInterface(any(), any());
+        verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator, never()).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, never()).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+    }
+
+
+    @Test
+    public void testGenerateCreateAbstractAccessMapperFailed() {
+        when(accessMapperCreator.createAbstractAccessMapper(anyString(), any(), anyString(), anyString())).thenReturn(Boolean.FALSE);
+
+        assertFalse(cut.generate(), "The generation should not be successful");
+
+        verify(daoCreator).createDataAccessObjectInterface(any(), any());
+        verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
+        verify(dtoCreator).createDataTransportObjectInterface(any(), any());
+        verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(domainCreator).createDomainObjectInterface(any(), any());
+        verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, times(2)).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+    }
+
+    @Test
+    public void testGenerateCreateAccessMapperFailed() {
+        when(accessMapperCreator.createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any())).thenReturn(Boolean.FALSE);
+
+        assertFalse(cut.generate(), "The generation should not be successful");
+
+        verify(daoCreator).createDataAccessObjectInterface(any(), any());
+        verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
+        verify(dtoCreator).createDataTransportObjectInterface(any(), any());
+        verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(domainCreator).createDomainObjectInterface(any(), any());
+        verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, times(2)).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator, never()).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, never()).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+    }
+
+    @Test
+    public void testGenerateCreateAbstractTransportMapperFailed() {
+        when(transportMapperCreator.createAbstractTransportMapper(anyString(), any(), anyString(), anyString())).thenReturn(Boolean.FALSE);
+
+        assertFalse(cut.generate(), "The generation should not be successful");
+
+        verify(daoCreator).createDataAccessObjectInterface(any(), any());
+        verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
+        verify(dtoCreator).createDataTransportObjectInterface(any(), any());
+        verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(domainCreator).createDomainObjectInterface(any(), any());
+        verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, times(2)).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, times(2)).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+    }
+
+    @Test
+    public void testGenerateCreateTransportMapperFailed() {
+        when(transportMapperCreator.createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any())).thenReturn(Boolean.FALSE);
+
+        assertFalse(cut.generate(), "The generation should not be successful");
+
+        verify(daoCreator).createDataAccessObjectInterface(any(), any());
+        verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
+        verify(dtoCreator).createDataTransportObjectInterface(any(), any());
+        verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(domainCreator).createDomainObjectInterface(any(), any());
+        verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(commonMapperCreator).createAbstractMapper(anyString(), any());
+        verify(accessMapperCreator).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, times(2)).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, times(2)).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+    }
 }

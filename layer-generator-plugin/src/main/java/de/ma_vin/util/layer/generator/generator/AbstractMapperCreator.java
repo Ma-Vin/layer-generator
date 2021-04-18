@@ -1,5 +1,7 @@
 package de.ma_vin.util.layer.generator.generator;
 
+import static de.ma_vin.util.layer.generator.generator.CommonMapperCreator.*;
+
 import de.ma_vin.util.layer.generator.builder.MapperType;
 import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.sources.*;
@@ -16,6 +18,7 @@ import org.apache.maven.plugin.logging.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -82,10 +85,6 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         instanceAttribute.setJavaDoc(new JavaDoc("singleton"));
         mapperClass.addAttribute(instanceAttribute);
 
-        Constructor constructor = new Constructor(mapperClass.getClassName());
-        constructor.setQualifier(Qualifier.PUBLIC);
-        mapperClass.addConstructor(constructor);
-
         Method getInstanceMethod = new Method("getInstance");
         getInstanceMethod.setMethodType(mapperClass.getClassName());
         getInstanceMethod.setStatic(true);
@@ -97,6 +96,38 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         getInstanceMethod.addLine("return instance;");
         mapperClass.addMethod(getInstanceMethod);
     }
+
+    /**
+     * Creates the convertTo method which will be used for value and reference mapping
+     *
+     * @param mapperClass         class where to add the created method
+     * @param methodName          the name of the method
+     * @param sourceInterfaceName the interface of the object which is the input at the convert method
+     * @param targetInterfaceName the interface of the object which is the result of the convert method
+     */
+    protected void createAndAddConvertToGenericMethod(Clazz mapperClass, String methodName, String sourceInterfaceName, String targetInterfaceName) {
+        mapperClass.addImport(Map.class.getName());
+
+        Method convertToMethod = new Method(methodName);
+        convertToMethod.setQualifier(Qualifier.PROTECTED);
+        convertToMethod.setStatic(true);
+        convertToMethod.addGeneric(new Generic(SOURCE_GENERIC, sourceInterfaceName));
+        convertToMethod.addGeneric(new Generic(TARGET_GENERIC, targetInterfaceName));
+        convertToMethod.setMethodType(TARGET_GENERIC);
+        convertToMethod.addParameter(SOURCE_GENERIC, SOURCE_VARIABLE);
+        convertToMethod.addParameter(String.format(CLASS_TWO_GENERICS, Map.class.getSimpleName(), String.class.getSimpleName(), targetInterfaceName), MAPPED_OBJECTS_PARAMETER_TEXT);
+        convertToMethod.addParameter(String.format(CLASS_ONE_GENERIC, OBJECT_CREATOR_INTERFACE, TARGET_GENERIC), OBJECT_CREATOR_PARAMETER);
+        convertToMethod.addParameter(String.format(CLASS_TWO_GENERICS, VALUE_MAPPER_INTERFACE, SOURCE_GENERIC, TARGET_GENERIC), VALUE_MAPPER_PARAMETER);
+        convertToMethod.addParameter(String.format(CLASS_TWO_GENERICS, REFERENCE_MAPPER_INTERFACE, SOURCE_GENERIC, TARGET_GENERIC), SINGLE_REFERENCE_MAPPER_PARAMETER);
+        convertToMethod.addParameter(String.format(CLASS_TWO_GENERICS, REFERENCE_MAPPER_INTERFACE, SOURCE_GENERIC, TARGET_GENERIC), MULTI_REFERENCE_MAPPER_PARAMETER);
+
+        convertToMethod.addLine("return %s(%s, %s, %s, %s, %s, %s", CONVERT_TO_METHOD_NAME, SOURCE_VARIABLE, MAPPED_OBJECTS_PARAMETER_TEXT
+                , OBJECT_CREATOR_PARAMETER, VALUE_MAPPER_PARAMETER, SINGLE_REFERENCE_MAPPER_PARAMETER, MULTI_REFERENCE_MAPPER_PARAMETER);
+        convertToMethod.addLine(", %s::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));",2, SOURCE_GENERIC);
+
+        mapperClass.addMethod(convertToMethod);
+    }
+
 
     /**
      * Adds the default mappings to a convert method

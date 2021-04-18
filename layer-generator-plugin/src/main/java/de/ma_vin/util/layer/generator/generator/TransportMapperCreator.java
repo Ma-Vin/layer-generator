@@ -18,12 +18,39 @@ import java.util.Map;
 
 public class TransportMapperCreator extends AbstractMapperCreator {
 
+    public static final String ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME = "AbstractTransportMapper";
     public static final String MAPPER_TYPE_NAME = "Transport";
     public static final String DTO_POSTFIX = "Dto";
     public static final String DOMAIN_POSTFIX = "";
+    public static final String CONVERT_TO_DTO_NAME = "convertToDto";
+    public static final String CONVERT_TO_DOMAIN_NAME = "convertToDomain";
 
     public TransportMapperCreator(Config config, Log logger) {
         super(config, logger);
+    }
+
+    /**
+     * Creates the abstract mapper which is used by all transport mapper
+     *
+     * @param mapperPackageName package of the mapper to use
+     * @param mapperPackageDir  directory of the package
+     * @param dtoPackageName    name of base dto package
+     * @param domainPackageName name of base domain package
+     * @return {@code true} if generation was successful
+     */
+    public boolean createAbstractTransportMapper(String mapperPackageName, File mapperPackageDir, String dtoPackageName, String domainPackageName) {
+        Clazz mapperClass = new Clazz(mapperPackageName, ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME);
+        logger.debug("Create abstract access mapper " + mapperClass.getClassName());
+        mapperClass.setAbstract(true);
+        mapperClass.setExtension(CommonMapperCreator.ABSTRACT_MAPPER_CLASS_NAME);
+
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, dtoPackageName, DtoCreator.DTO_INTERFACE));
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
+
+        createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DTO_NAME, DomainCreator.DOMAIN_INTERFACE, DtoCreator.DTO_INTERFACE);
+        createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DOMAIN_NAME, DtoCreator.DTO_INTERFACE, DomainCreator.DOMAIN_INTERFACE);
+
+        return writeClassFile(mapperPackageDir, mapperClass.getClassName(), mapperClass);
     }
 
     /**
@@ -46,6 +73,8 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         }
         Clazz mapperClass = new Clazz(mapperPackageName, getMapperName(groupingName));
         logger.debug("Create transport mapper " + mapperClass.getClassName());
+
+        mapperClass.setExtension(ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME);
 
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, dtoPackageName, ModelType.DTO.getFactoryClassName()));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, ModelType.DOMAIN.getFactoryClassName()));
@@ -77,7 +106,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * Determines the name of the converting method
      *
      * @param entity entity which is to convert
-     * @return Name of the dao converting method
+     * @return Name of the dto converting method
      */
     private String getConvertMethodNameDto(Entity entity) {
         return getConvertMethodName(entity, DTO_POSTFIX);
@@ -207,14 +236,14 @@ public class TransportMapperCreator extends AbstractMapperCreator {
     }
 
     /**
-     * Creates mapping methods from domain to dao with a given parent
+     * Creates mapping methods from domain to dto with a given parent
      *
      * @param mapperClass       class where to add methods at
      * @param entity            entity whose properties are to map
      * @param referenceToParent reference to parent which should be used for the parent parameter
-     * @param daoPackageName    name of base dao package
+     * @param dtoPackageName    name of base dto package
      */
-    private void createConvertToDtoMethodWithParent(Clazz mapperClass, Entity entity, Reference referenceToParent, String daoPackageName) {
+    private void createConvertToDtoMethodWithParent(Clazz mapperClass, Entity entity, Reference referenceToParent, String dtoPackageName) {
         if (!isEntityRelevant(referenceToParent.getRealTargetEntity())) {
             logger.debug(String.format("No connection is to generate to parent %s from entity %s"
                     , referenceToParent.getTargetEntity(), entity.getBaseName()));
@@ -223,9 +252,9 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         CreateMethodParameterContainer createMethodParams = getDtoCreateMethodParameterContainer(entity);
 
-        createConvertMethodWithParentWithoutMap(mapperClass, createMethodParams, referenceToParent, daoPackageName);
+        createConvertMethodWithParentWithoutMap(mapperClass, createMethodParams, referenceToParent, dtoPackageName);
 
-        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, createMethodParams, referenceToParent, daoPackageName);
+        Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, createMethodParams, referenceToParent, dtoPackageName);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE)
                 , MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethodWithMap.addLine("%sDto result = %s(%s,%s %s);"

@@ -3,13 +3,11 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;
 import de.ma_vin.util.layer.generator.builder.MapperType;
 import de.ma_vin.util.layer.generator.builder.ModelType;
-import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
-import de.ma_vin.util.layer.generator.sources.Clazz;
+import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Field;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
-import de.ma_vin.util.layer.generator.sources.Method;
 import lombok.extern.log4j.Log4j2;
 import org.apache.maven.plugin.logging.Log;
 
@@ -22,12 +20,39 @@ import java.util.stream.Collectors;
 
 public class AccessMapperCreator extends AbstractMapperCreator {
 
+    public static final String ABSTRACT_ACCESS_MAPPER_CLASS_NAME = "AbstractAccessMapper";
     public static final String MAPPER_TYPE_NAME = "Access";
     public static final String DAO_POSTFIX = "Dao";
     public static final String DOMAIN_POSTFIX = "";
+    public static final String CONVERT_TO_DAO_NAME = "convertToDao";
+    public static final String CONVERT_TO_DOMAIN_NAME = "convertToDomain";
 
     public AccessMapperCreator(Config config, Log logger) {
         super(config, logger);
+    }
+
+    /**
+     * Creates the abstract mapper which is used by all access mapper
+     *
+     * @param mapperPackageName package of the mapper to use
+     * @param mapperPackageDir  directory of the package
+     * @param daoPackageName    name of base dao package
+     * @param domainPackageName name of base domain package
+     * @return {@code true} if generation was successful
+     */
+    public boolean createAbstractAccessMapper(String mapperPackageName, File mapperPackageDir, String daoPackageName, String domainPackageName) {
+        Clazz mapperClass = new Clazz(mapperPackageName, ABSTRACT_ACCESS_MAPPER_CLASS_NAME);
+        logger.debug("Create abstract access mapper " + mapperClass.getClassName());
+        mapperClass.setAbstract(true);
+        mapperClass.setExtension(CommonMapperCreator.ABSTRACT_MAPPER_CLASS_NAME);
+
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, DaoCreator.DAO_INTERFACE));
+        mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
+
+        createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DAO_NAME, DomainCreator.DOMAIN_INTERFACE, DaoCreator.DAO_INTERFACE);
+        createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DOMAIN_NAME, DaoCreator.DAO_INTERFACE, DomainCreator.DOMAIN_INTERFACE);
+
+        return writeClassFile(mapperPackageDir, mapperClass.getClassName(), mapperClass);
     }
 
     /**
@@ -50,6 +75,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         }
         Clazz mapperClass = new Clazz(mapperPackageName, getMapperName(groupingName));
         logger.debug("Create access mapper " + mapperClass.getClassName());
+
+        mapperClass.setExtension(ABSTRACT_ACCESS_MAPPER_CLASS_NAME);
 
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, ModelType.DAO.getFactoryClassName()));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, ModelType.DOMAIN.getFactoryClassName()));

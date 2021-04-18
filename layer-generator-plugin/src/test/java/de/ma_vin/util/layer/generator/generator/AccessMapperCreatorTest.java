@@ -157,10 +157,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -244,10 +241,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -339,10 +333,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -435,10 +426,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -530,10 +518,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -658,10 +643,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -920,10 +902,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1034,10 +1013,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1164,10 +1140,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1311,10 +1284,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1448,10 +1418,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1599,10 +1566,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1740,10 +1704,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1834,10 +1795,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -1934,10 +1892,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -2032,10 +1987,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -2142,10 +2094,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -2247,10 +2196,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupSubgroupAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupSubgroupAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupSubgroupAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -2436,10 +2382,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -2551,10 +2494,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -2667,10 +2607,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("@BaseAccessMapper");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -2793,10 +2730,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("@BaseAccessMapper");
         expected.add("@Log4j2");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -2942,10 +2876,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("@BaseAccessMapper");
         expected.add("@Log4j2");
-        expected.add("public class GroupingAccessMapper {");
-        expected.add("");
-        expected.add("	public GroupingAccessMapper() {");
-        expected.add("	}");
+        expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * singleton");
@@ -3047,5 +2978,40 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateAbstractAccessMapper() {
+        File mapperPackageDir = mock(File.class);
+        when(mapperPackageDir.getName()).thenReturn("mapperPackageDir");
+        when(mapperPackageDir.getParentFile()).thenReturn(null);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public abstract class AbstractAccessMapper extends AbstractMapper {");
+        expected.add("");
+        expected.add("	protected static <S extends IIdentifiable, T extends IIdentifiableDao> T convertToDao(S convertFrom"
+                + ", Map<String, IIdentifiableDao> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
+                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
+        expected.add("				, S::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	protected static <S extends IIdentifiableDao, T extends IIdentifiable> T convertToDomain(S convertFrom"
+                + ", Map<String, IIdentifiable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
+                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
+        expected.add("				, S::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createAbstractAccessMapper(MAPPER_PACKAGE_NAME, mapperPackageDir, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
+        checkSingleFile(String.format("%s.java", AccessMapperCreator.ABSTRACT_ACCESS_MAPPER_CLASS_NAME), expected);
     }
 }
