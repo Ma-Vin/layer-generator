@@ -84,9 +84,9 @@ public class CommonMapperCreatorTest {
         expected.add("");
         expected.add("import java.util.Map;");
         expected.add("");
-        expected.add("@SuppressWarnings(\"java:S107\")");
         expected.add("public abstract class AbstractMapper {");
         expected.add("");
+        expected.add("	@SuppressWarnings(\"java:S107\")");
         expected.add("	protected static <M, S, T> T convertTo(S convertFrom, Map<String, M> mappedObjects, ObjectCreator<T> objectCreator"
                 + ", ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper"
                 + ", IdentificationGetter<S> identificationGetter, IdentificationSetter<S, T> identificationSetter) {");
