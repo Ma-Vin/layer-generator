@@ -13,10 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseTransportMapper
-public class MultiIndirectTransportMapper {
-
-	public MultiIndirectTransportMapper() {
-	}
+public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 
 	/**
 	 * singleton
@@ -28,23 +25,10 @@ public class MultiIndirectTransportMapper {
 	}
 
 	public static MultiRefIndirectParent convertToMultiRefIndirectParent(MultiRefIndirectParentDto multiRefIndirectParent, Map<String, IIdentifiable> mappedObjects) {
-		if (multiRefIndirectParent == null) {
-			return null;
-		}
-
-		String identification = multiRefIndirectParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefIndirectParent) mappedObjects.get(identification);
-		}
-
-		MultiRefIndirectParent result = DomainObjectFactory.createMultiRefIndirectParent();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefIndirectParent.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(multiRefIndirectParent, mappedObjects, DomainObjectFactory::createMultiRefIndirectParent, (dto, domain) -> getInstance().setMultiRefIndirectParentValues(dto, domain)
+				, (dto, domain) -> getInstance().setMultiRefIndirectParentSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static MultiRefIndirectParentDto convertToMultiRefIndirectParentDto(MultiRefIndirectParent multiRefIndirectParent) {
@@ -52,23 +36,10 @@ public class MultiIndirectTransportMapper {
 	}
 
 	public static MultiRefIndirectParentDto convertToMultiRefIndirectParentDto(MultiRefIndirectParent multiRefIndirectParent, Map<String, ITransportable> mappedObjects) {
-		if (multiRefIndirectParent == null) {
-			return null;
-		}
-
-		String identification = multiRefIndirectParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefIndirectParentDto) mappedObjects.get(identification);
-		}
-
-		MultiRefIndirectParentDto result = DtoObjectFactory.createMultiRefIndirectParentDto();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefIndirectParent.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(multiRefIndirectParent, mappedObjects, DtoObjectFactory::createMultiRefIndirectParentDto, (domain, dto) -> getInstance().setMultiRefIndirectParentDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setMultiRefIndirectParentDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	public static MultiRefOtherIndirectParent convertToMultiRefOtherIndirectParent(MultiRefOtherIndirectParentDto multiRefOtherIndirectParent) {
@@ -76,23 +47,10 @@ public class MultiIndirectTransportMapper {
 	}
 
 	public static MultiRefOtherIndirectParent convertToMultiRefOtherIndirectParent(MultiRefOtherIndirectParentDto multiRefOtherIndirectParent, Map<String, IIdentifiable> mappedObjects) {
-		if (multiRefOtherIndirectParent == null) {
-			return null;
-		}
-
-		String identification = multiRefOtherIndirectParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefOtherIndirectParent) mappedObjects.get(identification);
-		}
-
-		MultiRefOtherIndirectParent result = DomainObjectFactory.createMultiRefOtherIndirectParent();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefOtherIndirectParent.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(multiRefOtherIndirectParent, mappedObjects, DomainObjectFactory::createMultiRefOtherIndirectParent, (dto, domain) -> getInstance().setMultiRefOtherIndirectParentValues(dto, domain)
+				, (dto, domain) -> getInstance().setMultiRefOtherIndirectParentSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static MultiRefOtherIndirectParentDto convertToMultiRefOtherIndirectParentDto(MultiRefOtherIndirectParent multiRefOtherIndirectParent) {
@@ -100,23 +58,10 @@ public class MultiIndirectTransportMapper {
 	}
 
 	public static MultiRefOtherIndirectParentDto convertToMultiRefOtherIndirectParentDto(MultiRefOtherIndirectParent multiRefOtherIndirectParent, Map<String, ITransportable> mappedObjects) {
-		if (multiRefOtherIndirectParent == null) {
-			return null;
-		}
-
-		String identification = multiRefOtherIndirectParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefOtherIndirectParentDto) mappedObjects.get(identification);
-		}
-
-		MultiRefOtherIndirectParentDto result = DtoObjectFactory.createMultiRefOtherIndirectParentDto();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefOtherIndirectParent.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(multiRefOtherIndirectParent, mappedObjects, DtoObjectFactory::createMultiRefOtherIndirectParentDto, (domain, dto) -> getInstance().setMultiRefOtherIndirectParentDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setMultiRefOtherIndirectParentDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	/**
@@ -127,6 +72,38 @@ public class MultiIndirectTransportMapper {
 			instance = TransportMapperFactory.createMultiIndirectTransportMapper();
 		}
 		return instance;
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectParentDtoSingleReferences(MultiRefIndirectParent domain, MultiRefIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
+	}
+
+	protected void setMultiRefIndirectParentDtoValues(MultiRefIndirectParent domain, MultiRefIndirectParentDto dto) {
+		dto.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectParentSingleReferences(MultiRefIndirectParentDto dto, MultiRefIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setMultiRefIndirectParentValues(MultiRefIndirectParentDto dto, MultiRefIndirectParent domain) {
+		domain.setDescription(dto.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefOtherIndirectParentDtoSingleReferences(MultiRefOtherIndirectParent domain, MultiRefOtherIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
+	}
+
+	protected void setMultiRefOtherIndirectParentDtoValues(MultiRefOtherIndirectParent domain, MultiRefOtherIndirectParentDto dto) {
+		dto.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefOtherIndirectParentSingleReferences(MultiRefOtherIndirectParentDto dto, MultiRefOtherIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setMultiRefOtherIndirectParentValues(MultiRefOtherIndirectParentDto dto, MultiRefOtherIndirectParent domain) {
+		domain.setDescription(dto.getDescription());
 	}
 
 }

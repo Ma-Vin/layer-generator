@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -123,7 +124,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
 
         convertToMethod.addLine("return %s(%s, %s, %s, %s, %s, %s", CONVERT_TO_METHOD_NAME, SOURCE_VARIABLE, MAPPED_OBJECTS_PARAMETER_TEXT
                 , OBJECT_CREATOR_PARAMETER, VALUE_MAPPER_PARAMETER, SINGLE_REFERENCE_MAPPER_PARAMETER, MULTI_REFERENCE_MAPPER_PARAMETER);
-        convertToMethod.addLine(", %s::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));",2, SOURCE_GENERIC);
+        convertToMethod.addLine(", %s::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));", 2, SOURCE_GENERIC);
 
         mapperClass.addMethod(convertToMethod);
     }
@@ -163,6 +164,93 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
                                 , getLowerFirst(entity.getBaseName()))
                 );
         convertMethod.addEmptyLine();
+    }
+
+    /**
+     * Creates the method which converts the values
+     * <br>
+     * SuppressWarnings("java:S1186"): do not blame empty methods, otherwise they wont be extendable
+     *
+     * @param mapperClass                 class where to add the method
+     * @param entity                      entity whose properties are to map
+     * @param fieldChecker                checks whether a field of entity is relevant or not
+     * @param sourceClassParameterPostFix postfix for classes and parameters of the source
+     * @param targetClassParameterPostFix postfix for classes and parameters of the target
+     * @param sourceParameter             the method parameter for the source object
+     * @param targetParameter             the method parameter for the target object
+     */
+    protected void createSetValueMethod(Clazz mapperClass, Entity entity, FieldRelevantChecker fieldChecker
+            , String sourceClassParameterPostFix, String targetClassParameterPostFix
+            , String sourceParameter, String targetParameter) {
+
+        Method setValueMethod = new Method(String.format("set%s%sValues", getUpperFirst(entity.getBaseName()), targetClassParameterPostFix));
+        setValueMethod.setQualifier(Qualifier.PROTECTED);
+        setValueMethod.addParameter(String.format("%s%s", getUpperFirst(entity.getBaseName()), sourceClassParameterPostFix), sourceParameter);
+        setValueMethod.addParameter(String.format("%s%s", getUpperFirst(entity.getBaseName()), targetClassParameterPostFix), targetParameter);
+
+        determineAlFields(entity).stream()
+                .filter(fieldChecker::isRelevant)
+                .forEach(f ->
+                        setValueMethod.addLine("%1$s.set%3$s(%2$s.get%3$s());"
+                                , targetParameter
+                                , sourceParameter
+                                , getUpperFirst(f.getFieldName()))
+                );
+
+        if (setValueMethod.getMethodBody().isEmpty()) {
+            setValueMethod.addAnnotation(SuppressWarnings.class.getSimpleName(), null, "\"java:S1186\"");
+        }
+        mapperClass.addMethod(setValueMethod);
+    }
+
+    /**
+     * Creates the method which converts the single references
+     * <br>
+     * SuppressWarnings("java:S1186"): do not blame empty methods, otherwise they wont be extendable
+     *
+     * @param mapperClass         class where to add the method
+     * @param parameterContainer  container for default parameter to create convert method
+     * @param sourceParameter     the method parameter for the source object
+     * @param targetParameter     the method parameter for the target object
+     * @param targetInterfaceName the interface which the target object implements
+     */
+    protected void createSetSingleReferenceMethod(Clazz mapperClass, CreateMethodParameterContainer parameterContainer
+            , String sourceParameter, String targetParameter, String targetInterfaceName) {
+
+        List<Reference> relevantReferences = determineAllReferences(parameterContainer.entity).stream()
+                .filter(ref -> !ref.isList() && parameterContainer.entityChecker.isRelevant(ref.getRealTargetEntity()))
+                .collect(Collectors.toList());
+
+        boolean hasIncludeChildrenParameter = hasSingleRefWithChildren(parameterContainer.entity, parameterContainer.entityChecker);
+
+        Method setSingleRefMethod = new Method(String.format("set%s%sSingleReferences", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.classParameterPostFix));
+        setSingleRefMethod.setQualifier(Qualifier.PROTECTED);
+        setSingleRefMethod.addParameter(String.format("%s%s", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.sourceClassParameterPostFix), sourceParameter);
+        setSingleRefMethod.addParameter(String.format("%s%s", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.classParameterPostFix), targetParameter);
+        if (hasIncludeChildrenParameter) {
+            setSingleRefMethod.addParameter("boolean", INCLUDE_CHILDREN_PARAMETER);
+        }
+        setSingleRefMethod.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), targetInterfaceName), MAPPED_OBJECTS_PARAMETER_TEXT);
+
+        relevantReferences.forEach(ref -> addSingleRefConvert(setSingleRefMethod, ref, parameterContainer.classParameterPostFix
+                , sourceParameter, targetParameter, parameterContainer.entityChecker));
+
+        if (setSingleRefMethod.getMethodBody().isEmpty()) {
+            setSingleRefMethod.addAnnotation(SuppressWarnings.class.getSimpleName(), null, "\"java:S1186\"");
+        }
+        mapperClass.addMethod(setSingleRefMethod);
+    }
+
+    protected boolean hasSingleRefWithChildren(List<Reference> relevantReferences, EntityRelevantChecker entityChecker) {
+        return relevantReferences.stream().anyMatch(reference -> hasIncludeChildrenParameter(reference.getRealTargetEntity(), entityChecker));
+    }
+
+    protected boolean hasSingleRefWithChildren(Entity entity, EntityRelevantChecker entityChecker) {
+        List<Reference> relevantReferences = determineAllReferences(entity).stream()
+                .filter(ref -> !ref.isList() && entityChecker.isRelevant(ref.getRealTargetEntity()))
+                .collect(Collectors.toList());
+
+        return hasSingleRefWithChildren(relevantReferences, entityChecker);
     }
 
     /**
@@ -296,33 +384,33 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * Adds mappings for single reference to other dao
      *
      * @param convertMethod         the method where to add body
-     * @param entity                entity whose properties are to map
      * @param reference             reference which is actual to map
      * @param classParameterPostFix postfix for classes and parameters
      * @param entityChecker         checker for relevance verification
+     * @param sourceParameter       the method parameter for the source object
+     * @param targetParameter       the method parameter for the target object
      */
-    protected void addSingleRefConvert(Method convertMethod, Entity entity, Reference reference, String classParameterPostFix
-            , EntityRelevantChecker entityChecker) {
+    protected void addSingleRefConvert(Method convertMethod, Reference reference, String classParameterPostFix
+            , String sourceParameter, String targetParameter, EntityRelevantChecker entityChecker) {
 
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(reference.getRealTargetEntity(), entityChecker);
 
         String mapperName = getMapperName(reference.getRealTargetEntity());
         String mapperMethodName = getConvertMethodName(reference.getRealTargetEntity(), classParameterPostFix);
-        String variableName = getLowerFirst(entity.getBaseName());
         String getterSubName = getUpperFirst(reference.getReferenceName());
 
         if (reference.isOwner() && hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(%s.get%s(), includeChildren, result, %s);"
-                    , mapperName, mapperMethodName, variableName, getterSubName, MAPPED_OBJECTS_PARAMETER_TEXT);
+            convertMethod.addLine("%s.%s(%s.get%s(), includeChildren, %s, %s);"
+                    , mapperName, mapperMethodName, sourceParameter, getterSubName, targetParameter, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (!reference.isOwner() && hasIncludeChildrenParameter) {
-            convertMethod.addLine("result.set%s(%s.%s(%s.get%s(), includeChildren, %s));"
-                    , getterSubName, mapperName, mapperMethodName, variableName, getterSubName, MAPPED_OBJECTS_PARAMETER_TEXT);
+            convertMethod.addLine("%s.set%s(%s.%s(%s.get%s(), includeChildren, %s));"
+                    , targetParameter, getterSubName, mapperName, mapperMethodName, sourceParameter, getterSubName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (reference.isOwner() && !hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(%s.get%s(), result, %s);"
-                    , mapperName, mapperMethodName, variableName, getterSubName, MAPPED_OBJECTS_PARAMETER_TEXT);
+            convertMethod.addLine("%s.%s(%s.get%s(), %s, %s);"
+                    , mapperName, mapperMethodName, sourceParameter, getterSubName, targetParameter, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else {
-            convertMethod.addLine("result.set%s(%s.%s(%s.get%s(), %s));"
-                    , getterSubName, mapperName, mapperMethodName, variableName, getterSubName, MAPPED_OBJECTS_PARAMETER_TEXT);
+            convertMethod.addLine("%s.set%s(%s.%s(%s.get%s(), %s));"
+                    , targetParameter, getterSubName, mapperName, mapperMethodName, sourceParameter, getterSubName, MAPPED_OBJECTS_PARAMETER_TEXT);
         }
     }
 

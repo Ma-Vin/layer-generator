@@ -13,10 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseTransportMapper
-public class CommonTransportMapper {
-
-	public CommonTransportMapper() {
-	}
+public class CommonTransportMapper extends AbstractTransportMapper {
 
 	/**
 	 * singleton
@@ -28,31 +25,10 @@ public class CommonTransportMapper {
 	}
 
 	public static Root convertToRoot(RootDto root, Map<String, IIdentifiable> mappedObjects) {
-		if (root == null) {
-			return null;
-		}
-
-		String identification = root.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (Root) mappedObjects.get(identification);
-		}
-
-		Root result = DomainObjectFactory.createRoot();
-
-		result.setIdentification(identification);
-
-		result.setRootName(root.getRootName());
-		result.setDescription(root.getDescription());
-
-		SingleTransportMapper.convertToSingleRefOneParent(root.getSingleRef(), result, mappedObjects);
-		SingleTransportMapper.convertToSingleRefTwoParents(root.getAnotherSingleRef(), result, mappedObjects);
-		SingleIndirectTransportMapper.convertToSingleRefIndirectParent(root.getSingleRefIndirectParent(), result, mappedObjects);
-		SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParent(root.getSingleRefIndirectOtherParent(), result, mappedObjects);
-		FilteringTransportMapper.convertToSomeFilteringOwner(root.getFiltering(), result, mappedObjects);
-		CommonTransportMapper.convertToRootExt(root.getExt(), result, mappedObjects);
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(root, mappedObjects, DomainObjectFactory::createRoot, (dto, domain) -> getInstance().setRootValues(dto, domain)
+				, (dto, domain) -> getInstance().setRootSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static RootDto convertToRootDto(Root root) {
@@ -60,31 +36,10 @@ public class CommonTransportMapper {
 	}
 
 	public static RootDto convertToRootDto(Root root, Map<String, ITransportable> mappedObjects) {
-		if (root == null) {
-			return null;
-		}
-
-		String identification = root.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (RootDto) mappedObjects.get(identification);
-		}
-
-		RootDto result = DtoObjectFactory.createRootDto();
-
-		result.setIdentification(identification);
-
-		result.setRootName(root.getRootName());
-		result.setDescription(root.getDescription());
-
-		SingleTransportMapper.convertToSingleRefOneParentDto(root.getSingleRef(), result, mappedObjects);
-		SingleTransportMapper.convertToSingleRefTwoParentsDto(root.getAnotherSingleRef(), result, mappedObjects);
-		SingleIndirectTransportMapper.convertToSingleRefIndirectParentDto(root.getSingleRefIndirectParent(), result, mappedObjects);
-		SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParentDto(root.getSingleRefIndirectOtherParent(), result, mappedObjects);
-		FilteringTransportMapper.convertToSomeFilteringOwnerDto(root.getFiltering(), result, mappedObjects);
-		CommonTransportMapper.convertToRootExtDto(root.getExt(), result, mappedObjects);
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(root, mappedObjects, DtoObjectFactory::createRootDto, (domain, dto) -> getInstance().setRootDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setRootDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	public static RootExt convertToRootExt(RootExtDto rootExt) {
@@ -92,32 +47,10 @@ public class CommonTransportMapper {
 	}
 
 	public static RootExt convertToRootExt(RootExtDto rootExt, Map<String, IIdentifiable> mappedObjects) {
-		if (rootExt == null) {
-			return null;
-		}
-
-		String identification = rootExt.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (RootExt) mappedObjects.get(identification);
-		}
-
-		RootExt result = DomainObjectFactory.createRootExt();
-
-		result.setIdentification(identification);
-
-		result.setExtendedInfo(rootExt.getExtendedInfo());
-		result.setSomeEnum(rootExt.getSomeEnum());
-		result.setSomeInteger(rootExt.getSomeInteger());
-		result.setSomeCustom(rootExt.getSomeCustom());
-		result.setDtoAndDomain(rootExt.getDtoAndDomain());
-		result.setTextWithDaoInfo(rootExt.getTextWithDaoInfo());
-		result.setNumberWithDaoInfo(rootExt.getNumberWithDaoInfo());
-		result.setDaoEnum(rootExt.getDaoEnum());
-		result.setDaoEnumWithText(rootExt.getDaoEnumWithText());
-		result.setSomeName(rootExt.getSomeName());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(rootExt, mappedObjects, DomainObjectFactory::createRootExt, (dto, domain) -> getInstance().setRootExtValues(dto, domain)
+				, (dto, domain) -> getInstance().setRootExtSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static RootExt convertToRootExt(RootExtDto rootExt, Root parent) {
@@ -137,32 +70,10 @@ public class CommonTransportMapper {
 	}
 
 	public static RootExtDto convertToRootExtDto(RootExt rootExt, Map<String, ITransportable> mappedObjects) {
-		if (rootExt == null) {
-			return null;
-		}
-
-		String identification = rootExt.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (RootExtDto) mappedObjects.get(identification);
-		}
-
-		RootExtDto result = DtoObjectFactory.createRootExtDto();
-
-		result.setIdentification(identification);
-
-		result.setExtendedInfo(rootExt.getExtendedInfo());
-		result.setSomeEnum(rootExt.getSomeEnum());
-		result.setSomeInteger(rootExt.getSomeInteger());
-		result.setSomeCustom(rootExt.getSomeCustom());
-		result.setDtoAndDomain(rootExt.getDtoAndDomain());
-		result.setTextWithDaoInfo(rootExt.getTextWithDaoInfo());
-		result.setNumberWithDaoInfo(rootExt.getNumberWithDaoInfo());
-		result.setDaoEnum(rootExt.getDaoEnum());
-		result.setDaoEnumWithText(rootExt.getDaoEnumWithText());
-		result.setSomeName(rootExt.getSomeName());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(rootExt, mappedObjects, DtoObjectFactory::createRootExtDto, (domain, dto) -> getInstance().setRootExtDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setRootExtDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	public static RootExtDto convertToRootExtDto(RootExt rootExt, RootDto parent) {
@@ -185,6 +96,68 @@ public class CommonTransportMapper {
 			instance = TransportMapperFactory.createCommonTransportMapper();
 		}
 		return instance;
+	}
+
+	protected void setRootDtoSingleReferences(Root domain, RootDto dto, Map<String, ITransportable> mappedObjects) {
+		SingleTransportMapper.convertToSingleRefOneParentDto(domain.getSingleRef(), dto, mappedObjects);
+		SingleTransportMapper.convertToSingleRefTwoParentsDto(domain.getAnotherSingleRef(), dto, mappedObjects);
+		SingleIndirectTransportMapper.convertToSingleRefIndirectParentDto(domain.getSingleRefIndirectParent(), dto, mappedObjects);
+		SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParentDto(domain.getSingleRefIndirectOtherParent(), dto, mappedObjects);
+		FilteringTransportMapper.convertToSomeFilteringOwnerDto(domain.getFiltering(), dto, mappedObjects);
+		CommonTransportMapper.convertToRootExtDto(domain.getExt(), dto, mappedObjects);
+	}
+
+	protected void setRootDtoValues(Root domain, RootDto dto) {
+		dto.setRootName(domain.getRootName());
+		dto.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setRootExtDtoSingleReferences(RootExt domain, RootExtDto dto, Map<String, ITransportable> mappedObjects) {
+	}
+
+	protected void setRootExtDtoValues(RootExt domain, RootExtDto dto) {
+		dto.setExtendedInfo(domain.getExtendedInfo());
+		dto.setSomeEnum(domain.getSomeEnum());
+		dto.setSomeInteger(domain.getSomeInteger());
+		dto.setSomeCustom(domain.getSomeCustom());
+		dto.setDtoAndDomain(domain.getDtoAndDomain());
+		dto.setTextWithDaoInfo(domain.getTextWithDaoInfo());
+		dto.setNumberWithDaoInfo(domain.getNumberWithDaoInfo());
+		dto.setDaoEnum(domain.getDaoEnum());
+		dto.setDaoEnumWithText(domain.getDaoEnumWithText());
+		dto.setSomeName(domain.getSomeName());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setRootExtSingleReferences(RootExtDto dto, RootExt domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setRootExtValues(RootExtDto dto, RootExt domain) {
+		domain.setExtendedInfo(dto.getExtendedInfo());
+		domain.setSomeEnum(dto.getSomeEnum());
+		domain.setSomeInteger(dto.getSomeInteger());
+		domain.setSomeCustom(dto.getSomeCustom());
+		domain.setDtoAndDomain(dto.getDtoAndDomain());
+		domain.setTextWithDaoInfo(dto.getTextWithDaoInfo());
+		domain.setNumberWithDaoInfo(dto.getNumberWithDaoInfo());
+		domain.setDaoEnum(dto.getDaoEnum());
+		domain.setDaoEnumWithText(dto.getDaoEnumWithText());
+		domain.setSomeName(dto.getSomeName());
+	}
+
+	protected void setRootSingleReferences(RootDto dto, Root domain, Map<String, IIdentifiable> mappedObjects) {
+		SingleTransportMapper.convertToSingleRefOneParent(dto.getSingleRef(), domain, mappedObjects);
+		SingleTransportMapper.convertToSingleRefTwoParents(dto.getAnotherSingleRef(), domain, mappedObjects);
+		SingleIndirectTransportMapper.convertToSingleRefIndirectParent(dto.getSingleRefIndirectParent(), domain, mappedObjects);
+		SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParent(dto.getSingleRefIndirectOtherParent(), domain, mappedObjects);
+		FilteringTransportMapper.convertToSomeFilteringOwner(dto.getFiltering(), domain, mappedObjects);
+		CommonTransportMapper.convertToRootExt(dto.getExt(), domain, mappedObjects);
+	}
+
+	protected void setRootValues(RootDto dto, Root domain) {
+		domain.setRootName(dto.getRootName());
+		domain.setDescription(dto.getDescription());
 	}
 
 }

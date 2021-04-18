@@ -11,10 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseTransportMapper
-public class ParentTransportMapper {
-
-	public ParentTransportMapper() {
-	}
+public class ParentTransportMapper extends AbstractTransportMapper {
 
 	/**
 	 * singleton
@@ -26,24 +23,10 @@ public class ParentTransportMapper {
 	}
 
 	public static ExtendingClass convertToExtendingClass(ExtendingClassDto extendingClass, Map<String, IIdentifiable> mappedObjects) {
-		if (extendingClass == null) {
-			return null;
-		}
-
-		String identification = extendingClass.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (ExtendingClass) mappedObjects.get(identification);
-		}
-
-		ExtendingClass result = DomainObjectFactory.createExtendingClass();
-
-		result.setIdentification(identification);
-
-		result.setAdditionalDescription(extendingClass.getAdditionalDescription());
-		result.setDescription(extendingClass.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(extendingClass, mappedObjects, DomainObjectFactory::createExtendingClass, (dto, domain) -> getInstance().setExtendingClassValues(dto, domain)
+				, (dto, domain) -> getInstance().setExtendingClassSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static ExtendingClassDto convertToExtendingClassDto(ExtendingClass extendingClass) {
@@ -51,24 +34,10 @@ public class ParentTransportMapper {
 	}
 
 	public static ExtendingClassDto convertToExtendingClassDto(ExtendingClass extendingClass, Map<String, ITransportable> mappedObjects) {
-		if (extendingClass == null) {
-			return null;
-		}
-
-		String identification = extendingClass.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (ExtendingClassDto) mappedObjects.get(identification);
-		}
-
-		ExtendingClassDto result = DtoObjectFactory.createExtendingClassDto();
-
-		result.setIdentification(identification);
-
-		result.setAdditionalDescription(extendingClass.getAdditionalDescription());
-		result.setDescription(extendingClass.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(extendingClass, mappedObjects, DtoObjectFactory::createExtendingClassDto, (domain, dto) -> getInstance().setExtendingClassDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setExtendingClassDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	/**
@@ -79,6 +48,24 @@ public class ParentTransportMapper {
 			instance = TransportMapperFactory.createParentTransportMapper();
 		}
 		return instance;
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setExtendingClassDtoSingleReferences(ExtendingClass domain, ExtendingClassDto dto, Map<String, ITransportable> mappedObjects) {
+	}
+
+	protected void setExtendingClassDtoValues(ExtendingClass domain, ExtendingClassDto dto) {
+		dto.setAdditionalDescription(domain.getAdditionalDescription());
+		dto.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setExtendingClassSingleReferences(ExtendingClassDto dto, ExtendingClass domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setExtendingClassValues(ExtendingClassDto dto, ExtendingClass domain) {
+		domain.setAdditionalDescription(dto.getAdditionalDescription());
+		domain.setDescription(dto.getDescription());
 	}
 
 }

@@ -17,10 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseAccessMapper
-public class MultiIndirectAccessMapper {
-
-	public MultiIndirectAccessMapper() {
-	}
+public class MultiIndirectAccessMapper extends AbstractAccessMapper {
 
 	/**
 	 * singleton

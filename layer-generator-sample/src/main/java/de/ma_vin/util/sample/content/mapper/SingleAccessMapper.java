@@ -15,10 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseAccessMapper
-public class SingleAccessMapper {
-
-	public SingleAccessMapper() {
-	}
+public class SingleAccessMapper extends AbstractAccessMapper {
 
 	/**
 	 * singleton

@@ -15,10 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseTransportMapper
-public class SingleTransportMapper {
-
-	public SingleTransportMapper() {
-	}
+public class SingleTransportMapper extends AbstractTransportMapper {
 
 	/**
 	 * singleton
@@ -30,25 +27,10 @@ public class SingleTransportMapper {
 	}
 
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDto singleRefOneParent, Map<String, IIdentifiable> mappedObjects) {
-		if (singleRefOneParent == null) {
-			return null;
-		}
-
-		String identification = singleRefOneParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SingleRefOneParent) mappedObjects.get(identification);
-		}
-
-		SingleRefOneParent result = DomainObjectFactory.createSingleRefOneParent();
-
-		result.setIdentification(identification);
-
-		result.setDescription(singleRefOneParent.getDescription());
-
-		SingleTransportMapper.convertToSingleRefTwoParents(singleRefOneParent.getSingleRef(), result, mappedObjects);
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(singleRefOneParent, mappedObjects, DomainObjectFactory::createSingleRefOneParent, (dto, domain) -> getInstance().setSingleRefOneParentValues(dto, domain)
+				, (dto, domain) -> getInstance().setSingleRefOneParentSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDto singleRefOneParent, Root parent) {
@@ -68,25 +50,10 @@ public class SingleTransportMapper {
 	}
 
 	public static SingleRefOneParentDto convertToSingleRefOneParentDto(SingleRefOneParent singleRefOneParent, Map<String, ITransportable> mappedObjects) {
-		if (singleRefOneParent == null) {
-			return null;
-		}
-
-		String identification = singleRefOneParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SingleRefOneParentDto) mappedObjects.get(identification);
-		}
-
-		SingleRefOneParentDto result = DtoObjectFactory.createSingleRefOneParentDto();
-
-		result.setIdentification(identification);
-
-		result.setDescription(singleRefOneParent.getDescription());
-
-		SingleTransportMapper.convertToSingleRefTwoParentsDto(singleRefOneParent.getSingleRef(), result, mappedObjects);
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(singleRefOneParent, mappedObjects, DtoObjectFactory::createSingleRefOneParentDto, (domain, dto) -> getInstance().setSingleRefOneParentDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setSingleRefOneParentDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	public static SingleRefOneParentDto convertToSingleRefOneParentDto(SingleRefOneParent singleRefOneParent, RootDto parent) {
@@ -106,23 +73,10 @@ public class SingleTransportMapper {
 	}
 
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, Map<String, IIdentifiable> mappedObjects) {
-		if (singleRefTwoParents == null) {
-			return null;
-		}
-
-		String identification = singleRefTwoParents.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SingleRefTwoParents) mappedObjects.get(identification);
-		}
-
-		SingleRefTwoParents result = DomainObjectFactory.createSingleRefTwoParents();
-
-		result.setIdentification(identification);
-
-		result.setDescription(singleRefTwoParents.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(singleRefTwoParents, mappedObjects, DomainObjectFactory::createSingleRefTwoParents, (dto, domain) -> getInstance().setSingleRefTwoParentsValues(dto, domain)
+				, (dto, domain) -> getInstance().setSingleRefTwoParentsSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, Root parent) {
@@ -154,23 +108,10 @@ public class SingleTransportMapper {
 	}
 
 	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, Map<String, ITransportable> mappedObjects) {
-		if (singleRefTwoParents == null) {
-			return null;
-		}
-
-		String identification = singleRefTwoParents.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SingleRefTwoParentsDto) mappedObjects.get(identification);
-		}
-
-		SingleRefTwoParentsDto result = DtoObjectFactory.createSingleRefTwoParentsDto();
-
-		result.setIdentification(identification);
-
-		result.setDescription(singleRefTwoParents.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(singleRefTwoParents, mappedObjects, DtoObjectFactory::createSingleRefTwoParentsDto, (domain, dto) -> getInstance().setSingleRefTwoParentsDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setSingleRefTwoParentsDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, RootDto parent) {
@@ -205,6 +146,38 @@ public class SingleTransportMapper {
 			instance = TransportMapperFactory.createSingleTransportMapper();
 		}
 		return instance;
+	}
+
+	protected void setSingleRefOneParentDtoSingleReferences(SingleRefOneParent domain, SingleRefOneParentDto dto, Map<String, ITransportable> mappedObjects) {
+		SingleTransportMapper.convertToSingleRefTwoParentsDto(domain.getSingleRef(), dto, mappedObjects);
+	}
+
+	protected void setSingleRefOneParentDtoValues(SingleRefOneParent domain, SingleRefOneParentDto dto) {
+		dto.setDescription(domain.getDescription());
+	}
+
+	protected void setSingleRefOneParentSingleReferences(SingleRefOneParentDto dto, SingleRefOneParent domain, Map<String, IIdentifiable> mappedObjects) {
+		SingleTransportMapper.convertToSingleRefTwoParents(dto.getSingleRef(), domain, mappedObjects);
+	}
+
+	protected void setSingleRefOneParentValues(SingleRefOneParentDto dto, SingleRefOneParent domain) {
+		domain.setDescription(dto.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSingleRefTwoParentsDtoSingleReferences(SingleRefTwoParents domain, SingleRefTwoParentsDto dto, Map<String, ITransportable> mappedObjects) {
+	}
+
+	protected void setSingleRefTwoParentsDtoValues(SingleRefTwoParents domain, SingleRefTwoParentsDto dto) {
+		dto.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSingleRefTwoParentsSingleReferences(SingleRefTwoParentsDto dto, SingleRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setSingleRefTwoParentsValues(SingleRefTwoParentsDto dto, SingleRefTwoParents domain) {
+		domain.setDescription(dto.getDescription());
 	}
 
 }

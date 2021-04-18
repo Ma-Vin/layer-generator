@@ -24,6 +24,8 @@ public class TransportMapperCreator extends AbstractMapperCreator {
     public static final String DOMAIN_POSTFIX = "";
     public static final String CONVERT_TO_DTO_NAME = "convertToDto";
     public static final String CONVERT_TO_DOMAIN_NAME = "convertToDomain";
+    public static final String DTO_PARAMETER = "dto";
+    public static final String DOMAIN_PARAMETER = "domain";
 
     public TransportMapperCreator(Config config, Log logger) {
         super(config, logger);
@@ -195,19 +197,20 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE)
                 , MAPPED_OBJECTS_PARAMETER_TEXT);
 
-        addConvertDefaultMappings(convertMethodWithMap, entity, DOMAIN_POSTFIX, TransportMapperCreator::isFieldRelevant, ModelType.DOMAIN);
-
-        determineAllReferences(entity).stream()
-                .filter(ref -> !ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))
-                .forEach(ref -> addSingleRefConvert(convertMethodWithMap, entity, ref, DOMAIN_POSTFIX, TransportMapperCreator::isEntityRelevant));
-        convertMethodWithMap.addEmptyLine();
-
-        convertMethodWithMap.addEmptyLine();
-        convertMethodWithMap.addLine("%s.put(identification, result);", MAPPED_OBJECTS_PARAMETER_TEXT);
-        convertMethodWithMap.addLine(RETURN_RESULT_TEXT);
+        convertMethodWithMap.addLine("return convertToDomain(%1$s, %2$s, DomainObjectFactory::create%3$s, (%4$s, %5$s) -> getInstance().set%3$sValues(%4$s, %5$s)"
+                , getLowerFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
+                , DTO_PARAMETER, DOMAIN_PARAMETER);
+        convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
+                , DTO_PARAMETER, DOMAIN_PARAMETER, getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT
+                , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant) ? "includeChildren, " : "");
+        convertMethodWithMap.addLine(", (%1$s, %2$s) -> {", 2, DTO_PARAMETER, DOMAIN_PARAMETER);
+        convertMethodWithMap.addLine("});");
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
+
+        createSetValueMethod(mapperClass, entity, TransportMapperCreator::isFieldRelevant, DTO_POSTFIX, DOMAIN_POSTFIX, DTO_PARAMETER, DOMAIN_PARAMETER);
+        createSetSingleReferenceMethod(mapperClass, getDomainCreateMethodParameterContainer(entity), DTO_PARAMETER, DOMAIN_PARAMETER, DomainCreator.DOMAIN_INTERFACE);
     }
 
     /**
@@ -287,20 +290,20 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         Method convertMethodWithMap = createConvertMethodBase(createMethodParams);
         convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
 
-        addConvertDefaultMappings(convertMethodWithMap, entity, DTO_POSTFIX, TransportMapperCreator::isFieldRelevant, ModelType.DTO);
-
-        determineAllReferences(entity).stream()
-                .filter(ref -> !ref.isList() && isEntityRelevant(ref.getRealTargetEntity()))
-                .forEach(ref -> addSingleRefConvert(convertMethodWithMap, entity, ref, DTO_POSTFIX, TransportMapperCreator::isEntityRelevant));
-        convertMethodWithMap.addEmptyLine();
-
-
-        convertMethodWithMap.addEmptyLine();
-        convertMethodWithMap.addLine("%s.put(identification, result);", MAPPED_OBJECTS_PARAMETER_TEXT);
-        convertMethodWithMap.addLine(RETURN_RESULT_TEXT);
+        convertMethodWithMap.addLine("return convertToDto(%1$s, %2$s, DtoObjectFactory::create%3$sDto, (%4$s, %5$s) -> getInstance().set%3$sDtoValues(%4$s, %5$s)"
+                , getLowerFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
+                , DOMAIN_PARAMETER, DTO_PARAMETER);
+        convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sDtoSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
+                , DOMAIN_PARAMETER, DTO_PARAMETER, getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT
+                , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant) ? "includeChildren, " : "");
+        convertMethodWithMap.addLine(", (%1$s, %2$s) -> {", 2, DOMAIN_PARAMETER, DTO_PARAMETER);
+        convertMethodWithMap.addLine("});");
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
+
+        createSetValueMethod(mapperClass, entity, TransportMapperCreator::isFieldRelevant, DOMAIN_POSTFIX, DTO_POSTFIX, DOMAIN_PARAMETER, DTO_PARAMETER);
+        createSetSingleReferenceMethod(mapperClass, getDtoCreateMethodParameterContainer(entity), DOMAIN_PARAMETER, DTO_PARAMETER, DtoCreator.DTO_INTERFACE);
     }
 
     /**

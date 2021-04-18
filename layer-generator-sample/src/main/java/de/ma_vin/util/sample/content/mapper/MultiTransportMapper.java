@@ -13,10 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseTransportMapper
-public class MultiTransportMapper {
-
-	public MultiTransportMapper() {
-	}
+public class MultiTransportMapper extends AbstractTransportMapper {
 
 	/**
 	 * singleton
@@ -28,23 +25,10 @@ public class MultiTransportMapper {
 	}
 
 	public static MultiRefOneParent convertToMultiRefOneParent(MultiRefOneParentDto multiRefOneParent, Map<String, IIdentifiable> mappedObjects) {
-		if (multiRefOneParent == null) {
-			return null;
-		}
-
-		String identification = multiRefOneParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefOneParent) mappedObjects.get(identification);
-		}
-
-		MultiRefOneParent result = DomainObjectFactory.createMultiRefOneParent();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefOneParent.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(multiRefOneParent, mappedObjects, DomainObjectFactory::createMultiRefOneParent, (dto, domain) -> getInstance().setMultiRefOneParentValues(dto, domain)
+				, (dto, domain) -> getInstance().setMultiRefOneParentSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static MultiRefOneParentDto convertToMultiRefOneParentDto(MultiRefOneParent multiRefOneParent) {
@@ -52,23 +36,10 @@ public class MultiTransportMapper {
 	}
 
 	public static MultiRefOneParentDto convertToMultiRefOneParentDto(MultiRefOneParent multiRefOneParent, Map<String, ITransportable> mappedObjects) {
-		if (multiRefOneParent == null) {
-			return null;
-		}
-
-		String identification = multiRefOneParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefOneParentDto) mappedObjects.get(identification);
-		}
-
-		MultiRefOneParentDto result = DtoObjectFactory.createMultiRefOneParentDto();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefOneParent.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(multiRefOneParent, mappedObjects, DtoObjectFactory::createMultiRefOneParentDto, (domain, dto) -> getInstance().setMultiRefOneParentDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setMultiRefOneParentDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	public static MultiRefTwoParents convertToMultiRefTwoParents(MultiRefTwoParentsDto multiRefTwoParents) {
@@ -76,23 +47,10 @@ public class MultiTransportMapper {
 	}
 
 	public static MultiRefTwoParents convertToMultiRefTwoParents(MultiRefTwoParentsDto multiRefTwoParents, Map<String, IIdentifiable> mappedObjects) {
-		if (multiRefTwoParents == null) {
-			return null;
-		}
-
-		String identification = multiRefTwoParents.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefTwoParents) mappedObjects.get(identification);
-		}
-
-		MultiRefTwoParents result = DomainObjectFactory.createMultiRefTwoParents();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefTwoParents.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(multiRefTwoParents, mappedObjects, DomainObjectFactory::createMultiRefTwoParents, (dto, domain) -> getInstance().setMultiRefTwoParentsValues(dto, domain)
+				, (dto, domain) -> getInstance().setMultiRefTwoParentsSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static MultiRefTwoParentsDto convertToMultiRefTwoParentsDto(MultiRefTwoParents multiRefTwoParents) {
@@ -100,23 +58,10 @@ public class MultiTransportMapper {
 	}
 
 	public static MultiRefTwoParentsDto convertToMultiRefTwoParentsDto(MultiRefTwoParents multiRefTwoParents, Map<String, ITransportable> mappedObjects) {
-		if (multiRefTwoParents == null) {
-			return null;
-		}
-
-		String identification = multiRefTwoParents.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefTwoParentsDto) mappedObjects.get(identification);
-		}
-
-		MultiRefTwoParentsDto result = DtoObjectFactory.createMultiRefTwoParentsDto();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefTwoParents.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(multiRefTwoParents, mappedObjects, DtoObjectFactory::createMultiRefTwoParentsDto, (domain, dto) -> getInstance().setMultiRefTwoParentsDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setMultiRefTwoParentsDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	/**
@@ -127,6 +72,38 @@ public class MultiTransportMapper {
 			instance = TransportMapperFactory.createMultiTransportMapper();
 		}
 		return instance;
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefOneParentDtoSingleReferences(MultiRefOneParent domain, MultiRefOneParentDto dto, Map<String, ITransportable> mappedObjects) {
+	}
+
+	protected void setMultiRefOneParentDtoValues(MultiRefOneParent domain, MultiRefOneParentDto dto) {
+		dto.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefOneParentSingleReferences(MultiRefOneParentDto dto, MultiRefOneParent domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setMultiRefOneParentValues(MultiRefOneParentDto dto, MultiRefOneParent domain) {
+		domain.setDescription(dto.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefTwoParentsDtoSingleReferences(MultiRefTwoParents domain, MultiRefTwoParentsDto dto, Map<String, ITransportable> mappedObjects) {
+	}
+
+	protected void setMultiRefTwoParentsDtoValues(MultiRefTwoParents domain, MultiRefTwoParentsDto dto) {
+		dto.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefTwoParentsSingleReferences(MultiRefTwoParentsDto dto, MultiRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setMultiRefTwoParentsValues(MultiRefTwoParentsDto dto, MultiRefTwoParents domain) {
+		domain.setDescription(dto.getDescription());
 	}
 
 }

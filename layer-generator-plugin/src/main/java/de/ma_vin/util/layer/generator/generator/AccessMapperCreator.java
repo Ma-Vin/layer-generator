@@ -239,7 +239,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         allReferences.stream()
                 .filter(ref -> !ref.isList())
                 .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
-                .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DAO_POSTFIX, AccessMapperCreator::isEntityRelevant));
+                .forEach(ref -> addSingleRefConvert(convertMethod, ref, DAO_POSTFIX, getLowerFirst(entity.getBaseName()), "result", AccessMapperCreator::isEntityRelevant));
         convertMethod.addEmptyLine();
 
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity, AccessMapperCreator::isEntityRelevant);
@@ -615,7 +615,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         allReferences.stream()
                 .filter(ref -> !ref.isList())
                 .filter(ref -> isEntityRelevant(ref.getRealTargetEntity()))
-                .forEach(ref -> addSingleRefConvert(convertMethod, entity, ref, DOMAIN_POSTFIX, AccessMapperCreator::isEntityRelevant));
+                .forEach(ref -> addSingleRefConvert(convertMethod, ref, DOMAIN_POSTFIX, getLowerFirst(entity.getBaseName()), "result", AccessMapperCreator::isEntityRelevant));
         convertMethod.addEmptyLine();
 
         boolean hasIncludeChildrenParameter = hasIncludeChildrenParameter(entity, AccessMapperCreator::isEntityRelevant);

@@ -11,10 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseAccessMapper
-public class DomainDaoAccessMapper {
-
-	public DomainDaoAccessMapper() {
-	}
+public class DomainDaoAccessMapper extends AbstractAccessMapper {
 
 	/**
 	 * singleton

@@ -13,10 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseAccessMapper
-public class ParentAccessMapper {
-
-	public ParentAccessMapper() {
-	}
+public class ParentAccessMapper extends AbstractAccessMapper {
 
 	/**
 	 * singleton

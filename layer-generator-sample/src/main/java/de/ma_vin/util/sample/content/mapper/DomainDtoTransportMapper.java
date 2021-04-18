@@ -11,10 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @BaseTransportMapper
-public class DomainDtoTransportMapper {
-
-	public DomainDtoTransportMapper() {
-	}
+public class DomainDtoTransportMapper extends AbstractTransportMapper {
 
 	/**
 	 * singleton
@@ -26,23 +23,10 @@ public class DomainDtoTransportMapper {
 	}
 
 	public static DomainAndDto convertToDomainAndDto(DomainAndDtoDto domainAndDto, Map<String, IIdentifiable> mappedObjects) {
-		if (domainAndDto == null) {
-			return null;
-		}
-
-		String identification = domainAndDto.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (DomainAndDto) mappedObjects.get(identification);
-		}
-
-		DomainAndDto result = DomainObjectFactory.createDomainAndDto();
-
-		result.setIdentification(identification);
-
-		result.setDescription(domainAndDto.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(domainAndDto, mappedObjects, DomainObjectFactory::createDomainAndDto, (dto, domain) -> getInstance().setDomainAndDtoValues(dto, domain)
+				, (dto, domain) -> getInstance().setDomainAndDtoSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
 	}
 
 	public static DomainAndDtoDto convertToDomainAndDtoDto(DomainAndDto domainAndDto) {
@@ -50,23 +34,10 @@ public class DomainDtoTransportMapper {
 	}
 
 	public static DomainAndDtoDto convertToDomainAndDtoDto(DomainAndDto domainAndDto, Map<String, ITransportable> mappedObjects) {
-		if (domainAndDto == null) {
-			return null;
-		}
-
-		String identification = domainAndDto.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (DomainAndDtoDto) mappedObjects.get(identification);
-		}
-
-		DomainAndDtoDto result = DtoObjectFactory.createDomainAndDtoDto();
-
-		result.setIdentification(identification);
-
-		result.setDescription(domainAndDto.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDto(domainAndDto, mappedObjects, DtoObjectFactory::createDomainAndDtoDto, (domain, dto) -> getInstance().setDomainAndDtoDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setDomainAndDtoDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
 	}
 
 	/**
@@ -77,6 +48,22 @@ public class DomainDtoTransportMapper {
 			instance = TransportMapperFactory.createDomainDtoTransportMapper();
 		}
 		return instance;
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setDomainAndDtoDtoSingleReferences(DomainAndDto domain, DomainAndDtoDto dto, Map<String, ITransportable> mappedObjects) {
+	}
+
+	protected void setDomainAndDtoDtoValues(DomainAndDto domain, DomainAndDtoDto dto) {
+		dto.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setDomainAndDtoSingleReferences(DomainAndDtoDto dto, DomainAndDto domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setDomainAndDtoValues(DomainAndDtoDto dto, DomainAndDto domain) {
+		domain.setDescription(dto.getDescription());
 	}
 
 }
