@@ -5,6 +5,8 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Class to generate sources for methods at classes
@@ -18,6 +20,7 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
     protected Qualifier qualifier = Qualifier.PRIVATE;
     protected String methodType = "void";
     protected String methodName;
+    protected Set<Generic> generics = new TreeSet<>();
     protected List<Parameter> parameters = new ArrayList<>();
     protected List<String> methodBody = new ArrayList<>();
 
@@ -74,8 +77,21 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         return result;
     }
 
+    protected String getGenericText() {
+        if (generics.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(" <");
+        generics.forEach(g -> {
+            sb.append(g.getText());
+            sb.append(", ");
+        });
+        return sb.substring(0, sb.length() - 2) + ">";
+    }
+
     protected String getDeclaration() {
-        return String.format("%s%s %s %s(%s) {", qualifier.getText(), getStaticText(), methodType, methodName, getParametersText(parameters));
+        return String.format("%s%s%s %s %s(%s) {", qualifier.getText(), getStaticText(), getGenericText(), methodType, methodName, getParametersText(parameters));
     }
 
     protected String getStaticText() {
@@ -113,4 +129,11 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         annotations.add(annotation);
     }
 
+    public void addGeneric(String genericName) {
+        addGeneric(new Generic(genericName));
+    }
+
+    public void addGeneric(Generic generic) {
+        generics.add(generic);
+    }
 }

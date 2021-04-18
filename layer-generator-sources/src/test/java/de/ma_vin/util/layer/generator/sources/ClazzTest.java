@@ -342,6 +342,25 @@ public class ClazzTest {
     }
 
     @Test
+    public void testGenerateGenerics() {
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.abc;");
+        expected.add("");
+        expected.add("public class Dummy<S, T extends U> {");
+        expected.add("");
+        expected.add("}");
+
+        cut.addGeneric("S");
+        Generic secondGeneric = new Generic("T");
+        secondGeneric.setExtension("U");
+        cut.addGeneric(secondGeneric);
+
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+    @Test
     public void testGetAnnotation() {
         cut.addAnnotation(annotation);
         when(annotation.getAnnotationName()).thenReturn("AnyName");

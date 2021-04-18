@@ -17,6 +17,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
     private Set<Import> imports = new TreeSet<>();
     private Set<Import> staticImports = new TreeSet<>();
     private JavaDoc description = null;
+    private Set<Generic> generics = new TreeSet<>();
     private Set<Constructor> constructors = new TreeSet<>();
     private Set<Attribute> attributes = new TreeSet<>();
     private Set<Method> methods = new TreeSet<>();
@@ -58,8 +59,8 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
             result.addAll(description.generate());
         }
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
-        result.add(String.format("%s%s%s class %s%s%s {", qualifier.getText(), getStaticText(), getAbstractText()
-                , className, getExtensionText(), getInterfaceText()));
+        result.add(String.format("%s%s%s class %s%s%s%s {", qualifier.getText(), getStaticText(), getAbstractText()
+                , className, getGenericText(), getExtensionText(), getInterfaceText()));
         result.add("");
         constructors.stream().sorted().forEach(a -> {
             result.addAll(a.generate(1));
@@ -81,6 +82,19 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
         return result;
     }
 
+    private String getGenericText() {
+        if (generics.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("<");
+        generics.forEach(g -> {
+            sb.append(g.getText());
+            sb.append(", ");
+        });
+        return sb.substring(0, sb.length() - 2) + ">";
+    }
+
     private String getInterfaceText() {
         if (interfaces.isEmpty()) {
             return "";
@@ -91,7 +105,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
             sb.append(i.trim());
             sb.append(", ");
         });
-        return sb.toString().substring(0, sb.length() - 2);
+        return sb.substring(0, sb.length() - 2);
     }
 
     private String getExtensionText() {
@@ -173,7 +187,15 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
         interfaces.add(interfaceName);
     }
 
-    public Optional<Annotation> getAnnotation(String annotationName){
-        return annotations.stream().filter(a-> a.getAnnotationName().equals(annotationName)).findFirst();
+    public void addGeneric(String genericName) {
+        addGeneric(new Generic(genericName));
+    }
+
+    public void addGeneric(Generic generic) {
+        generics.add(generic);
+    }
+
+    public Optional<Annotation> getAnnotation(String annotationName) {
+        return annotations.stream().filter(a -> a.getAnnotationName().equals(annotationName)).findFirst();
     }
 }

@@ -132,6 +132,20 @@ public class MethodTest {
     }
 
     @Test
+    public void testGenerateGeneric() {
+        cut.addGeneric("S");
+        Generic secondGeneric = new Generic("T");
+        secondGeneric.setExtension("U");
+        cut.addGeneric(secondGeneric);
+
+        List<String> result = cut.generate();
+        assertNotNull(result, "There should be any result");
+        assertEquals(2, result.size(), "Wrong number of lines");
+        assertEquals("private <S, T extends U> void methodName() {", result.get(0));
+        assertEquals("}", result.get(1));
+    }
+
+    @Test
     void testCompare() {
         List<Method> methods = new ArrayList<>();
         methods.add(getMethod("A", true));
