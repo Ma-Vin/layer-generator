@@ -27,25 +27,9 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDao singleRefOneParent, Map<String, IIdentifiable> mappedObjects) {
-		if (singleRefOneParent == null) {
-			return null;
-		}
-
-		String identification = singleRefOneParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SingleRefOneParent) mappedObjects.get(identification);
-		}
-
-		SingleRefOneParent result = DomainObjectFactory.createSingleRefOneParent();
-
-		result.setIdentification(identification);
-
-		result.setDescription(singleRefOneParent.getDescription());
-
-		SingleAccessMapper.convertToSingleRefTwoParents(singleRefOneParent.getSingleRef(), result, mappedObjects);
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(singleRefOneParent, mappedObjects, DomainObjectFactory::createSingleRefOneParent, (dao, domain) -> getInstance().setSingleRefOneParentValues(dao, domain)
+				, (dao, domain) -> getInstance().setSingleRefOneParentSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setSingleRefOneParentMultiReferences(dao, domain, mappedObjects));
 	}
 
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDao singleRefOneParent, Root parent) {
@@ -65,25 +49,9 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static SingleRefOneParentDao convertToSingleRefOneParentDao(SingleRefOneParent singleRefOneParent, Map<String, IIdentifiableDao> mappedObjects) {
-		if (singleRefOneParent == null) {
-			return null;
-		}
-
-		String identification = singleRefOneParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SingleRefOneParentDao) mappedObjects.get(identification);
-		}
-
-		SingleRefOneParentDao result = DaoObjectFactory.createSingleRefOneParentDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(singleRefOneParent.getDescription());
-
-		SingleAccessMapper.convertToSingleRefTwoParentsDao(singleRefOneParent.getSingleRef(), result, mappedObjects);
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(singleRefOneParent, mappedObjects, DaoObjectFactory::createSingleRefOneParentDao, (domain, dao) -> getInstance().setSingleRefOneParentDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setSingleRefOneParentDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setSingleRefOneParentDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	public static SingleRefOneParentDao convertToSingleRefOneParentDao(SingleRefOneParent singleRefOneParent, RootDao parent) {
@@ -104,23 +72,9 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, Map<String, IIdentifiable> mappedObjects) {
-		if (singleRefTwoParents == null) {
-			return null;
-		}
-
-		String identification = singleRefTwoParents.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SingleRefTwoParents) mappedObjects.get(identification);
-		}
-
-		SingleRefTwoParents result = DomainObjectFactory.createSingleRefTwoParents();
-
-		result.setIdentification(identification);
-
-		result.setDescription(singleRefTwoParents.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(singleRefTwoParents, mappedObjects, DomainObjectFactory::createSingleRefTwoParents, (dao, domain) -> getInstance().setSingleRefTwoParentsValues(dao, domain)
+				, (dao, domain) -> getInstance().setSingleRefTwoParentsSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setSingleRefTwoParentsMultiReferences(dao, domain, mappedObjects));
 	}
 
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, Root parent) {
@@ -152,23 +106,9 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, Map<String, IIdentifiableDao> mappedObjects) {
-		if (singleRefTwoParents == null) {
-			return null;
-		}
-
-		String identification = singleRefTwoParents.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SingleRefTwoParentsDao) mappedObjects.get(identification);
-		}
-
-		SingleRefTwoParentsDao result = DaoObjectFactory.createSingleRefTwoParentsDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(singleRefTwoParents.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(singleRefTwoParents, mappedObjects, DaoObjectFactory::createSingleRefTwoParentsDao, (domain, dao) -> getInstance().setSingleRefTwoParentsDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setSingleRefTwoParentsDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setSingleRefTwoParentsDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, RootDao parent) {
@@ -205,6 +145,54 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 			instance = AccessMapperFactory.createSingleAccessMapper();
 		}
 		return instance;
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSingleRefOneParentDaoMultiReferences(SingleRefOneParent domain, SingleRefOneParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setSingleRefOneParentDaoSingleReferences(SingleRefOneParent domain, SingleRefOneParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+		SingleAccessMapper.convertToSingleRefTwoParentsDao(domain.getSingleRef(), dao, mappedObjects);
+	}
+
+	protected void setSingleRefOneParentDaoValues(SingleRefOneParent domain, SingleRefOneParentDao dao) {
+		dao.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSingleRefOneParentMultiReferences(SingleRefOneParentDao dao, SingleRefOneParent domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setSingleRefOneParentSingleReferences(SingleRefOneParentDao dao, SingleRefOneParent domain, Map<String, IIdentifiable> mappedObjects) {
+		SingleAccessMapper.convertToSingleRefTwoParents(dao.getSingleRef(), domain, mappedObjects);
+	}
+
+	protected void setSingleRefOneParentValues(SingleRefOneParentDao dao, SingleRefOneParent domain) {
+		domain.setDescription(dao.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSingleRefTwoParentsDaoMultiReferences(SingleRefTwoParents domain, SingleRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSingleRefTwoParentsDaoSingleReferences(SingleRefTwoParents domain, SingleRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setSingleRefTwoParentsDaoValues(SingleRefTwoParents domain, SingleRefTwoParentsDao dao) {
+		dao.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSingleRefTwoParentsMultiReferences(SingleRefTwoParentsDao dao, SingleRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSingleRefTwoParentsSingleReferences(SingleRefTwoParentsDao dao, SingleRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setSingleRefTwoParentsValues(SingleRefTwoParentsDao dao, SingleRefTwoParents domain) {
+		domain.setDescription(dao.getDescription());
 	}
 
 }

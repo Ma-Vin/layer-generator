@@ -938,87 +938,6 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
 
-
-    @Test
-    public void testCreateTransportMapperUseIdGenerator() {
-        when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
-
-        List<String> expected = new ArrayList<>();
-        expected.add("package de.test.package.mapper;");
-        expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
-        expected.add("import de.test.package.domain.DomainObjectFactory;");
-        expected.add("import de.test.package.domain.IIdentifiable;");
-        expected.add("import de.test.package.domain.group.Dummy;");
-        expected.add("import de.test.package.dto.DtoObjectFactory;");
-        expected.add("import de.test.package.dto.ITransportable;");
-        expected.add("import de.test.package.dto.group.DummyDto;");
-        expected.add("import java.util.HashMap;");
-        expected.add("import java.util.Map;");
-        expected.add("");
-        expected.add("@BaseTransportMapper");
-        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
-        expected.add("");
-        expected.add("	/**");
-        expected.add("	 * singleton");
-        expected.add("	 */");
-        expected.add("	private static GroupingTransportMapper instance;");
-        expected.add("");
-        expected.add("	public static Dummy convertToDummy(DummyDto dummy) {");
-        expected.add("		return convertToDummy(dummy, new HashMap<>());");
-        expected.add("	}");
-        expected.add("");
-        expected.add("	public static Dummy convertToDummy(DummyDto dummy, Map<String, IIdentifiable> mappedObjects) {");
-        expected.add("		return convertToDomain(dummy, mappedObjects, DomainObjectFactory::createDummy, (dto, domain) -> getInstance().setDummyValues(dto, domain)");
-        expected.add("				, (dto, domain) -> getInstance().setDummySingleReferences(dto, domain, mappedObjects)");
-        expected.add("				, (dto, domain) -> {");
-        expected.add("		});");
-        expected.add("	}");
-        expected.add("");
-        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy) {");
-        expected.add("		return convertToDummyDto(dummy, new HashMap<>());");
-        expected.add("	}");
-        expected.add("");
-        expected.add("	public static DummyDto convertToDummyDto(Dummy dummy, Map<String, ITransportable> mappedObjects) {");
-        expected.add("		return convertToDto(dummy, mappedObjects, DtoObjectFactory::createDummyDto, (domain, dto) -> getInstance().setDummyDtoValues(domain, dto)");
-        expected.add("				, (domain, dto) -> getInstance().setDummyDtoSingleReferences(domain, dto, mappedObjects)");
-        expected.add("				, (domain, dto) -> {");
-        expected.add("		});");
-        expected.add("	}");
-        expected.add("");
-        expected.add("	/**");
-        expected.add("	 * @return the singleton");
-        expected.add("	 */");
-        expected.add("	public static GroupingTransportMapper getInstance() {");
-        expected.add("		if (instance == null) {");
-        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
-        expected.add("		}");
-        expected.add("		return instance;");
-        expected.add("	}");
-        expected.add("");
-        expected.add("	@SuppressWarnings(\"java:S1186\")");
-        expected.add("	protected void setDummyDtoSingleReferences(Dummy domain, DummyDto dto, Map<String, ITransportable> mappedObjects) {");
-        expected.add("	}");
-        expected.add("");
-        expected.add("	@SuppressWarnings(\"java:S1186\")");
-        expected.add("	protected void setDummyDtoValues(Dummy domain, DummyDto dto) {");
-        expected.add("	}");
-        expected.add("");
-        expected.add("	@SuppressWarnings(\"java:S1186\")");
-        expected.add("	protected void setDummySingleReferences(DummyDto dto, Dummy domain, Map<String, IIdentifiable> mappedObjects) {");
-        expected.add("	}");
-        expected.add("");
-        expected.add("	@SuppressWarnings(\"java:S1186\")");
-        expected.add("	protected void setDummyValues(DummyDto dto, Dummy domain) {");
-        expected.add("	}");
-        expected.add("");
-        expected.add("}");
-
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
-
-        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
-    }
-
     @Test
     public void testCreateTransportMapperSingleRefWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
@@ -1540,6 +1459,43 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         File mapperPackageDir = mock(File.class);
         when(mapperPackageDir.getName()).thenReturn("mapperPackageDir");
         when(mapperPackageDir.getParentFile()).thenReturn(null);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("public abstract class AbstractTransportMapper extends AbstractMapper {");
+        expected.add("");
+        expected.add("	protected static <S extends ITransportable, T extends IIdentifiable> T convertToDomain(S convertFrom"
+                + ", Map<String, IIdentifiable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
+                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
+        expected.add("				, s -> s.getClass().getSimpleName() + s.getId().longValue(), (s, t) -> t.setId(s.getId()));");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	protected static <S extends IIdentifiable, T extends ITransportable> T convertToDto(S convertFrom"
+                + ", Map<String, ITransportable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
+                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
+        expected.add("				, s -> s.getClass().getSimpleName() + s.getId().longValue(), (s, t) -> t.setId(s.getId()));");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createAbstractTransportMapper(MAPPER_PACKAGE_NAME, mapperPackageDir, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
+        checkSingleFile(String.format("%s.java", TransportMapperCreator.ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME), expected);
+    }
+
+    @Test
+    public void testCreateAbstractTransportMapperUseIdGenerator() {
+        File mapperPackageDir = mock(File.class);
+        when(mapperPackageDir.getName()).thenReturn("mapperPackageDir");
+        when(mapperPackageDir.getParentFile()).thenReturn(null);
+
+        when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");

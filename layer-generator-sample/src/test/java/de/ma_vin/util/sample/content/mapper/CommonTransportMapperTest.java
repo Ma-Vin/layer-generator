@@ -49,7 +49,7 @@ public class CommonTransportMapperTest {
 
         assertNotNull(result, "There should be any result");
         assertEquals(rootDto.getIdentification(), result.getIdentification(), "Wrong identification");
-        assertEquals(rootDto.getDescription(), result.getDescription(), "Wrong description");
+        assertEquals(rootDto.getDescription() + ExtendedCommonTransportMapper.ADDITIONAL_POSTFIX, result.getDescription(), "Wrong modified description");
 
         assertNotNull(result.getSingleRef(), "There should be any SingleRef");
         assertEquals(rootDto.getSingleRef().getIdentification(), result.getSingleRef().getIdentification(), "Wrong identification at SingleRef");
@@ -102,7 +102,7 @@ public class CommonTransportMapperTest {
         assertEquals(rootExtDto.getNumberWithDaoInfo(), result.getNumberWithDaoInfo(), "Wrong NumberWithDaoInfo");
         assertEquals(rootExtDto.getDaoEnum(), result.getDaoEnum(), "Wrong DaoEnum");
         assertEquals(rootExtDto.getDaoEnumWithText(), result.getDaoEnumWithText(), "Wrong DaoEnumWithText");
-        assertEquals(rootExtDto.getExtendedInfo(), result.getExtendedInfo(), "Wrong ExtendedInfo");
+        assertEquals(rootExtDto.getSomeName(), result.getSomeName(), "Wrong SomeName");
     }
 
     @Test
@@ -119,7 +119,7 @@ public class CommonTransportMapperTest {
         assertEquals(rootExtDto.getNumberWithDaoInfo(), result.getNumberWithDaoInfo(), "Wrong NumberWithDaoInfo");
         assertEquals(rootExtDto.getDaoEnum(), result.getDaoEnum(), "Wrong DaoEnum");
         assertEquals(rootExtDto.getDaoEnumWithText(), result.getDaoEnumWithText(), "Wrong DaoEnumWithText");
-        assertEquals(rootExtDto.getExtendedInfo(), result.getExtendedInfo(), "Wrong ExtendedInfo");
+        assertEquals(rootExtDto.getSomeName(), result.getSomeName(), "Wrong SomeName");
 
         assertEquals(root.getExt(), result, "Wrong ext at root");
     }
@@ -143,7 +143,7 @@ public class CommonTransportMapperTest {
 
         assertNotNull(result, "There should be any result");
         assertEquals(root.getIdentification(), result.getIdentification(), "Wrong identification");
-        assertEquals(root.getDescription(), result.getDescription(), "Wrong description");
+        assertEquals(root.getDescription() + ExtendedCommonTransportMapper.ADDITIONAL_POSTFIX, result.getDescription(), "Wrong modified description");
 
         assertNotNull(result.getSingleRef(), "There should be any SingleRef");
         assertEquals(root.getSingleRef().getIdentification(), result.getSingleRef().getIdentification(), "Wrong identification at SingleRef");
@@ -185,7 +185,7 @@ public class CommonTransportMapperTest {
         assertEquals(rootExt.getNumberWithDaoInfo(), result.getNumberWithDaoInfo(), "Wrong NumberWithDaoInfo");
         assertEquals(rootExt.getDaoEnum(), result.getDaoEnum(), "Wrong DaoEnum");
         assertEquals(rootExt.getDaoEnumWithText(), result.getDaoEnumWithText(), "Wrong DaoEnumWithText");
-        assertEquals(rootExt.getExtendedInfo(), result.getExtendedInfo(), "Wrong ExtendedInfo");
+        assertEquals(rootExt.getSomeName(), result.getSomeName(), "Wrong SomeName");
     }
 
     @Test

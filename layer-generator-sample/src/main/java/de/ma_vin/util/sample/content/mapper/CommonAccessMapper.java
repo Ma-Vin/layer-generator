@@ -26,49 +26,9 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static Root convertToRoot(RootDao root, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
-		if (root == null) {
-			return null;
-		}
-
-		String identification = root.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (Root) mappedObjects.get(identification);
-		}
-
-		Root result = DomainObjectFactory.createRoot();
-
-		result.setIdentification(identification);
-
-		result.setRootName(root.getRootName());
-		result.setDescription(root.getDescription());
-
-		SingleAccessMapper.convertToSingleRefOneParent(root.getSingleRef(), result, mappedObjects);
-		SingleAccessMapper.convertToSingleRefTwoParents(root.getAnotherSingleRef(), result, mappedObjects);
-		SingleIndirectAccessMapper.convertToSingleRefIndirectParent(root.getSingleRefIndirectParent(), result, mappedObjects);
-		SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParent(root.getSingleRefIndirectOtherParent(), result, mappedObjects);
-		FilteringAccessMapper.convertToSomeFilteringOwner(root.getFiltering(), includeChildren, result, mappedObjects);
-		CommonAccessMapper.convertToRootExt(root.getExt(), result, mappedObjects);
-
-		if (includeChildren) {
-			root.getMultiRefs().forEach(arg ->
-					MultiAccessMapper.convertToMultiRefOneParent(arg, true, result, mappedObjects)
-			);
-			root.getAnotherMultiRefs().forEach(arg ->
-					MultiAccessMapper.convertToMultiRefTwoParents(arg, result, mappedObjects)
-			);
-			root.getMultiRefIndirectParents().forEach(arg ->
-					MultiIndirectAccessMapper.convertToMultiRefIndirectParent(arg, result, mappedObjects)
-			);
-			root.getMultiRefIndirectOtherParents().forEach(arg ->
-					MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParent(arg, true, result, mappedObjects)
-			);
-			root.getExtendings().forEach(arg ->
-					ParentAccessMapper.convertToExtendingClass(arg, result, mappedObjects)
-			);
-		}
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(root, mappedObjects, DomainObjectFactory::createRoot, (dao, domain) -> getInstance().setRootValues(dao, domain)
+				, (dao, domain) -> getInstance().setRootSingleReferences(dao, domain, includeChildren, mappedObjects)
+				, (dao, domain) -> getInstance().setRootMultiReferences(dao, domain, includeChildren, mappedObjects));
 	}
 
 	public static RootDao convertToRootDao(Root root, boolean includeChildren) {
@@ -76,54 +36,9 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static RootDao convertToRootDao(Root root, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
-		if (root == null) {
-			return null;
-		}
-
-		String identification = root.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (RootDao) mappedObjects.get(identification);
-		}
-
-		RootDao result = DaoObjectFactory.createRootDao();
-
-		result.setIdentification(identification);
-
-		result.setRootName(root.getRootName());
-		result.setDescription(root.getDescription());
-
-		SingleAccessMapper.convertToSingleRefOneParentDao(root.getSingleRef(), result, mappedObjects);
-		SingleAccessMapper.convertToSingleRefTwoParentsDao(root.getAnotherSingleRef(), result, mappedObjects);
-		SingleIndirectAccessMapper.convertToSingleRefIndirectParentDao(root.getSingleRefIndirectParent(), result, mappedObjects);
-		SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParentDao(root.getSingleRefIndirectOtherParent(), result, mappedObjects);
-		FilteringAccessMapper.convertToSomeFilteringOwnerDao(root.getFiltering(), includeChildren, result, mappedObjects);
-		CommonAccessMapper.convertToRootExtDao(root.getExt(), result, mappedObjects);
-
-		result.setMultiRefs(new ArrayList<>());
-		result.setAnotherMultiRefs(new ArrayList<>());
-		result.setMultiRefIndirectParents(new ArrayList<>());
-		result.setMultiRefIndirectOtherParents(new ArrayList<>());
-		result.setExtendings(new ArrayList<>());
-		if (includeChildren) {
-			root.getMultiRefs().forEach(arg ->
-					MultiAccessMapper.convertToMultiRefOneParentDao(arg, true, result, mappedObjects)
-			);
-			root.getAnotherMultiRefs().forEach(arg ->
-					MultiAccessMapper.convertToMultiRefTwoParentsDao(arg, result, mappedObjects)
-			);
-			root.getMultiRefIndirectParents().forEach(arg ->
-					MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(arg, result, mappedObjects)
-			);
-			root.getMultiRefIndirectOtherParents().forEach(arg ->
-					MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParentDao(arg, true, result, mappedObjects)
-			);
-			root.getExtendings().forEach(arg ->
-					ParentAccessMapper.convertToExtendingClassDao(arg, result, mappedObjects)
-			);
-		}
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(root, mappedObjects, DaoObjectFactory::createRootDao, (domain, dao) -> getInstance().setRootDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setRootDaoSingleReferences(domain, dao, includeChildren, mappedObjects)
+				, (domain, dao) -> getInstance().setRootDaoMultiReferences(domain, dao, includeChildren, mappedObjects));
 	}
 
 	public static RootExt convertToRootExt(RootExtDao rootExt) {
@@ -131,32 +46,9 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static RootExt convertToRootExt(RootExtDao rootExt, Map<String, IIdentifiable> mappedObjects) {
-		if (rootExt == null) {
-			return null;
-		}
-
-		String identification = rootExt.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (RootExt) mappedObjects.get(identification);
-		}
-
-		RootExt result = DomainObjectFactory.createRootExt();
-
-		result.setIdentification(identification);
-
-		result.setExtendedInfo(rootExt.getExtendedInfo());
-		result.setSomeEnum(rootExt.getSomeEnum());
-		result.setSomeInteger(rootExt.getSomeInteger());
-		result.setSomeCustom(rootExt.getSomeCustom());
-		result.setDaoAndDomain(rootExt.getDaoAndDomain());
-		result.setTextWithDaoInfo(rootExt.getTextWithDaoInfo());
-		result.setNumberWithDaoInfo(rootExt.getNumberWithDaoInfo());
-		result.setDaoEnum(rootExt.getDaoEnum());
-		result.setDaoEnumWithText(rootExt.getDaoEnumWithText());
-		result.setSomeName(rootExt.getSomeName());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(rootExt, mappedObjects, DomainObjectFactory::createRootExt, (dao, domain) -> getInstance().setRootExtValues(dao, domain)
+				, (dao, domain) -> getInstance().setRootExtSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setRootExtMultiReferences(dao, domain, mappedObjects));
 	}
 
 	public static RootExt convertToRootExt(RootExtDao rootExt, Root parent) {
@@ -176,32 +68,9 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static RootExtDao convertToRootExtDao(RootExt rootExt, Map<String, IIdentifiableDao> mappedObjects) {
-		if (rootExt == null) {
-			return null;
-		}
-
-		String identification = rootExt.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (RootExtDao) mappedObjects.get(identification);
-		}
-
-		RootExtDao result = DaoObjectFactory.createRootExtDao();
-
-		result.setIdentification(identification);
-
-		result.setExtendedInfo(rootExt.getExtendedInfo());
-		result.setSomeEnum(rootExt.getSomeEnum());
-		result.setSomeInteger(rootExt.getSomeInteger());
-		result.setSomeCustom(rootExt.getSomeCustom());
-		result.setDaoAndDomain(rootExt.getDaoAndDomain());
-		result.setTextWithDaoInfo(rootExt.getTextWithDaoInfo());
-		result.setNumberWithDaoInfo(rootExt.getNumberWithDaoInfo());
-		result.setDaoEnum(rootExt.getDaoEnum());
-		result.setDaoEnumWithText(rootExt.getDaoEnumWithText());
-		result.setSomeName(rootExt.getSomeName());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(rootExt, mappedObjects, DaoObjectFactory::createRootExtDao, (domain, dao) -> getInstance().setRootExtDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setRootExtDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setRootExtDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	public static RootExtDao convertToRootExtDao(RootExt rootExt, RootDao parent) {
@@ -225,6 +94,121 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 			instance = AccessMapperFactory.createCommonAccessMapper();
 		}
 		return instance;
+	}
+
+	protected void setRootDaoMultiReferences(Root domain, RootDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
+		dao.setMultiRefs(new ArrayList<>());
+		dao.setAnotherMultiRefs(new ArrayList<>());
+		dao.setMultiRefIndirectParents(new ArrayList<>());
+		dao.setMultiRefIndirectOtherParents(new ArrayList<>());
+		dao.setExtendings(new ArrayList<>());
+		if (includeChildren) {
+			domain.getMultiRefs().forEach(arg ->
+					MultiAccessMapper.convertToMultiRefOneParentDao(arg, true, dao, mappedObjects)
+			);
+			domain.getAnotherMultiRefs().forEach(arg ->
+					MultiAccessMapper.convertToMultiRefTwoParentsDao(arg, dao, mappedObjects)
+			);
+			domain.getMultiRefIndirectParents().forEach(arg ->
+					MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(arg, dao, mappedObjects)
+			);
+			domain.getMultiRefIndirectOtherParents().forEach(arg ->
+					MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParentDao(arg, true, dao, mappedObjects)
+			);
+			domain.getExtendings().forEach(arg ->
+					ParentAccessMapper.convertToExtendingClassDao(arg, dao, mappedObjects)
+			);
+		}
+	}
+
+	protected void setRootDaoSingleReferences(Root domain, RootDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
+		SingleAccessMapper.convertToSingleRefOneParentDao(domain.getSingleRef(), dao, mappedObjects);
+		SingleAccessMapper.convertToSingleRefTwoParentsDao(domain.getAnotherSingleRef(), dao, mappedObjects);
+		SingleIndirectAccessMapper.convertToSingleRefIndirectParentDao(domain.getSingleRefIndirectParent(), dao, mappedObjects);
+		SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParentDao(domain.getSingleRefIndirectOtherParent(), dao, mappedObjects);
+		FilteringAccessMapper.convertToSomeFilteringOwnerDao(domain.getFiltering(), includeChildren, dao, mappedObjects);
+		CommonAccessMapper.convertToRootExtDao(domain.getExt(), dao, mappedObjects);
+	}
+
+	protected void setRootDaoValues(Root domain, RootDao dao) {
+		dao.setRootName(domain.getRootName());
+		dao.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setRootExtDaoMultiReferences(RootExt domain, RootExtDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setRootExtDaoSingleReferences(RootExt domain, RootExtDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setRootExtDaoValues(RootExt domain, RootExtDao dao) {
+		dao.setExtendedInfo(domain.getExtendedInfo());
+		dao.setSomeEnum(domain.getSomeEnum());
+		dao.setSomeInteger(domain.getSomeInteger());
+		dao.setSomeCustom(domain.getSomeCustom());
+		dao.setDaoAndDomain(domain.getDaoAndDomain());
+		dao.setTextWithDaoInfo(domain.getTextWithDaoInfo());
+		dao.setNumberWithDaoInfo(domain.getNumberWithDaoInfo());
+		dao.setDaoEnum(domain.getDaoEnum());
+		dao.setDaoEnumWithText(domain.getDaoEnumWithText());
+		dao.setSomeName(domain.getSomeName());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setRootExtMultiReferences(RootExtDao dao, RootExt domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setRootExtSingleReferences(RootExtDao dao, RootExt domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setRootExtValues(RootExtDao dao, RootExt domain) {
+		domain.setExtendedInfo(dao.getExtendedInfo());
+		domain.setSomeEnum(dao.getSomeEnum());
+		domain.setSomeInteger(dao.getSomeInteger());
+		domain.setSomeCustom(dao.getSomeCustom());
+		domain.setDaoAndDomain(dao.getDaoAndDomain());
+		domain.setTextWithDaoInfo(dao.getTextWithDaoInfo());
+		domain.setNumberWithDaoInfo(dao.getNumberWithDaoInfo());
+		domain.setDaoEnum(dao.getDaoEnum());
+		domain.setDaoEnumWithText(dao.getDaoEnumWithText());
+		domain.setSomeName(dao.getSomeName());
+	}
+
+	protected void setRootMultiReferences(RootDao dao, Root domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
+		if (includeChildren) {
+			dao.getMultiRefs().forEach(arg ->
+					MultiAccessMapper.convertToMultiRefOneParent(arg, true, domain, mappedObjects)
+			);
+			dao.getAnotherMultiRefs().forEach(arg ->
+					MultiAccessMapper.convertToMultiRefTwoParents(arg, domain, mappedObjects)
+			);
+			dao.getMultiRefIndirectParents().forEach(arg ->
+					MultiIndirectAccessMapper.convertToMultiRefIndirectParent(arg, domain, mappedObjects)
+			);
+			dao.getMultiRefIndirectOtherParents().forEach(arg ->
+					MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParent(arg, true, domain, mappedObjects)
+			);
+			dao.getExtendings().forEach(arg ->
+					ParentAccessMapper.convertToExtendingClass(arg, domain, mappedObjects)
+			);
+		}
+	}
+
+	protected void setRootSingleReferences(RootDao dao, Root domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
+		SingleAccessMapper.convertToSingleRefOneParent(dao.getSingleRef(), domain, mappedObjects);
+		SingleAccessMapper.convertToSingleRefTwoParents(dao.getAnotherSingleRef(), domain, mappedObjects);
+		SingleIndirectAccessMapper.convertToSingleRefIndirectParent(dao.getSingleRefIndirectParent(), domain, mappedObjects);
+		SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParent(dao.getSingleRefIndirectOtherParent(), domain, mappedObjects);
+		FilteringAccessMapper.convertToSomeFilteringOwner(dao.getFiltering(), includeChildren, domain, mappedObjects);
+		CommonAccessMapper.convertToRootExt(dao.getExt(), domain, mappedObjects);
+	}
+
+	protected void setRootValues(RootDao dao, Root domain) {
+		domain.setRootName(dao.getRootName());
+		domain.setDescription(dao.getDescription());
 	}
 
 }

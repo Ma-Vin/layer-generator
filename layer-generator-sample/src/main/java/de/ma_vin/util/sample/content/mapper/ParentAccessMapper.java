@@ -25,24 +25,9 @@ public class ParentAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static ExtendingClass convertToExtendingClass(ExtendingClassDao extendingClass, Map<String, IIdentifiable> mappedObjects) {
-		if (extendingClass == null) {
-			return null;
-		}
-
-		String identification = extendingClass.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (ExtendingClass) mappedObjects.get(identification);
-		}
-
-		ExtendingClass result = DomainObjectFactory.createExtendingClass();
-
-		result.setIdentification(identification);
-
-		result.setAdditionalDescription(extendingClass.getAdditionalDescription());
-		result.setDescription(extendingClass.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(extendingClass, mappedObjects, DomainObjectFactory::createExtendingClass, (dao, domain) -> getInstance().setExtendingClassValues(dao, domain)
+				, (dao, domain) -> getInstance().setExtendingClassSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setExtendingClassMultiReferences(dao, domain, mappedObjects));
 	}
 
 	public static ExtendingClass convertToExtendingClass(ExtendingClassDao extendingClass, Root parent) {
@@ -62,24 +47,9 @@ public class ParentAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static ExtendingClassDao convertToExtendingClassDao(ExtendingClass extendingClass, Map<String, IIdentifiableDao> mappedObjects) {
-		if (extendingClass == null) {
-			return null;
-		}
-
-		String identification = extendingClass.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (ExtendingClassDao) mappedObjects.get(identification);
-		}
-
-		ExtendingClassDao result = DaoObjectFactory.createExtendingClassDao();
-
-		result.setIdentification(identification);
-
-		result.setAdditionalDescription(extendingClass.getAdditionalDescription());
-		result.setDescription(extendingClass.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(extendingClass, mappedObjects, DaoObjectFactory::createExtendingClassDao, (domain, dao) -> getInstance().setExtendingClassDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setExtendingClassDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setExtendingClassDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	public static ExtendingClassDao convertToExtendingClassDao(ExtendingClass extendingClass, RootDao parent) {
@@ -103,6 +73,32 @@ public class ParentAccessMapper extends AbstractAccessMapper {
 			instance = AccessMapperFactory.createParentAccessMapper();
 		}
 		return instance;
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setExtendingClassDaoMultiReferences(ExtendingClass domain, ExtendingClassDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setExtendingClassDaoSingleReferences(ExtendingClass domain, ExtendingClassDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setExtendingClassDaoValues(ExtendingClass domain, ExtendingClassDao dao) {
+		dao.setAdditionalDescription(domain.getAdditionalDescription());
+		dao.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setExtendingClassMultiReferences(ExtendingClassDao dao, ExtendingClass domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setExtendingClassSingleReferences(ExtendingClassDao dao, ExtendingClass domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setExtendingClassValues(ExtendingClassDao dao, ExtendingClass domain) {
+		domain.setAdditionalDescription(dao.getAdditionalDescription());
+		domain.setDescription(dao.getDescription());
 	}
 
 }

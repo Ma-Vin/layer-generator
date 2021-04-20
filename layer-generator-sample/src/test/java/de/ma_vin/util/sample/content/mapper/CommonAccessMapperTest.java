@@ -129,7 +129,7 @@ public class CommonAccessMapperTest {
         assertEquals(rootExtDao.getNumberWithDaoInfo(), result.getNumberWithDaoInfo(), "Wrong NumberWithDaoInfo");
         assertEquals(rootExtDao.getDaoEnum(), result.getDaoEnum(), "Wrong DaoEnum");
         assertEquals(rootExtDao.getDaoEnumWithText(), result.getDaoEnumWithText(), "Wrong tDaoEnumWithText");
-        assertEquals(rootExtDao.getExtendedInfo(), result.getExtendedInfo(), "Wrong ExtendedInfo");
+        assertEquals(rootExtDao.getSomeName() + ExtendedCommonAccessMapper.ADDITIONAL_POSTFIX, result.getSomeName(), "Wrong modified SomeName");
     }
 
     @Test
@@ -146,7 +146,7 @@ public class CommonAccessMapperTest {
         assertEquals(rootExtDao.getNumberWithDaoInfo(), result.getNumberWithDaoInfo(), "Wrong NumberWithDaoInfo");
         assertEquals(rootExtDao.getDaoEnum(), result.getDaoEnum(), "Wrong DaoEnum");
         assertEquals(rootExtDao.getDaoEnumWithText(), result.getDaoEnumWithText(), "Wrong tDaoEnumWithText");
-        assertEquals(rootExtDao.getExtendedInfo(), result.getExtendedInfo(), "Wrong ExtendedInfo");
+        assertEquals(rootExtDao.getSomeName() + ExtendedCommonAccessMapper.ADDITIONAL_POSTFIX, result.getSomeName(), "Wrong modified SomeName");
 
         assertEquals(root.getExt(), result, "Wrong ext at root");
     }
@@ -266,7 +266,7 @@ public class CommonAccessMapperTest {
         assertEquals(rootExt.getNumberWithDaoInfo(), result.getNumberWithDaoInfo(), "Wrong NumberWithDaoInfo(");
         assertEquals(rootExt.getDaoEnum(), result.getDaoEnum(), "Wrong DaoEnum");
         assertEquals(rootExt.getDaoEnumWithText(), result.getDaoEnumWithText(), "Wrong DaoEnumWithText");
-        assertEquals(rootExt.getExtendedInfo(), result.getExtendedInfo(), "Wrong ExtendedInfo");
+        assertEquals(rootExt.getSomeName() + ExtendedCommonAccessMapper.ADDITIONAL_POSTFIX, result.getSomeName(), "Wrong modified SomeName");
     }
 
     @Test
@@ -283,7 +283,7 @@ public class CommonAccessMapperTest {
         assertEquals(rootExt.getNumberWithDaoInfo(), result.getNumberWithDaoInfo(), "Wrong NumberWithDaoInfo(");
         assertEquals(rootExt.getDaoEnum(), result.getDaoEnum(), "Wrong DaoEnum");
         assertEquals(rootExt.getDaoEnumWithText(), result.getDaoEnumWithText(), "Wrong DaoEnumWithText");
-        assertEquals(rootExt.getExtendedInfo(), result.getExtendedInfo(), "Wrong ExtendedInfo");
+        assertEquals(rootExt.getSomeName() + ExtendedCommonAccessMapper.ADDITIONAL_POSTFIX, result.getSomeName(), "Wrong modified SomeName");
 
         assertEquals(rootDao.getExt(), result, "Wrong ext at root");
         assertEquals(rootDao, result.getParentRoot(), "Wrong parent");

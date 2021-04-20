@@ -202,7 +202,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
                 , DTO_PARAMETER, DOMAIN_PARAMETER);
         convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
                 , DTO_PARAMETER, DOMAIN_PARAMETER, getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT
-                , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant) ? "includeChildren, " : "");
+                , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant, l -> l) ? "includeChildren, " : "");
         convertMethodWithMap.addLine(", (%1$s, %2$s) -> {", 2, DTO_PARAMETER, DOMAIN_PARAMETER);
         convertMethodWithMap.addLine("});");
 
@@ -210,7 +210,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(Map.class.getName());
 
         createSetValueMethod(mapperClass, entity, TransportMapperCreator::isFieldRelevant, DTO_POSTFIX, DOMAIN_POSTFIX, DTO_PARAMETER, DOMAIN_PARAMETER);
-        createSetSingleReferenceMethod(mapperClass, getDomainCreateMethodParameterContainer(entity), DTO_PARAMETER, DOMAIN_PARAMETER, DomainCreator.DOMAIN_INTERFACE);
+        createSetSingleReferenceMethod(mapperClass, getDomainCreateMethodParameterContainer(entity), DTO_PARAMETER, DOMAIN_PARAMETER, DomainCreator.DOMAIN_INTERFACE, l -> l);
     }
 
     /**
@@ -295,7 +295,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
                 , DOMAIN_PARAMETER, DTO_PARAMETER);
         convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sDtoSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
                 , DOMAIN_PARAMETER, DTO_PARAMETER, getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT
-                , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant) ? "includeChildren, " : "");
+                , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant, l -> l) ? "includeChildren, " : "");
         convertMethodWithMap.addLine(", (%1$s, %2$s) -> {", 2, DOMAIN_PARAMETER, DTO_PARAMETER);
         convertMethodWithMap.addLine("});");
 
@@ -303,7 +303,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(Map.class.getName());
 
         createSetValueMethod(mapperClass, entity, TransportMapperCreator::isFieldRelevant, DOMAIN_POSTFIX, DTO_POSTFIX, DOMAIN_PARAMETER, DTO_PARAMETER);
-        createSetSingleReferenceMethod(mapperClass, getDtoCreateMethodParameterContainer(entity), DOMAIN_PARAMETER, DTO_PARAMETER, DtoCreator.DTO_INTERFACE);
+        createSetSingleReferenceMethod(mapperClass, getDtoCreateMethodParameterContainer(entity), DOMAIN_PARAMETER, DTO_PARAMETER, DtoCreator.DTO_INTERFACE, l -> l);
     }
 
     /**

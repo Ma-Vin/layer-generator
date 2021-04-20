@@ -28,29 +28,9 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static MultiRefOneParent convertToMultiRefOneParent(MultiRefOneParentDao multiRefOneParent, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
-		if (multiRefOneParent == null) {
-			return null;
-		}
-
-		String identification = multiRefOneParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefOneParent) mappedObjects.get(identification);
-		}
-
-		MultiRefOneParent result = DomainObjectFactory.createMultiRefOneParent();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefOneParent.getDescription());
-
-		if (includeChildren) {
-			multiRefOneParent.getMultiRefs().forEach(arg ->
-					MultiAccessMapper.convertToMultiRefTwoParents(arg, result, mappedObjects)
-			);
-		}
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(multiRefOneParent, mappedObjects, DomainObjectFactory::createMultiRefOneParent, (dao, domain) -> getInstance().setMultiRefOneParentValues(dao, domain)
+				, (dao, domain) -> getInstance().setMultiRefOneParentSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setMultiRefOneParentMultiReferences(dao, domain, includeChildren, mappedObjects));
 	}
 
 	public static MultiRefOneParent convertToMultiRefOneParent(MultiRefOneParentDao multiRefOneParent, boolean includeChildren, Root parent) {
@@ -70,30 +50,9 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static MultiRefOneParentDao convertToMultiRefOneParentDao(MultiRefOneParent multiRefOneParent, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
-		if (multiRefOneParent == null) {
-			return null;
-		}
-
-		String identification = multiRefOneParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefOneParentDao) mappedObjects.get(identification);
-		}
-
-		MultiRefOneParentDao result = DaoObjectFactory.createMultiRefOneParentDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefOneParent.getDescription());
-
-		result.setMultiRefs(new ArrayList<>());
-		if (includeChildren) {
-			multiRefOneParent.getMultiRefs().forEach(arg ->
-					MultiAccessMapper.convertToMultiRefTwoParentsDao(arg, result, mappedObjects)
-			);
-		}
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(multiRefOneParent, mappedObjects, DaoObjectFactory::createMultiRefOneParentDao, (domain, dao) -> getInstance().setMultiRefOneParentDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setMultiRefOneParentDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setMultiRefOneParentDaoMultiReferences(domain, dao, includeChildren, mappedObjects));
 	}
 
 	public static MultiRefOneParentDao convertToMultiRefOneParentDao(MultiRefOneParent multiRefOneParent, boolean includeChildren, RootDao parent) {
@@ -114,23 +73,9 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static MultiRefTwoParents convertToMultiRefTwoParents(MultiRefTwoParentsDao multiRefTwoParents, Map<String, IIdentifiable> mappedObjects) {
-		if (multiRefTwoParents == null) {
-			return null;
-		}
-
-		String identification = multiRefTwoParents.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefTwoParents) mappedObjects.get(identification);
-		}
-
-		MultiRefTwoParents result = DomainObjectFactory.createMultiRefTwoParents();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefTwoParents.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(multiRefTwoParents, mappedObjects, DomainObjectFactory::createMultiRefTwoParents, (dao, domain) -> getInstance().setMultiRefTwoParentsValues(dao, domain)
+				, (dao, domain) -> getInstance().setMultiRefTwoParentsSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setMultiRefTwoParentsMultiReferences(dao, domain, mappedObjects));
 	}
 
 	public static MultiRefTwoParents convertToMultiRefTwoParents(MultiRefTwoParentsDao multiRefTwoParents, MultiRefOneParent parent) {
@@ -162,23 +107,9 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static MultiRefTwoParentsDao convertToMultiRefTwoParentsDao(MultiRefTwoParents multiRefTwoParents, Map<String, IIdentifiableDao> mappedObjects) {
-		if (multiRefTwoParents == null) {
-			return null;
-		}
-
-		String identification = multiRefTwoParents.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefTwoParentsDao) mappedObjects.get(identification);
-		}
-
-		MultiRefTwoParentsDao result = DaoObjectFactory.createMultiRefTwoParentsDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefTwoParents.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(multiRefTwoParents, mappedObjects, DaoObjectFactory::createMultiRefTwoParentsDao, (domain, dao) -> getInstance().setMultiRefTwoParentsDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setMultiRefTwoParentsDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setMultiRefTwoParentsDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	public static MultiRefTwoParentsDao convertToMultiRefTwoParentsDao(MultiRefTwoParents multiRefTwoParents, MultiRefOneParentDao parent) {
@@ -215,6 +146,63 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 			instance = AccessMapperFactory.createMultiAccessMapper();
 		}
 		return instance;
+	}
+
+	protected void setMultiRefOneParentDaoMultiReferences(MultiRefOneParent domain, MultiRefOneParentDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
+		dao.setMultiRefs(new ArrayList<>());
+		if (includeChildren) {
+			domain.getMultiRefs().forEach(arg ->
+					MultiAccessMapper.convertToMultiRefTwoParentsDao(arg, dao, mappedObjects)
+			);
+		}
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefOneParentDaoSingleReferences(MultiRefOneParent domain, MultiRefOneParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setMultiRefOneParentDaoValues(MultiRefOneParent domain, MultiRefOneParentDao dao) {
+		dao.setDescription(domain.getDescription());
+	}
+
+	protected void setMultiRefOneParentMultiReferences(MultiRefOneParentDao dao, MultiRefOneParent domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
+		if (includeChildren) {
+			dao.getMultiRefs().forEach(arg ->
+					MultiAccessMapper.convertToMultiRefTwoParents(arg, domain, mappedObjects)
+			);
+		}
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefOneParentSingleReferences(MultiRefOneParentDao dao, MultiRefOneParent domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setMultiRefOneParentValues(MultiRefOneParentDao dao, MultiRefOneParent domain) {
+		domain.setDescription(dao.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefTwoParentsDaoMultiReferences(MultiRefTwoParents domain, MultiRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefTwoParentsDaoSingleReferences(MultiRefTwoParents domain, MultiRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setMultiRefTwoParentsDaoValues(MultiRefTwoParents domain, MultiRefTwoParentsDao dao) {
+		dao.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefTwoParentsMultiReferences(MultiRefTwoParentsDao dao, MultiRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefTwoParentsSingleReferences(MultiRefTwoParentsDao dao, MultiRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setMultiRefTwoParentsValues(MultiRefTwoParentsDao dao, MultiRefTwoParents domain) {
+		domain.setDescription(dao.getDescription());
 	}
 
 }

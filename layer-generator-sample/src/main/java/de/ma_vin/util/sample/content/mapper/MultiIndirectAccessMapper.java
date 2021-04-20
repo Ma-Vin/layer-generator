@@ -29,23 +29,9 @@ public class MultiIndirectAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static MultiRefIndirectParent convertToMultiRefIndirectParent(MultiRefIndirectParentDao multiRefIndirectParent, Map<String, IIdentifiable> mappedObjects) {
-		if (multiRefIndirectParent == null) {
-			return null;
-		}
-
-		String identification = multiRefIndirectParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefIndirectParent) mappedObjects.get(identification);
-		}
-
-		MultiRefIndirectParent result = DomainObjectFactory.createMultiRefIndirectParent();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefIndirectParent.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(multiRefIndirectParent, mappedObjects, DomainObjectFactory::createMultiRefIndirectParent, (dao, domain) -> getInstance().setMultiRefIndirectParentValues(dao, domain)
+				, (dao, domain) -> getInstance().setMultiRefIndirectParentSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setMultiRefIndirectParentMultiReferences(dao, domain, mappedObjects));
 	}
 
 	public static MultiRefIndirectParent convertToMultiRefIndirectParent(MultiRefIndirectParentDao multiRefIndirectParent, MultiRefOtherIndirectParent parent) {
@@ -77,23 +63,9 @@ public class MultiIndirectAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static MultiRefIndirectParentDao convertToMultiRefIndirectParentDao(MultiRefIndirectParent multiRefIndirectParent, Map<String, IIdentifiableDao> mappedObjects) {
-		if (multiRefIndirectParent == null) {
-			return null;
-		}
-
-		String identification = multiRefIndirectParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefIndirectParentDao) mappedObjects.get(identification);
-		}
-
-		MultiRefIndirectParentDao result = DaoObjectFactory.createMultiRefIndirectParentDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefIndirectParent.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(multiRefIndirectParent, mappedObjects, DaoObjectFactory::createMultiRefIndirectParentDao, (domain, dao) -> getInstance().setMultiRefIndirectParentDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setMultiRefIndirectParentDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setMultiRefIndirectParentDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	public static MultiRefIndirectParentDao convertToMultiRefIndirectParentDao(MultiRefIndirectParent multiRefIndirectParent, MultiRefOtherIndirectParentDao parent) {
@@ -129,29 +101,9 @@ public class MultiIndirectAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static MultiRefOtherIndirectParent convertToMultiRefOtherIndirectParent(MultiRefOtherIndirectParentDao multiRefOtherIndirectParent, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
-		if (multiRefOtherIndirectParent == null) {
-			return null;
-		}
-
-		String identification = multiRefOtherIndirectParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefOtherIndirectParent) mappedObjects.get(identification);
-		}
-
-		MultiRefOtherIndirectParent result = DomainObjectFactory.createMultiRefOtherIndirectParent();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefOtherIndirectParent.getDescription());
-
-		if (includeChildren) {
-			multiRefOtherIndirectParent.getMultiIndirectRefs().forEach(arg ->
-					MultiIndirectAccessMapper.convertToMultiRefIndirectParent(arg.getMultiRefIndirectParent(), result, mappedObjects)
-			);
-		}
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(multiRefOtherIndirectParent, mappedObjects, DomainObjectFactory::createMultiRefOtherIndirectParent, (dao, domain) -> getInstance().setMultiRefOtherIndirectParentValues(dao, domain)
+				, (dao, domain) -> getInstance().setMultiRefOtherIndirectParentSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setMultiRefOtherIndirectParentMultiReferences(dao, domain, includeChildren, mappedObjects));
 	}
 
 	public static MultiRefOtherIndirectParent convertToMultiRefOtherIndirectParent(MultiRefOtherIndirectParentDao multiRefOtherIndirectParent, boolean includeChildren, Root parent) {
@@ -171,33 +123,9 @@ public class MultiIndirectAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static MultiRefOtherIndirectParentDao convertToMultiRefOtherIndirectParentDao(MultiRefOtherIndirectParent multiRefOtherIndirectParent, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
-		if (multiRefOtherIndirectParent == null) {
-			return null;
-		}
-
-		String identification = multiRefOtherIndirectParent.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (MultiRefOtherIndirectParentDao) mappedObjects.get(identification);
-		}
-
-		MultiRefOtherIndirectParentDao result = DaoObjectFactory.createMultiRefOtherIndirectParentDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(multiRefOtherIndirectParent.getDescription());
-
-		result.setMultiIndirectRefs(new ArrayList<>());
-		if (includeChildren) {
-			multiRefOtherIndirectParent.getMultiIndirectRefs().forEach(arg -> {
-				MultiRefOtherIndirectParentToMultiRefIndirectParentDao connectionTable = new MultiRefOtherIndirectParentToMultiRefIndirectParentDao();
-				connectionTable.setMultiRefOtherIndirectParent(result);
-				connectionTable.setMultiRefIndirectParent(MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(arg, mappedObjects));
-				result.getMultiIndirectRefs().add(connectionTable);
-			});
-		}
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(multiRefOtherIndirectParent, mappedObjects, DaoObjectFactory::createMultiRefOtherIndirectParentDao, (domain, dao) -> getInstance().setMultiRefOtherIndirectParentDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setMultiRefOtherIndirectParentDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setMultiRefOtherIndirectParentDaoMultiReferences(domain, dao, includeChildren, mappedObjects));
 	}
 
 	public static MultiRefOtherIndirectParentDao convertToMultiRefOtherIndirectParentDao(MultiRefOtherIndirectParent multiRefOtherIndirectParent, boolean includeChildren, RootDao parent) {
@@ -221,6 +149,66 @@ public class MultiIndirectAccessMapper extends AbstractAccessMapper {
 			instance = AccessMapperFactory.createMultiIndirectAccessMapper();
 		}
 		return instance;
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectParentDaoMultiReferences(MultiRefIndirectParent domain, MultiRefIndirectParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectParentDaoSingleReferences(MultiRefIndirectParent domain, MultiRefIndirectParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setMultiRefIndirectParentDaoValues(MultiRefIndirectParent domain, MultiRefIndirectParentDao dao) {
+		dao.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectParentMultiReferences(MultiRefIndirectParentDao dao, MultiRefIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectParentSingleReferences(MultiRefIndirectParentDao dao, MultiRefIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setMultiRefIndirectParentValues(MultiRefIndirectParentDao dao, MultiRefIndirectParent domain) {
+		domain.setDescription(dao.getDescription());
+	}
+
+	protected void setMultiRefOtherIndirectParentDaoMultiReferences(MultiRefOtherIndirectParent domain, MultiRefOtherIndirectParentDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
+		dao.setMultiIndirectRefs(new ArrayList<>());
+		if (includeChildren) {
+			domain.getMultiIndirectRefs().forEach(arg -> {
+				MultiRefOtherIndirectParentToMultiRefIndirectParentDao connectionTable = new MultiRefOtherIndirectParentToMultiRefIndirectParentDao();
+				connectionTable.setMultiRefOtherIndirectParent(dao);
+				connectionTable.setMultiRefIndirectParent(MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(arg, mappedObjects));
+				dao.getMultiIndirectRefs().add(connectionTable);
+			});
+		}
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefOtherIndirectParentDaoSingleReferences(MultiRefOtherIndirectParent domain, MultiRefOtherIndirectParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setMultiRefOtherIndirectParentDaoValues(MultiRefOtherIndirectParent domain, MultiRefOtherIndirectParentDao dao) {
+		dao.setDescription(domain.getDescription());
+	}
+
+	protected void setMultiRefOtherIndirectParentMultiReferences(MultiRefOtherIndirectParentDao dao, MultiRefOtherIndirectParent domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
+		if (includeChildren) {
+			dao.getMultiIndirectRefs().forEach(arg ->
+					MultiIndirectAccessMapper.convertToMultiRefIndirectParent(arg.getMultiRefIndirectParent(), domain, mappedObjects)
+			);
+		}
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefOtherIndirectParentSingleReferences(MultiRefOtherIndirectParentDao dao, MultiRefOtherIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setMultiRefOtherIndirectParentValues(MultiRefOtherIndirectParentDao dao, MultiRefOtherIndirectParent domain) {
+		domain.setDescription(dao.getDescription());
 	}
 
 }

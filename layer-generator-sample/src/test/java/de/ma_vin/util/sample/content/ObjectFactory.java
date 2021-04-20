@@ -164,7 +164,7 @@ public class ObjectFactory {
         result.setNumberWithDaoInfo(Double.valueOf("" + id));
         result.setDaoEnum(AnyEnumType.ENUM_VALUE_B);
         result.setDaoEnumWithText(AnyEnumType.ENUM_VALUE_C);
-        result.setExtendedInfo(String.format("SomeName_%d", id));
+        result.setSomeName(String.format("SomeName_%d", id));
 
         return result;
     }
@@ -376,7 +376,7 @@ public class ObjectFactory {
         result.setNumberWithDaoInfo(Double.valueOf("" + id));
         result.setDaoEnum(AnyEnumType.ENUM_VALUE_B);
         result.setDaoEnumWithText(AnyEnumType.ENUM_VALUE_C);
-        result.setExtendedInfo(String.format("SomeName_%d", id));
+        result.setSomeName(String.format("SomeName_%d", id));
 
         return result;
     }
@@ -567,7 +567,7 @@ public class ObjectFactory {
         result.setNumberWithDaoInfo(Double.valueOf("" + id).doubleValue());
         result.setDaoEnum(AnyEnumType.ENUM_VALUE_B);
         result.setDaoEnumWithText(AnyEnumType.ENUM_VALUE_C);
-        result.setExtendedInfo(String.format("SomeName_%d", id));
+        result.setSomeName(String.format("SomeName_%d", id));
 
         return result;
     }

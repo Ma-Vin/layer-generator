@@ -23,23 +23,9 @@ public class DomainDaoAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static DomainAndDao convertToDomainAndDao(DomainAndDaoDao domainAndDao, Map<String, IIdentifiable> mappedObjects) {
-		if (domainAndDao == null) {
-			return null;
-		}
-
-		String identification = domainAndDao.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (DomainAndDao) mappedObjects.get(identification);
-		}
-
-		DomainAndDao result = DomainObjectFactory.createDomainAndDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(domainAndDao.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(domainAndDao, mappedObjects, DomainObjectFactory::createDomainAndDao, (dao, domain) -> getInstance().setDomainAndDaoValues(dao, domain)
+				, (dao, domain) -> getInstance().setDomainAndDaoSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setDomainAndDaoMultiReferences(dao, domain, mappedObjects));
 	}
 
 	public static DomainAndDaoDao convertToDomainAndDaoDao(DomainAndDao domainAndDao) {
@@ -47,23 +33,9 @@ public class DomainDaoAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static DomainAndDaoDao convertToDomainAndDaoDao(DomainAndDao domainAndDao, Map<String, IIdentifiableDao> mappedObjects) {
-		if (domainAndDao == null) {
-			return null;
-		}
-
-		String identification = domainAndDao.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (DomainAndDaoDao) mappedObjects.get(identification);
-		}
-
-		DomainAndDaoDao result = DaoObjectFactory.createDomainAndDaoDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(domainAndDao.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(domainAndDao, mappedObjects, DaoObjectFactory::createDomainAndDaoDao, (domain, dao) -> getInstance().setDomainAndDaoDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setDomainAndDaoDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setDomainAndDaoDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	/**
@@ -74,6 +46,30 @@ public class DomainDaoAccessMapper extends AbstractAccessMapper {
 			instance = AccessMapperFactory.createDomainDaoAccessMapper();
 		}
 		return instance;
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setDomainAndDaoDaoMultiReferences(DomainAndDao domain, DomainAndDaoDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setDomainAndDaoDaoSingleReferences(DomainAndDao domain, DomainAndDaoDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setDomainAndDaoDaoValues(DomainAndDao domain, DomainAndDaoDao dao) {
+		dao.setDescription(domain.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setDomainAndDaoMultiReferences(DomainAndDaoDao dao, DomainAndDao domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setDomainAndDaoSingleReferences(DomainAndDaoDao dao, DomainAndDao domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setDomainAndDaoValues(DomainAndDaoDao dao, DomainAndDao domain) {
+		domain.setDescription(dao.getDescription());
 	}
 
 }

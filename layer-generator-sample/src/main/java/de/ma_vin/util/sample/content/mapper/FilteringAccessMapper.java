@@ -33,24 +33,9 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static Filtered convertToFiltered(FilteredDao filtered, Map<String, IIdentifiable> mappedObjects) {
-		if (filtered == null) {
-			return null;
-		}
-
-		String identification = filtered.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (Filtered) mappedObjects.get(identification);
-		}
-
-		Filtered result = DomainObjectFactory.createFiltered();
-
-		result.setIdentification(identification);
-
-		result.setDescription(filtered.getDescription());
-		result.setSomeEnum(filtered.getSomeEnum());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(filtered, mappedObjects, DomainObjectFactory::createFiltered, (dao, domain) -> getInstance().setFilteredValues(dao, domain)
+				, (dao, domain) -> getInstance().setFilteredSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setFilteredMultiReferences(dao, domain, mappedObjects));
 	}
 
 	public static Filtered convertToFiltered(FilteredDao filtered, SomeFilteringOwner parent) {
@@ -82,24 +67,9 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static FilteredDao convertToFilteredDao(Filtered filtered, Map<String, IIdentifiableDao> mappedObjects) {
-		if (filtered == null) {
-			return null;
-		}
-
-		String identification = filtered.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (FilteredDao) mappedObjects.get(identification);
-		}
-
-		FilteredDao result = DaoObjectFactory.createFilteredDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(filtered.getDescription());
-		result.setSomeEnum(filtered.getSomeEnum());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(filtered, mappedObjects, DaoObjectFactory::createFilteredDao, (domain, dao) -> getInstance().setFilteredDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setFilteredDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setFilteredDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	public static FilteredDao convertToFilteredDao(Filtered filtered, SomeFilteringOwnerDao parent) {
@@ -120,23 +90,9 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField, Map<String, IIdentifiable> mappedObjects) {
-		if (filteredOnlyDaoField == null) {
-			return null;
-		}
-
-		String identification = filteredOnlyDaoField.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (FilteredOnlyDaoField) mappedObjects.get(identification);
-		}
-
-		FilteredOnlyDaoField result = DomainObjectFactory.createFilteredOnlyDaoField();
-
-		result.setIdentification(identification);
-
-		result.setDescription(filteredOnlyDaoField.getDescription());
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(filteredOnlyDaoField, mappedObjects, DomainObjectFactory::createFilteredOnlyDaoField, (dao, domain) -> getInstance().setFilteredOnlyDaoFieldValues(dao, domain)
+				, (dao, domain) -> getInstance().setFilteredOnlyDaoFieldSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setFilteredOnlyDaoFieldMultiReferences(dao, domain, mappedObjects));
 	}
 
 	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField, SomeFilteringOwner parent) {
@@ -181,25 +137,9 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, AnyEnumType someEnum, Map<String, IIdentifiableDao> mappedObjects) {
-		if (filteredOnlyDaoField == null) {
-			return null;
-		}
-
-		String identification = filteredOnlyDaoField.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (FilteredOnlyDaoFieldDao) mappedObjects.get(identification);
-		}
-
-		FilteredOnlyDaoFieldDao result = DaoObjectFactory.createFilteredOnlyDaoFieldDao();
-
-		result.setIdentification(identification);
-
-		result.setDescription(filteredOnlyDaoField.getDescription());
-
-		result.setSomeEnum(someEnum);
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(filteredOnlyDaoField, mappedObjects, DaoObjectFactory::createFilteredOnlyDaoFieldDao, (domain, dao) -> getInstance().setFilteredOnlyDaoFieldDaoValues(domain, dao, someEnum)
+				, (domain, dao) -> getInstance().setFilteredOnlyDaoFieldDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setFilteredOnlyDaoFieldDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren) {
@@ -207,30 +147,9 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
-		if (someFilteringOwner == null) {
-			return null;
-		}
-
-		String identification = someFilteringOwner.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SomeFilteringOwner) mappedObjects.get(identification);
-		}
-
-		SomeFilteringOwner result = DomainObjectFactory.createSomeFilteringOwner();
-
-		result.setIdentification(identification);
-
-		if (includeChildren) {
-			someFilteringOwner.getAggFiltereds().forEach(arg ->
-					FilteringAccessMapper.convertToFiltered(arg, result, mappedObjects)
-			);
-			someFilteringOwner.getAggFilteredOnlyDaoFields().forEach(arg ->
-					FilteringAccessMapper.convertToFilteredOnlyDaoField(arg, result, mappedObjects)
-			);
-		}
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDomain(someFilteringOwner, mappedObjects, DomainObjectFactory::createSomeFilteringOwner, (dao, domain) -> getInstance().setSomeFilteringOwnerValues(dao, domain)
+				, (dao, domain) -> getInstance().setSomeFilteringOwnerSingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setSomeFilteringOwnerMultiReferences(dao, domain, includeChildren, mappedObjects));
 	}
 
 	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren, Root parent) {
@@ -250,44 +169,9 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	}
 
 	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
-		if (someFilteringOwner == null) {
-			return null;
-		}
-
-		String identification = someFilteringOwner.getIdentification();
-		if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {
-			return (SomeFilteringOwnerDao) mappedObjects.get(identification);
-		}
-
-		SomeFilteringOwnerDao result = DaoObjectFactory.createSomeFilteringOwnerDao();
-
-		result.setIdentification(identification);
-
-		result.setAggFiltereds(new ArrayList<>());
-		result.setAggFilteredOnlyDaoFields(new ArrayList<>());
-		if (includeChildren) {
-			someFilteringOwner.getFilterAs().forEach(arg ->
-					FilteringAccessMapper.convertToFilteredDao(arg, result, mappedObjects)
-			);
-			someFilteringOwner.getFilterBs().forEach(arg ->
-					FilteringAccessMapper.convertToFilteredDao(arg, result, mappedObjects)
-			);
-			someFilteringOwner.getFilterCs().forEach(arg ->
-					FilteringAccessMapper.convertToFilteredDao(arg, result, mappedObjects)
-			);
-			someFilteringOwner.getFilterDaoAs().forEach(arg ->
-					FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(arg, result, AnyEnumType.ENUM_VALUE_A, mappedObjects)
-			);
-			someFilteringOwner.getFilterDaoBs().forEach(arg ->
-					FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(arg, result, AnyEnumType.ENUM_VALUE_B, mappedObjects)
-			);
-			someFilteringOwner.getFilterDaoCs().forEach(arg ->
-					FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(arg, result, AnyEnumType.ENUM_VALUE_C, mappedObjects)
-			);
-		}
-
-		mappedObjects.put(identification, result);
-		return result;
+		return convertToDao(someFilteringOwner, mappedObjects, DaoObjectFactory::createSomeFilteringOwnerDao, (domain, dao) -> getInstance().setSomeFilteringOwnerDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setSomeFilteringOwnerDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setSomeFilteringOwnerDaoMultiReferences(domain, dao, includeChildren, mappedObjects));
 	}
 
 	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren, RootDao parent) {
@@ -311,6 +195,109 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 			instance = AccessMapperFactory.createFilteringAccessMapper();
 		}
 		return instance;
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setFilteredDaoMultiReferences(Filtered domain, FilteredDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setFilteredDaoSingleReferences(Filtered domain, FilteredDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setFilteredDaoValues(Filtered domain, FilteredDao dao) {
+		dao.setDescription(domain.getDescription());
+		dao.setSomeEnum(domain.getSomeEnum());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setFilteredMultiReferences(FilteredDao dao, Filtered domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setFilteredOnlyDaoFieldDaoMultiReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setFilteredOnlyDaoFieldDaoSingleReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	protected void setFilteredOnlyDaoFieldDaoValues(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao, AnyEnumType someEnum) {
+		dao.setDescription(domain.getDescription());
+		dao.setSomeEnum(someEnum);
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setFilteredOnlyDaoFieldMultiReferences(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setFilteredOnlyDaoFieldSingleReferences(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setFilteredOnlyDaoFieldValues(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain) {
+		domain.setDescription(dao.getDescription());
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setFilteredSingleReferences(FilteredDao dao, Filtered domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	protected void setFilteredValues(FilteredDao dao, Filtered domain) {
+		domain.setDescription(dao.getDescription());
+		domain.setSomeEnum(dao.getSomeEnum());
+	}
+
+	protected void setSomeFilteringOwnerDaoMultiReferences(SomeFilteringOwner domain, SomeFilteringOwnerDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
+		dao.setAggFiltereds(new ArrayList<>());
+		dao.setAggFilteredOnlyDaoFields(new ArrayList<>());
+		if (includeChildren) {
+			domain.getFilterAs().forEach(arg ->
+					FilteringAccessMapper.convertToFilteredDao(arg, dao, mappedObjects)
+			);
+			domain.getFilterBs().forEach(arg ->
+					FilteringAccessMapper.convertToFilteredDao(arg, dao, mappedObjects)
+			);
+			domain.getFilterCs().forEach(arg ->
+					FilteringAccessMapper.convertToFilteredDao(arg, dao, mappedObjects)
+			);
+			domain.getFilterDaoAs().forEach(arg ->
+					FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(arg, dao, AnyEnumType.ENUM_VALUE_A, mappedObjects)
+			);
+			domain.getFilterDaoBs().forEach(arg ->
+					FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(arg, dao, AnyEnumType.ENUM_VALUE_B, mappedObjects)
+			);
+			domain.getFilterDaoCs().forEach(arg ->
+					FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(arg, dao, AnyEnumType.ENUM_VALUE_C, mappedObjects)
+			);
+		}
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSomeFilteringOwnerDaoSingleReferences(SomeFilteringOwner domain, SomeFilteringOwnerDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSomeFilteringOwnerDaoValues(SomeFilteringOwner domain, SomeFilteringOwnerDao dao) {
+	}
+
+	protected void setSomeFilteringOwnerMultiReferences(SomeFilteringOwnerDao dao, SomeFilteringOwner domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
+		if (includeChildren) {
+			dao.getAggFiltereds().forEach(arg ->
+					FilteringAccessMapper.convertToFiltered(arg, domain, mappedObjects)
+			);
+			dao.getAggFilteredOnlyDaoFields().forEach(arg ->
+					FilteringAccessMapper.convertToFilteredOnlyDaoField(arg, domain, mappedObjects)
+			);
+		}
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSomeFilteringOwnerSingleReferences(SomeFilteringOwnerDao dao, SomeFilteringOwner domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	@SuppressWarnings("java:S1186")
+	protected void setSomeFilteringOwnerValues(SomeFilteringOwnerDao dao, SomeFilteringOwner domain) {
 	}
 
 }

@@ -3,7 +3,6 @@ package de.ma_vin.util.layer.generator.generator;
 import static de.ma_vin.util.layer.generator.generator.CommonMapperCreator.*;
 
 import de.ma_vin.util.layer.generator.builder.MapperType;
-import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
@@ -21,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractMapperCreator extends AbstractCreator {
 
@@ -124,46 +122,13 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
 
         convertToMethod.addLine("return %s(%s, %s, %s, %s, %s, %s", CONVERT_TO_METHOD_NAME, SOURCE_VARIABLE, MAPPED_OBJECTS_PARAMETER_TEXT
                 , OBJECT_CREATOR_PARAMETER, VALUE_MAPPER_PARAMETER, SINGLE_REFERENCE_MAPPER_PARAMETER, MULTI_REFERENCE_MAPPER_PARAMETER);
-        convertToMethod.addLine(", %s::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));", 2, SOURCE_GENERIC);
+        if (config.isUseIdGenerator()) {
+            convertToMethod.addLine(", %s::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));", 2, SOURCE_GENERIC);
+        } else {
+            convertToMethod.addLine(", s -> s.getClass().getSimpleName() + s.getId().longValue(), (s, t) -> t.setId(s.getId()));", 2, SOURCE_GENERIC);
+        }
 
         mapperClass.addMethod(convertToMethod);
-    }
-
-
-    /**
-     * Adds the default mappings to a convert method
-     *
-     * @param convertMethod         method where to add lines for default mapping instructions
-     * @param entity                entity whose properties are to map
-     * @param classParameterPostFix postfix for classes and parameters
-     * @param fieldChecker          checks whether a field of entity is relevant or not
-     * @param modelType             type of model to determine the correct object factory
-     */
-    protected void addConvertDefaultMappings(Method convertMethod, Entity entity, String classParameterPostFix, FieldRelevantChecker fieldChecker, ModelType modelType) {
-        convertMethod.addLine("if (%s == null) {", getLowerFirst(entity.getBaseName()));
-        convertMethod.addLine("return null;", 1);
-        convertMethod.addLine("}");
-        convertMethod.addEmptyLine();
-        convertMethod.addLine("String identification = %s;", getterIdentificationForMap(entity, classParameterPostFix));
-        convertMethod.addLine("if (!%1$s.isEmpty() && %1$s.containsKey(identification)) {", MAPPED_OBJECTS_PARAMETER_TEXT);
-        convertMethod.addLine("return (%s%s) %s.get(identification);", 1, getUpperFirst(entity.getBaseName())
-                , classParameterPostFix, MAPPED_OBJECTS_PARAMETER_TEXT);
-        convertMethod.addLine("}");
-        convertMethod.addEmptyLine();
-        convertMethod.addLine("%1$s%2$s result = %3$s.create%1$s%2$s();", getUpperFirst(entity.getBaseName()), classParameterPostFix
-                , modelType.getFactoryClassName());
-        convertMethod.addEmptyLine();
-
-        addIdentificationSetting(convertMethod, entity);
-
-        determineAlFields(entity).stream()
-                .filter(fieldChecker::isRelevant)
-                .forEach(f ->
-                        convertMethod.addLine("result.set%1$s(%2$s.get%1$s());"
-                                , getUpperFirst(f.getFieldName())
-                                , getLowerFirst(entity.getBaseName()))
-                );
-        convertMethod.addEmptyLine();
     }
 
     /**
@@ -178,8 +143,9 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param targetClassParameterPostFix postfix for classes and parameters of the target
      * @param sourceParameter             the method parameter for the source object
      * @param targetParameter             the method parameter for the target object
+     * @return the created method
      */
-    protected void createSetValueMethod(Clazz mapperClass, Entity entity, FieldRelevantChecker fieldChecker
+    protected Method createSetValueMethod(Clazz mapperClass, Entity entity, FieldRelevantChecker fieldChecker
             , String sourceClassParameterPostFix, String targetClassParameterPostFix
             , String sourceParameter, String targetParameter) {
 
@@ -201,6 +167,8 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
             setValueMethod.addAnnotation(SuppressWarnings.class.getSimpleName(), null, "\"java:S1186\"");
         }
         mapperClass.addMethod(setValueMethod);
+
+        return setValueMethod;
     }
 
     /**
@@ -213,15 +181,14 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param sourceParameter     the method parameter for the source object
      * @param targetParameter     the method parameter for the target object
      * @param targetInterfaceName the interface which the target object implements
+     * @param referenceFilter     Functional reference to filter the relevant references
      */
     protected void createSetSingleReferenceMethod(Clazz mapperClass, CreateMethodParameterContainer parameterContainer
-            , String sourceParameter, String targetParameter, String targetInterfaceName) {
+            , String sourceParameter, String targetParameter, String targetInterfaceName, ReferenceFilter referenceFilter) {
 
-        List<Reference> relevantReferences = determineAllReferences(parameterContainer.entity).stream()
-                .filter(ref -> !ref.isList() && parameterContainer.entityChecker.isRelevant(ref.getRealTargetEntity()))
-                .collect(Collectors.toList());
+        List<Reference> relevantReferences = getSingleReferences(parameterContainer.entity, parameterContainer.entityChecker, referenceFilter);
 
-        boolean hasIncludeChildrenParameter = hasSingleRefWithChildren(parameterContainer.entity, parameterContainer.entityChecker);
+        boolean hasIncludeChildrenParameter = hasSingleRefWithChildren(relevantReferences, parameterContainer.entityChecker);
 
         Method setSingleRefMethod = new Method(String.format("set%s%sSingleReferences", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.classParameterPostFix));
         setSingleRefMethod.setQualifier(Qualifier.PROTECTED);
@@ -241,16 +208,26 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         mapperClass.addMethod(setSingleRefMethod);
     }
 
+    protected List<Reference> getSingleReferences(Entity entity, EntityRelevantChecker entityChecker, ReferenceFilter referenceFilter) {
+        return referenceFilter.filter(determineAllReferences(entity)).stream()
+                .filter(ref -> !ref.isList() && entityChecker.isRelevant(ref.getRealTargetEntity()))
+                .collect(Collectors.toList());
+    }
+
     protected boolean hasSingleRefWithChildren(List<Reference> relevantReferences, EntityRelevantChecker entityChecker) {
         return relevantReferences.stream().anyMatch(reference -> hasIncludeChildrenParameter(reference.getRealTargetEntity(), entityChecker));
     }
 
-    protected boolean hasSingleRefWithChildren(Entity entity, EntityRelevantChecker entityChecker) {
-        List<Reference> relevantReferences = determineAllReferences(entity).stream()
-                .filter(ref -> !ref.isList() && entityChecker.isRelevant(ref.getRealTargetEntity()))
-                .collect(Collectors.toList());
+    protected boolean hasSingleRefWithChildren(Entity entity, EntityRelevantChecker entityChecker, ReferenceFilter referenceFilter) {
+        List<Reference> relevantReferences = getSingleReferences(entity, entityChecker, referenceFilter);
 
         return hasSingleRefWithChildren(relevantReferences, entityChecker);
+    }
+
+    protected List<Reference> getMultiReferences(Entity entity, EntityRelevantChecker entityChecker, ReferenceFilter referenceFilter) {
+        return referenceFilter.filter(determineAllReferences(entity)).stream()
+                .filter(ref -> ref.isList() && entityChecker.isRelevant(ref.getRealTargetEntity()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -437,34 +414,6 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     }
 
     /**
-     * Determines how to get the key for the {@code mappedObjects} map
-     *
-     * @param entity entity whose key is asked for
-     * @return the key to use
-     */
-    protected String getterIdentificationForMap(Entity entity, String classParameterPostFix) {
-        if (config.isUseIdGenerator()) {
-            return String.format("%s.getIdentification()", getLowerFirst(entity.getBaseName()));
-        }
-        return String.format("\"%s%s\" + %s.getId().longValue()", getUpperFirst(entity.getBaseName()), classParameterPostFix, getLowerFirst(entity.getBaseName()));
-    }
-
-    /**
-     * Adds the setting of the identification to the convert method
-     *
-     * @param convertMethod Method where to add lines
-     * @param entity        entity which is to convert
-     */
-    protected void addIdentificationSetting(Method convertMethod, Entity entity) {
-        if (config.isUseIdGenerator()) {
-            convertMethod.addLine("result.setIdentification(identification);");
-        } else {
-            convertMethod.addLine("result.setId(%s.getId());", getLowerFirst(entity.getBaseName()));
-        }
-        convertMethod.addEmptyLine();
-    }
-
-    /**
      * Determines all fields which are need by mapping
      *
      * @param entity Entity whose fields should be determined
@@ -518,6 +467,17 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
          * @return {@code true} if the entity is relevant for the mapper
          */
         boolean isRelevant(Entity entity);
+    }
+
+    @FunctionalInterface
+    public interface ReferenceFilter {
+        /**
+         * Filter a given list
+         *
+         * @param references list to filter
+         * @return filtered list
+         */
+        List<Reference> filter(List<Reference> references);
     }
 
     /**
