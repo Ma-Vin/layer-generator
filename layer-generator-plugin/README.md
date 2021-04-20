@@ -2,15 +2,7 @@
 
 # Util Layer Generator
 A maven plugin generator to create domain model, data transport or data access objects.
-
-## Development status
-:hourglass: not finished
-- [x] dao generator
-- [x] dto generator
-- [x] domain generator
-- [x] dao to domain mapper
-- [x] domain to dto mapper
-- [ ] extensibility of generated objects
+It is the third module at ***Util Layer Generator***
 
 ## Usage
 For basic usage add a plugin entry like

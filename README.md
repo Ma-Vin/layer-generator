@@ -1,7 +1,7 @@
 ![Maven Workflow Action](https://github.com/Ma-Vin/de.ma_vin.util.layerGenerator/actions/workflows/maven.yml/badge.svg)
 
 # Util Layer Generator
-A maven plugin generator to create domain model, data transport or data access objects.
+A maven plugin generator and annotations to create domain model, data transport or data access objects and their mappers.
 
 ## Sonarcloud analysis
 
@@ -12,16 +12,9 @@ A maven plugin generator to create domain model, data transport or data access o
 * [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.ma_vin.util.layerGenerator&metric=coverage)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.ma_vin.util.layerGenerator)
 * [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.ma_vin.util.layerGenerator&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.ma_vin.util.layerGenerator)  [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.ma_vin.util.layerGenerator&metric=ncloc)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.ma_vin.util.layerGenerator)
 
+### Maven annotation
+The implementation of the annotations is located at [layer-generator-annotation](/layer-generator-annotation/README.md)
 ### Maven plugin
 The implementation of the maven plugin is located at [layer-generator-plugin](/layer-generator-plugin/README.md)
 ### Example
 An example of usage is shown at [layer-generator-sample](/layer-generator-sample/README.md)
-
-## Development status
-:hourglass: not finished
-- [x] dao generator
-- [x] dto generator
-- [x] domain generator
-- [x] dao to domain mapper
-- [x] domain to dto mapper
-- [ ] extensibility of generated objects
