@@ -28,7 +28,7 @@ public class Entity {
     /**
      * Which objects should be generated
      */
-    @XmlAttribute(required = true)
+    @XmlAttribute
     private Models models;
 
     /**
@@ -86,11 +86,14 @@ public class Entity {
         return !hasParent();
     }
 
-    public boolean isValid() {
-        return validateRequired(baseName) && models != null && validateNonRequired(description)
-                && validateNonRequired(identificationPrefix) && validateNonRequired(parent)
-                && (fields == null || fields.stream().allMatch(Field::isValid))
-                && (references == null || (references.stream().allMatch(Reference::isValid) && Reference.isFilterFieldValid(references)));
+    public boolean isValid(List<String> messages) {
+        return validateRequired(baseName, messages, "baseName")
+                && validateNonRequired(description, messages, "description")
+                && validateNonRequired(identificationPrefix, messages, "identificationPrefix")
+                && validateNonRequired(parent, messages, "parent")
+                && (fields == null || fields.stream().allMatch(f -> f.isValid(messages)))
+                && (references == null || (references.stream().allMatch(r -> r.isValid(messages))
+                && Reference.isFilterFieldValid(baseName, references, messages)));
     }
 
     public Models getModels() {

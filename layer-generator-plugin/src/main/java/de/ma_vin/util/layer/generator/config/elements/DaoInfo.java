@@ -44,6 +44,9 @@ public class DaoInfo {
     @XmlAttribute
     private Integer scale;
 
+    /**
+     * True if enum values should be stored by text and not by id
+     */
     @XmlAttribute
     private Boolean useEnumText;
 

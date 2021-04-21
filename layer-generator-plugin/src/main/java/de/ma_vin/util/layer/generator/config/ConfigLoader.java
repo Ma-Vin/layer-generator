@@ -58,7 +58,13 @@ public class ConfigLoader {
     }
 
     private boolean validate() {
-        return config.isValid();
+        List<String> messages = new ArrayList<>();
+        if (config.isValid(messages)) {
+            messages.forEach(logger::warn);
+            return true;
+        }
+        messages.forEach(logger::error);
+        return false;
     }
 
     public boolean complete() {

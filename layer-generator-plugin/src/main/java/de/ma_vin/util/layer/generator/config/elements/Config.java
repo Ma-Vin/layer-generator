@@ -84,10 +84,14 @@ public class Config {
     @XmlElement(name = "grouping")
     private List<Grouping> groupings;
 
-    public boolean isValid() {
-        return validateRequired(basePackage) && validateRequired(dtoPackage) && validateRequired(domainPackage) && validateRequired(daoPackage)
-                && (groupings == null || groupings.stream().allMatch(Grouping::isValid))
-                && (entities == null || entities.stream().allMatch(Entity::isValid))
-                && ((idGeneratorPackage == null && idGeneratorClass == null) || (validateRequired(idGeneratorPackage) && validateRequired(idGeneratorClass)));
+    public boolean isValid(List<String> messages) {
+        return validateRequired(basePackage, messages, "basePackage")
+                && validateRequired(dtoPackage, messages, "dtoPackage")
+                && validateRequired(domainPackage, messages, "domainPackage")
+                && validateRequired(daoPackage, messages, "daoPackage")
+                && (groupings == null || groupings.stream().allMatch(g -> g.isValid(messages))
+                && (entities == null || entities.stream().allMatch(e -> e.isValid(messages))))
+                && ((idGeneratorPackage == null && idGeneratorClass == null)
+                || (validateRequired(idGeneratorPackage, messages, "idGeneratorPackage") && validateRequired(idGeneratorClass, messages, "idGeneratorClass")));
     }
 }

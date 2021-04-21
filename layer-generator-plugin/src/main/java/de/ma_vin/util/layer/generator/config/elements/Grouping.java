@@ -32,7 +32,8 @@ public class Grouping {
     @XmlElement(name = "entity")
     private List<Entity> entities;
 
-    public boolean isValid() {
-        return validateRequired(groupingPackage) && (entities == null || entities.stream().allMatch(Entity::isValid));
+    public boolean isValid(List<String> messages) {
+        return validateRequired(groupingPackage, messages, "groupingPackage")
+                && (entities == null || entities.stream().allMatch(e -> e.isValid(messages)));
     }
 }

@@ -76,22 +76,30 @@ public class Reference {
     @XmlTransient
     private boolean isReverse;
 
-    public boolean isValid() {
-        return validateRequired(targetEntity) && validateRequired(referenceName)
-                && validateNonRequired(filterField) && (filterField == null || validateNonRequired(filterFieldValue));
+    public boolean isValid(List<String> messages) {
+        return validateRequired(targetEntity, messages, "targetEntity")
+                && validateRequired(referenceName, messages, "referenceName")
+                && validateNonRequired(filterField, messages, "filterField")
+                && (filterField == null || validateNonRequired(filterFieldValue, messages, "filterFieldValue"));
     }
 
     /**
      * Util method since schemagen is called before getter will be created by lombok
      * If more than one references point to the same entity only one is allowed to have a {@code null} at {@link Reference#filterField}
      *
+     * @param entity     The name of the owner entity
      * @param references references to check
+     * @param messages   List where to add messages
      * @return {@code true} if valid
      */
-    public static boolean isFilterFieldValid(List<Reference> references) {
-        return references.stream().filter(ref -> ref.isList).noneMatch(ref -> references.stream()
+    public static boolean isFilterFieldValid(String entity, List<Reference> references, List<String> messages) {
+        boolean result = references.stream().filter(ref -> ref.isList).noneMatch(ref -> references.stream()
                 .filter(ref2 -> ref2.isList && ref.targetEntity.equals(ref2.targetEntity) && ref2.filterField == null)
                 .count() > 1);
+        if (!result) {
+            messages.add(String.format("There multiple reference from %s to the same target", entity));
+        }
+        return result;
     }
 
     /**

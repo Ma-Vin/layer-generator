@@ -119,7 +119,7 @@ public abstract class AbstractCreator {
      */
     protected String getPackage(String subPackage, String basePackage) {
         if (subPackage != null) {
-            return String.format("%s.%s"
+            return String.format(PACKAGE_AND_CLASS_NAME_FORMAT
                     , basePackage
                     , subPackage);
         }

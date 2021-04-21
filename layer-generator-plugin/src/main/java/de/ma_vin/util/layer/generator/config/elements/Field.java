@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.xml.bind.annotation.*;
+import java.util.List;
 
 /**
  * Describes the attribute of some entity
@@ -60,9 +61,12 @@ public class Field {
     @XmlTransient
     private Entity parentEntity;
 
-    public boolean isValid() {
-        return validateRequired(fieldName) && validateRequired(type) && validateNonRequired(description)
-                && validateNonRequired(typePackage) && (daoInfo == null || daoInfo.isValid());
+    public boolean isValid(List<String> messages) {
+        return validateRequired(fieldName, messages, "fieldName")
+                && validateRequired(type, messages, "type")
+                && validateNonRequired(description, messages, "description")
+                && validateNonRequired(typePackage, messages, "typePackage")
+                && (daoInfo == null || daoInfo.isValid());
     }
 
     public Models getModels() {

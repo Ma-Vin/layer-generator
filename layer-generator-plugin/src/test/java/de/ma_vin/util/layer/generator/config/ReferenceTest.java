@@ -6,10 +6,13 @@ import de.ma_vin.util.layer.generator.config.elements.Reference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ReferenceTest {
     private Reference cut;
+    private final List<String> messages = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
@@ -20,6 +23,8 @@ public class ReferenceTest {
         cut.setIsList(true);
         cut.setFilterField("filterField");
         cut.setFilterFieldValue("filterValue");
+
+        messages.clear();
     }
 
     @Test
@@ -34,7 +39,8 @@ public class ReferenceTest {
         ref2.setIsList(true);
         ref2.setFilterField(null);
 
-        assertTrue(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should be successful");
+        assertTrue(Reference.isFilterFieldValid("entity", Arrays.asList(ref1, ref2), messages), "The validation should be successful");
+        assertEquals(0, messages.size(), "Wrong number of messages");
     }
 
     @Test
@@ -49,7 +55,8 @@ public class ReferenceTest {
         ref2.setIsList(true);
         ref2.setFilterField(null);
 
-        assertFalse(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should not be successful");
+        assertFalse(Reference.isFilterFieldValid("entity", Arrays.asList(ref1, ref2), messages), "The validation should not be successful");
+        assertEquals(1, messages.size(), "Wrong number of messages");
     }
 
     @Test
@@ -64,7 +71,8 @@ public class ReferenceTest {
         ref2.setIsList(true);
         ref2.setFilterField(null);
 
-        assertTrue(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should be successful");
+        assertTrue(Reference.isFilterFieldValid("entity", Arrays.asList(ref1, ref2), messages), "The validation should be successful");
+        assertEquals(0, messages.size(), "Wrong number of messages");
     }
 
     @Test
@@ -79,7 +87,8 @@ public class ReferenceTest {
         ref2.setIsList(true);
         ref2.setFilterField("f2");
 
-        assertTrue(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should be successful");
+        assertTrue(Reference.isFilterFieldValid("entity", Arrays.asList(ref1, ref2), messages), "The validation should be successful");
+        assertEquals(0, messages.size(), "Wrong number of messages");
     }
 
     @Test
@@ -94,7 +103,8 @@ public class ReferenceTest {
         ref2.setIsList(false);
         ref2.setFilterField(null);
 
-        assertTrue(Reference.isFilterFieldValid(Arrays.asList(ref1, ref2)), "The validation should be successful");
+        assertTrue(Reference.isFilterFieldValid("entity", Arrays.asList(ref1, ref2), messages), "The validation should be successful");
+        assertEquals(0, messages.size(), "Wrong number of messages");
     }
 
     @Test
@@ -102,5 +112,47 @@ public class ReferenceTest {
         Reference result = cut.copy();
         assertNotNull(result, "There should be any result");
         assertEquals(cut, result, "The copy should be equal to the original");
+    }
+
+    @Test
+    public void testIsValid() {
+        assertTrue(cut.isValid(messages), "Entity should be valid");
+        assertEquals(0, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidNulls() {
+        cut.setFilterField(null);
+        cut.setFilterFieldValue(null);
+        assertTrue(cut.isValid(messages), "Entity should be valid");
+        assertEquals(0, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidTargetEntity() {
+        cut.setTargetEntity(null);
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidReferenceName() {
+        cut.setReferenceName(null);
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidFilterField() {
+        cut.setFilterField("");
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidFilterFieldValue() {
+        cut.setFilterFieldValue("");
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
     }
 }
