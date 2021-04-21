@@ -13,8 +13,8 @@ A maven plugin generator and annotations to create domain model, data transport 
 * [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.ma_vin.util.layerGenerator&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.ma_vin.util.layerGenerator)  [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Ma-Vin_de.ma_vin.util.layerGenerator&metric=ncloc)](https://sonarcloud.io/dashboard?id=Ma-Vin_de.ma_vin.util.layerGenerator)
 
 ### Maven annotation
-The implementation of the annotations is located at [layer-generator-annotation](/layer-generator-annotation/README.md)
+The implementation of the annotations is located at [layer-generator-annotation](/layer-generator-annotation)
 ### Maven plugin
-The implementation of the maven plugin is located at [layer-generator-plugin](/layer-generator-plugin/README.md)
+The implementation of the maven plugin is located at [layer-generator-plugin](/layer-generator-plugin)
 ### Example
-An example of usage is shown at [layer-generator-sample](/layer-generator-sample/README.md)
+An example of usage is shown at [layer-generator-sample](/layer-generator-sample)
