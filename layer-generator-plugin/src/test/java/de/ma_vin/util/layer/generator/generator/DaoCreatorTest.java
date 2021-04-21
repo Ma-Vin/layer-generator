@@ -805,6 +805,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateDataAccessObjectUseIdGenerator() {
         when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
+        when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.ape.utils.generators");
+        when(config.getIdGeneratorClass()).thenReturn("IdGenerator");
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
@@ -852,6 +854,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateDataAccessObjectUseIdGeneratorHasSuperClass() {
         when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
+        when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.ape.utils.generators");
+        when(config.getIdGeneratorClass()).thenReturn("IdGenerator");
         when(entity.getParent()).thenReturn("AnotherDummy");
         when(entity.hasParent()).thenReturn(Boolean.TRUE);
         when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
@@ -904,6 +908,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateDataAccessObjectUseIdGeneratorWithoutDomain() {
         when(config.isUseIdGenerator()).thenReturn(Boolean.TRUE);
+        when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.ape.utils.generators");
+        when(config.getIdGeneratorClass()).thenReturn("IdGenerator");
         when(entity.getModels()).thenReturn(Models.DAO);
 
         List<String> expected = new ArrayList<>();

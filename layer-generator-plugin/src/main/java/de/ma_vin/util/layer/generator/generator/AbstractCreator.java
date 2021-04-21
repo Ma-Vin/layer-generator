@@ -23,6 +23,8 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public abstract class AbstractCreator {
+    public static final String PACKAGE_AND_CLASS_NAME_FORMAT = "%s.%s";
+
     protected Config config;
     protected Log logger;
 

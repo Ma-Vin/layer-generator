@@ -28,7 +28,6 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     public static final String MAPPED_OBJECTS_PARAMETER_TEXT = "mappedObjects";
     public static final String MAP_DECLARATION_TEXT = "%s<String, %s>";
     public static final String RETURN_RESULT_TEXT = "return result;";
-    public static final String PACKAGE_AND_CLASS_NAME_FORMAT = "%s.%s";
 
     AbstractMapperCreator(Config config, Log logger) {
         super(config, logger);

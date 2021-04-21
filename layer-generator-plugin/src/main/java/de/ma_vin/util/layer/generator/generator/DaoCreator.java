@@ -278,7 +278,7 @@ public class DaoCreator extends AbstractObjectCreator {
         }
         logger.debug("Identification methods will be created for " + daoClazz.getClassName());
 
-        daoClazz.addImport("de.ma_vin.ape.utils.generators.IdGenerator");
+        daoClazz.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, config.getIdGeneratorPackage(), config.getIdGeneratorClass()));
         if (entity.getModels().isDomain()) {
             daoClazz.addImport(getPackageAndClass(entity, config.getBasePackage() + "." + config.getDomainPackage(), ""));
         }
@@ -288,9 +288,9 @@ public class DaoCreator extends AbstractObjectCreator {
         getIdentificationMethod.setQualifier(Qualifier.PUBLIC);
         getIdentificationMethod.setMethodType(String.class.getSimpleName());
         if (entity.getModels().isDomain()) {
-            getIdentificationMethod.addLine(String.format("return IdGenerator.generateIdentification(id, %s.ID_PREFIX);", entity.getBaseName()));
+            getIdentificationMethod.addLine("return %s.generateIdentification(id, %s.ID_PREFIX);", config.getIdGeneratorClass(), entity.getBaseName());
         } else {
-            getIdentificationMethod.addLine("return IdGenerator.generateIdentification(id, \"\");");
+            getIdentificationMethod.addLine("return %s.generateIdentification(id, \"\");", config.getIdGeneratorClass());
         }
         daoClazz.addMethod(getIdentificationMethod);
 
@@ -299,9 +299,9 @@ public class DaoCreator extends AbstractObjectCreator {
         setIdentificationMethod.setQualifier(Qualifier.PUBLIC);
         setIdentificationMethod.addParameter(String.class.getSimpleName(), "identification");
         if (entity.getModels().isDomain()) {
-            setIdentificationMethod.addLine(String.format("id = IdGenerator.generateId(identification, %s.ID_PREFIX);", entity.getBaseName()));
+            setIdentificationMethod.addLine("id = %s.generateId(identification, %s.ID_PREFIX);", config.getIdGeneratorClass(), entity.getBaseName());
         } else {
-            setIdentificationMethod.addLine("id = IdGenerator.generateId(identification, \"\");");
+            setIdentificationMethod.addLine("id = %s.generateId(identification, \"\");", config.getIdGeneratorClass());
         }
         daoClazz.addMethod(setIdentificationMethod);
     }

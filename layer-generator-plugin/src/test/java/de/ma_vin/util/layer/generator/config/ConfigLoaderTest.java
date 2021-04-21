@@ -4,10 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.log.LogImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -27,6 +28,8 @@ public class ConfigLoaderTest {
     private static final String REFERENCE_NAME = "ReferenceName";
     private static final String FIELD_NAME = "FieldName";
     private static final String GROUPING_FIELD_NAME = "GroupingFieldName";
+
+    AutoCloseable openMocks;
 
     @Mock
     private File configFile;
@@ -53,10 +56,14 @@ public class ConfigLoaderTest {
 
     @BeforeEach
     public void setUp() {
-        initMocks(this);
+        openMocks = openMocks(this);
         cut = new ConfigLoader(configFile, new LogImpl());
         initDefaultNonMocks();
         initDefaultMocks();
+    }
+    @AfterEach
+    public void tearDown() throws Exception {
+        openMocks.close();
     }
 
     private void initDefaultNonMocks() {
@@ -133,6 +140,8 @@ public class ConfigLoaderTest {
         verify(reference).setParent(eq(entity));
         verify(reference).setRealTargetEntity(eq(groupingEntity));
         verify(reference, never()).setRealFilterField(any());
+
+        verify(config).setUseIdGenerator(eq(Boolean.FALSE));
     }
 
     @Test
@@ -313,5 +322,35 @@ public class ConfigLoaderTest {
 
         verify(reference).setRealFilterField(eq(groupingEntityField));
         verify(daoInfo, never()).setNullable(any());
+    }
+
+    @Test
+    public void testCompleteIdGenerator(){
+        when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.test");
+        when(config.getIdGeneratorClass()).thenReturn("IdGenerator");
+
+        boolean result = cut.complete();
+        assertTrue(result, "The result of completion should be true");
+
+        verify(config).setUseIdGenerator(eq(Boolean.TRUE));
+    }
+
+    @Test
+    public void testCompleteInvalidIdGenerator(){
+        when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.test");
+
+        boolean result = cut.complete();
+        assertTrue(result, "The result of completion should be true");
+
+        verify(config).setUseIdGenerator(eq(Boolean.FALSE));
+
+        clearInvocations(config);
+        when(config.getIdGeneratorPackage()).thenReturn(null);
+        when(config.getIdGeneratorClass()).thenReturn("IdGenerator");
+
+        result = cut.complete();
+        assertTrue(result, "The result of completion should be true");
+
+        verify(config).setUseIdGenerator(eq(Boolean.FALSE));
     }
 }

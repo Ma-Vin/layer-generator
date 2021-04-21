@@ -48,8 +48,27 @@ public class Config {
     /**
      * if true the dao id will be transformed by the Id generator
      */
-    @XmlElement(required = true)
+    @XmlTransient
     private boolean useIdGenerator;
+
+    /**
+     * The package of an id generator
+     */
+    @XmlElement(required = true)
+    private String idGeneratorPackage;
+
+    /**
+     * The class of an id generator, which is used to transform the database id to an identification with some prefix.
+     * The prefix makes it easier to classy the identification to a concrete type of model object
+     * <br>
+     * Two static function are to provide:
+     * <ul>
+     *     <li>public static String generateIdentification(Long id, String prefix)</li>
+     *     <li> public static Long generateId(String identification, String prefix)</li>
+     * </ul>
+     */
+    @XmlElement(required = true)
+    private String idGeneratorClass;
 
     /**
      * Entities which will be used to generate domain objects, dto or dao.
@@ -68,6 +87,7 @@ public class Config {
     public boolean isValid() {
         return validateRequired(basePackage) && validateRequired(dtoPackage) && validateRequired(domainPackage) && validateRequired(daoPackage)
                 && (groupings == null || groupings.stream().allMatch(Grouping::isValid))
-                && (entities == null || entities.stream().allMatch(Entity::isValid));
+                && (entities == null || entities.stream().allMatch(Entity::isValid))
+                && ((idGeneratorPackage == null && idGeneratorClass == null) || (validateRequired(idGeneratorPackage) && validateRequired(idGeneratorClass)));
     }
 }

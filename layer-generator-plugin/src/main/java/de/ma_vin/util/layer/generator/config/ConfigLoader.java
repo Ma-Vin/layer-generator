@@ -76,6 +76,7 @@ public class ConfigLoader {
             logger.error("Completion of filter fields at references could not be completed");
             return false;
         }
+        config.setUseIdGenerator(config.getIdGeneratorPackage() != null && config.getIdGeneratorClass() != null);
         return true;
     }
 
