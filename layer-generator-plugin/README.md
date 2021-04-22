@@ -18,7 +18,9 @@ For basic usage add a plugin entry like
     </execution>
 </executions>
 ````
+
 Following configuration properties are provided and set by default
+
 Property | Default Value | Description
 -------- | ------------- | -----------
 generateTargetDirectory | src/main/generated/ | relative project directory where to generate source files at
@@ -29,6 +31,87 @@ modelDefinitionDirectory | src/main/resources/ | relative project directory wher
 modelDefinitionFilename | model.xml | xml which provides the model definition. Has to satisfy the config.xsd
 cleanTargetDirectory | false | if true all files and directories within the *generate-target*
 cleanBasePackage | true | if true all files and directories within the corresponding directory of *basePackage* (defined in the *model-file*)
+
+### Model definition
+In addition to the maven properties the plug in is configured by a xml file. This xml has to satisfy the generated config.xsd. 
+The xsd generation base on [Config](src/main/java/de/ma_vin/util/layer/generator/config/elements/Config.java)
+
+These abbreviations apply in the following for the xml type:
+* A : Attribute
+* N : Node
+#### Config
+Property | Nullable | xml type | Description
+-------- | -------- | ------- |-----------
+basePackage | :x: | *N* | Basic package which will be used for generated java classes
+dtoPackage | :x: | *N* | Extension of the basic package for dto objects
+domainPackage | :x: | *N* | Extension of the basic package for domain objects
+daoPackage | :x: | *N* | Extension of the basic package for dao objects
+idGeneratorPackage | :heavy_check_mark: | *N* | The package of an id generator
+idGeneratorClass | :heavy_check_mark: | *N* | The class of an id generator, which is used to transform the database id to an identification with some prefix.<br>The prefix makes it easier to classy the identification to a concrete type of model object<br>Two static function are to provide:<ul><li>*public static String generateIdentification(Long id, String prefix)*</li><li>*public static Long generateId(String identification, String prefix)*</li></ul>
+entities | :x: | *N* | List of entities which will be used to generate domain objects, dto or dao.
+groupings | :x: | *N* | List of groupings of entities. Each grouping gets an own sub package
+
+#### Entity
+Property | Nullable | xml type |  Description
+-------- | -------- | ------- | -----------
+baseName | :x: | *A* | Base name of the objects, which will be extended by some postfix for dto or dao
+models | :x: | *A* | Which objects should be generated
+description | :heavy_check_mark: | *A* | Description of the entity. Will be added at javadoc
+identificationPrefix | :heavy_check_mark: | *A* | If there is a use of idGeneratorClass this field is not null able
+parent | :heavy_check_mark: | *A* | super entity which is extended by this entity. The super entity has to abstract.
+isAbstract | :heavy_check_mark: | *A* | indication if the generated java class should be abstract
+fields | :heavy_check_mark: | *N* | List of attributes of the entity
+references | :heavy_check_mark: | *N* | References to other entities
+
+#### Grouping
+Property | Nullable | xml type |  Description
+-------- | -------- | ------- | -----------
+groupingPackage | :x: | *A* | sub package name for the grouping
+entities | :x: | *N* | List of entities which will be used to generate domain objects, dto or dao.
+
+#### Field
+Property | Nullable | xml type |  Description
+-------- | -------- | ------- | -----------
+fieldName | :x: | *A* | Name of the attribute
+type | :x: | *A* | Type of the attribute
+typePackage | :heavy_check_mark: | *A* | package of the type if necessary
+isTypeEnum | :heavy_check_mark: | *A* | indication if the field is an enum or not (Default ist *false*)
+description | :heavy_check_mark: | *N* | Description of the attribute
+models | :heavy_check_mark: | *A* | For which object is this field relevant
+daoInfo | :heavy_check_mark: | *N* | additional information for database.
+
+#### DaoInfo
+Property | Nullable | xml type |  Description
+-------- | -------- | ------- | -----------
+columnName | :heavy_check_mark: | *A* | different column name compared to fieldName
+nullable | :heavy_check_mark: | *A* | indicator whether the database column is nullable.
+length | :heavy_check_mark: | *A* | The column length.
+precision | :heavy_check_mark: | *A* | The precision for a decimal column
+scale | :heavy_check_mark: | *A* | The scale for a decimal column.
+useEnumText | :heavy_check_mark: | *A* | True if enum values should be stored by text and not by id
+
+#### Reference
+Property | Nullable | xml type |  Description
+-------- | -------- | ------- | -----------
+referenceName | :x: | *A* | Name of the reference
+targetEntity | :x: | *A* | The baseName of the entity where to point at
+filterField | :heavy_check_mark: | *A* | Field of enum type to filter references from one entity to another multiple times
+filterFieldValue | :heavy_check_mark: | *A* | Value which should be used for filtering
+isOwner | :heavy_check_mark: | *A* | *true* if the parent should also be the parent at database. Otherwise some connection table will be generated (Default ist *false*)
+isList | :heavy_check_mark: | *A* | Indicator if a one to one relation or an one to many relation exists (Default ist *false*)
+
+#### Models
+Available model values.
+
+* DOMAIN
+* DAO
+* DTO
+* DOMAIN_DAO
+* DOMAIN_DTO
+* DAO_DTO
+* DOMAIN_DAO_DTO
+  
+If the nothing is set, it will be interpreted as *DOMAIN_DAO_DTO*
 
 ## Example
 An example of usage is shown at [Sample](../layer-generator-sample/README.md)

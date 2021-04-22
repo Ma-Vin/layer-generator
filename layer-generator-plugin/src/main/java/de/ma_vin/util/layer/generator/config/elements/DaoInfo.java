@@ -15,6 +15,9 @@ import javax.xml.bind.annotation.XmlType;
 @Data
 public class DaoInfo {
 
+    /**
+     * different column name compared to fieldName
+     */
     @XmlAttribute
     private String columnName;
 

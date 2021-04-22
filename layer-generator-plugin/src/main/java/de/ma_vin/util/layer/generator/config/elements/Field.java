@@ -37,7 +37,7 @@ public class Field {
     private String typePackage;
 
     /**
-     * package of the type if necessary
+     * indication if the field is an enum or not
      */
     @XmlAttribute
     private Boolean isTypeEnum = Boolean.FALSE;
