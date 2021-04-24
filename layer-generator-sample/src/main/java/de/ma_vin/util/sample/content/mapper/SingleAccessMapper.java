@@ -14,6 +14,9 @@ import de.ma_vin.util.sample.content.domain.single.SingleRefTwoParents;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generated class which provides methods to convert a data access to a domain object of sub package <i>single<i> and the other way around
+ */
 @BaseAccessMapper
 public class SingleAccessMapper extends AbstractAccessMapper {
 
@@ -22,20 +25,52 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 */
 	private static SingleAccessMapper instance;
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParentDao} to a(n) {@link SingleRefOneParent}
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefOneParent}
+	 */
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDao singleRefOneParent) {
 		return convertToSingleRefOneParent(singleRefOneParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParentDao} to a(n) {@link SingleRefOneParent}
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code singleRefOneParent} is contained, the found
+	 *                           {@link SingleRefOneParent} will be returned
+	 * @return an equivalent new created {@link SingleRefOneParent} or the found one from the given map
+	 */
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDao singleRefOneParent, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(singleRefOneParent, mappedObjects, DomainObjectFactory::createSingleRefOneParent, (dao, domain) -> getInstance().setSingleRefOneParentValues(dao, domain)
 				, (dao, domain) -> getInstance().setSingleRefOneParentSingleReferences(dao, domain, mappedObjects)
 				, (dao, domain) -> getInstance().setSingleRefOneParentMultiReferences(dao, domain, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParentDao} to a(n) {@link SingleRefOneParent} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param parent             the parent of converted result
+	 * @return an equivalent new created {@link SingleRefOneParent}
+	 */
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDao singleRefOneParent, Root parent) {
 		return convertToSingleRefOneParent(singleRefOneParent, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParentDao} to a(n) {@link SingleRefOneParent} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param parent             the parent of converted result
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code singleRefOneParent} is contained, the found
+	 *                           {@link SingleRefOneParent} will be returned
+	 * @return an equivalent new created {@link SingleRefOneParent} or the found one from the given map
+	 */
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDao singleRefOneParent, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefOneParent result = convertToSingleRefOneParent(singleRefOneParent, mappedObjects);
 		if (result != null) {
@@ -44,20 +79,52 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParent} to a(n) {@link SingleRefOneParentDao}
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefOneParentDao}
+	 */
 	public static SingleRefOneParentDao convertToSingleRefOneParentDao(SingleRefOneParent singleRefOneParent) {
 		return convertToSingleRefOneParentDao(singleRefOneParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParent} to a(n) {@link SingleRefOneParentDao}
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code singleRefOneParent} is contained, the found
+	 *                           {@link SingleRefOneParentDao} will be returned
+	 * @return an equivalent new created {@link SingleRefOneParentDao} or the found one from the given map
+	 */
 	public static SingleRefOneParentDao convertToSingleRefOneParentDao(SingleRefOneParent singleRefOneParent, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(singleRefOneParent, mappedObjects, DaoObjectFactory::createSingleRefOneParentDao, (domain, dao) -> getInstance().setSingleRefOneParentDaoValues(domain, dao)
 				, (domain, dao) -> getInstance().setSingleRefOneParentDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setSingleRefOneParentDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParent} to a(n) {@link SingleRefOneParentDao} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param parent             the parent of converted result
+	 * @return an equivalent new created {@link SingleRefOneParentDao}
+	 */
 	public static SingleRefOneParentDao convertToSingleRefOneParentDao(SingleRefOneParent singleRefOneParent, RootDao parent) {
 		return convertToSingleRefOneParentDao(singleRefOneParent, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParent} to a(n) {@link SingleRefOneParentDao} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param parent             the parent of converted result
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code singleRefOneParent} is contained, the found
+	 *                           {@link SingleRefOneParentDao} will be returned
+	 * @return an equivalent new created {@link SingleRefOneParentDao} or the found one from the given map
+	 */
 	public static SingleRefOneParentDao convertToSingleRefOneParentDao(SingleRefOneParent singleRefOneParent, RootDao parent, Map<String, IIdentifiableDao> mappedObjects) {
 		SingleRefOneParentDao result = convertToSingleRefOneParentDao(singleRefOneParent, mappedObjects);
 		if (result != null) {
@@ -67,20 +134,52 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDao} to a(n) {@link SingleRefTwoParents}
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefTwoParents}
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents) {
 		return convertToSingleRefTwoParents(singleRefTwoParents, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDao} to a(n) {@link SingleRefTwoParents}
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParents} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(singleRefTwoParents, mappedObjects, DomainObjectFactory::createSingleRefTwoParents, (dao, domain) -> getInstance().setSingleRefTwoParentsValues(dao, domain)
 				, (dao, domain) -> getInstance().setSingleRefTwoParentsSingleReferences(dao, domain, mappedObjects)
 				, (dao, domain) -> getInstance().setSingleRefTwoParentsMultiReferences(dao, domain, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDao} to a(n) {@link SingleRefTwoParents} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @return an equivalent new created {@link SingleRefTwoParents}
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, Root parent) {
 		return convertToSingleRefTwoParents(singleRefTwoParents, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDao} to a(n) {@link SingleRefTwoParents} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParents} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefTwoParents result = convertToSingleRefTwoParents(singleRefTwoParents, mappedObjects);
 		if (result != null) {
@@ -89,10 +188,28 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDao} to a(n) {@link SingleRefTwoParents} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @return an equivalent new created {@link SingleRefTwoParents}
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, SingleRefOneParent parent) {
 		return convertToSingleRefTwoParents(singleRefTwoParents, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDao} to a(n) {@link SingleRefTwoParents} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParents} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, SingleRefOneParent parent, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefTwoParents result = convertToSingleRefTwoParents(singleRefTwoParents, mappedObjects);
 		if (result != null) {
@@ -101,20 +218,52 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDao}
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefTwoParentsDao}
+	 */
 	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents) {
 		return convertToSingleRefTwoParentsDao(singleRefTwoParents, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDao}
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParentsDao} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParentsDao} or the found one from the given map
+	 */
 	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(singleRefTwoParents, mappedObjects, DaoObjectFactory::createSingleRefTwoParentsDao, (domain, dao) -> getInstance().setSingleRefTwoParentsDaoValues(domain, dao)
 				, (domain, dao) -> getInstance().setSingleRefTwoParentsDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setSingleRefTwoParentsDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDao} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @return an equivalent new created {@link SingleRefTwoParentsDao}
+	 */
 	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, RootDao parent) {
 		return convertToSingleRefTwoParentsDao(singleRefTwoParents, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDao} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParentsDao} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParentsDao} or the found one from the given map
+	 */
 	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, RootDao parent, Map<String, IIdentifiableDao> mappedObjects) {
 		SingleRefTwoParentsDao result = convertToSingleRefTwoParentsDao(singleRefTwoParents, mappedObjects);
 		if (result != null) {
@@ -124,10 +273,28 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDao} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @return an equivalent new created {@link SingleRefTwoParentsDao}
+	 */
 	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, SingleRefOneParentDao parent) {
 		return convertToSingleRefTwoParentsDao(singleRefTwoParents, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDao} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParentsDao} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParentsDao} or the found one from the given map
+	 */
 	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, SingleRefOneParentDao parent, Map<String, IIdentifiableDao> mappedObjects) {
 		SingleRefTwoParentsDao result = convertToSingleRefTwoParentsDao(singleRefTwoParents, mappedObjects);
 		if (result != null) {

@@ -12,6 +12,9 @@ import de.ma_vin.util.sample.content.dto.RootExtDto;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generated class which provides methods to convert a data transport to a domain object of sub package <i>null<i> and the other way around
+ */
 @BaseTransportMapper
 public class CommonTransportMapper extends AbstractTransportMapper {
 
@@ -20,10 +23,24 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 	 */
 	private static CommonTransportMapper instance;
 
+	/**
+	 * Converts a(n) {@link RootDto} to a(n) {@link Root}
+	 *
+	 * @param root the source object which should be converted
+	 * @return an equivalent new created {@link Root}
+	 */
 	public static Root convertToRoot(RootDto root) {
 		return convertToRoot(root, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootDto} to a(n) {@link Root}
+	 *
+	 * @param root          the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code root} is contained, the found {@link Root} will be
+	 *                      returned
+	 * @return an equivalent new created {@link Root} or the found one from the given map
+	 */
 	public static Root convertToRoot(RootDto root, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(root, mappedObjects, DomainObjectFactory::createRoot, (dto, domain) -> getInstance().setRootValues(dto, domain)
 				, (dto, domain) -> getInstance().setRootSingleReferences(dto, domain, mappedObjects)
@@ -31,10 +48,24 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link Root} to a(n) {@link RootDto}
+	 *
+	 * @param root the source object which should be converted
+	 * @return an equivalent new created {@link RootDto}
+	 */
 	public static RootDto convertToRootDto(Root root) {
 		return convertToRootDto(root, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link Root} to a(n) {@link RootDto}
+	 *
+	 * @param root          the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code root} is contained, the found {@link RootDto} will
+	 *                      be returned
+	 * @return an equivalent new created {@link RootDto} or the found one from the given map
+	 */
 	public static RootDto convertToRootDto(Root root, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(root, mappedObjects, DtoObjectFactory::createRootDto, (domain, dto) -> getInstance().setRootDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setRootDtoSingleReferences(domain, dto, mappedObjects)
@@ -42,10 +73,24 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link RootExtDto} to a(n) {@link RootExt}
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @return an equivalent new created {@link RootExt}
+	 */
 	public static RootExt convertToRootExt(RootExtDto rootExt) {
 		return convertToRootExt(rootExt, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootExtDto} to a(n) {@link RootExt}
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found {@link RootExt}
+	 *                      will be returned
+	 * @return an equivalent new created {@link RootExt} or the found one from the given map
+	 */
 	public static RootExt convertToRootExt(RootExtDto rootExt, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(rootExt, mappedObjects, DomainObjectFactory::createRootExt, (dto, domain) -> getInstance().setRootExtValues(dto, domain)
 				, (dto, domain) -> getInstance().setRootExtSingleReferences(dto, domain, mappedObjects)
@@ -53,10 +98,26 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link RootExtDto} to a(n) {@link RootExt} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @param parent  the parent of converted result
+	 * @return an equivalent new created {@link RootExt}
+	 */
 	public static RootExt convertToRootExt(RootExtDto rootExt, Root parent) {
 		return convertToRootExt(rootExt, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootExtDto} to a(n) {@link RootExt} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param parent        the parent of converted result
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found {@link RootExt}
+	 *                      will be returned
+	 * @return an equivalent new created {@link RootExt} or the found one from the given map
+	 */
 	public static RootExt convertToRootExt(RootExtDto rootExt, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		RootExt result = convertToRootExt(rootExt, mappedObjects);
 		if (result != null) {
@@ -65,10 +126,24 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtDto}
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @return an equivalent new created {@link RootExtDto}
+	 */
 	public static RootExtDto convertToRootExtDto(RootExt rootExt) {
 		return convertToRootExtDto(rootExt, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtDto}
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found {@link RootExtDto}
+	 *                      will be returned
+	 * @return an equivalent new created {@link RootExtDto} or the found one from the given map
+	 */
 	public static RootExtDto convertToRootExtDto(RootExt rootExt, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(rootExt, mappedObjects, DtoObjectFactory::createRootExtDto, (domain, dto) -> getInstance().setRootExtDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setRootExtDtoSingleReferences(domain, dto, mappedObjects)
@@ -76,10 +151,26 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtDto} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @param parent  the parent of converted result
+	 * @return an equivalent new created {@link RootExtDto}
+	 */
 	public static RootExtDto convertToRootExtDto(RootExt rootExt, RootDto parent) {
 		return convertToRootExtDto(rootExt, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtDto} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param parent        the parent of converted result
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found {@link RootExtDto}
+	 *                      will be returned
+	 * @return an equivalent new created {@link RootExtDto} or the found one from the given map
+	 */
 	public static RootExtDto convertToRootExtDto(RootExt rootExt, RootDto parent, Map<String, ITransportable> mappedObjects) {
 		RootExtDto result = convertToRootExtDto(rootExt, mappedObjects);
 		if (result != null) {

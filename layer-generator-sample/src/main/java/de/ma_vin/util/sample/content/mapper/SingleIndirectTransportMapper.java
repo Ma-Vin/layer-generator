@@ -14,6 +14,9 @@ import de.ma_vin.util.sample.content.dto.single.indirect.SingleRefOtherIndirectP
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generated class which provides methods to convert a data transport to a domain object of sub package <i>single.indirect<i> and the other way around
+ */
 @BaseTransportMapper
 public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 
@@ -22,10 +25,24 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 */
 	private static SingleIndirectTransportMapper instance;
 
+	/**
+	 * Converts a(n) {@link SingleRefIndirectParentDto} to a(n) {@link SingleRefIndirectParent}
+	 *
+	 * @param singleRefIndirectParent the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefIndirectParent}
+	 */
 	public static SingleRefIndirectParent convertToSingleRefIndirectParent(SingleRefIndirectParentDto singleRefIndirectParent) {
 		return convertToSingleRefIndirectParent(singleRefIndirectParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefIndirectParentDto} to a(n) {@link SingleRefIndirectParent}
+	 *
+	 * @param singleRefIndirectParent the source object which should be converted
+	 * @param mappedObjects           map which contains already mapped objects. If an identification of {@code singleRefIndirectParent} is contained, the
+	 *                                found {@link SingleRefIndirectParent} will be returned
+	 * @return an equivalent new created {@link SingleRefIndirectParent} or the found one from the given map
+	 */
 	public static SingleRefIndirectParent convertToSingleRefIndirectParent(SingleRefIndirectParentDto singleRefIndirectParent, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(singleRefIndirectParent, mappedObjects, DomainObjectFactory::createSingleRefIndirectParent, (dto, domain) -> getInstance().setSingleRefIndirectParentValues(dto, domain)
 				, (dto, domain) -> getInstance().setSingleRefIndirectParentSingleReferences(dto, domain, mappedObjects)
@@ -33,10 +50,28 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefIndirectParentDto} to a(n) {@link SingleRefIndirectParent} and sets the result to the corresponding reference
+	 * property at the parent
+	 *
+	 * @param singleRefIndirectParent the source object which should be converted
+	 * @param parent                  the parent of converted result
+	 * @return an equivalent new created {@link SingleRefIndirectParent}
+	 */
 	public static SingleRefIndirectParent convertToSingleRefIndirectParent(SingleRefIndirectParentDto singleRefIndirectParent, Root parent) {
 		return convertToSingleRefIndirectParent(singleRefIndirectParent, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefIndirectParentDto} to a(n) {@link SingleRefIndirectParent} and sets the result to the corresponding reference
+	 * property at the parent
+	 *
+	 * @param singleRefIndirectParent the source object which should be converted
+	 * @param parent                  the parent of converted result
+	 * @param mappedObjects           map which contains already mapped objects. If an identification of {@code singleRefIndirectParent} is contained, the
+	 *                                found {@link SingleRefIndirectParent} will be returned
+	 * @return an equivalent new created {@link SingleRefIndirectParent} or the found one from the given map
+	 */
 	public static SingleRefIndirectParent convertToSingleRefIndirectParent(SingleRefIndirectParentDto singleRefIndirectParent, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefIndirectParent result = convertToSingleRefIndirectParent(singleRefIndirectParent, mappedObjects);
 		if (result != null) {
@@ -45,10 +80,24 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefIndirectParent} to a(n) {@link SingleRefIndirectParentDto}
+	 *
+	 * @param singleRefIndirectParent the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefIndirectParentDto}
+	 */
 	public static SingleRefIndirectParentDto convertToSingleRefIndirectParentDto(SingleRefIndirectParent singleRefIndirectParent) {
 		return convertToSingleRefIndirectParentDto(singleRefIndirectParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefIndirectParent} to a(n) {@link SingleRefIndirectParentDto}
+	 *
+	 * @param singleRefIndirectParent the source object which should be converted
+	 * @param mappedObjects           map which contains already mapped objects. If an identification of {@code singleRefIndirectParent} is contained, the
+	 *                                found {@link SingleRefIndirectParentDto} will be returned
+	 * @return an equivalent new created {@link SingleRefIndirectParentDto} or the found one from the given map
+	 */
 	public static SingleRefIndirectParentDto convertToSingleRefIndirectParentDto(SingleRefIndirectParent singleRefIndirectParent, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(singleRefIndirectParent, mappedObjects, DtoObjectFactory::createSingleRefIndirectParentDto, (domain, dto) -> getInstance().setSingleRefIndirectParentDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setSingleRefIndirectParentDtoSingleReferences(domain, dto, mappedObjects)
@@ -56,10 +105,28 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefIndirectParent} to a(n) {@link SingleRefIndirectParentDto} and sets the result to the corresponding reference
+	 * property at the parent
+	 *
+	 * @param singleRefIndirectParent the source object which should be converted
+	 * @param parent                  the parent of converted result
+	 * @return an equivalent new created {@link SingleRefIndirectParentDto}
+	 */
 	public static SingleRefIndirectParentDto convertToSingleRefIndirectParentDto(SingleRefIndirectParent singleRefIndirectParent, RootDto parent) {
 		return convertToSingleRefIndirectParentDto(singleRefIndirectParent, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefIndirectParent} to a(n) {@link SingleRefIndirectParentDto} and sets the result to the corresponding reference
+	 * property at the parent
+	 *
+	 * @param singleRefIndirectParent the source object which should be converted
+	 * @param parent                  the parent of converted result
+	 * @param mappedObjects           map which contains already mapped objects. If an identification of {@code singleRefIndirectParent} is contained, the
+	 *                                found {@link SingleRefIndirectParentDto} will be returned
+	 * @return an equivalent new created {@link SingleRefIndirectParentDto} or the found one from the given map
+	 */
 	public static SingleRefIndirectParentDto convertToSingleRefIndirectParentDto(SingleRefIndirectParent singleRefIndirectParent, RootDto parent, Map<String, ITransportable> mappedObjects) {
 		SingleRefIndirectParentDto result = convertToSingleRefIndirectParentDto(singleRefIndirectParent, mappedObjects);
 		if (result != null) {
@@ -68,10 +135,24 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOtherIndirectParentDto} to a(n) {@link SingleRefOtherIndirectParent}
+	 *
+	 * @param singleRefOtherIndirectParent the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefOtherIndirectParent}
+	 */
 	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent) {
 		return convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOtherIndirectParentDto} to a(n) {@link SingleRefOtherIndirectParent}
+	 *
+	 * @param singleRefOtherIndirectParent the source object which should be converted
+	 * @param mappedObjects                map which contains already mapped objects. If an identification of {@code singleRefOtherIndirectParent} is
+	 *                                     contained, the found {@link SingleRefOtherIndirectParent} will be returned
+	 * @return an equivalent new created {@link SingleRefOtherIndirectParent} or the found one from the given map
+	 */
 	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(singleRefOtherIndirectParent, mappedObjects, DomainObjectFactory::createSingleRefOtherIndirectParent, (dto, domain) -> getInstance().setSingleRefOtherIndirectParentValues(dto, domain)
 				, (dto, domain) -> getInstance().setSingleRefOtherIndirectParentSingleReferences(dto, domain, mappedObjects)
@@ -79,10 +160,28 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOtherIndirectParentDto} to a(n) {@link SingleRefOtherIndirectParent} and sets the result to the corresponding
+	 * reference property at the parent
+	 *
+	 * @param singleRefOtherIndirectParent the source object which should be converted
+	 * @param parent                       the parent of converted result
+	 * @return an equivalent new created {@link SingleRefOtherIndirectParent}
+	 */
 	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent, Root parent) {
 		return convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParent, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOtherIndirectParentDto} to a(n) {@link SingleRefOtherIndirectParent} and sets the result to the corresponding
+	 * reference property at the parent
+	 *
+	 * @param singleRefOtherIndirectParent the source object which should be converted
+	 * @param parent                       the parent of converted result
+	 * @param mappedObjects                map which contains already mapped objects. If an identification of {@code singleRefOtherIndirectParent} is
+	 *                                     contained, the found {@link SingleRefOtherIndirectParent} will be returned
+	 * @return an equivalent new created {@link SingleRefOtherIndirectParent} or the found one from the given map
+	 */
 	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefOtherIndirectParent result = convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParent, mappedObjects);
 		if (result != null) {
@@ -91,10 +190,24 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOtherIndirectParent} to a(n) {@link SingleRefOtherIndirectParentDto}
+	 *
+	 * @param singleRefOtherIndirectParent the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefOtherIndirectParentDto}
+	 */
 	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent) {
 		return convertToSingleRefOtherIndirectParentDto(singleRefOtherIndirectParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOtherIndirectParent} to a(n) {@link SingleRefOtherIndirectParentDto}
+	 *
+	 * @param singleRefOtherIndirectParent the source object which should be converted
+	 * @param mappedObjects                map which contains already mapped objects. If an identification of {@code singleRefOtherIndirectParent} is
+	 *                                     contained, the found {@link SingleRefOtherIndirectParentDto} will be returned
+	 * @return an equivalent new created {@link SingleRefOtherIndirectParentDto} or the found one from the given map
+	 */
 	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(singleRefOtherIndirectParent, mappedObjects, DtoObjectFactory::createSingleRefOtherIndirectParentDto, (domain, dto) -> getInstance().setSingleRefOtherIndirectParentDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setSingleRefOtherIndirectParentDtoSingleReferences(domain, dto, mappedObjects)
@@ -102,10 +215,28 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOtherIndirectParent} to a(n) {@link SingleRefOtherIndirectParentDto} and sets the result to the corresponding
+	 * reference property at the parent
+	 *
+	 * @param singleRefOtherIndirectParent the source object which should be converted
+	 * @param parent                       the parent of converted result
+	 * @return an equivalent new created {@link SingleRefOtherIndirectParentDto}
+	 */
 	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent, RootDto parent) {
 		return convertToSingleRefOtherIndirectParentDto(singleRefOtherIndirectParent, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOtherIndirectParent} to a(n) {@link SingleRefOtherIndirectParentDto} and sets the result to the corresponding
+	 * reference property at the parent
+	 *
+	 * @param singleRefOtherIndirectParent the source object which should be converted
+	 * @param parent                       the parent of converted result
+	 * @param mappedObjects                map which contains already mapped objects. If an identification of {@code singleRefOtherIndirectParent} is
+	 *                                     contained, the found {@link SingleRefOtherIndirectParentDto} will be returned
+	 * @return an equivalent new created {@link SingleRefOtherIndirectParentDto} or the found one from the given map
+	 */
 	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent, RootDto parent, Map<String, ITransportable> mappedObjects) {
 		SingleRefOtherIndirectParentDto result = convertToSingleRefOtherIndirectParentDto(singleRefOtherIndirectParent, mappedObjects);
 		if (result != null) {

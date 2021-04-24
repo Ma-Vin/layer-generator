@@ -10,6 +10,9 @@ import de.ma_vin.util.sample.content.dto.parent.ExtendingClassDto;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generated class which provides methods to convert a data transport to a domain object of sub package <i>parent<i> and the other way around
+ */
 @BaseTransportMapper
 public class ParentTransportMapper extends AbstractTransportMapper {
 
@@ -18,10 +21,24 @@ public class ParentTransportMapper extends AbstractTransportMapper {
 	 */
 	private static ParentTransportMapper instance;
 
+	/**
+	 * Converts a(n) {@link ExtendingClassDto} to a(n) {@link ExtendingClass}
+	 *
+	 * @param extendingClass the source object which should be converted
+	 * @return an equivalent new created {@link ExtendingClass}
+	 */
 	public static ExtendingClass convertToExtendingClass(ExtendingClassDto extendingClass) {
 		return convertToExtendingClass(extendingClass, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link ExtendingClassDto} to a(n) {@link ExtendingClass}
+	 *
+	 * @param extendingClass the source object which should be converted
+	 * @param mappedObjects  map which contains already mapped objects. If an identification of {@code extendingClass} is contained, the found
+	 *                       {@link ExtendingClass} will be returned
+	 * @return an equivalent new created {@link ExtendingClass} or the found one from the given map
+	 */
 	public static ExtendingClass convertToExtendingClass(ExtendingClassDto extendingClass, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(extendingClass, mappedObjects, DomainObjectFactory::createExtendingClass, (dto, domain) -> getInstance().setExtendingClassValues(dto, domain)
 				, (dto, domain) -> getInstance().setExtendingClassSingleReferences(dto, domain, mappedObjects)
@@ -29,10 +46,24 @@ public class ParentTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link ExtendingClass} to a(n) {@link ExtendingClassDto}
+	 *
+	 * @param extendingClass the source object which should be converted
+	 * @return an equivalent new created {@link ExtendingClassDto}
+	 */
 	public static ExtendingClassDto convertToExtendingClassDto(ExtendingClass extendingClass) {
 		return convertToExtendingClassDto(extendingClass, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link ExtendingClass} to a(n) {@link ExtendingClassDto}
+	 *
+	 * @param extendingClass the source object which should be converted
+	 * @param mappedObjects  map which contains already mapped objects. If an identification of {@code extendingClass} is contained, the found
+	 *                       {@link ExtendingClassDto} will be returned
+	 * @return an equivalent new created {@link ExtendingClassDto} or the found one from the given map
+	 */
 	public static ExtendingClassDto convertToExtendingClassDto(ExtendingClass extendingClass, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(extendingClass, mappedObjects, DtoObjectFactory::createExtendingClassDto, (domain, dto) -> getInstance().setExtendingClassDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setExtendingClassDtoSingleReferences(domain, dto, mappedObjects)

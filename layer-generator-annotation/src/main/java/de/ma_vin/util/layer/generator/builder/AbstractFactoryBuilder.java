@@ -64,9 +64,9 @@ public abstract class AbstractFactoryBuilder extends AbstractProcessor {
     /**
      * Determines the set of information for generating for a given annotation of extending type
      *
-     * @param annotatedClasses      the map which contains the annotation and their set of annotated classes
-     * @param extendingAnnotation   The extending annotation
-     * @param <A>                   Class of the extending annotation
+     * @param annotatedClasses    the map which contains the annotation and their set of annotated classes
+     * @param extendingAnnotation The extending annotation
+     * @param <A>                 Class of the extending annotation
      * @return A set of information for generating the given extending type
      */
     protected <A extends Annotation> Set<GenerateInformation> determineExtendingClasses(Map<Class<?>, Set<TypeElement>> annotatedClasses

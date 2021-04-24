@@ -50,6 +50,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, DaoCreator.DAO_INTERFACE));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
+        mapperClass.setDescription("Generated abstract class which provides generic methods to convert a data access to a domain object and the other way around");
+
         createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DAO_NAME, DomainCreator.DOMAIN_INTERFACE, DaoCreator.DAO_INTERFACE);
         createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DOMAIN_NAME, DaoCreator.DAO_INTERFACE, DomainCreator.DOMAIN_INTERFACE);
 
@@ -84,6 +86,10 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(BaseAccessMapper.class.getName());
 
         mapperClass.addAnnotation(BaseAccessMapper.class.getSimpleName());
+
+        mapperClass.setDescription("Generated class which provides methods to convert a data access to a domain object of sub package <i>%s<i> and the other way around"
+                , groupingName);
+
         createGetInstance(mapperClass, MapperType.ACCESS);
 
         entities.stream().filter(e -> !e.getIsAbstract()).forEach(e -> {
@@ -141,8 +147,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         addFilterValueParameter(mapperClass, referenceToParent, convertMethod, convertMethodWithMap);
 
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DaoCreator.DAO_INTERFACE)
-                , MAPPED_OBJECTS_PARAMETER_TEXT);
+        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DAO_POSTFIX);
+
         convertMethodWithMap.addLine("%sDao result = %s(%s,%s%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodNameDao(entity)
@@ -155,6 +161,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         addSettingOfDaoParent(convertMethodWithMap, entity, referenceToParent);
         convertMethodWithMap.addLine("}");
         convertMethodWithMap.addLine(RETURN_RESULT_TEXT);
+
+        addConvertMethodDescriptionWithParent(convertMethodWithMap, entity, DOMAIN_POSTFIX, DAO_POSTFIX);
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
@@ -216,8 +224,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         Method setValueMethod = createSetValueMethod(mapperClass, entity, AccessMapperCreator::isFieldRelevant, DOMAIN_POSTFIX, DAO_POSTFIX, DOMAIN_PARAMETER, DAO_PARAMETER);
         String filterParameter = appendAndGetFilterParameterToSetValue(mapperClass, entity, setValueMethod);
 
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DaoCreator.DAO_INTERFACE)
-                , MAPPED_OBJECTS_PARAMETER_TEXT);
+        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DAO_POSTFIX);
 
         boolean hasIncludeChildrenParameter = !getMultiReferences(entity, AccessMapperCreator::isEntityRelevant, l -> l).isEmpty();
 
@@ -232,6 +239,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
+
+        addConvertMethodDescription(convertMethodWithMap, entity, DOMAIN_POSTFIX, DAO_POSTFIX);
 
         createSetSingleReferenceMethod(mapperClass, getDaoCreateMethodParameterContainer(entity), DOMAIN_PARAMETER, DAO_PARAMETER, DaoCreator.DAO_INTERFACE
                 , l -> l);
@@ -499,7 +508,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, createMethodParams, referenceToParent, domainPackageName);
 
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
+        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DOMAIN_POSTFIX);
+
         convertMethodWithMap.addLine("%s result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodName(entity, DOMAIN_POSTFIX)
@@ -511,6 +521,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         addSettingOfDomainParent(mapperClass, convertMethodWithMap, referenceToParent);
         convertMethodWithMap.addLine("}");
         convertMethodWithMap.addLine(RETURN_RESULT_TEXT);
+
+        addConvertMethodDescriptionWithParent(convertMethodWithMap, entity, DAO_POSTFIX, DOMAIN_POSTFIX);
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
@@ -566,10 +578,14 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         if (DaoCreator.isToAggregate(reference, allReferences)
                 && !referenceToParent.getRealFilterField().getModels().isDomain()) {
+            String filterJavaDoc = "value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}";
+
             mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, referenceToParent.getRealFilterField().getTypePackage()
                     , referenceToParent.getRealFilterField().getType()));
             convertMethod.addParameter(referenceToParent.getRealFilterField().getType(), getLowerFirst(referenceToParent.getFilterField()));
+            convertMethod.getJavaDoc().addParams(getLowerFirst(referenceToParent.getFilterField()), filterJavaDoc);
             convertMethodWithMap.addParameter(referenceToParent.getRealFilterField().getType(), getLowerFirst(referenceToParent.getFilterField()));
+            convertMethodWithMap.getJavaDoc().addParams(getLowerFirst(referenceToParent.getFilterField()), filterJavaDoc);
         }
     }
 
@@ -583,11 +599,14 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      */
     private void addFilterValueParameter(Clazz mapperClass, Entity entity, Method convertMethod, Method convertMethodWithMap) {
         Set<Field> filterAttributes = getFilterAttributes(entity);
+        String filterJavaDoc = "value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}";
 
         filterAttributes.forEach(f -> {
             mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, f.getTypePackage(), f.getType()));
             convertMethod.addParameter(f.getType(), getLowerFirst(f.getFieldName()));
+            convertMethod.getJavaDoc().addParams(getLowerFirst(f.getFieldName()), filterJavaDoc);
             convertMethodWithMap.addParameter(f.getType(), getLowerFirst(f.getFieldName()));
+            convertMethodWithMap.getJavaDoc().addParams(getLowerFirst(f.getFieldName()), filterJavaDoc);
         });
     }
 
@@ -618,8 +637,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         createConvertMethodWithoutMap(mapperClass, createMethodParams);
 
         Method convertMethodWithMap = createConvertMethodBase(createMethodParams);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE)
-                , MAPPED_OBJECTS_PARAMETER_TEXT);
+        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DOMAIN_POSTFIX);
 
         boolean hasIncludeChildrenParameter = !getMultiReferences(entity, AccessMapperCreator::isEntityRelevant, DaoCreator::getAggregatedReferences).isEmpty();
 
@@ -634,6 +652,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
+
+        addConvertMethodDescription(convertMethodWithMap, entity, DAO_POSTFIX, DOMAIN_POSTFIX);
 
         createSetValueMethod(mapperClass, entity, AccessMapperCreator::isFieldRelevant, DAO_POSTFIX, DOMAIN_POSTFIX, DAO_PARAMETER, DOMAIN_PARAMETER);
         createSetSingleReferenceMethod(mapperClass, getDomainCreateMethodParameterContainer(entity), DAO_PARAMETER, DOMAIN_PARAMETER, DomainCreator.DOMAIN_INTERFACE

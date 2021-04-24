@@ -14,6 +14,9 @@ import de.ma_vin.util.sample.content.dto.single.SingleRefTwoParentsDto;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generated class which provides methods to convert a data transport to a domain object of sub package <i>single<i> and the other way around
+ */
 @BaseTransportMapper
 public class SingleTransportMapper extends AbstractTransportMapper {
 
@@ -22,10 +25,24 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 */
 	private static SingleTransportMapper instance;
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParentDto} to a(n) {@link SingleRefOneParent}
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefOneParent}
+	 */
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDto singleRefOneParent) {
 		return convertToSingleRefOneParent(singleRefOneParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParentDto} to a(n) {@link SingleRefOneParent}
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code singleRefOneParent} is contained, the found
+	 *                           {@link SingleRefOneParent} will be returned
+	 * @return an equivalent new created {@link SingleRefOneParent} or the found one from the given map
+	 */
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDto singleRefOneParent, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(singleRefOneParent, mappedObjects, DomainObjectFactory::createSingleRefOneParent, (dto, domain) -> getInstance().setSingleRefOneParentValues(dto, domain)
 				, (dto, domain) -> getInstance().setSingleRefOneParentSingleReferences(dto, domain, mappedObjects)
@@ -33,10 +50,28 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParentDto} to a(n) {@link SingleRefOneParent} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param parent             the parent of converted result
+	 * @return an equivalent new created {@link SingleRefOneParent}
+	 */
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDto singleRefOneParent, Root parent) {
 		return convertToSingleRefOneParent(singleRefOneParent, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParentDto} to a(n) {@link SingleRefOneParent} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param parent             the parent of converted result
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code singleRefOneParent} is contained, the found
+	 *                           {@link SingleRefOneParent} will be returned
+	 * @return an equivalent new created {@link SingleRefOneParent} or the found one from the given map
+	 */
 	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDto singleRefOneParent, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefOneParent result = convertToSingleRefOneParent(singleRefOneParent, mappedObjects);
 		if (result != null) {
@@ -45,10 +80,24 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParent} to a(n) {@link SingleRefOneParentDto}
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefOneParentDto}
+	 */
 	public static SingleRefOneParentDto convertToSingleRefOneParentDto(SingleRefOneParent singleRefOneParent) {
 		return convertToSingleRefOneParentDto(singleRefOneParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParent} to a(n) {@link SingleRefOneParentDto}
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code singleRefOneParent} is contained, the found
+	 *                           {@link SingleRefOneParentDto} will be returned
+	 * @return an equivalent new created {@link SingleRefOneParentDto} or the found one from the given map
+	 */
 	public static SingleRefOneParentDto convertToSingleRefOneParentDto(SingleRefOneParent singleRefOneParent, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(singleRefOneParent, mappedObjects, DtoObjectFactory::createSingleRefOneParentDto, (domain, dto) -> getInstance().setSingleRefOneParentDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setSingleRefOneParentDtoSingleReferences(domain, dto, mappedObjects)
@@ -56,10 +105,28 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParent} to a(n) {@link SingleRefOneParentDto} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param parent             the parent of converted result
+	 * @return an equivalent new created {@link SingleRefOneParentDto}
+	 */
 	public static SingleRefOneParentDto convertToSingleRefOneParentDto(SingleRefOneParent singleRefOneParent, RootDto parent) {
 		return convertToSingleRefOneParentDto(singleRefOneParent, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefOneParent} to a(n) {@link SingleRefOneParentDto} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefOneParent the source object which should be converted
+	 * @param parent             the parent of converted result
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code singleRefOneParent} is contained, the found
+	 *                           {@link SingleRefOneParentDto} will be returned
+	 * @return an equivalent new created {@link SingleRefOneParentDto} or the found one from the given map
+	 */
 	public static SingleRefOneParentDto convertToSingleRefOneParentDto(SingleRefOneParent singleRefOneParent, RootDto parent, Map<String, ITransportable> mappedObjects) {
 		SingleRefOneParentDto result = convertToSingleRefOneParentDto(singleRefOneParent, mappedObjects);
 		if (result != null) {
@@ -68,10 +135,24 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDto} to a(n) {@link SingleRefTwoParents}
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefTwoParents}
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents) {
 		return convertToSingleRefTwoParents(singleRefTwoParents, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDto} to a(n) {@link SingleRefTwoParents}
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParents} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(singleRefTwoParents, mappedObjects, DomainObjectFactory::createSingleRefTwoParents, (dto, domain) -> getInstance().setSingleRefTwoParentsValues(dto, domain)
 				, (dto, domain) -> getInstance().setSingleRefTwoParentsSingleReferences(dto, domain, mappedObjects)
@@ -79,10 +160,28 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDto} to a(n) {@link SingleRefTwoParents} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @return an equivalent new created {@link SingleRefTwoParents}
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, Root parent) {
 		return convertToSingleRefTwoParents(singleRefTwoParents, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDto} to a(n) {@link SingleRefTwoParents} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParents} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefTwoParents result = convertToSingleRefTwoParents(singleRefTwoParents, mappedObjects);
 		if (result != null) {
@@ -91,10 +190,28 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDto} to a(n) {@link SingleRefTwoParents} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @return an equivalent new created {@link SingleRefTwoParents}
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, SingleRefOneParent parent) {
 		return convertToSingleRefTwoParents(singleRefTwoParents, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParentsDto} to a(n) {@link SingleRefTwoParents} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParents} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
+	 */
 	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, SingleRefOneParent parent, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefTwoParents result = convertToSingleRefTwoParents(singleRefTwoParents, mappedObjects);
 		if (result != null) {
@@ -103,10 +220,24 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDto}
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @return an equivalent new created {@link SingleRefTwoParentsDto}
+	 */
 	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents) {
 		return convertToSingleRefTwoParentsDto(singleRefTwoParents, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDto}
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParentsDto} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParentsDto} or the found one from the given map
+	 */
 	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(singleRefTwoParents, mappedObjects, DtoObjectFactory::createSingleRefTwoParentsDto, (domain, dto) -> getInstance().setSingleRefTwoParentsDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setSingleRefTwoParentsDtoSingleReferences(domain, dto, mappedObjects)
@@ -114,10 +245,28 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDto} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @return an equivalent new created {@link SingleRefTwoParentsDto}
+	 */
 	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, RootDto parent) {
 		return convertToSingleRefTwoParentsDto(singleRefTwoParents, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDto} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParentsDto} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParentsDto} or the found one from the given map
+	 */
 	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, RootDto parent, Map<String, ITransportable> mappedObjects) {
 		SingleRefTwoParentsDto result = convertToSingleRefTwoParentsDto(singleRefTwoParents, mappedObjects);
 		if (result != null) {
@@ -126,10 +275,28 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDto} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @return an equivalent new created {@link SingleRefTwoParentsDto}
+	 */
 	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, SingleRefOneParentDto parent) {
 		return convertToSingleRefTwoParentsDto(singleRefTwoParents, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDto} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParentsDto} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParentsDto} or the found one from the given map
+	 */
 	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, SingleRefOneParentDto parent, Map<String, ITransportable> mappedObjects) {
 		SingleRefTwoParentsDto result = convertToSingleRefTwoParentsDto(singleRefTwoParents, mappedObjects);
 		if (result != null) {

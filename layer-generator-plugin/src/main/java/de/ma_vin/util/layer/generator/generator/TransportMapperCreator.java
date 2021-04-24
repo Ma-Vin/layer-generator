@@ -49,6 +49,8 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, dtoPackageName, DtoCreator.DTO_INTERFACE));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
+        mapperClass.setDescription("Generated abstract class which provides generic methods to convert a data transport to a domain object and the other way around");
+
         createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DTO_NAME, DomainCreator.DOMAIN_INTERFACE, DtoCreator.DTO_INTERFACE);
         createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DOMAIN_NAME, DtoCreator.DTO_INTERFACE, DomainCreator.DOMAIN_INTERFACE);
 
@@ -83,6 +85,9 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(BaseTransportMapper.class.getName());
 
         mapperClass.addAnnotation(BaseTransportMapper.class.getSimpleName());
+
+        mapperClass.setDescription("Generated class which provides methods to convert a data transport to a domain object of sub package <i>%s<i> and the other way around"
+                , groupingName);
 
         createGetInstance(mapperClass, MapperType.TRANSPORT);
 
@@ -164,8 +169,8 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         createConvertMethodWithParentWithoutMap(mapperClass, createMethodParams, referenceToParent, domainPackageName);
 
         Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, createMethodParams, referenceToParent, domainPackageName);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE)
-                , MAPPED_OBJECTS_PARAMETER_TEXT);
+        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DOMAIN_POSTFIX);
+
         convertMethodWithMap.addLine("%s result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodName(entity, DOMAIN_POSTFIX)
@@ -177,6 +182,8 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         convertMethodWithMap.addLine("%sparent.set%s(result);", AbstractGenerateLines.TAB, getUpperFirst(referenceToParent.getReferenceName()));
         convertMethodWithMap.addLine("}");
         convertMethodWithMap.addLine(RETURN_RESULT_TEXT);
+
+        addConvertMethodDescriptionWithParent(convertMethodWithMap, entity, DTO_POSTFIX, DOMAIN_POSTFIX);
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
@@ -194,8 +201,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         createConvertMethodWithoutMap(mapperClass, createMethodParams);
 
         Method convertMethodWithMap = createConvertMethodBase(createMethodParams);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DomainCreator.DOMAIN_INTERFACE)
-                , MAPPED_OBJECTS_PARAMETER_TEXT);
+        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DOMAIN_POSTFIX);
 
         convertMethodWithMap.addLine("return convertToDomain(%1$s, %2$s, DomainObjectFactory::create%3$s, (%4$s, %5$s) -> getInstance().set%3$sValues(%4$s, %5$s)"
                 , getLowerFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
@@ -205,6 +211,8 @@ public class TransportMapperCreator extends AbstractMapperCreator {
                 , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant, l -> l) ? "includeChildren, " : "");
         convertMethodWithMap.addLine(", (%1$s, %2$s) -> {", 2, DTO_PARAMETER, DOMAIN_PARAMETER);
         convertMethodWithMap.addLine("});");
+
+        addConvertMethodDescription(convertMethodWithMap, entity, DTO_POSTFIX, DOMAIN_POSTFIX);
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
@@ -258,8 +266,8 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         createConvertMethodWithParentWithoutMap(mapperClass, createMethodParams, referenceToParent, dtoPackageName);
 
         Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, createMethodParams, referenceToParent, dtoPackageName);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE)
-                , MAPPED_OBJECTS_PARAMETER_TEXT);
+        addMappedObjectsParam(convertMethodWithMap, entity, DtoCreator.DTO_INTERFACE, DTO_POSTFIX);
+
         convertMethodWithMap.addLine("%sDto result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodNameDto(entity)
@@ -271,6 +279,8 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         convertMethodWithMap.addLine("%sparent.set%s(result);", AbstractGenerateLines.TAB, getUpperFirst(referenceToParent.getReferenceName()));
         convertMethodWithMap.addLine("}");
         convertMethodWithMap.addLine(RETURN_RESULT_TEXT);
+
+        addConvertMethodDescriptionWithParent(convertMethodWithMap, entity, DOMAIN_POSTFIX, DTO_POSTFIX);
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());
@@ -288,7 +298,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         createConvertMethodWithoutMap(mapperClass, createMethodParams);
 
         Method convertMethodWithMap = createConvertMethodBase(createMethodParams);
-        convertMethodWithMap.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), DtoCreator.DTO_INTERFACE), MAPPED_OBJECTS_PARAMETER_TEXT);
+        addMappedObjectsParam(convertMethodWithMap, entity, DtoCreator.DTO_INTERFACE, DTO_POSTFIX);
 
         convertMethodWithMap.addLine("return convertToDto(%1$s, %2$s, DtoObjectFactory::create%3$sDto, (%4$s, %5$s) -> getInstance().set%3$sDtoValues(%4$s, %5$s)"
                 , getLowerFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
@@ -298,6 +308,8 @@ public class TransportMapperCreator extends AbstractMapperCreator {
                 , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant, l -> l) ? "includeChildren, " : "");
         convertMethodWithMap.addLine(", (%1$s, %2$s) -> {", 2, DOMAIN_PARAMETER, DTO_PARAMETER);
         convertMethodWithMap.addLine("});");
+
+        addConvertMethodDescription(convertMethodWithMap, entity, DOMAIN_POSTFIX, DTO_POSTFIX);
 
         mapperClass.addMethod(convertMethodWithMap);
         mapperClass.addImport(Map.class.getName());

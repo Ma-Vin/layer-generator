@@ -80,19 +80,21 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     protected void createGetInstance(Clazz mapperClass, MapperType mapperType) {
         Attribute instanceAttribute = new Attribute("instance", mapperClass.getClassName());
         instanceAttribute.setStatic(true);
-        instanceAttribute.setJavaDoc(new JavaDoc("singleton"));
         mapperClass.addAttribute(instanceAttribute);
 
         Method getInstanceMethod = new Method("getInstance");
         getInstanceMethod.setMethodType(mapperClass.getClassName());
         getInstanceMethod.setStatic(true);
         getInstanceMethod.setQualifier(Qualifier.PUBLIC);
-        getInstanceMethod.setJavaDoc(new JavaDoc("@return the singleton"));
         getInstanceMethod.addLine("if (instance == null) {");
         getInstanceMethod.addLine("instance = %s.create%s();", 1, mapperType.getFactoryClassName(), mapperClass.getClassName());
         getInstanceMethod.addLine("}");
         getInstanceMethod.addLine("return instance;");
         mapperClass.addMethod(getInstanceMethod);
+
+        instanceAttribute.setJavaDoc(new JavaDoc("singleton"));
+        getInstanceMethod.setJavaDoc(new JavaDoc());
+        getInstanceMethod.getJavaDoc().setReturnDescription("the singleton");
     }
 
     /**
@@ -128,6 +130,40 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         }
 
         mapperClass.addMethod(convertToMethod);
+
+        createAndAddConvertToGenericJavaDocs(convertToMethod, sourceInterfaceName, targetInterfaceName);
+    }
+
+    /**
+     * Adds the JavaDoc at the convertTo method which will be used for value and reference mapping
+     *
+     * @param convertToMethod     method where to add doc
+     * @param sourceInterfaceName the interface of the object which is the input at the convert method
+     * @param targetInterfaceName the interface of the object which is the result of the convert method
+     */
+    private void createAndAddConvertToGenericJavaDocs(Method convertToMethod, String sourceInterfaceName, String targetInterfaceName) {
+        JavaDoc javaDoc = new JavaDoc();
+        javaDoc.addLine("Converts an {@link %s} to an {@link %s} object", sourceInterfaceName, targetInterfaceName);
+
+        javaDoc.addParams(SOURCE_VARIABLE, "object which is to converted");
+        javaDoc.addParams(MAPPED_OBJECTS_PARAMETER_TEXT
+                , "map which contains already mapped objects. If an identification of {@code %s} is contained, the found {@link %s} will be returned"
+                , SOURCE_VARIABLE, targetInterfaceName);
+        javaDoc.addParams(OBJECT_CREATOR_PARAMETER, "functional interface which is called to create a new instance of {@link %s} as result"
+                , targetInterfaceName);
+        javaDoc.addParams(VALUE_MAPPER_PARAMETER, "functional interface which is called to set the values of {@code %s} at result"
+                , SOURCE_VARIABLE);
+        javaDoc.addParams(SINGLE_REFERENCE_MAPPER_PARAMETER, "functional interface which is called to add the single references of {@code %s} at result"
+                , SOURCE_VARIABLE);
+        javaDoc.addParams(MULTI_REFERENCE_MAPPER_PARAMETER, "functional interface which is called to add the multi references of {@code %s} at result"
+                , SOURCE_VARIABLE);
+
+        javaDoc.addParams(String.format("<%s>", SOURCE_GENERIC), "the type of the source object");
+        javaDoc.addParams(String.format("<%s>", TARGET_GENERIC), "the type of the target object");
+
+        javaDoc.setReturnDescription("an equivalent new created object or the found one from the given map");
+
+        convertToMethod.setJavaDoc(javaDoc);
     }
 
     /**
@@ -240,13 +276,20 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         convertMethod.setMethodType(String.format("%s%s", parameterContainer.entity.getBaseName(), parameterContainer.classParameterPostFix));
         convertMethod.setQualifier(Qualifier.PUBLIC);
         convertMethod.setStatic(true);
+        convertMethod.setJavaDoc(new JavaDoc());
 
         String objParamName = getLowerFirst(parameterContainer.entity.getBaseName());
         convertMethod.addParameter(String.format("%s%s", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.sourceClassParameterPostFix), objParamName);
+        convertMethod.getJavaDoc().addParams(objParamName, "the source object which should be converted");
 
         if (hasIncludeChildrenParameter(parameterContainer.entity, parameterContainer.entityChecker)) {
             convertMethod.addParameter("boolean", INCLUDE_CHILDREN_PARAMETER);
+            convertMethod.getJavaDoc().addParams(INCLUDE_CHILDREN_PARAMETER, "{@code true} if all references should also be mapped. "
+                    + "{@code false} if only those references should be mapped which are not of type {@link java.util.Collection}");
         }
+
+        convertMethod.getJavaDoc().setReturnDescription("an equivalent new created {@link %s%s}"
+                , getUpperFirst(parameterContainer.getEntity().getBaseName()), parameterContainer.getClassParameterPostFix());
 
         return convertMethod;
     }
@@ -283,6 +326,8 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
                 , HashMap.class.getSimpleName());
         mapperClass.addMethod(convertMethod);
         mapperClass.addImport(HashMap.class.getName());
+
+        addConvertMethodDescription(convertMethod, parameterContainer.entity, parameterContainer.sourceClassParameterPostFix, parameterContainer.classParameterPostFix);
 
         return convertMethod;
     }
@@ -326,6 +371,8 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         mapperClass.addMethod(convertMethod);
         mapperClass.addImport(HashMap.class.getName());
 
+        addConvertMethodDescriptionWithParent(convertMethod, parameterContainer.entity, parameterContainer.sourceClassParameterPostFix, parameterContainer.classParameterPostFix);
+
         return convertMethod;
     }
 
@@ -352,6 +399,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         Method convertMethod = createConvertMethodBase(parameterContainer);
         mapperClass.addImport(getPackageAndClass(referenceToParent, packageName, parameterContainer.classParameterPostFix));
         convertMethod.addParameter(referenceToParent.getTargetEntity() + parameterContainer.classParameterPostFix, "parent");
+        convertMethod.getJavaDoc().addParams("parent", "the parent of converted result");
 
         return convertMethod;
     }
@@ -444,6 +492,48 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         result.addAll(determineAllReferences(entity.getRealParent()));
 
         return result;
+    }
+
+    /**
+     * Adds a line of description at the java doc of an method with a parent parameter
+     *
+     * @param convertMethod      Method where to add description
+     * @param entity             Entity which is converted
+     * @param sourceClassPostFix postfix for classes which is to map
+     * @param targetClassPostFix postfix for classes which will be the result
+     */
+    protected void addConvertMethodDescriptionWithParent(Method convertMethod, Entity entity, String sourceClassPostFix, String targetClassPostFix) {
+        convertMethod.getJavaDoc().addLine("Converts a(n) {@link %1$s%2$s} to a(n) {@link %1$s%3$s} and sets the result to the corresponding reference property at the parent"
+                , getUpperFirst(entity.getBaseName()), sourceClassPostFix, targetClassPostFix);
+    }
+
+    /**
+     * Adds a line of description at the java doc of an method without a parent parameter
+     *
+     * @param convertMethod      Method where to add description
+     * @param entity             Entity which is converted
+     * @param sourceClassPostFix postfix for classes which is to map
+     * @param targetClassPostFix postfix for classes which will be the result
+     */
+    protected void addConvertMethodDescription(Method convertMethod, Entity entity, String sourceClassPostFix, String targetClassPostFix) {
+        convertMethod.getJavaDoc().addLine("Converts a(n) {@link %1$s%2$s} to a(n) {@link %1$s%3$s}"
+                , getUpperFirst(entity.getBaseName()), sourceClassPostFix, targetClassPostFix);
+    }
+
+    /**
+     * Adds the mappedObjects parameter and javadoc entry to a method
+     *
+     * @param convertMethod      Method where to add parameter end javadoc entry
+     * @param entity             Entity which is converted
+     * @param targetInterface    Interface which is implemented by the result
+     * @param targetClassPostfix postfix for classes which will be the result
+     */
+    protected void addMappedObjectsParam(Method convertMethod, Entity entity, String targetInterface, String targetClassPostfix) {
+        convertMethod.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), targetInterface), MAPPED_OBJECTS_PARAMETER_TEXT);
+        convertMethod.getJavaDoc().addParams(MAPPED_OBJECTS_PARAMETER_TEXT
+                , "map which contains already mapped objects. If an identification of {@code %s} is contained, the found {@link %s%s} will be returned"
+                , getLowerFirst(entity.getBaseName()), getUpperFirst(entity.getBaseName()), targetClassPostfix);
+        convertMethod.getJavaDoc().setReturnDescription(convertMethod.getJavaDoc().getReturnDescription() + " or the found one from the given map");
     }
 
     @FunctionalInterface

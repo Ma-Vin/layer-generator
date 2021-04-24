@@ -3,10 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import static de.ma_vin.util.layer.generator.generator.AbstractMapperCreator.MAPPED_OBJECTS_PARAMETER_TEXT;
 
 import de.ma_vin.util.layer.generator.config.elements.Config;
-import de.ma_vin.util.layer.generator.sources.Clazz;
-import de.ma_vin.util.layer.generator.sources.Interface;
-import de.ma_vin.util.layer.generator.sources.Method;
-import de.ma_vin.util.layer.generator.sources.Qualifier;
+import de.ma_vin.util.layer.generator.sources.*;
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
@@ -35,9 +32,15 @@ public class CommonMapperCreator extends AbstractCreator {
     public static final String VALUE_MAPPER_PARAMETER = "valueMapper";
     public static final String SINGLE_REFERENCE_MAPPER_PARAMETER = "singleReferenceMapper";
     public static final String MULTI_REFERENCE_MAPPER_PARAMETER = "multiReferenceMapper";
+    public static final String IDENTIFICATION_GETTER_PARAMETER = "identificationGetter";
+    public static final String IDENTIFICATION_SETTER_PARAMETER = "identificationSetter";
 
     public static final String CLASS_ONE_GENERIC = "%s<%s>";
     public static final String CLASS_TWO_GENERICS = "%s<%s, %s>";
+
+    public static final String GENERIC_JAVA_DOC = "<%s>";
+    public static final String SOURCE_GENERIC_DESCRIPTION = "the type of the source object";
+    public static final String TARGET_GENERIC_DESCRIPTION = "the type of the target object";
 
     public CommonMapperCreator(Config config, Log logger) {
         super(config, logger);
@@ -54,6 +57,7 @@ public class CommonMapperCreator extends AbstractCreator {
         Clazz mapperClass = new Clazz(mapperPackageName, ABSTRACT_MAPPER_CLASS_NAME);
         logger.debug("Create abstract mapper " + mapperClass.getClassName());
         mapperClass.setAbstract(true);
+        mapperClass.setDescription("Abstract basic mapper class which contains the common convertToMethod");
 
         createAndAddConvertToMethod(mapperClass);
         createAndAddFunctionalInterfaces(mapperClass);
@@ -85,12 +89,48 @@ public class CommonMapperCreator extends AbstractCreator {
         convertToMethod.addParameter(String.format(CLASS_TWO_GENERICS, VALUE_MAPPER_INTERFACE, SOURCE_GENERIC, TARGET_GENERIC), VALUE_MAPPER_PARAMETER);
         convertToMethod.addParameter(String.format(CLASS_TWO_GENERICS, REFERENCE_MAPPER_INTERFACE, SOURCE_GENERIC, TARGET_GENERIC), SINGLE_REFERENCE_MAPPER_PARAMETER);
         convertToMethod.addParameter(String.format(CLASS_TWO_GENERICS, REFERENCE_MAPPER_INTERFACE, SOURCE_GENERIC, TARGET_GENERIC), MULTI_REFERENCE_MAPPER_PARAMETER);
-        convertToMethod.addParameter(String.format(CLASS_ONE_GENERIC, IDENTIFICATION_GETTER_INTERFACE, SOURCE_GENERIC), "identificationGetter");
-        convertToMethod.addParameter(String.format(CLASS_TWO_GENERICS, IDENTIFICATION_SETTER_INTERFACE, SOURCE_GENERIC, TARGET_GENERIC), "identificationSetter");
+        convertToMethod.addParameter(String.format(CLASS_ONE_GENERIC, IDENTIFICATION_GETTER_INTERFACE, SOURCE_GENERIC), IDENTIFICATION_GETTER_PARAMETER);
+        convertToMethod.addParameter(String.format(CLASS_TWO_GENERICS, IDENTIFICATION_SETTER_INTERFACE, SOURCE_GENERIC, TARGET_GENERIC), IDENTIFICATION_SETTER_PARAMETER);
+
+        createAndAddConvertToMethodJavaDoc(convertToMethod);
 
         addConvertToMethodBody(convertToMethod);
 
         mapperClass.addMethod(convertToMethod);
+    }
+
+    /**
+     * Adds the javadoc description
+     *
+     * @param convertToMethod
+     */
+    private void createAndAddConvertToMethodJavaDoc(Method convertToMethod) {
+        JavaDoc javaDoc = new JavaDoc();
+        javaDoc.addLine("Converts an {@code %s} to an {@code %s} object", SOURCE_VARIABLE, TARGET_GENERIC);
+
+        javaDoc.addParams(SOURCE_VARIABLE, "object which is to converted");
+        javaDoc.addParams(MAPPED_OBJECTS_PARAMETER_TEXT
+                , "map which contains already mapped objects. If an identification of {@code %s} is contained, the found {@code %s} will be returned"
+                , SOURCE_VARIABLE, MAPPED_GENERIC);
+        javaDoc.addParams(OBJECT_CREATOR_PARAMETER, "functional interface which is called to create a new instance of {@code %s} as result"
+                , TARGET_GENERIC);
+        javaDoc.addParams(VALUE_MAPPER_PARAMETER, "functional interface which is called to set the values of {@code %s} at result"
+                , SOURCE_VARIABLE);
+        javaDoc.addParams(SINGLE_REFERENCE_MAPPER_PARAMETER, "functional interface which is called to add the single references of {@code %s} at result"
+                , SOURCE_VARIABLE);
+        javaDoc.addParams(MULTI_REFERENCE_MAPPER_PARAMETER, "functional interface which is called to add the multi references of {@code %s} at result"
+                , SOURCE_VARIABLE);
+        javaDoc.addParams(IDENTIFICATION_GETTER_PARAMETER, "functional interface which is called to get the identification of {@code %s}"
+                , SOURCE_VARIABLE);
+        javaDoc.addParams(IDENTIFICATION_SETTER_PARAMETER, "functional interface which is called to set the identification at result");
+
+        javaDoc.addParams(String.format(GENERIC_JAVA_DOC, MAPPED_GENERIC), "the type of the object at map");
+        javaDoc.addParams(String.format(GENERIC_JAVA_DOC, SOURCE_GENERIC), SOURCE_GENERIC_DESCRIPTION);
+        javaDoc.addParams(String.format(GENERIC_JAVA_DOC, TARGET_GENERIC), TARGET_GENERIC_DESCRIPTION);
+
+        javaDoc.setReturnDescription("an equivalent new created object or the found one from the given map");
+
+        convertToMethod.setJavaDoc(javaDoc);
     }
 
     /**
@@ -143,6 +183,8 @@ public class CommonMapperCreator extends AbstractCreator {
         objectCreator.addAnnotation(FunctionalInterface.class.getSimpleName());
         objectCreator.addGeneric(TARGET_GENERIC);
         objectCreator.addMethodDeclaration(TARGET_GENERIC, "create");
+        objectCreator.setDescription("functional interface which is called to create a new instance");
+        objectCreator.getDescription().addParams(String.format(GENERIC_JAVA_DOC, TARGET_GENERIC), "the type of the created object");
         mapperClass.addInnerInterface(objectCreator);
     }
 
@@ -156,6 +198,8 @@ public class CommonMapperCreator extends AbstractCreator {
         identificationGetter.addAnnotation(FunctionalInterface.class.getSimpleName());
         identificationGetter.addGeneric(SOURCE_GENERIC);
         identificationGetter.addMethodDeclaration(String.class.getSimpleName(), "getIdentification", SOURCE_GENERIC, SOURCE_VARIABLE);
+        identificationGetter.setDescription("functional interface which is called to get the identification of {@code %s}", SOURCE_GENERIC);
+        identificationGetter.getDescription().addParams(String.format(GENERIC_JAVA_DOC, SOURCE_GENERIC), SOURCE_GENERIC_DESCRIPTION);
         mapperClass.addInnerInterface(identificationGetter);
     }
 
@@ -170,6 +214,9 @@ public class CommonMapperCreator extends AbstractCreator {
         identificationSetter.addGeneric(SOURCE_GENERIC);
         identificationSetter.addGeneric(TARGET_GENERIC);
         identificationSetter.addMethodDeclaration("void", "setIdentification", SOURCE_GENERIC, SOURCE_VARIABLE, TARGET_GENERIC, TARGET_PARAMETER);
+        identificationSetter.setDescription("functional interface which is called to set the identification at {@code %s} from {@code %s}", TARGET_GENERIC, SOURCE_GENERIC);
+        identificationSetter.getDescription().addParams(String.format(GENERIC_JAVA_DOC, SOURCE_GENERIC), SOURCE_GENERIC_DESCRIPTION);
+        identificationSetter.getDescription().addParams(String.format(GENERIC_JAVA_DOC, TARGET_GENERIC), TARGET_GENERIC_DESCRIPTION);
         mapperClass.addInnerInterface(identificationSetter);
     }
 
@@ -184,6 +231,9 @@ public class CommonMapperCreator extends AbstractCreator {
         valueMapper.addGeneric(SOURCE_GENERIC);
         valueMapper.addGeneric(TARGET_GENERIC);
         valueMapper.addMethodDeclaration("void", "mapValues", SOURCE_GENERIC, SOURCE_VARIABLE, TARGET_GENERIC, TARGET_PARAMETER);
+        valueMapper.setDescription("functional interface which is called to set the values of {@code %s} at {@code %s}", SOURCE_GENERIC, TARGET_GENERIC);
+        valueMapper.getDescription().addParams(String.format(GENERIC_JAVA_DOC, SOURCE_GENERIC), SOURCE_GENERIC_DESCRIPTION);
+        valueMapper.getDescription().addParams(String.format(GENERIC_JAVA_DOC, TARGET_GENERIC), TARGET_GENERIC_DESCRIPTION);
         mapperClass.addInnerInterface(valueMapper);
     }
 
@@ -198,6 +248,9 @@ public class CommonMapperCreator extends AbstractCreator {
         referenceMapper.addGeneric(SOURCE_GENERIC);
         referenceMapper.addGeneric(TARGET_GENERIC);
         referenceMapper.addMethodDeclaration("void", "mapReferences", SOURCE_GENERIC, SOURCE_VARIABLE, TARGET_GENERIC, TARGET_PARAMETER);
+        referenceMapper.setDescription("functional interface which is called to add references of {@code %s} at {@code %s}", SOURCE_GENERIC, TARGET_GENERIC);
+        referenceMapper.getDescription().addParams(String.format(GENERIC_JAVA_DOC, SOURCE_GENERIC), SOURCE_GENERIC_DESCRIPTION);
+        referenceMapper.getDescription().addParams(String.format(GENERIC_JAVA_DOC, TARGET_GENERIC), TARGET_GENERIC_DESCRIPTION);
         mapperClass.addInnerInterface(referenceMapper);
     }
 }

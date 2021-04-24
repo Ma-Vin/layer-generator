@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 
+/**
+ * Generated class which provides methods to convert a data access to a domain object of sub package <i>filtering<i> and the other way around
+ */
 @BaseAccessMapper
 @Log4j2
 public class FilteringAccessMapper extends AbstractAccessMapper {
@@ -28,20 +31,50 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 */
 	private static FilteringAccessMapper instance;
 
+	/**
+	 * Converts a(n) {@link FilteredDao} to a(n) {@link Filtered}
+	 *
+	 * @param filtered the source object which should be converted
+	 * @return an equivalent new created {@link Filtered}
+	 */
 	public static Filtered convertToFiltered(FilteredDao filtered) {
 		return convertToFiltered(filtered, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredDao} to a(n) {@link Filtered}
+	 *
+	 * @param filtered      the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code filtered} is contained, the found {@link Filtered}
+	 *                      will be returned
+	 * @return an equivalent new created {@link Filtered} or the found one from the given map
+	 */
 	public static Filtered convertToFiltered(FilteredDao filtered, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(filtered, mappedObjects, DomainObjectFactory::createFiltered, (dao, domain) -> getInstance().setFilteredValues(dao, domain)
 				, (dao, domain) -> getInstance().setFilteredSingleReferences(dao, domain, mappedObjects)
 				, (dao, domain) -> getInstance().setFilteredMultiReferences(dao, domain, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredDao} to a(n) {@link Filtered} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param filtered the source object which should be converted
+	 * @param parent   the parent of converted result
+	 * @return an equivalent new created {@link Filtered}
+	 */
 	public static Filtered convertToFiltered(FilteredDao filtered, SomeFilteringOwner parent) {
 		return convertToFiltered(filtered, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredDao} to a(n) {@link Filtered} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param filtered      the source object which should be converted
+	 * @param parent        the parent of converted result
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code filtered} is contained, the found {@link Filtered}
+	 *                      will be returned
+	 * @return an equivalent new created {@link Filtered} or the found one from the given map
+	 */
 	public static Filtered convertToFiltered(FilteredDao filtered, SomeFilteringOwner parent, Map<String, IIdentifiable> mappedObjects) {
 		Filtered result = convertToFiltered(filtered, mappedObjects);
 		if (result != null) {
@@ -62,20 +95,50 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link Filtered} to a(n) {@link FilteredDao}
+	 *
+	 * @param filtered the source object which should be converted
+	 * @return an equivalent new created {@link FilteredDao}
+	 */
 	public static FilteredDao convertToFilteredDao(Filtered filtered) {
 		return convertToFilteredDao(filtered, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link Filtered} to a(n) {@link FilteredDao}
+	 *
+	 * @param filtered      the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code filtered} is contained, the found
+	 *                      {@link FilteredDao} will be returned
+	 * @return an equivalent new created {@link FilteredDao} or the found one from the given map
+	 */
 	public static FilteredDao convertToFilteredDao(Filtered filtered, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(filtered, mappedObjects, DaoObjectFactory::createFilteredDao, (domain, dao) -> getInstance().setFilteredDaoValues(domain, dao)
 				, (domain, dao) -> getInstance().setFilteredDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setFilteredDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link Filtered} to a(n) {@link FilteredDao} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param filtered the source object which should be converted
+	 * @param parent   the parent of converted result
+	 * @return an equivalent new created {@link FilteredDao}
+	 */
 	public static FilteredDao convertToFilteredDao(Filtered filtered, SomeFilteringOwnerDao parent) {
 		return convertToFilteredDao(filtered, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link Filtered} to a(n) {@link FilteredDao} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param filtered      the source object which should be converted
+	 * @param parent        the parent of converted result
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code filtered} is contained, the found
+	 *                      {@link FilteredDao} will be returned
+	 * @return an equivalent new created {@link FilteredDao} or the found one from the given map
+	 */
 	public static FilteredDao convertToFilteredDao(Filtered filtered, SomeFilteringOwnerDao parent, Map<String, IIdentifiableDao> mappedObjects) {
 		FilteredDao result = convertToFilteredDao(filtered, mappedObjects);
 		if (result != null) {
@@ -85,20 +148,52 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredOnlyDaoFieldDao} to a(n) {@link FilteredOnlyDaoField}
+	 *
+	 * @param filteredOnlyDaoField the source object which should be converted
+	 * @return an equivalent new created {@link FilteredOnlyDaoField}
+	 */
 	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField) {
 		return convertToFilteredOnlyDaoField(filteredOnlyDaoField, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredOnlyDaoFieldDao} to a(n) {@link FilteredOnlyDaoField}
+	 *
+	 * @param filteredOnlyDaoField the source object which should be converted
+	 * @param mappedObjects        map which contains already mapped objects. If an identification of {@code filteredOnlyDaoField} is contained, the found
+	 *                             {@link FilteredOnlyDaoField} will be returned
+	 * @return an equivalent new created {@link FilteredOnlyDaoField} or the found one from the given map
+	 */
 	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(filteredOnlyDaoField, mappedObjects, DomainObjectFactory::createFilteredOnlyDaoField, (dao, domain) -> getInstance().setFilteredOnlyDaoFieldValues(dao, domain)
 				, (dao, domain) -> getInstance().setFilteredOnlyDaoFieldSingleReferences(dao, domain, mappedObjects)
 				, (dao, domain) -> getInstance().setFilteredOnlyDaoFieldMultiReferences(dao, domain, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredOnlyDaoFieldDao} to a(n) {@link FilteredOnlyDaoField} and sets the result to the corresponding reference property at
+	 * the parent
+	 *
+	 * @param filteredOnlyDaoField the source object which should be converted
+	 * @param parent               the parent of converted result
+	 * @return an equivalent new created {@link FilteredOnlyDaoField}
+	 */
 	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField, SomeFilteringOwner parent) {
 		return convertToFilteredOnlyDaoField(filteredOnlyDaoField, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredOnlyDaoFieldDao} to a(n) {@link FilteredOnlyDaoField} and sets the result to the corresponding reference property at
+	 * the parent
+	 *
+	 * @param filteredOnlyDaoField the source object which should be converted
+	 * @param parent               the parent of converted result
+	 * @param mappedObjects        map which contains already mapped objects. If an identification of {@code filteredOnlyDaoField} is contained, the found
+	 *                             {@link FilteredOnlyDaoField} will be returned
+	 * @return an equivalent new created {@link FilteredOnlyDaoField} or the found one from the given map
+	 */
 	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField, SomeFilteringOwner parent, Map<String, IIdentifiable> mappedObjects) {
 		FilteredOnlyDaoField result = convertToFilteredOnlyDaoField(filteredOnlyDaoField, mappedObjects);
 		if (result != null) {
@@ -119,14 +214,41 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredOnlyDaoField} to a(n) {@link FilteredOnlyDaoFieldDao}
+	 *
+	 * @param filteredOnlyDaoField the source object which should be converted
+	 * @param someEnum             value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}
+	 * @return an equivalent new created {@link FilteredOnlyDaoFieldDao}
+	 */
 	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, AnyEnumType someEnum) {
 		return convertToFilteredOnlyDaoFieldDao(filteredOnlyDaoField, someEnum, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredOnlyDaoField} to a(n) {@link FilteredOnlyDaoFieldDao} and sets the result to the corresponding reference property at
+	 * the parent
+	 *
+	 * @param filteredOnlyDaoField the source object which should be converted
+	 * @param parent               the parent of converted result
+	 * @param someEnum             value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}
+	 * @return an equivalent new created {@link FilteredOnlyDaoFieldDao}
+	 */
 	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, SomeFilteringOwnerDao parent, AnyEnumType someEnum) {
 		return convertToFilteredOnlyDaoFieldDao(filteredOnlyDaoField, parent, someEnum, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredOnlyDaoField} to a(n) {@link FilteredOnlyDaoFieldDao} and sets the result to the corresponding reference property at
+	 * the parent
+	 *
+	 * @param filteredOnlyDaoField the source object which should be converted
+	 * @param parent               the parent of converted result
+	 * @param someEnum             value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}
+	 * @param mappedObjects        map which contains already mapped objects. If an identification of {@code filteredOnlyDaoField} is contained, the found
+	 *                             {@link FilteredOnlyDaoFieldDao} will be returned
+	 * @return an equivalent new created {@link FilteredOnlyDaoFieldDao} or the found one from the given map
+	 */
 	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, SomeFilteringOwnerDao parent, AnyEnumType someEnum, Map<String, IIdentifiableDao> mappedObjects) {
 		FilteredOnlyDaoFieldDao result = convertToFilteredOnlyDaoFieldDao(filteredOnlyDaoField, someEnum, mappedObjects);
 		if (result != null) {
@@ -136,26 +258,75 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link FilteredOnlyDaoField} to a(n) {@link FilteredOnlyDaoFieldDao}
+	 *
+	 * @param filteredOnlyDaoField the source object which should be converted
+	 * @param someEnum             value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}
+	 * @param mappedObjects        map which contains already mapped objects. If an identification of {@code filteredOnlyDaoField} is contained, the found
+	 *                             {@link FilteredOnlyDaoFieldDao} will be returned
+	 * @return an equivalent new created {@link FilteredOnlyDaoFieldDao} or the found one from the given map
+	 */
 	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, AnyEnumType someEnum, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(filteredOnlyDaoField, mappedObjects, DaoObjectFactory::createFilteredOnlyDaoFieldDao, (domain, dao) -> getInstance().setFilteredOnlyDaoFieldDaoValues(domain, dao, someEnum)
 				, (domain, dao) -> getInstance().setFilteredOnlyDaoFieldDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setFilteredOnlyDaoFieldDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link SomeFilteringOwnerDao} to a(n) {@link SomeFilteringOwner}
+	 *
+	 * @param someFilteringOwner the source object which should be converted
+	 * @param includeChildren    {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are
+	 *                           not of type {@link java.util.Collection}
+	 * @return an equivalent new created {@link SomeFilteringOwner}
+	 */
 	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren) {
 		return convertToSomeFilteringOwner(someFilteringOwner, includeChildren, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SomeFilteringOwnerDao} to a(n) {@link SomeFilteringOwner}
+	 *
+	 * @param someFilteringOwner the source object which should be converted
+	 * @param includeChildren    {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are
+	 *                           not of type {@link java.util.Collection}
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code someFilteringOwner} is contained, the found
+	 *                           {@link SomeFilteringOwner} will be returned
+	 * @return an equivalent new created {@link SomeFilteringOwner} or the found one from the given map
+	 */
 	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(someFilteringOwner, mappedObjects, DomainObjectFactory::createSomeFilteringOwner, (dao, domain) -> getInstance().setSomeFilteringOwnerValues(dao, domain)
 				, (dao, domain) -> getInstance().setSomeFilteringOwnerSingleReferences(dao, domain, mappedObjects)
 				, (dao, domain) -> getInstance().setSomeFilteringOwnerMultiReferences(dao, domain, includeChildren, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link SomeFilteringOwnerDao} to a(n) {@link SomeFilteringOwner} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param someFilteringOwner the source object which should be converted
+	 * @param includeChildren    {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are
+	 *                           not of type {@link java.util.Collection}
+	 * @param parent             the parent of converted result
+	 * @return an equivalent new created {@link SomeFilteringOwner}
+	 */
 	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren, Root parent) {
 		return convertToSomeFilteringOwner(someFilteringOwner, includeChildren, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SomeFilteringOwnerDao} to a(n) {@link SomeFilteringOwner} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param someFilteringOwner the source object which should be converted
+	 * @param includeChildren    {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are
+	 *                           not of type {@link java.util.Collection}
+	 * @param parent             the parent of converted result
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code someFilteringOwner} is contained, the found
+	 *                           {@link SomeFilteringOwner} will be returned
+	 * @return an equivalent new created {@link SomeFilteringOwner} or the found one from the given map
+	 */
 	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		SomeFilteringOwner result = convertToSomeFilteringOwner(someFilteringOwner, includeChildren, mappedObjects);
 		if (result != null) {
@@ -164,20 +335,60 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link SomeFilteringOwner} to a(n) {@link SomeFilteringOwnerDao}
+	 *
+	 * @param someFilteringOwner the source object which should be converted
+	 * @param includeChildren    {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are
+	 *                           not of type {@link java.util.Collection}
+	 * @return an equivalent new created {@link SomeFilteringOwnerDao}
+	 */
 	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren) {
 		return convertToSomeFilteringOwnerDao(someFilteringOwner, includeChildren, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SomeFilteringOwner} to a(n) {@link SomeFilteringOwnerDao}
+	 *
+	 * @param someFilteringOwner the source object which should be converted
+	 * @param includeChildren    {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are
+	 *                           not of type {@link java.util.Collection}
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code someFilteringOwner} is contained, the found
+	 *                           {@link SomeFilteringOwnerDao} will be returned
+	 * @return an equivalent new created {@link SomeFilteringOwnerDao} or the found one from the given map
+	 */
 	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(someFilteringOwner, mappedObjects, DaoObjectFactory::createSomeFilteringOwnerDao, (domain, dao) -> getInstance().setSomeFilteringOwnerDaoValues(domain, dao)
 				, (domain, dao) -> getInstance().setSomeFilteringOwnerDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setSomeFilteringOwnerDaoMultiReferences(domain, dao, includeChildren, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link SomeFilteringOwner} to a(n) {@link SomeFilteringOwnerDao} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param someFilteringOwner the source object which should be converted
+	 * @param includeChildren    {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are
+	 *                           not of type {@link java.util.Collection}
+	 * @param parent             the parent of converted result
+	 * @return an equivalent new created {@link SomeFilteringOwnerDao}
+	 */
 	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren, RootDao parent) {
 		return convertToSomeFilteringOwnerDao(someFilteringOwner, includeChildren, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link SomeFilteringOwner} to a(n) {@link SomeFilteringOwnerDao} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param someFilteringOwner the source object which should be converted
+	 * @param includeChildren    {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are
+	 *                           not of type {@link java.util.Collection}
+	 * @param parent             the parent of converted result
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code someFilteringOwner} is contained, the found
+	 *                           {@link SomeFilteringOwnerDao} will be returned
+	 * @return an equivalent new created {@link SomeFilteringOwnerDao} or the found one from the given map
+	 */
 	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren, RootDao parent, Map<String, IIdentifiableDao> mappedObjects) {
 		SomeFilteringOwnerDao result = convertToSomeFilteringOwnerDao(someFilteringOwner, includeChildren, mappedObjects);
 		if (result != null) {

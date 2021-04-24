@@ -10,6 +10,9 @@ import de.ma_vin.util.sample.content.dto.domain.dto.DomainAndDtoDto;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generated class which provides methods to convert a data transport to a domain object of sub package <i>domain.dto<i> and the other way around
+ */
 @BaseTransportMapper
 public class DomainDtoTransportMapper extends AbstractTransportMapper {
 
@@ -18,10 +21,24 @@ public class DomainDtoTransportMapper extends AbstractTransportMapper {
 	 */
 	private static DomainDtoTransportMapper instance;
 
+	/**
+	 * Converts a(n) {@link DomainAndDtoDto} to a(n) {@link DomainAndDto}
+	 *
+	 * @param domainAndDto the source object which should be converted
+	 * @return an equivalent new created {@link DomainAndDto}
+	 */
 	public static DomainAndDto convertToDomainAndDto(DomainAndDtoDto domainAndDto) {
 		return convertToDomainAndDto(domainAndDto, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link DomainAndDtoDto} to a(n) {@link DomainAndDto}
+	 *
+	 * @param domainAndDto  the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code domainAndDto} is contained, the found
+	 *                      {@link DomainAndDto} will be returned
+	 * @return an equivalent new created {@link DomainAndDto} or the found one from the given map
+	 */
 	public static DomainAndDto convertToDomainAndDto(DomainAndDtoDto domainAndDto, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(domainAndDto, mappedObjects, DomainObjectFactory::createDomainAndDto, (dto, domain) -> getInstance().setDomainAndDtoValues(dto, domain)
 				, (dto, domain) -> getInstance().setDomainAndDtoSingleReferences(dto, domain, mappedObjects)
@@ -29,10 +46,24 @@ public class DomainDtoTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link DomainAndDto} to a(n) {@link DomainAndDtoDto}
+	 *
+	 * @param domainAndDto the source object which should be converted
+	 * @return an equivalent new created {@link DomainAndDtoDto}
+	 */
 	public static DomainAndDtoDto convertToDomainAndDtoDto(DomainAndDto domainAndDto) {
 		return convertToDomainAndDtoDto(domainAndDto, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link DomainAndDto} to a(n) {@link DomainAndDtoDto}
+	 *
+	 * @param domainAndDto  the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code domainAndDto} is contained, the found
+	 *                      {@link DomainAndDtoDto} will be returned
+	 * @return an equivalent new created {@link DomainAndDtoDto} or the found one from the given map
+	 */
 	public static DomainAndDtoDto convertToDomainAndDtoDto(DomainAndDto domainAndDto, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(domainAndDto, mappedObjects, DtoObjectFactory::createDomainAndDtoDto, (domain, dto) -> getInstance().setDomainAndDtoDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setDomainAndDtoDtoSingleReferences(domain, dto, mappedObjects)

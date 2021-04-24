@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generated class which provides methods to convert a data access to a domain object of sub package <i>null<i> and the other way around
+ */
 @BaseAccessMapper
 public class CommonAccessMapper extends AbstractAccessMapper {
 
@@ -21,40 +24,106 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	 */
 	private static CommonAccessMapper instance;
 
+	/**
+	 * Converts a(n) {@link RootDao} to a(n) {@link Root}
+	 *
+	 * @param root            the source object which should be converted
+	 * @param includeChildren {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are not
+	 *                        of type {@link java.util.Collection}
+	 * @return an equivalent new created {@link Root}
+	 */
 	public static Root convertToRoot(RootDao root, boolean includeChildren) {
 		return convertToRoot(root, includeChildren, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootDao} to a(n) {@link Root}
+	 *
+	 * @param root            the source object which should be converted
+	 * @param includeChildren {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are not
+	 *                        of type {@link java.util.Collection}
+	 * @param mappedObjects   map which contains already mapped objects. If an identification of {@code root} is contained, the found {@link Root} will be
+	 *                        returned
+	 * @return an equivalent new created {@link Root} or the found one from the given map
+	 */
 	public static Root convertToRoot(RootDao root, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(root, mappedObjects, DomainObjectFactory::createRoot, (dao, domain) -> getInstance().setRootValues(dao, domain)
 				, (dao, domain) -> getInstance().setRootSingleReferences(dao, domain, includeChildren, mappedObjects)
 				, (dao, domain) -> getInstance().setRootMultiReferences(dao, domain, includeChildren, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link Root} to a(n) {@link RootDao}
+	 *
+	 * @param root            the source object which should be converted
+	 * @param includeChildren {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are not
+	 *                        of type {@link java.util.Collection}
+	 * @return an equivalent new created {@link RootDao}
+	 */
 	public static RootDao convertToRootDao(Root root, boolean includeChildren) {
 		return convertToRootDao(root, includeChildren, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link Root} to a(n) {@link RootDao}
+	 *
+	 * @param root            the source object which should be converted
+	 * @param includeChildren {@code true} if all references should also be mapped. {@code false} if only those references should be mapped which are not
+	 *                        of type {@link java.util.Collection}
+	 * @param mappedObjects   map which contains already mapped objects. If an identification of {@code root} is contained, the found {@link RootDao} will
+	 *                        be returned
+	 * @return an equivalent new created {@link RootDao} or the found one from the given map
+	 */
 	public static RootDao convertToRootDao(Root root, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(root, mappedObjects, DaoObjectFactory::createRootDao, (domain, dao) -> getInstance().setRootDaoValues(domain, dao)
 				, (domain, dao) -> getInstance().setRootDaoSingleReferences(domain, dao, includeChildren, mappedObjects)
 				, (domain, dao) -> getInstance().setRootDaoMultiReferences(domain, dao, includeChildren, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link RootExtDao} to a(n) {@link RootExt}
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @return an equivalent new created {@link RootExt}
+	 */
 	public static RootExt convertToRootExt(RootExtDao rootExt) {
 		return convertToRootExt(rootExt, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootExtDao} to a(n) {@link RootExt}
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found {@link RootExt}
+	 *                      will be returned
+	 * @return an equivalent new created {@link RootExt} or the found one from the given map
+	 */
 	public static RootExt convertToRootExt(RootExtDao rootExt, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(rootExt, mappedObjects, DomainObjectFactory::createRootExt, (dao, domain) -> getInstance().setRootExtValues(dao, domain)
 				, (dao, domain) -> getInstance().setRootExtSingleReferences(dao, domain, mappedObjects)
 				, (dao, domain) -> getInstance().setRootExtMultiReferences(dao, domain, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link RootExtDao} to a(n) {@link RootExt} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @param parent  the parent of converted result
+	 * @return an equivalent new created {@link RootExt}
+	 */
 	public static RootExt convertToRootExt(RootExtDao rootExt, Root parent) {
 		return convertToRootExt(rootExt, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootExtDao} to a(n) {@link RootExt} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param parent        the parent of converted result
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found {@link RootExt}
+	 *                      will be returned
+	 * @return an equivalent new created {@link RootExt} or the found one from the given map
+	 */
 	public static RootExt convertToRootExt(RootExtDao rootExt, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		RootExt result = convertToRootExt(rootExt, mappedObjects);
 		if (result != null) {
@@ -63,20 +132,50 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		return result;
 	}
 
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtDao}
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @return an equivalent new created {@link RootExtDao}
+	 */
 	public static RootExtDao convertToRootExtDao(RootExt rootExt) {
 		return convertToRootExtDao(rootExt, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtDao}
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found {@link RootExtDao}
+	 *                      will be returned
+	 * @return an equivalent new created {@link RootExtDao} or the found one from the given map
+	 */
 	public static RootExtDao convertToRootExtDao(RootExt rootExt, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(rootExt, mappedObjects, DaoObjectFactory::createRootExtDao, (domain, dao) -> getInstance().setRootExtDaoValues(domain, dao)
 				, (domain, dao) -> getInstance().setRootExtDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setRootExtDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtDao} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @param parent  the parent of converted result
+	 * @return an equivalent new created {@link RootExtDao}
+	 */
 	public static RootExtDao convertToRootExtDao(RootExt rootExt, RootDao parent) {
 		return convertToRootExtDao(rootExt, parent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtDao} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param parent        the parent of converted result
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found {@link RootExtDao}
+	 *                      will be returned
+	 * @return an equivalent new created {@link RootExtDao} or the found one from the given map
+	 */
 	public static RootExtDao convertToRootExtDao(RootExt rootExt, RootDao parent, Map<String, IIdentifiableDao> mappedObjects) {
 		RootExtDao result = convertToRootExtDao(rootExt, mappedObjects);
 		if (result != null) {

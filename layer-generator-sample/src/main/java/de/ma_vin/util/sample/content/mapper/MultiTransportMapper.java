@@ -12,6 +12,9 @@ import de.ma_vin.util.sample.content.dto.multi.MultiRefTwoParentsDto;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generated class which provides methods to convert a data transport to a domain object of sub package <i>multi<i> and the other way around
+ */
 @BaseTransportMapper
 public class MultiTransportMapper extends AbstractTransportMapper {
 
@@ -20,10 +23,24 @@ public class MultiTransportMapper extends AbstractTransportMapper {
 	 */
 	private static MultiTransportMapper instance;
 
+	/**
+	 * Converts a(n) {@link MultiRefOneParentDto} to a(n) {@link MultiRefOneParent}
+	 *
+	 * @param multiRefOneParent the source object which should be converted
+	 * @return an equivalent new created {@link MultiRefOneParent}
+	 */
 	public static MultiRefOneParent convertToMultiRefOneParent(MultiRefOneParentDto multiRefOneParent) {
 		return convertToMultiRefOneParent(multiRefOneParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link MultiRefOneParentDto} to a(n) {@link MultiRefOneParent}
+	 *
+	 * @param multiRefOneParent the source object which should be converted
+	 * @param mappedObjects     map which contains already mapped objects. If an identification of {@code multiRefOneParent} is contained, the found
+	 *                          {@link MultiRefOneParent} will be returned
+	 * @return an equivalent new created {@link MultiRefOneParent} or the found one from the given map
+	 */
 	public static MultiRefOneParent convertToMultiRefOneParent(MultiRefOneParentDto multiRefOneParent, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(multiRefOneParent, mappedObjects, DomainObjectFactory::createMultiRefOneParent, (dto, domain) -> getInstance().setMultiRefOneParentValues(dto, domain)
 				, (dto, domain) -> getInstance().setMultiRefOneParentSingleReferences(dto, domain, mappedObjects)
@@ -31,10 +48,24 @@ public class MultiTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link MultiRefOneParent} to a(n) {@link MultiRefOneParentDto}
+	 *
+	 * @param multiRefOneParent the source object which should be converted
+	 * @return an equivalent new created {@link MultiRefOneParentDto}
+	 */
 	public static MultiRefOneParentDto convertToMultiRefOneParentDto(MultiRefOneParent multiRefOneParent) {
 		return convertToMultiRefOneParentDto(multiRefOneParent, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link MultiRefOneParent} to a(n) {@link MultiRefOneParentDto}
+	 *
+	 * @param multiRefOneParent the source object which should be converted
+	 * @param mappedObjects     map which contains already mapped objects. If an identification of {@code multiRefOneParent} is contained, the found
+	 *                          {@link MultiRefOneParentDto} will be returned
+	 * @return an equivalent new created {@link MultiRefOneParentDto} or the found one from the given map
+	 */
 	public static MultiRefOneParentDto convertToMultiRefOneParentDto(MultiRefOneParent multiRefOneParent, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(multiRefOneParent, mappedObjects, DtoObjectFactory::createMultiRefOneParentDto, (domain, dto) -> getInstance().setMultiRefOneParentDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setMultiRefOneParentDtoSingleReferences(domain, dto, mappedObjects)
@@ -42,10 +73,24 @@ public class MultiTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link MultiRefTwoParentsDto} to a(n) {@link MultiRefTwoParents}
+	 *
+	 * @param multiRefTwoParents the source object which should be converted
+	 * @return an equivalent new created {@link MultiRefTwoParents}
+	 */
 	public static MultiRefTwoParents convertToMultiRefTwoParents(MultiRefTwoParentsDto multiRefTwoParents) {
 		return convertToMultiRefTwoParents(multiRefTwoParents, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link MultiRefTwoParentsDto} to a(n) {@link MultiRefTwoParents}
+	 *
+	 * @param multiRefTwoParents the source object which should be converted
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code multiRefTwoParents} is contained, the found
+	 *                           {@link MultiRefTwoParents} will be returned
+	 * @return an equivalent new created {@link MultiRefTwoParents} or the found one from the given map
+	 */
 	public static MultiRefTwoParents convertToMultiRefTwoParents(MultiRefTwoParentsDto multiRefTwoParents, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(multiRefTwoParents, mappedObjects, DomainObjectFactory::createMultiRefTwoParents, (dto, domain) -> getInstance().setMultiRefTwoParentsValues(dto, domain)
 				, (dto, domain) -> getInstance().setMultiRefTwoParentsSingleReferences(dto, domain, mappedObjects)
@@ -53,10 +98,24 @@ public class MultiTransportMapper extends AbstractTransportMapper {
 		});
 	}
 
+	/**
+	 * Converts a(n) {@link MultiRefTwoParents} to a(n) {@link MultiRefTwoParentsDto}
+	 *
+	 * @param multiRefTwoParents the source object which should be converted
+	 * @return an equivalent new created {@link MultiRefTwoParentsDto}
+	 */
 	public static MultiRefTwoParentsDto convertToMultiRefTwoParentsDto(MultiRefTwoParents multiRefTwoParents) {
 		return convertToMultiRefTwoParentsDto(multiRefTwoParents, new HashMap<>());
 	}
 
+	/**
+	 * Converts a(n) {@link MultiRefTwoParents} to a(n) {@link MultiRefTwoParentsDto}
+	 *
+	 * @param multiRefTwoParents the source object which should be converted
+	 * @param mappedObjects      map which contains already mapped objects. If an identification of {@code multiRefTwoParents} is contained, the found
+	 *                           {@link MultiRefTwoParentsDto} will be returned
+	 * @return an equivalent new created {@link MultiRefTwoParentsDto} or the found one from the given map
+	 */
 	public static MultiRefTwoParentsDto convertToMultiRefTwoParentsDto(MultiRefTwoParents multiRefTwoParents, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(multiRefTwoParents, mappedObjects, DtoObjectFactory::createMultiRefTwoParentsDto, (domain, dto) -> getInstance().setMultiRefTwoParentsDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setMultiRefTwoParentsDtoSingleReferences(domain, dto, mappedObjects)
