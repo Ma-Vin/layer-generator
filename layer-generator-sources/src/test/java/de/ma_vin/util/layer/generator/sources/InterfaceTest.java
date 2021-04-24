@@ -78,6 +78,25 @@ public class InterfaceTest {
     }
 
     @Test
+    public void testGenerateJavaDocFormatted() {
+        cut.setDescription("some %s description", "formatted");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.abc;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * some formatted description");
+        expected.add(" */");
+        expected.add("public interface Dummy {");
+        expected.add("");
+        expected.add("}");
+
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+    @Test
     public void testGenerateAddAnnotation() {
         when(annotation.generate()).thenReturn(Arrays.asList("annotationPlaceHolder"));
         cut.addAnnotation(annotation);

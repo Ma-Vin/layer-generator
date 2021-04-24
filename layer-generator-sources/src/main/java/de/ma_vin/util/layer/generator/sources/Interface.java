@@ -113,6 +113,14 @@ public class Interface extends AbstractGenerateLines implements Comparable<Inter
         generics.add(generic);
     }
 
+    public void setDescription(JavaDoc description) {
+        this.description = description;
+    }
+
+    public void setDescription(String description, String... args) {
+        setDescription(new JavaDoc(String.format(description, args)));
+    }
+
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Interface o) {

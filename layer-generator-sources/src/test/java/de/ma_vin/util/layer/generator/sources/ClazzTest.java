@@ -179,6 +179,25 @@ public class ClazzTest {
     }
 
     @Test
+    public void testGenerateJavaDocFormatted() {
+        cut.setDescription("Some %s description", "value");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.abc;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Some value description");
+        expected.add(" */");
+        expected.add("public class Dummy {");
+        expected.add("");
+        expected.add("}");
+
+        List<String> result = cut.generate();
+
+        TestUtil.checkList(expected, result);
+    }
+
+    @Test
     public void testGenerateAddAnnotationText() {
         cut.addAnnotation("Annotation");
 

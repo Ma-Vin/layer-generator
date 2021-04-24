@@ -1,10 +1,12 @@
 package de.ma_vin.util.layer.generator.sources;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class AbstractGenerateLines {
     public static final String TAB = "\t";
+    public static final int MAX_LENGTH = 150;
 
     public abstract List<String> generate();
 
@@ -14,11 +16,7 @@ public abstract class AbstractGenerateLines {
     }
 
     public static String getTabs(int numTabs) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < numTabs; i++) {
-            sb.append(TAB);
-        }
-        return sb.toString();
+        return TAB.repeat(Math.max(0, numTabs));
     }
 
     public static String getParametersText(List<? extends IComparableWithText> parameters) {
@@ -36,5 +34,51 @@ public abstract class AbstractGenerateLines {
 
     protected static String getUpperFirst(String text) {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
+
+    @SuppressWarnings("java:S127")
+    protected static List<String> splitLine(String line, String delimiter, int maxLength) {
+        ArrayList<String> result = new ArrayList<>();
+        if (line.length() <= maxLength) {
+            result.add(line);
+            return result;
+        }
+        String[] split = line.split(delimiter);
+        ArrayList<String> adjustSplit = new ArrayList<>();
+        int lastAdjustIndex = -1;
+        for (int i = 0; i < split.length - 1; i++) {
+            int lastOpeningCurlBracket = split[i].lastIndexOf("{");
+            int lastClosingCurlBracket = split[i].lastIndexOf("}");
+            if (lastOpeningCurlBracket > -1 && lastClosingCurlBracket < lastOpeningCurlBracket && split[i + 1].contains("}")) {
+                adjustSplit.add(split[i] + delimiter + split[i + 1]);
+                i++;
+                lastAdjustIndex = i;
+                continue;
+            }
+            lastAdjustIndex = i;
+            adjustSplit.add(split[i]);
+        }
+        if (lastAdjustIndex != split.length - 1) {
+            adjustSplit.add(split[split.length - 1]);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String s : adjustSplit) {
+            if (sb.length() + s.length() <= maxLength) {
+                sb.append(s);
+                sb.append(delimiter);
+                continue;
+            }
+            String toAdd = sb.toString();
+            result.add(toAdd.substring(0, toAdd.length() - delimiter.length()).trim());
+            sb = new StringBuilder();
+            sb.append(s);
+            sb.append(delimiter);
+        }
+
+        if (sb.length() > 0) {
+            String toAdd = sb.toString();
+            result.add(toAdd.substring(0, toAdd.length() - delimiter.length()).trim());
+        }
+        return result;
     }
 }

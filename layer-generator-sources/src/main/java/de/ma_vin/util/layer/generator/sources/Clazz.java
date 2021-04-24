@@ -88,7 +88,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
     }
 
     private String getGenericText() {
-       return Generic.getText(generics);
+        return Generic.getText(generics);
     }
 
     private String getInterfaceText() {
@@ -197,5 +197,13 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
 
     public Optional<Annotation> getAnnotation(String annotationName) {
         return annotations.stream().filter(a -> a.getAnnotationName().equals(annotationName)).findFirst();
+    }
+
+    public void setDescription(JavaDoc description) {
+        this.description = description;
+    }
+
+    public void setDescription(String description, String... args) {
+        setDescription(new JavaDoc(String.format(description, args)));
     }
 }
