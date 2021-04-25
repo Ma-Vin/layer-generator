@@ -81,18 +81,44 @@ public class DomainDtoTransportMapper extends AbstractTransportMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setDomainAndDtoDtoSingleReferences(DomainAndDto domain, DomainAndDtoDto dto, Map<String, ITransportable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
 	protected void setDomainAndDtoDtoValues(DomainAndDto domain, DomainAndDtoDto dto) {
 		dto.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setDomainAndDtoSingleReferences(DomainAndDtoDto dto, DomainAndDto domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setDomainAndDtoValues(DomainAndDtoDto dto, DomainAndDto domain) {
 		domain.setDescription(dto.getDescription());
 	}

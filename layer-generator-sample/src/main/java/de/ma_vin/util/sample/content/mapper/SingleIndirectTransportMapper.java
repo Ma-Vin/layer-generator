@@ -255,34 +255,86 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefIndirectParentDtoSingleReferences(SingleRefIndirectParent domain, SingleRefIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
 	protected void setSingleRefIndirectParentDtoValues(SingleRefIndirectParent domain, SingleRefIndirectParentDto dto) {
 		dto.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefIndirectParentSingleReferences(SingleRefIndirectParentDto dto, SingleRefIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setSingleRefIndirectParentValues(SingleRefIndirectParentDto dto, SingleRefIndirectParent domain) {
 		domain.setDescription(dto.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
 	protected void setSingleRefOtherIndirectParentDtoSingleReferences(SingleRefOtherIndirectParent domain, SingleRefOtherIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
 		dto.setSingleIndirectRef(SingleIndirectTransportMapper.convertToSingleRefIndirectParentDto(domain.getSingleIndirectRef(), mappedObjects));
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
 	protected void setSingleRefOtherIndirectParentDtoValues(SingleRefOtherIndirectParent domain, SingleRefOtherIndirectParentDto dto) {
 		dto.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
 	protected void setSingleRefOtherIndirectParentSingleReferences(SingleRefOtherIndirectParentDto dto, SingleRefOtherIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
 		domain.setSingleIndirectRef(SingleIndirectTransportMapper.convertToSingleRefIndirectParent(dto.getSingleIndirectRef(), mappedObjects));
 	}
 
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setSingleRefOtherIndirectParentValues(SingleRefOtherIndirectParentDto dto, SingleRefOtherIndirectParent domain) {
 		domain.setDescription(dto.getDescription());
 	}

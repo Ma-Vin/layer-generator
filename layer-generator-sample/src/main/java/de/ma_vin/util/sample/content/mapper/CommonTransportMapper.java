@@ -189,6 +189,13 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
 	protected void setRootDtoSingleReferences(Root domain, RootDto dto, Map<String, ITransportable> mappedObjects) {
 		SingleTransportMapper.convertToSingleRefOneParentDto(domain.getSingleRef(), dto, mappedObjects);
 		SingleTransportMapper.convertToSingleRefTwoParentsDto(domain.getAnotherSingleRef(), dto, mappedObjects);
@@ -198,15 +205,34 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		CommonTransportMapper.convertToRootExtDto(domain.getExt(), dto, mappedObjects);
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
 	protected void setRootDtoValues(Root domain, RootDto dto) {
 		dto.setRootName(domain.getRootName());
 		dto.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setRootExtDtoSingleReferences(RootExt domain, RootExtDto dto, Map<String, ITransportable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
 	protected void setRootExtDtoValues(RootExt domain, RootExtDto dto) {
 		dto.setExtendedInfo(domain.getExtendedInfo());
 		dto.setSomeEnum(domain.getSomeEnum());
@@ -220,10 +246,23 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		dto.setSomeName(domain.getSomeName());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setRootExtSingleReferences(RootExtDto dto, RootExt domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setRootExtValues(RootExtDto dto, RootExt domain) {
 		domain.setExtendedInfo(dto.getExtendedInfo());
 		domain.setSomeEnum(dto.getSomeEnum());
@@ -237,6 +276,13 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		domain.setSomeName(dto.getSomeName());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
 	protected void setRootSingleReferences(RootDto dto, Root domain, Map<String, IIdentifiable> mappedObjects) {
 		SingleTransportMapper.convertToSingleRefOneParent(dto.getSingleRef(), domain, mappedObjects);
 		SingleTransportMapper.convertToSingleRefTwoParents(dto.getAnotherSingleRef(), domain, mappedObjects);
@@ -246,6 +292,12 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		CommonTransportMapper.convertToRootExt(dto.getExt(), domain, mappedObjects);
 	}
 
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setRootValues(RootDto dto, Root domain) {
 		domain.setRootName(dto.getRootName());
 		domain.setDescription(dto.getDescription());

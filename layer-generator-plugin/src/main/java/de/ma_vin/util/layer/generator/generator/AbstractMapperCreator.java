@@ -201,9 +201,25 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         if (setValueMethod.getMethodBody().isEmpty()) {
             setValueMethod.addAnnotation(SuppressWarnings.class.getSimpleName(), null, "\"java:S1186\"");
         }
+        addSetValueMethodJavadDoc(setValueMethod, sourceParameter, targetParameter);
         mapperClass.addMethod(setValueMethod);
 
         return setValueMethod;
+    }
+
+    /**
+     * Adds the java doc to the set value method
+     *
+     * @param setValueMethod  Method where to add java doc
+     * @param sourceParameter the method parameter for the source object
+     * @param targetParameter the method parameter for the target object
+     */
+    private void addSetValueMethodJavadDoc(Method setValueMethod, String sourceParameter, String targetParameter) {
+        JavaDoc javaDoc = new JavaDoc();
+        javaDoc.addLine("Takes over values from {@code %s} to {@code %s} which are not of reference type", sourceParameter, targetParameter);
+        javaDoc.addParams(sourceParameter, "source of the given values");
+        javaDoc.addParams(targetParameter, "object where to set the values");
+        setValueMethod.setJavaDoc(javaDoc);
     }
 
     /**
@@ -240,7 +256,31 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         if (setSingleRefMethod.getMethodBody().isEmpty()) {
             setSingleRefMethod.addAnnotation(SuppressWarnings.class.getSimpleName(), null, "\"java:S1186\"");
         }
+
+        addSetSingleReferenceMethodJavaDoc(setSingleRefMethod, hasIncludeChildrenParameter, sourceParameter, targetParameter);
         mapperClass.addMethod(setSingleRefMethod);
+    }
+
+    /**
+     * Adds the java doc to an single reference method
+     *
+     * @param setSingleRefMethod          Method where to add java doc
+     * @param hasIncludeChildrenParameter Indicator if an include children must be described
+     * @param sourceParameter             the method parameter for the source object
+     * @param targetParameter             the method parameter for the target object
+     */
+    private void addSetSingleReferenceMethodJavaDoc(Method setSingleRefMethod, boolean hasIncludeChildrenParameter, String sourceParameter, String targetParameter) {
+        JavaDoc javaDoc = new JavaDoc();
+        javaDoc.addLine("Adds the references at {@code %s} which are not of type {@link java.util.Collection}", targetParameter);
+        javaDoc.addParams(sourceParameter, "source of the given references");
+        javaDoc.addParams(targetParameter, "object where to add the references");
+        if (hasIncludeChildrenParameter) {
+            javaDoc.addParams(INCLUDE_CHILDREN_PARAMETER, "{@code true} if all references at sub entities of the single reference should also be mapped. "
+                    + "{@code false} if only those references should be mapped which are not of type {@link java.util.Collection}");
+        }
+        javaDoc.addParams(MAPPED_OBJECTS_PARAMETER_TEXT, "map which contains already mapped objects. It will be used while mapping sub entities of {@code %s} to {@code %s}"
+                , sourceParameter, targetParameter);
+        setSingleRefMethod.setJavaDoc(javaDoc);
     }
 
     protected List<Reference> getSingleReferences(Entity entity, EntityRelevantChecker entityChecker, ReferenceFilter referenceFilter) {

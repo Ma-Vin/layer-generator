@@ -314,50 +314,130 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefOneParentDaoMultiReferences(SingleRefOneParent domain, SingleRefOneParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	protected void setSingleRefOneParentDaoSingleReferences(SingleRefOneParent domain, SingleRefOneParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 		SingleAccessMapper.convertToSingleRefTwoParentsDao(domain.getSingleRef(), dao, mappedObjects);
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setSingleRefOneParentDaoValues(SingleRefOneParent domain, SingleRefOneParentDao dao) {
 		dao.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefOneParentMultiReferences(SingleRefOneParentDao dao, SingleRefOneParent domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	protected void setSingleRefOneParentSingleReferences(SingleRefOneParentDao dao, SingleRefOneParent domain, Map<String, IIdentifiable> mappedObjects) {
 		SingleAccessMapper.convertToSingleRefTwoParents(dao.getSingleRef(), domain, mappedObjects);
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setSingleRefOneParentValues(SingleRefOneParentDao dao, SingleRefOneParent domain) {
 		domain.setDescription(dao.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefTwoParentsDaoMultiReferences(SingleRefTwoParents domain, SingleRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefTwoParentsDaoSingleReferences(SingleRefTwoParents domain, SingleRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setSingleRefTwoParentsDaoValues(SingleRefTwoParents domain, SingleRefTwoParentsDao dao) {
 		dao.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefTwoParentsMultiReferences(SingleRefTwoParentsDao dao, SingleRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefTwoParentsSingleReferences(SingleRefTwoParentsDao dao, SingleRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setSingleRefTwoParentsValues(SingleRefTwoParentsDao dao, SingleRefTwoParents domain) {
 		domain.setDescription(dao.getDescription());
 	}

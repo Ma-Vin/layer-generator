@@ -133,34 +133,86 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefIndirectParentDtoSingleReferences(MultiRefIndirectParent domain, MultiRefIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
 	protected void setMultiRefIndirectParentDtoValues(MultiRefIndirectParent domain, MultiRefIndirectParentDto dto) {
 		dto.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefIndirectParentSingleReferences(MultiRefIndirectParentDto dto, MultiRefIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setMultiRefIndirectParentValues(MultiRefIndirectParentDto dto, MultiRefIndirectParent domain) {
 		domain.setDescription(dto.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefOtherIndirectParentDtoSingleReferences(MultiRefOtherIndirectParent domain, MultiRefOtherIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
 	protected void setMultiRefOtherIndirectParentDtoValues(MultiRefOtherIndirectParent domain, MultiRefOtherIndirectParentDto dto) {
 		dto.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefOtherIndirectParentSingleReferences(MultiRefOtherIndirectParentDto dto, MultiRefOtherIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setMultiRefOtherIndirectParentValues(MultiRefOtherIndirectParentDto dto, MultiRefOtherIndirectParent domain) {
 		domain.setDescription(dto.getDescription());
 	}

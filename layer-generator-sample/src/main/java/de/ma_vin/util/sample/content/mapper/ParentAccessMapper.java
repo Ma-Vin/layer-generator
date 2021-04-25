@@ -138,27 +138,67 @@ public class ParentAccessMapper extends AbstractAccessMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setExtendingClassDaoMultiReferences(ExtendingClass domain, ExtendingClassDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setExtendingClassDaoSingleReferences(ExtendingClass domain, ExtendingClassDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setExtendingClassDaoValues(ExtendingClass domain, ExtendingClassDao dao) {
 		dao.setAdditionalDescription(domain.getAdditionalDescription());
 		dao.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setExtendingClassMultiReferences(ExtendingClassDao dao, ExtendingClass domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setExtendingClassSingleReferences(ExtendingClassDao dao, ExtendingClass domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setExtendingClassValues(ExtendingClassDao dao, ExtendingClass domain) {
 		domain.setAdditionalDescription(dao.getAdditionalDescription());
 		domain.setDescription(dao.getDescription());

@@ -408,57 +408,146 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setFilteredDaoMultiReferences(Filtered domain, FilteredDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setFilteredDaoSingleReferences(Filtered domain, FilteredDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setFilteredDaoValues(Filtered domain, FilteredDao dao) {
 		dao.setDescription(domain.getDescription());
 		dao.setSomeEnum(domain.getSomeEnum());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setFilteredMultiReferences(FilteredDao dao, Filtered domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setFilteredOnlyDaoFieldDaoMultiReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setFilteredOnlyDaoFieldDaoSingleReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain   source of the given values
+	 * @param dao      object where to set the values
+	 * @param someEnum value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}
+	 */
 	protected void setFilteredOnlyDaoFieldDaoValues(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao, AnyEnumType someEnum) {
 		dao.setDescription(domain.getDescription());
 		dao.setSomeEnum(someEnum);
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setFilteredOnlyDaoFieldMultiReferences(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setFilteredOnlyDaoFieldSingleReferences(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setFilteredOnlyDaoFieldValues(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain) {
 		domain.setDescription(dao.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setFilteredSingleReferences(FilteredDao dao, Filtered domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setFilteredValues(FilteredDao dao, Filtered domain) {
 		domain.setDescription(dao.getDescription());
 		domain.setSomeEnum(dao.getSomeEnum());
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain          source of the given references
+	 * @param dao             object where to add the references
+	 * @param includeChildren {@code true} if references should be mapped. Otherwise {@code false}
+	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	protected void setSomeFilteringOwnerDaoMultiReferences(SomeFilteringOwner domain, SomeFilteringOwnerDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
 		dao.setAggFiltereds(new ArrayList<>());
 		dao.setAggFilteredOnlyDaoFields(new ArrayList<>());
@@ -484,14 +573,35 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		}
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSomeFilteringOwnerDaoSingleReferences(SomeFilteringOwner domain, SomeFilteringOwnerDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSomeFilteringOwnerDaoValues(SomeFilteringOwner domain, SomeFilteringOwnerDao dao) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao             source of the given references
+	 * @param domain          object where to add the references
+	 * @param includeChildren {@code true} if references should be mapped. Otherwise {@code false}
+	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	protected void setSomeFilteringOwnerMultiReferences(SomeFilteringOwnerDao dao, SomeFilteringOwner domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
 		if (includeChildren) {
 			dao.getAggFiltereds().forEach(arg ->
@@ -503,10 +613,23 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		}
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSomeFilteringOwnerSingleReferences(SomeFilteringOwnerDao dao, SomeFilteringOwner domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSomeFilteringOwnerValues(SomeFilteringOwnerDao dao, SomeFilteringOwner domain) {
 	}

@@ -315,34 +315,86 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
 	protected void setSingleRefOneParentDtoSingleReferences(SingleRefOneParent domain, SingleRefOneParentDto dto, Map<String, ITransportable> mappedObjects) {
 		SingleTransportMapper.convertToSingleRefTwoParentsDto(domain.getSingleRef(), dto, mappedObjects);
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
 	protected void setSingleRefOneParentDtoValues(SingleRefOneParent domain, SingleRefOneParentDto dto) {
 		dto.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
 	protected void setSingleRefOneParentSingleReferences(SingleRefOneParentDto dto, SingleRefOneParent domain, Map<String, IIdentifiable> mappedObjects) {
 		SingleTransportMapper.convertToSingleRefTwoParents(dto.getSingleRef(), domain, mappedObjects);
 	}
 
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setSingleRefOneParentValues(SingleRefOneParentDto dto, SingleRefOneParent domain) {
 		domain.setDescription(dto.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefTwoParentsDtoSingleReferences(SingleRefTwoParents domain, SingleRefTwoParentsDto dto, Map<String, ITransportable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
 	protected void setSingleRefTwoParentsDtoValues(SingleRefTwoParents domain, SingleRefTwoParentsDto dto) {
 		dto.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefTwoParentsSingleReferences(SingleRefTwoParentsDto dto, SingleRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setSingleRefTwoParentsValues(SingleRefTwoParentsDto dto, SingleRefTwoParents domain) {
 		domain.setDescription(dto.getDescription());
 	}

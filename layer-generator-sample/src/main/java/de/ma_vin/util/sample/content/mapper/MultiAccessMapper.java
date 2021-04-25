@@ -331,6 +331,14 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain          source of the given references
+	 * @param dao             object where to add the references
+	 * @param includeChildren {@code true} if references should be mapped. Otherwise {@code false}
+	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	protected void setMultiRefOneParentDaoMultiReferences(MultiRefOneParent domain, MultiRefOneParentDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
 		dao.setMultiRefs(new ArrayList<>());
 		if (includeChildren) {
@@ -340,14 +348,35 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 		}
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefOneParentDaoSingleReferences(MultiRefOneParent domain, MultiRefOneParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setMultiRefOneParentDaoValues(MultiRefOneParent domain, MultiRefOneParentDao dao) {
 		dao.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao             source of the given references
+	 * @param domain          object where to add the references
+	 * @param includeChildren {@code true} if references should be mapped. Otherwise {@code false}
+	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	protected void setMultiRefOneParentMultiReferences(MultiRefOneParentDao dao, MultiRefOneParent domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
 		if (includeChildren) {
 			dao.getMultiRefs().forEach(arg ->
@@ -356,34 +385,87 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 		}
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefOneParentSingleReferences(MultiRefOneParentDao dao, MultiRefOneParent domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setMultiRefOneParentValues(MultiRefOneParentDao dao, MultiRefOneParent domain) {
 		domain.setDescription(dao.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefTwoParentsDaoMultiReferences(MultiRefTwoParents domain, MultiRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefTwoParentsDaoSingleReferences(MultiRefTwoParents domain, MultiRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setMultiRefTwoParentsDaoValues(MultiRefTwoParents domain, MultiRefTwoParentsDao dao) {
 		dao.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefTwoParentsMultiReferences(MultiRefTwoParentsDao dao, MultiRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setMultiRefTwoParentsSingleReferences(MultiRefTwoParentsDao dao, MultiRefTwoParents domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setMultiRefTwoParentsValues(MultiRefTwoParentsDao dao, MultiRefTwoParents domain) {
 		domain.setDescription(dao.getDescription());
 	}

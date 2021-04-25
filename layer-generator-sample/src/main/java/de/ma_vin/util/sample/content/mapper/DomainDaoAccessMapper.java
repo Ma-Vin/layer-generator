@@ -79,26 +79,66 @@ public class DomainDaoAccessMapper extends AbstractAccessMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setDomainAndDaoDaoMultiReferences(DomainAndDao domain, DomainAndDaoDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setDomainAndDaoDaoSingleReferences(DomainAndDao domain, DomainAndDaoDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setDomainAndDaoDaoValues(DomainAndDao domain, DomainAndDaoDao dao) {
 		dao.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setDomainAndDaoMultiReferences(DomainAndDaoDao dao, DomainAndDao domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setDomainAndDaoSingleReferences(DomainAndDaoDao dao, DomainAndDao domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setDomainAndDaoValues(DomainAndDaoDao dao, DomainAndDao domain) {
 		domain.setDescription(dao.getDescription());
 	}

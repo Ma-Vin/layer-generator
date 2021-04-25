@@ -195,6 +195,14 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain          source of the given references
+	 * @param dao             object where to add the references
+	 * @param includeChildren {@code true} if references should be mapped. Otherwise {@code false}
+	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	protected void setRootDaoMultiReferences(Root domain, RootDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
 		dao.setMultiRefs(new ArrayList<>());
 		dao.setAnotherMultiRefs(new ArrayList<>());
@@ -220,6 +228,15 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		}
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain          source of the given references
+	 * @param dao             object where to add the references
+	 * @param includeChildren {@code true} if all references at sub entities of the single reference should also be mapped. {@code false} if only those
+	 *                        references should be mapped which are not of type {@link java.util.Collection}
+	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	protected void setRootDaoSingleReferences(Root domain, RootDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
 		SingleAccessMapper.convertToSingleRefOneParentDao(domain.getSingleRef(), dao, mappedObjects);
 		SingleAccessMapper.convertToSingleRefTwoParentsDao(domain.getAnotherSingleRef(), dao, mappedObjects);
@@ -229,19 +246,45 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		CommonAccessMapper.convertToRootExtDao(domain.getExt(), dao, mappedObjects);
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setRootDaoValues(Root domain, RootDao dao) {
 		dao.setRootName(domain.getRootName());
 		dao.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setRootExtDaoMultiReferences(RootExt domain, RootExtDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setRootExtDaoSingleReferences(RootExt domain, RootExtDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setRootExtDaoValues(RootExt domain, RootExtDao dao) {
 		dao.setExtendedInfo(domain.getExtendedInfo());
 		dao.setSomeEnum(domain.getSomeEnum());
@@ -255,14 +298,34 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		dao.setSomeName(domain.getSomeName());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setRootExtMultiReferences(RootExtDao dao, RootExt domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setRootExtSingleReferences(RootExtDao dao, RootExt domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setRootExtValues(RootExtDao dao, RootExt domain) {
 		domain.setExtendedInfo(dao.getExtendedInfo());
 		domain.setSomeEnum(dao.getSomeEnum());
@@ -276,6 +339,14 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		domain.setSomeName(dao.getSomeName());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao             source of the given references
+	 * @param domain          object where to add the references
+	 * @param includeChildren {@code true} if references should be mapped. Otherwise {@code false}
+	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	protected void setRootMultiReferences(RootDao dao, Root domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
 		if (includeChildren) {
 			dao.getMultiRefs().forEach(arg ->
@@ -296,6 +367,15 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		}
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao             source of the given references
+	 * @param domain          object where to add the references
+	 * @param includeChildren {@code true} if all references at sub entities of the single reference should also be mapped. {@code false} if only those
+	 *                        references should be mapped which are not of type {@link java.util.Collection}
+	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	protected void setRootSingleReferences(RootDao dao, Root domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
 		SingleAccessMapper.convertToSingleRefOneParent(dao.getSingleRef(), domain, mappedObjects);
 		SingleAccessMapper.convertToSingleRefTwoParents(dao.getAnotherSingleRef(), domain, mappedObjects);
@@ -305,6 +385,12 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		CommonAccessMapper.convertToRootExt(dao.getExt(), domain, mappedObjects);
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setRootValues(RootDao dao, Root domain) {
 		domain.setRootName(dao.getRootName());
 		domain.setDescription(dao.getDescription());

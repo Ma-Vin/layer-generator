@@ -28,6 +28,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
     public static final String INCLUDE_CHILDREN_PARAMETER_WITH_COMMA = "includeChildren, ";
     public static final String EMPTY_METHOD_RULE_ID = "\"java:S1186\"";
 
+    public static final String FILTER_PARAM_JAVA_DOC = "value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}";
+
     public AccessMapperCreator(Config config, Log logger) {
         super(config, logger);
     }
@@ -260,6 +262,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         getFilterAttributes(entity).forEach(f -> {
             mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, f.getTypePackage(), f.getType()));
             setValueMethod.addParameter(f.getType(), getLowerFirst(f.getFieldName()));
+            setValueMethod.getJavaDoc().addParams(getLowerFirst(f.getFieldName()), FILTER_PARAM_JAVA_DOC);
             setValueMethod.addLine("dao.set%s(%s);", getUpperFirst(f.getFieldName()), getLowerFirst(f.getFieldName()));
             sb.append(", ");
             sb.append(getLowerFirst(f.getFieldName()));
@@ -311,7 +314,30 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         if (setMultiRefMethod.getMethodBody().isEmpty()) {
             setMultiRefMethod.addAnnotation(SuppressWarnings.class.getSimpleName(), null, EMPTY_METHOD_RULE_ID);
         }
+        addSetMultiReferenceMethodJavaDoc(setMultiRefMethod, !relevantReferences.isEmpty(), DOMAIN_PARAMETER, DAO_PARAMETER);
+
         mapperClass.addMethod(setMultiRefMethod);
+    }
+
+    /**
+     * Adds the java doc to an multi reference method
+     *
+     * @param setMultiRefMethod           Method where to add java doc
+     * @param hasIncludeChildrenParameter Indicator if an include children must be described
+     * @param sourceParameter             the method parameter for the source object
+     * @param targetParameter             the method parameter for the target object
+     */
+    private void addSetMultiReferenceMethodJavaDoc(Method setMultiRefMethod, boolean hasIncludeChildrenParameter, String sourceParameter, String targetParameter) {
+        JavaDoc javaDoc = new JavaDoc();
+        javaDoc.addLine("Adds the references at {@code %s} which are of type {@link java.util.Collection}", targetParameter);
+        javaDoc.addParams(sourceParameter, "source of the given references");
+        javaDoc.addParams(targetParameter, "object where to add the references");
+        if (hasIncludeChildrenParameter) {
+            javaDoc.addParams(INCLUDE_CHILDREN_PARAMETER, "{@code true} if references should be mapped. Otherwise {@code false}");
+        }
+        javaDoc.addParams(MAPPED_OBJECTS_PARAMETER_TEXT, "map which contains already mapped objects. It will be used while mapping sub entities of {@code %s} to {@code %s}"
+                , sourceParameter, targetParameter);
+        setMultiRefMethod.setJavaDoc(javaDoc);
     }
 
     /**
@@ -578,14 +604,13 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         if (DaoCreator.isToAggregate(reference, allReferences)
                 && !referenceToParent.getRealFilterField().getModels().isDomain()) {
-            String filterJavaDoc = "value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}";
 
             mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, referenceToParent.getRealFilterField().getTypePackage()
                     , referenceToParent.getRealFilterField().getType()));
             convertMethod.addParameter(referenceToParent.getRealFilterField().getType(), getLowerFirst(referenceToParent.getFilterField()));
-            convertMethod.getJavaDoc().addParams(getLowerFirst(referenceToParent.getFilterField()), filterJavaDoc);
+            convertMethod.getJavaDoc().addParams(getLowerFirst(referenceToParent.getFilterField()), FILTER_PARAM_JAVA_DOC);
             convertMethodWithMap.addParameter(referenceToParent.getRealFilterField().getType(), getLowerFirst(referenceToParent.getFilterField()));
-            convertMethodWithMap.getJavaDoc().addParams(getLowerFirst(referenceToParent.getFilterField()), filterJavaDoc);
+            convertMethodWithMap.getJavaDoc().addParams(getLowerFirst(referenceToParent.getFilterField()), FILTER_PARAM_JAVA_DOC);
         }
     }
 
@@ -599,14 +624,13 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      */
     private void addFilterValueParameter(Clazz mapperClass, Entity entity, Method convertMethod, Method convertMethodWithMap) {
         Set<Field> filterAttributes = getFilterAttributes(entity);
-        String filterJavaDoc = "value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}";
 
         filterAttributes.forEach(f -> {
             mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, f.getTypePackage(), f.getType()));
             convertMethod.addParameter(f.getType(), getLowerFirst(f.getFieldName()));
-            convertMethod.getJavaDoc().addParams(getLowerFirst(f.getFieldName()), filterJavaDoc);
+            convertMethod.getJavaDoc().addParams(getLowerFirst(f.getFieldName()), FILTER_PARAM_JAVA_DOC);
             convertMethodWithMap.addParameter(f.getType(), getLowerFirst(f.getFieldName()));
-            convertMethodWithMap.getJavaDoc().addParams(getLowerFirst(f.getFieldName()), filterJavaDoc);
+            convertMethodWithMap.getJavaDoc().addParams(getLowerFirst(f.getFieldName()), FILTER_PARAM_JAVA_DOC);
         });
     }
 
@@ -691,6 +715,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         if (setMultiRefMethod.getMethodBody().isEmpty()) {
             setMultiRefMethod.addAnnotation(SuppressWarnings.class.getSimpleName(), null, EMPTY_METHOD_RULE_ID);
         }
+        addSetMultiReferenceMethodJavaDoc(setMultiRefMethod, !relevantReferences.isEmpty(), DAO_PARAMETER, DOMAIN_PARAMETER);
+
         mapperClass.addMethod(setMultiRefMethod);
     }
 

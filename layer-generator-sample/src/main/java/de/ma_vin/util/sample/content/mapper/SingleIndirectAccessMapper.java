@@ -313,50 +313,130 @@ public class SingleIndirectAccessMapper extends AbstractAccessMapper {
 		return instance;
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefIndirectParentDaoMultiReferences(SingleRefIndirectParent domain, SingleRefIndirectParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefIndirectParentDaoSingleReferences(SingleRefIndirectParent domain, SingleRefIndirectParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setSingleRefIndirectParentDaoValues(SingleRefIndirectParent domain, SingleRefIndirectParentDao dao) {
 		dao.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefIndirectParentMultiReferences(SingleRefIndirectParentDao dao, SingleRefIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefIndirectParentSingleReferences(SingleRefIndirectParentDao dao, SingleRefIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setSingleRefIndirectParentValues(SingleRefIndirectParentDao dao, SingleRefIndirectParent domain) {
 		domain.setDescription(dao.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefOtherIndirectParentDaoMultiReferences(SingleRefOtherIndirectParent domain, SingleRefOtherIndirectParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
 	protected void setSingleRefOtherIndirectParentDaoSingleReferences(SingleRefOtherIndirectParent domain, SingleRefOtherIndirectParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
 		dao.setSingleIndirectRef(SingleIndirectAccessMapper.convertToSingleRefIndirectParentDao(domain.getSingleIndirectRef(), mappedObjects));
 	}
 
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
 	protected void setSingleRefOtherIndirectParentDaoValues(SingleRefOtherIndirectParent domain, SingleRefOtherIndirectParentDao dao) {
 		dao.setDescription(domain.getDescription());
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	@SuppressWarnings("java:S1186")
 	protected void setSingleRefOtherIndirectParentMultiReferences(SingleRefOtherIndirectParentDao dao, SingleRefOtherIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
 	}
 
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
 	protected void setSingleRefOtherIndirectParentSingleReferences(SingleRefOtherIndirectParentDao dao, SingleRefOtherIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
 		domain.setSingleIndirectRef(SingleIndirectAccessMapper.convertToSingleRefIndirectParent(dao.getSingleIndirectRef(), mappedObjects));
 	}
 
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
 	protected void setSingleRefOtherIndirectParentValues(SingleRefOtherIndirectParentDao dao, SingleRefOtherIndirectParent domain) {
 		domain.setDescription(dao.getDescription());
 	}
