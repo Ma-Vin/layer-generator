@@ -280,7 +280,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@JoinColumn(name = \"OwnerId\", nullable = false)");
+        expected.add("	@JoinColumn(name = \"ParentOwnerId\", nullable = false)");
         expected.add("	@OneToOne(targetEntity = OwnerDao.class)");
         expected.add("	private OwnerDao parentOwner;");
         expected.add("");
@@ -325,7 +325,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@JoinColumn(name = \"OwnerId\", nullable = false)");
+        expected.add("	@JoinColumn(name = \"ParentOwnerId\", nullable = false)");
         expected.add("	@ManyToOne(targetEntity = OwnerDao.class)");
         expected.add("	private OwnerDao parentOwner;");
         expected.add("");
@@ -386,11 +386,11 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@JoinColumn(name = \"AnotherOwnerId\")");
+        expected.add("	@JoinColumn(name = \"ParentAnotherOwnerId\")");
         expected.add("	@ManyToOne(targetEntity = AnotherOwnerDao.class)");
         expected.add("	private AnotherOwnerDao parentAnotherOwner;");
         expected.add("");
-        expected.add("	@JoinColumn(name = \"OwnerId\")");
+        expected.add("	@JoinColumn(name = \"ParentOwnerId\")");
         expected.add("	@ManyToOne(targetEntity = OwnerDao.class)");
         expected.add("	private OwnerDao parentOwner;");
         expected.add("");
@@ -1267,7 +1267,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@JoinColumn(name = \"OwnerId\", nullable = false)");
+        expected.add("	@JoinColumn(name = \"ParentOwnerId\", nullable = false)");
         expected.add("	@ManyToOne(targetEntity = OwnerDao.class)");
         expected.add("	private OwnerDao parentOwner;");
         expected.add("");
@@ -1317,7 +1317,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@JoinColumn(name = \"OwnerId\", nullable = false)");
+        expected.add("	@JoinColumn(name = \"ParentOwnerId\", nullable = false)");
         expected.add("	@ManyToOne(targetEntity = OwnerDao.class)");
         expected.add("	private OwnerDao parentOwner;");
         expected.add("");

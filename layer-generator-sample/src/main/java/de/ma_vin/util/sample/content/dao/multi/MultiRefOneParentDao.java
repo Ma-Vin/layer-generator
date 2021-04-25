@@ -33,7 +33,7 @@ public class MultiRefOneParentDao implements IIdentifiableDao {
 	@OneToMany(mappedBy = "parentMultiRefOneParent", targetEntity = MultiRefTwoParentsDao.class)
 	private Collection<MultiRefTwoParentsDao> multiRefs;
 
-	@JoinColumn(name = "RootId", nullable = false)
+	@JoinColumn(name = "ParentRootId", nullable = false)
 	@ManyToOne(targetEntity = RootDao.class)
 	private RootDao parentRoot;
 

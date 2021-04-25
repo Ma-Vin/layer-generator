@@ -29,11 +29,11 @@ public class SingleRefTwoParentsDao implements IIdentifiableDao {
 	@Id
 	private Long id;
 
-	@JoinColumn(name = "RootId")
+	@JoinColumn(name = "ParentRootId")
 	@OneToOne(targetEntity = RootDao.class)
 	private RootDao parentRoot;
 
-	@JoinColumn(name = "SingleRefOneParentId")
+	@JoinColumn(name = "ParentSingleRefOneParentId")
 	@OneToOne(targetEntity = SingleRefOneParentDao.class)
 	private SingleRefOneParentDao parentSingleRefOneParent;
 

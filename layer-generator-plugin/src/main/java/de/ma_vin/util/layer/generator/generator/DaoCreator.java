@@ -322,7 +322,7 @@ public class DaoCreator extends AbstractObjectCreator {
         Attribute parent = new Attribute("parent" + reference.getTargetEntity(), parentClassName);
         parent.addAnnotation(refTypeName, TARGET_ENTITY, String.format("%s.class", parentClassName));
         Annotation joinColAnnotation = new Annotation(JoinColumn.class);
-        joinColAnnotation.addParameter("name", String.format(PLACEHOLDER_ID, reference.getTargetEntity()));
+        joinColAnnotation.addParameter("name", String.format("\"Parent%sId\"", getUpperFirst(reference.getTargetEntity())));
         if (isSingle) {
             joinColAnnotation.addParameter("nullable", "false");
         }

@@ -45,7 +45,7 @@ public class RootExtDao implements IIdentifiableDao {
 	@Column
 	private String onlyDao;
 
-	@JoinColumn(name = "RootId", nullable = false)
+	@JoinColumn(name = "ParentRootId", nullable = false)
 	@OneToOne(targetEntity = RootDao.class)
 	private RootDao parentRoot;
 

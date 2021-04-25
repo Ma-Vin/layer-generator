@@ -29,11 +29,11 @@ public class MultiRefTwoParentsDao implements IIdentifiableDao {
 	@Id
 	private Long id;
 
-	@JoinColumn(name = "MultiRefOneParentId")
+	@JoinColumn(name = "ParentMultiRefOneParentId")
 	@ManyToOne(targetEntity = MultiRefOneParentDao.class)
 	private MultiRefOneParentDao parentMultiRefOneParent;
 
-	@JoinColumn(name = "RootId")
+	@JoinColumn(name = "ParentRootId")
 	@ManyToOne(targetEntity = RootDao.class)
 	private RootDao parentRoot;
 

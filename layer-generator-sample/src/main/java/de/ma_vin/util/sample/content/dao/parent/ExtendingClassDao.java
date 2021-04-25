@@ -24,7 +24,7 @@ public class ExtendingClassDao extends SuperClassDao {
 	@Column
 	private String additionalDescription;
 
-	@JoinColumn(name = "RootId", nullable = false)
+	@JoinColumn(name = "ParentRootId", nullable = false)
 	@ManyToOne(targetEntity = RootDao.class)
 	private RootDao parentRoot;
 

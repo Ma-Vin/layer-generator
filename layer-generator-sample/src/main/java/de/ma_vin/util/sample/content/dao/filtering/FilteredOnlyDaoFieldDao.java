@@ -29,7 +29,7 @@ public class FilteredOnlyDaoFieldDao implements IIdentifiableDao {
 	@Id
 	private Long id;
 
-	@JoinColumn(name = "SomeFilteringOwnerId", nullable = false)
+	@JoinColumn(name = "ParentSomeFilteringOwnerId", nullable = false)
 	@ManyToOne(targetEntity = SomeFilteringOwnerDao.class)
 	private SomeFilteringOwnerDao parentSomeFilteringOwner;
 

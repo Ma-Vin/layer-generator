@@ -29,7 +29,7 @@ public class SingleRefOtherIndirectParentDao implements IIdentifiableDao {
 	@Id
 	private Long id;
 
-	@JoinColumn(name = "RootId", nullable = false)
+	@JoinColumn(name = "ParentRootId", nullable = false)
 	@OneToOne(targetEntity = RootDao.class)
 	private RootDao parentRoot;
 

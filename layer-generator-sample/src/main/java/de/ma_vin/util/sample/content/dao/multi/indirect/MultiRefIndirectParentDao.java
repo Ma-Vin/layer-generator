@@ -29,7 +29,7 @@ public class MultiRefIndirectParentDao implements IIdentifiableDao {
 	@Id
 	private Long id;
 
-	@JoinColumn(name = "RootId", nullable = false)
+	@JoinColumn(name = "ParentRootId", nullable = false)
 	@ManyToOne(targetEntity = RootDao.class)
 	private RootDao parentRoot;
 
