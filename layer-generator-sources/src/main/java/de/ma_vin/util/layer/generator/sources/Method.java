@@ -71,7 +71,7 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
             result.addAll(javaDoc.generate());
         }
         annotations.stream().sorted().forEach(a -> result.addAll(a.generate()));
-        result.add(getDeclaration());
+        result.addAll(getDeclarations());
         methodBody.forEach(b -> result.add(b.trim().isEmpty() ? "" : TAB + b));
         result.add("}");
         return result;
@@ -84,8 +84,21 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         return " " + Generic.getText(generics);
     }
 
-    protected String getDeclaration() {
-        return String.format("%s%s%s %s %s(%s) {", qualifier.getText(), getStaticText(), getGenericText(), methodType, methodName, getParametersText(parameters));
+    protected String getBaseDeclaration() {
+        return String.format("%s%s%s %s %s(", qualifier.getText(), getStaticText(), getGenericText(), methodType, methodName);
+    }
+
+    protected List<String> getDeclarations() {
+        String firstEntry = getBaseDeclaration();
+        List<String> result = new ArrayList<>();
+        if (parameters.isEmpty()) {
+            result.add(firstEntry + ") {");
+            return result;
+        }
+        result.addAll(getParameterTexts(firstEntry.length(), parameters));
+        result.set(0, firstEntry + result.get(0));
+        result.set(result.size() - 1, result.get(result.size() - 1) + ") {");
+        return result;
     }
 
     protected String getStaticText() {

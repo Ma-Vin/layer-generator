@@ -95,7 +95,8 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	 *                             {@link FilteredOnlyDaoField} will be returned
 	 * @return an equivalent new created {@link FilteredOnlyDaoField} or the found one from the given map
 	 */
-	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDto filteredOnlyDaoField, Map<String, IIdentifiable> mappedObjects) {
+	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDto filteredOnlyDaoField
+			, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(filteredOnlyDaoField, mappedObjects, DomainObjectFactory::createFilteredOnlyDaoField, (dto, domain) -> getInstance().setFilteredOnlyDaoFieldValues(dto, domain)
 				, (dto, domain) -> getInstance().setFilteredOnlyDaoFieldSingleReferences(dto, domain, mappedObjects)
 				, (dto, domain) -> {
@@ -120,7 +121,8 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	 *                             {@link FilteredOnlyDaoFieldDto} will be returned
 	 * @return an equivalent new created {@link FilteredOnlyDaoFieldDto} or the found one from the given map
 	 */
-	public static FilteredOnlyDaoFieldDto convertToFilteredOnlyDaoFieldDto(FilteredOnlyDaoField filteredOnlyDaoField, Map<String, ITransportable> mappedObjects) {
+	public static FilteredOnlyDaoFieldDto convertToFilteredOnlyDaoFieldDto(FilteredOnlyDaoField filteredOnlyDaoField
+			, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(filteredOnlyDaoField, mappedObjects, DtoObjectFactory::createFilteredOnlyDaoFieldDto, (domain, dto) -> getInstance().setFilteredOnlyDaoFieldDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setFilteredOnlyDaoFieldDtoSingleReferences(domain, dto, mappedObjects)
 				, (domain, dto) -> {
@@ -174,7 +176,8 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	 *                           {@link SomeFilteringOwner} will be returned
 	 * @return an equivalent new created {@link SomeFilteringOwner} or the found one from the given map
 	 */
-	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDto someFilteringOwner, Root parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDto someFilteringOwner, Root parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		SomeFilteringOwner result = convertToSomeFilteringOwner(someFilteringOwner, mappedObjects);
 		if (result != null) {
 			parent.setFiltering(result);
@@ -229,7 +232,8 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	 *                           {@link SomeFilteringOwnerDto} will be returned
 	 * @return an equivalent new created {@link SomeFilteringOwnerDto} or the found one from the given map
 	 */
-	public static SomeFilteringOwnerDto convertToSomeFilteringOwnerDto(SomeFilteringOwner someFilteringOwner, RootDto parent, Map<String, ITransportable> mappedObjects) {
+	public static SomeFilteringOwnerDto convertToSomeFilteringOwnerDto(SomeFilteringOwner someFilteringOwner, RootDto parent
+			, Map<String, ITransportable> mappedObjects) {
 		SomeFilteringOwnerDto result = convertToSomeFilteringOwnerDto(someFilteringOwner, mappedObjects);
 		if (result != null) {
 			parent.setFiltering(result);
@@ -277,7 +281,8 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setFilteredOnlyDaoFieldDtoSingleReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDto dto, Map<String, ITransportable> mappedObjects) {
+	protected void setFilteredOnlyDaoFieldDtoSingleReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDto dto
+			, Map<String, ITransportable> mappedObjects) {
 	}
 
 	/**
@@ -298,7 +303,8 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setFilteredOnlyDaoFieldSingleReferences(FilteredOnlyDaoFieldDto dto, FilteredOnlyDaoField domain, Map<String, IIdentifiable> mappedObjects) {
+	protected void setFilteredOnlyDaoFieldSingleReferences(FilteredOnlyDaoFieldDto dto, FilteredOnlyDaoField domain
+			, Map<String, IIdentifiable> mappedObjects) {
 	}
 
 	/**
@@ -341,7 +347,8 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setSomeFilteringOwnerDtoSingleReferences(SomeFilteringOwner domain, SomeFilteringOwnerDto dto, Map<String, ITransportable> mappedObjects) {
+	protected void setSomeFilteringOwnerDtoSingleReferences(SomeFilteringOwner domain, SomeFilteringOwnerDto dto
+			, Map<String, ITransportable> mappedObjects) {
 	}
 
 	/**

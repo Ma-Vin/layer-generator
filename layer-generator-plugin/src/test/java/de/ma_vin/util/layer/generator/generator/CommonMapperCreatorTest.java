@@ -107,9 +107,9 @@ public class CommonMapperCreatorTest {
         expected.add("	 * @return an equivalent new created object or the found one from the given map");
         expected.add("	 */");
         expected.add("	@SuppressWarnings(\"java:S107\")");
-        expected.add("	protected static <M, S, T> T convertTo(S convertFrom, Map<String, M> mappedObjects, ObjectCreator<T> objectCreator"
-                + ", ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper"
-                + ", IdentificationGetter<S> identificationGetter, IdentificationSetter<S, T> identificationSetter) {");
+        expected.add("	protected static <M, S, T> T convertTo(S convertFrom, Map<String, M> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper");
+        expected.add("			, ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper, IdentificationGetter<S> identificationGetter");
+        expected.add("			, IdentificationSetter<S, T> identificationSetter) {");
         expected.add("		if (convertFrom == null) {");
         expected.add("			return null;");
         expected.add("		}");

@@ -2379,9 +2379,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 * @param <T>                   the type of the target object");
         expected.add("	 * @return an equivalent new created object or the found one from the given map");
         expected.add("	 */");
-        expected.add("	protected static <S extends ITransportable, T extends IIdentifiable> T convertToDomain(S convertFrom"
-                + ", Map<String, IIdentifiable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
-                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("	protected static <S extends ITransportable, T extends IIdentifiable> T convertToDomain(S convertFrom, Map<String, IIdentifiable> mappedObjects");
+        expected.add("			, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper");
+        expected.add("			, ReferenceMapper<S, T> multiReferenceMapper) {");
         expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
         expected.add("				, s -> s.getClass().getSimpleName() + s.getId().longValue(), (s, t) -> t.setId(s.getId()));");
         expected.add("	}");
@@ -2400,9 +2400,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 * @param <T>                   the type of the target object");
         expected.add("	 * @return an equivalent new created object or the found one from the given map");
         expected.add("	 */");
-        expected.add("	protected static <S extends IIdentifiable, T extends ITransportable> T convertToDto(S convertFrom"
-                + ", Map<String, ITransportable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
-                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("	protected static <S extends IIdentifiable, T extends ITransportable> T convertToDto(S convertFrom, Map<String, ITransportable> mappedObjects");
+        expected.add("			, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper");
+        expected.add("			, ReferenceMapper<S, T> multiReferenceMapper) {");
         expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
         expected.add("				, s -> s.getClass().getSimpleName() + s.getId().longValue(), (s, t) -> t.setId(s.getId()));");
         expected.add("	}");
@@ -2447,9 +2447,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 * @param <T>                   the type of the target object");
         expected.add("	 * @return an equivalent new created object or the found one from the given map");
         expected.add("	 */");
-        expected.add("	protected static <S extends ITransportable, T extends IIdentifiable> T convertToDomain(S convertFrom"
-                + ", Map<String, IIdentifiable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
-                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("	protected static <S extends ITransportable, T extends IIdentifiable> T convertToDomain(S convertFrom, Map<String, IIdentifiable> mappedObjects");
+        expected.add("			, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper");
+        expected.add("			, ReferenceMapper<S, T> multiReferenceMapper) {");
         expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
         expected.add("				, S::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));");
         expected.add("	}");
@@ -2468,9 +2468,9 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 * @param <T>                   the type of the target object");
         expected.add("	 * @return an equivalent new created object or the found one from the given map");
         expected.add("	 */");
-        expected.add("	protected static <S extends IIdentifiable, T extends ITransportable> T convertToDto(S convertFrom"
-                + ", Map<String, ITransportable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper"
-                + ", ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {");
+        expected.add("	protected static <S extends IIdentifiable, T extends ITransportable> T convertToDto(S convertFrom, Map<String, ITransportable> mappedObjects");
+        expected.add("			, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper");
+        expected.add("			, ReferenceMapper<S, T> multiReferenceMapper) {");
         expected.add("		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper");
         expected.add("				, S::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));");
         expected.add("	}");

@@ -77,6 +77,26 @@ public class ConstructorTest {
     }
 
     @Test
+    public void testGenerateMultiParameterLineBreak() {
+        cut.addParameter("p1Type", "p1Name");
+        cut.addParameter("p2Type", "p2Name");
+        cut.addParameter("p3Type", "p3Name");
+        cut.addParameter("p4Type", "p4Name");
+        cut.addParameter("p5Type", "p5Name");
+        cut.addParameter("p6Type", "p6Name");
+        cut.addParameter("p7Type", "p7Name");
+        cut.addParameter("p8Type", "p8Name");
+        cut.addParameter("p9Type", "p9Name");
+        List<String> result = cut.generate();
+        assertNotNull(result, "There should be any result");
+        assertEquals(3, result.size(), "Wrong number of lines");
+        assertEquals("private ConstructorName(p1Type p1Name, p2Type p2Name, p3Type p3Name, p4Type p4Name, p5Type p5Name, p6Type p6Name, p7Type p7Name, p8Type p8Name", result.get(0));
+        assertEquals("		, p9Type p9Name) {", result.get(1));
+        assertEquals("}", result.get(2));
+    }
+
+
+    @Test
     public void testGenerateQualifier() {
         cut.setQualifier(Qualifier.PUBLIC);
         List<String> result = cut.generate();

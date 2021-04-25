@@ -71,7 +71,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 *                           {@link SingleRefOneParent} will be returned
 	 * @return an equivalent new created {@link SingleRefOneParent} or the found one from the given map
 	 */
-	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDao singleRefOneParent, Root parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDao singleRefOneParent, Root parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefOneParent result = convertToSingleRefOneParent(singleRefOneParent, mappedObjects);
 		if (result != null) {
 			parent.setSingleRef(result);
@@ -125,7 +126,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 *                           {@link SingleRefOneParentDao} will be returned
 	 * @return an equivalent new created {@link SingleRefOneParentDao} or the found one from the given map
 	 */
-	public static SingleRefOneParentDao convertToSingleRefOneParentDao(SingleRefOneParent singleRefOneParent, RootDao parent, Map<String, IIdentifiableDao> mappedObjects) {
+	public static SingleRefOneParentDao convertToSingleRefOneParentDao(SingleRefOneParent singleRefOneParent, RootDao parent
+			, Map<String, IIdentifiableDao> mappedObjects) {
 		SingleRefOneParentDao result = convertToSingleRefOneParentDao(singleRefOneParent, mappedObjects);
 		if (result != null) {
 			result.setParentRoot(parent);
@@ -180,7 +182,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 *                            {@link SingleRefTwoParents} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
 	 */
-	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, Root parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, Root parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefTwoParents result = convertToSingleRefTwoParents(singleRefTwoParents, mappedObjects);
 		if (result != null) {
 			parent.setAnotherSingleRef(result);
@@ -210,7 +213,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 *                            {@link SingleRefTwoParents} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
 	 */
-	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, SingleRefOneParent parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDao singleRefTwoParents, SingleRefOneParent parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefTwoParents result = convertToSingleRefTwoParents(singleRefTwoParents, mappedObjects);
 		if (result != null) {
 			parent.setSingleRef(result);
@@ -236,7 +240,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 *                            {@link SingleRefTwoParentsDao} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParentsDao} or the found one from the given map
 	 */
-	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, Map<String, IIdentifiableDao> mappedObjects) {
+	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents
+			, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(singleRefTwoParents, mappedObjects, DaoObjectFactory::createSingleRefTwoParentsDao, (domain, dao) -> getInstance().setSingleRefTwoParentsDaoValues(domain, dao)
 				, (domain, dao) -> getInstance().setSingleRefTwoParentsDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setSingleRefTwoParentsDaoMultiReferences(domain, dao, mappedObjects));
@@ -264,7 +269,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 *                            {@link SingleRefTwoParentsDao} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParentsDao} or the found one from the given map
 	 */
-	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, RootDao parent, Map<String, IIdentifiableDao> mappedObjects) {
+	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, RootDao parent
+			, Map<String, IIdentifiableDao> mappedObjects) {
 		SingleRefTwoParentsDao result = convertToSingleRefTwoParentsDao(singleRefTwoParents, mappedObjects);
 		if (result != null) {
 			result.setParentRoot(parent);
@@ -295,7 +301,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 *                            {@link SingleRefTwoParentsDao} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParentsDao} or the found one from the given map
 	 */
-	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, SingleRefOneParentDao parent, Map<String, IIdentifiableDao> mappedObjects) {
+	public static SingleRefTwoParentsDao convertToSingleRefTwoParentsDao(SingleRefTwoParents singleRefTwoParents, SingleRefOneParentDao parent
+			, Map<String, IIdentifiableDao> mappedObjects) {
 		SingleRefTwoParentsDao result = convertToSingleRefTwoParentsDao(singleRefTwoParents, mappedObjects);
 		if (result != null) {
 			result.setParentSingleRefOneParent(parent);
@@ -322,7 +329,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setSingleRefOneParentDaoMultiReferences(SingleRefOneParent domain, SingleRefOneParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	protected void setSingleRefOneParentDaoMultiReferences(SingleRefOneParent domain, SingleRefOneParentDao dao
+			, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
 	/**
@@ -332,7 +340,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 * @param dao           object where to add the references
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
 	 */
-	protected void setSingleRefOneParentDaoSingleReferences(SingleRefOneParent domain, SingleRefOneParentDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	protected void setSingleRefOneParentDaoSingleReferences(SingleRefOneParent domain, SingleRefOneParentDao dao
+			, Map<String, IIdentifiableDao> mappedObjects) {
 		SingleAccessMapper.convertToSingleRefTwoParentsDao(domain.getSingleRef(), dao, mappedObjects);
 	}
 
@@ -386,7 +395,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setSingleRefTwoParentsDaoMultiReferences(SingleRefTwoParents domain, SingleRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	protected void setSingleRefTwoParentsDaoMultiReferences(SingleRefTwoParents domain, SingleRefTwoParentsDao dao
+			, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
 	/**
@@ -397,7 +407,8 @@ public class SingleAccessMapper extends AbstractAccessMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setSingleRefTwoParentsDaoSingleReferences(SingleRefTwoParents domain, SingleRefTwoParentsDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	protected void setSingleRefTwoParentsDaoSingleReferences(SingleRefTwoParents domain, SingleRefTwoParentsDao dao
+			, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
 	/**

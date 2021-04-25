@@ -183,7 +183,8 @@ public class MultiTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setMultiRefTwoParentsDtoSingleReferences(MultiRefTwoParents domain, MultiRefTwoParentsDto dto, Map<String, ITransportable> mappedObjects) {
+	protected void setMultiRefTwoParentsDtoSingleReferences(MultiRefTwoParents domain, MultiRefTwoParentsDto dto
+			, Map<String, ITransportable> mappedObjects) {
 	}
 
 	/**

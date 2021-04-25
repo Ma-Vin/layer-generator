@@ -32,6 +32,28 @@ public abstract class AbstractGenerateLines {
         return sb.toString();
     }
 
+    public static List<String> getParameterTexts(int startIndex, List<? extends IComparableWithText> parameters) {
+        List<String> result = new ArrayList<>();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(parameters.get(0).getText());
+        for (int i = 1; i < parameters.size(); i++) {
+            if (MAX_LENGTH < startIndex + sb.length() + parameters.get(i).getText().length() +2) {
+                result.add(sb.toString());
+                startIndex = 0;
+                sb = new StringBuilder();
+                sb.append(TAB);
+                sb.append(TAB);
+            }
+            sb.append(", ");
+            sb.append(parameters.get(i).getText());
+        }
+        if (sb.length() > 0) {
+            result.add(sb.toString());
+        }
+        return result;
+    }
+
     protected static String getUpperFirst(String text) {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }

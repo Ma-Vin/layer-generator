@@ -25,7 +25,9 @@ public abstract class AbstractMapper {
 	 * @return an equivalent new created object or the found one from the given map
 	 */
 	@SuppressWarnings("java:S107")
-	protected static <M, S, T> T convertTo(S convertFrom, Map<String, M> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper, IdentificationGetter<S> identificationGetter, IdentificationSetter<S, T> identificationSetter) {
+	protected static <M, S, T> T convertTo(S convertFrom, Map<String, M> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper
+			, ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper, IdentificationGetter<S> identificationGetter
+			, IdentificationSetter<S, T> identificationSetter) {
 		if (convertFrom == null) {
 			return null;
 		}

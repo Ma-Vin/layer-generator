@@ -23,7 +23,9 @@ public abstract class AbstractTransportMapper extends AbstractMapper {
 	 * @param <T>                   the type of the target object
 	 * @return an equivalent new created object or the found one from the given map
 	 */
-	protected static <S extends ITransportable, T extends IIdentifiable> T convertToDomain(S convertFrom, Map<String, IIdentifiable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {
+	protected static <S extends ITransportable, T extends IIdentifiable> T convertToDomain(S convertFrom, Map<String, IIdentifiable> mappedObjects
+			, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper
+			, ReferenceMapper<S, T> multiReferenceMapper) {
 		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper
 				, S::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));
 	}
@@ -42,7 +44,9 @@ public abstract class AbstractTransportMapper extends AbstractMapper {
 	 * @param <T>                   the type of the target object
 	 * @return an equivalent new created object or the found one from the given map
 	 */
-	protected static <S extends IIdentifiable, T extends ITransportable> T convertToDto(S convertFrom, Map<String, ITransportable> mappedObjects, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper, ReferenceMapper<S, T> multiReferenceMapper) {
+	protected static <S extends IIdentifiable, T extends ITransportable> T convertToDto(S convertFrom, Map<String, ITransportable> mappedObjects
+			, ObjectCreator<T> objectCreator, ValueMapper<S, T> valueMapper, ReferenceMapper<S, T> singleReferenceMapper
+			, ReferenceMapper<S, T> multiReferenceMapper) {
 		return convertTo(convertFrom, mappedObjects, objectCreator, valueMapper, singleReferenceMapper, multiReferenceMapper
 				, S::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));
 	}

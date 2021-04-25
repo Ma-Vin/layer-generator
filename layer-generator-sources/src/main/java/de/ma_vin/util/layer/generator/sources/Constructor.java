@@ -16,7 +16,7 @@ public class Constructor extends Method {
 
 
     @Override
-    protected String getDeclaration() {
-        return String.format("%s %s(%s) {", qualifier.getText(), methodName, getParametersText(parameters));
+    protected String getBaseDeclaration() {
+        return String.format("%s %s(", qualifier.getText(), methodName);
     }
 }

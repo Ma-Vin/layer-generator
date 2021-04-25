@@ -72,7 +72,8 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 *                           {@link SingleRefOneParent} will be returned
 	 * @return an equivalent new created {@link SingleRefOneParent} or the found one from the given map
 	 */
-	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDto singleRefOneParent, Root parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefOneParent convertToSingleRefOneParent(SingleRefOneParentDto singleRefOneParent, Root parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefOneParent result = convertToSingleRefOneParent(singleRefOneParent, mappedObjects);
 		if (result != null) {
 			parent.setSingleRef(result);
@@ -127,7 +128,8 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 *                           {@link SingleRefOneParentDto} will be returned
 	 * @return an equivalent new created {@link SingleRefOneParentDto} or the found one from the given map
 	 */
-	public static SingleRefOneParentDto convertToSingleRefOneParentDto(SingleRefOneParent singleRefOneParent, RootDto parent, Map<String, ITransportable> mappedObjects) {
+	public static SingleRefOneParentDto convertToSingleRefOneParentDto(SingleRefOneParent singleRefOneParent, RootDto parent
+			, Map<String, ITransportable> mappedObjects) {
 		SingleRefOneParentDto result = convertToSingleRefOneParentDto(singleRefOneParent, mappedObjects);
 		if (result != null) {
 			parent.setSingleRef(result);
@@ -182,7 +184,8 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 *                            {@link SingleRefTwoParents} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
 	 */
-	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, Root parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, Root parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefTwoParents result = convertToSingleRefTwoParents(singleRefTwoParents, mappedObjects);
 		if (result != null) {
 			parent.setAnotherSingleRef(result);
@@ -212,7 +215,8 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 *                            {@link SingleRefTwoParents} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParents} or the found one from the given map
 	 */
-	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, SingleRefOneParent parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefTwoParents convertToSingleRefTwoParents(SingleRefTwoParentsDto singleRefTwoParents, SingleRefOneParent parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefTwoParents result = convertToSingleRefTwoParents(singleRefTwoParents, mappedObjects);
 		if (result != null) {
 			parent.setSingleRef(result);
@@ -238,7 +242,8 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 *                            {@link SingleRefTwoParentsDto} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParentsDto} or the found one from the given map
 	 */
-	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, Map<String, ITransportable> mappedObjects) {
+	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents
+			, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(singleRefTwoParents, mappedObjects, DtoObjectFactory::createSingleRefTwoParentsDto, (domain, dto) -> getInstance().setSingleRefTwoParentsDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setSingleRefTwoParentsDtoSingleReferences(domain, dto, mappedObjects)
 				, (domain, dto) -> {
@@ -267,7 +272,8 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 *                            {@link SingleRefTwoParentsDto} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParentsDto} or the found one from the given map
 	 */
-	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, RootDto parent, Map<String, ITransportable> mappedObjects) {
+	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, RootDto parent
+			, Map<String, ITransportable> mappedObjects) {
 		SingleRefTwoParentsDto result = convertToSingleRefTwoParentsDto(singleRefTwoParents, mappedObjects);
 		if (result != null) {
 			parent.setAnotherSingleRef(result);
@@ -297,7 +303,8 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 *                            {@link SingleRefTwoParentsDto} will be returned
 	 * @return an equivalent new created {@link SingleRefTwoParentsDto} or the found one from the given map
 	 */
-	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, SingleRefOneParentDto parent, Map<String, ITransportable> mappedObjects) {
+	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, SingleRefOneParentDto parent
+			, Map<String, ITransportable> mappedObjects) {
 		SingleRefTwoParentsDto result = convertToSingleRefTwoParentsDto(singleRefTwoParents, mappedObjects);
 		if (result != null) {
 			parent.setSingleRef(result);
@@ -322,7 +329,8 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 * @param dto           object where to add the references
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
 	 */
-	protected void setSingleRefOneParentDtoSingleReferences(SingleRefOneParent domain, SingleRefOneParentDto dto, Map<String, ITransportable> mappedObjects) {
+	protected void setSingleRefOneParentDtoSingleReferences(SingleRefOneParent domain, SingleRefOneParentDto dto
+			, Map<String, ITransportable> mappedObjects) {
 		SingleTransportMapper.convertToSingleRefTwoParentsDto(domain.getSingleRef(), dto, mappedObjects);
 	}
 
@@ -365,7 +373,8 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setSingleRefTwoParentsDtoSingleReferences(SingleRefTwoParents domain, SingleRefTwoParentsDto dto, Map<String, ITransportable> mappedObjects) {
+	protected void setSingleRefTwoParentsDtoSingleReferences(SingleRefTwoParents domain, SingleRefTwoParentsDto dto
+			, Map<String, ITransportable> mappedObjects) {
 	}
 
 	/**

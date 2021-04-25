@@ -41,7 +41,8 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 	 *                               found {@link MultiRefIndirectParent} will be returned
 	 * @return an equivalent new created {@link MultiRefIndirectParent} or the found one from the given map
 	 */
-	public static MultiRefIndirectParent convertToMultiRefIndirectParent(MultiRefIndirectParentDto multiRefIndirectParent, Map<String, IIdentifiable> mappedObjects) {
+	public static MultiRefIndirectParent convertToMultiRefIndirectParent(MultiRefIndirectParentDto multiRefIndirectParent
+			, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(multiRefIndirectParent, mappedObjects, DomainObjectFactory::createMultiRefIndirectParent, (dto, domain) -> getInstance().setMultiRefIndirectParentValues(dto, domain)
 				, (dto, domain) -> getInstance().setMultiRefIndirectParentSingleReferences(dto, domain, mappedObjects)
 				, (dto, domain) -> {
@@ -66,7 +67,8 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 	 *                               found {@link MultiRefIndirectParentDto} will be returned
 	 * @return an equivalent new created {@link MultiRefIndirectParentDto} or the found one from the given map
 	 */
-	public static MultiRefIndirectParentDto convertToMultiRefIndirectParentDto(MultiRefIndirectParent multiRefIndirectParent, Map<String, ITransportable> mappedObjects) {
+	public static MultiRefIndirectParentDto convertToMultiRefIndirectParentDto(MultiRefIndirectParent multiRefIndirectParent
+			, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(multiRefIndirectParent, mappedObjects, DtoObjectFactory::createMultiRefIndirectParentDto, (domain, dto) -> getInstance().setMultiRefIndirectParentDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setMultiRefIndirectParentDtoSingleReferences(domain, dto, mappedObjects)
 				, (domain, dto) -> {
@@ -91,7 +93,8 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                    contained, the found {@link MultiRefOtherIndirectParent} will be returned
 	 * @return an equivalent new created {@link MultiRefOtherIndirectParent} or the found one from the given map
 	 */
-	public static MultiRefOtherIndirectParent convertToMultiRefOtherIndirectParent(MultiRefOtherIndirectParentDto multiRefOtherIndirectParent, Map<String, IIdentifiable> mappedObjects) {
+	public static MultiRefOtherIndirectParent convertToMultiRefOtherIndirectParent(MultiRefOtherIndirectParentDto multiRefOtherIndirectParent
+			, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(multiRefOtherIndirectParent, mappedObjects, DomainObjectFactory::createMultiRefOtherIndirectParent, (dto, domain) -> getInstance().setMultiRefOtherIndirectParentValues(dto, domain)
 				, (dto, domain) -> getInstance().setMultiRefOtherIndirectParentSingleReferences(dto, domain, mappedObjects)
 				, (dto, domain) -> {
@@ -116,7 +119,8 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                    contained, the found {@link MultiRefOtherIndirectParentDto} will be returned
 	 * @return an equivalent new created {@link MultiRefOtherIndirectParentDto} or the found one from the given map
 	 */
-	public static MultiRefOtherIndirectParentDto convertToMultiRefOtherIndirectParentDto(MultiRefOtherIndirectParent multiRefOtherIndirectParent, Map<String, ITransportable> mappedObjects) {
+	public static MultiRefOtherIndirectParentDto convertToMultiRefOtherIndirectParentDto(MultiRefOtherIndirectParent multiRefOtherIndirectParent
+			, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(multiRefOtherIndirectParent, mappedObjects, DtoObjectFactory::createMultiRefOtherIndirectParentDto, (domain, dto) -> getInstance().setMultiRefOtherIndirectParentDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setMultiRefOtherIndirectParentDtoSingleReferences(domain, dto, mappedObjects)
 				, (domain, dto) -> {
@@ -141,7 +145,8 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setMultiRefIndirectParentDtoSingleReferences(MultiRefIndirectParent domain, MultiRefIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
+	protected void setMultiRefIndirectParentDtoSingleReferences(MultiRefIndirectParent domain, MultiRefIndirectParentDto dto
+			, Map<String, ITransportable> mappedObjects) {
 	}
 
 	/**
@@ -162,7 +167,8 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setMultiRefIndirectParentSingleReferences(MultiRefIndirectParentDto dto, MultiRefIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
+	protected void setMultiRefIndirectParentSingleReferences(MultiRefIndirectParentDto dto, MultiRefIndirectParent domain
+			, Map<String, IIdentifiable> mappedObjects) {
 	}
 
 	/**
@@ -183,7 +189,8 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setMultiRefOtherIndirectParentDtoSingleReferences(MultiRefOtherIndirectParent domain, MultiRefOtherIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
+	protected void setMultiRefOtherIndirectParentDtoSingleReferences(MultiRefOtherIndirectParent domain, MultiRefOtherIndirectParentDto dto
+			, Map<String, ITransportable> mappedObjects) {
 	}
 
 	/**
@@ -204,7 +211,8 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setMultiRefOtherIndirectParentSingleReferences(MultiRefOtherIndirectParentDto dto, MultiRefOtherIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
+	protected void setMultiRefOtherIndirectParentSingleReferences(MultiRefOtherIndirectParentDto dto, MultiRefOtherIndirectParent domain
+			, Map<String, IIdentifiable> mappedObjects) {
 	}
 
 	/**

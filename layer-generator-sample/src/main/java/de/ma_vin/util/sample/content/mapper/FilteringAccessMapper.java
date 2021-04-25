@@ -166,7 +166,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 *                             {@link FilteredOnlyDaoField} will be returned
 	 * @return an equivalent new created {@link FilteredOnlyDaoField} or the found one from the given map
 	 */
-	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField, Map<String, IIdentifiable> mappedObjects) {
+	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField
+			, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(filteredOnlyDaoField, mappedObjects, DomainObjectFactory::createFilteredOnlyDaoField, (dao, domain) -> getInstance().setFilteredOnlyDaoFieldValues(dao, domain)
 				, (dao, domain) -> getInstance().setFilteredOnlyDaoFieldSingleReferences(dao, domain, mappedObjects)
 				, (dao, domain) -> getInstance().setFilteredOnlyDaoFieldMultiReferences(dao, domain, mappedObjects));
@@ -194,7 +195,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 *                             {@link FilteredOnlyDaoField} will be returned
 	 * @return an equivalent new created {@link FilteredOnlyDaoField} or the found one from the given map
 	 */
-	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField, SomeFilteringOwner parent, Map<String, IIdentifiable> mappedObjects) {
+	public static FilteredOnlyDaoField convertToFilteredOnlyDaoField(FilteredOnlyDaoFieldDao filteredOnlyDaoField, SomeFilteringOwner parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		FilteredOnlyDaoField result = convertToFilteredOnlyDaoField(filteredOnlyDaoField, mappedObjects);
 		if (result != null) {
 			switch (filteredOnlyDaoField.getSomeEnum()) {
@@ -234,7 +236,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 * @param someEnum             value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}
 	 * @return an equivalent new created {@link FilteredOnlyDaoFieldDao}
 	 */
-	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, SomeFilteringOwnerDao parent, AnyEnumType someEnum) {
+	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, SomeFilteringOwnerDao parent
+			, AnyEnumType someEnum) {
 		return convertToFilteredOnlyDaoFieldDao(filteredOnlyDaoField, parent, someEnum, new HashMap<>());
 	}
 
@@ -249,7 +252,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 *                             {@link FilteredOnlyDaoFieldDao} will be returned
 	 * @return an equivalent new created {@link FilteredOnlyDaoFieldDao} or the found one from the given map
 	 */
-	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, SomeFilteringOwnerDao parent, AnyEnumType someEnum, Map<String, IIdentifiableDao> mappedObjects) {
+	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, SomeFilteringOwnerDao parent
+			, AnyEnumType someEnum, Map<String, IIdentifiableDao> mappedObjects) {
 		FilteredOnlyDaoFieldDao result = convertToFilteredOnlyDaoFieldDao(filteredOnlyDaoField, someEnum, mappedObjects);
 		if (result != null) {
 			result.setParentSomeFilteringOwner(parent);
@@ -267,7 +271,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 *                             {@link FilteredOnlyDaoFieldDao} will be returned
 	 * @return an equivalent new created {@link FilteredOnlyDaoFieldDao} or the found one from the given map
 	 */
-	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, AnyEnumType someEnum, Map<String, IIdentifiableDao> mappedObjects) {
+	public static FilteredOnlyDaoFieldDao convertToFilteredOnlyDaoFieldDao(FilteredOnlyDaoField filteredOnlyDaoField, AnyEnumType someEnum
+			, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(filteredOnlyDaoField, mappedObjects, DaoObjectFactory::createFilteredOnlyDaoFieldDao, (domain, dao) -> getInstance().setFilteredOnlyDaoFieldDaoValues(domain, dao, someEnum)
 				, (domain, dao) -> getInstance().setFilteredOnlyDaoFieldDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setFilteredOnlyDaoFieldDaoMultiReferences(domain, dao, mappedObjects));
@@ -295,7 +300,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 *                           {@link SomeFilteringOwner} will be returned
 	 * @return an equivalent new created {@link SomeFilteringOwner} or the found one from the given map
 	 */
-	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
+	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren
+			, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(someFilteringOwner, mappedObjects, DomainObjectFactory::createSomeFilteringOwner, (dao, domain) -> getInstance().setSomeFilteringOwnerValues(dao, domain)
 				, (dao, domain) -> getInstance().setSomeFilteringOwnerSingleReferences(dao, domain, mappedObjects)
 				, (dao, domain) -> getInstance().setSomeFilteringOwnerMultiReferences(dao, domain, includeChildren, mappedObjects));
@@ -327,7 +333,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 *                           {@link SomeFilteringOwner} will be returned
 	 * @return an equivalent new created {@link SomeFilteringOwner} or the found one from the given map
 	 */
-	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren, Root parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SomeFilteringOwner convertToSomeFilteringOwner(SomeFilteringOwnerDao someFilteringOwner, boolean includeChildren, Root parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		SomeFilteringOwner result = convertToSomeFilteringOwner(someFilteringOwner, includeChildren, mappedObjects);
 		if (result != null) {
 			parent.setFiltering(result);
@@ -357,7 +364,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 *                           {@link SomeFilteringOwnerDao} will be returned
 	 * @return an equivalent new created {@link SomeFilteringOwnerDao} or the found one from the given map
 	 */
-	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
+	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren
+			, Map<String, IIdentifiableDao> mappedObjects) {
 		return convertToDao(someFilteringOwner, mappedObjects, DaoObjectFactory::createSomeFilteringOwnerDao, (domain, dao) -> getInstance().setSomeFilteringOwnerDaoValues(domain, dao)
 				, (domain, dao) -> getInstance().setSomeFilteringOwnerDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setSomeFilteringOwnerDaoMultiReferences(domain, dao, includeChildren, mappedObjects));
@@ -389,7 +397,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 *                           {@link SomeFilteringOwnerDao} will be returned
 	 * @return an equivalent new created {@link SomeFilteringOwnerDao} or the found one from the given map
 	 */
-	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren, RootDao parent, Map<String, IIdentifiableDao> mappedObjects) {
+	public static SomeFilteringOwnerDao convertToSomeFilteringOwnerDao(SomeFilteringOwner someFilteringOwner, boolean includeChildren, RootDao parent
+			, Map<String, IIdentifiableDao> mappedObjects) {
 		SomeFilteringOwnerDao result = convertToSomeFilteringOwnerDao(someFilteringOwner, includeChildren, mappedObjects);
 		if (result != null) {
 			result.setParentRoot(parent);
@@ -460,7 +469,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setFilteredOnlyDaoFieldDaoMultiReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	protected void setFilteredOnlyDaoFieldDaoMultiReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao
+			, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
 	/**
@@ -471,7 +481,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setFilteredOnlyDaoFieldDaoSingleReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	protected void setFilteredOnlyDaoFieldDaoSingleReferences(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDao dao
+			, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
 	/**
@@ -494,7 +505,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setFilteredOnlyDaoFieldMultiReferences(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain, Map<String, IIdentifiable> mappedObjects) {
+	protected void setFilteredOnlyDaoFieldMultiReferences(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain
+			, Map<String, IIdentifiable> mappedObjects) {
 	}
 
 	/**
@@ -505,7 +517,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setFilteredOnlyDaoFieldSingleReferences(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain, Map<String, IIdentifiable> mappedObjects) {
+	protected void setFilteredOnlyDaoFieldSingleReferences(FilteredOnlyDaoFieldDao dao, FilteredOnlyDaoField domain
+			, Map<String, IIdentifiable> mappedObjects) {
 	}
 
 	/**
@@ -548,7 +561,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 * @param includeChildren {@code true} if references should be mapped. Otherwise {@code false}
 	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
 	 */
-	protected void setSomeFilteringOwnerDaoMultiReferences(SomeFilteringOwner domain, SomeFilteringOwnerDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
+	protected void setSomeFilteringOwnerDaoMultiReferences(SomeFilteringOwner domain, SomeFilteringOwnerDao dao, boolean includeChildren
+			, Map<String, IIdentifiableDao> mappedObjects) {
 		dao.setAggFiltereds(new ArrayList<>());
 		dao.setAggFilteredOnlyDaoFields(new ArrayList<>());
 		if (includeChildren) {
@@ -581,7 +595,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setSomeFilteringOwnerDaoSingleReferences(SomeFilteringOwner domain, SomeFilteringOwnerDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	protected void setSomeFilteringOwnerDaoSingleReferences(SomeFilteringOwner domain, SomeFilteringOwnerDao dao
+			, Map<String, IIdentifiableDao> mappedObjects) {
 	}
 
 	/**
@@ -602,7 +617,8 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 * @param includeChildren {@code true} if references should be mapped. Otherwise {@code false}
 	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
 	 */
-	protected void setSomeFilteringOwnerMultiReferences(SomeFilteringOwnerDao dao, SomeFilteringOwner domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
+	protected void setSomeFilteringOwnerMultiReferences(SomeFilteringOwnerDao dao, SomeFilteringOwner domain, boolean includeChildren
+			, Map<String, IIdentifiable> mappedObjects) {
 		if (includeChildren) {
 			dao.getAggFiltereds().forEach(arg ->
 					FilteringAccessMapper.convertToFiltered(arg, domain, mappedObjects)

@@ -43,7 +43,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                found {@link SingleRefIndirectParent} will be returned
 	 * @return an equivalent new created {@link SingleRefIndirectParent} or the found one from the given map
 	 */
-	public static SingleRefIndirectParent convertToSingleRefIndirectParent(SingleRefIndirectParentDto singleRefIndirectParent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefIndirectParent convertToSingleRefIndirectParent(SingleRefIndirectParentDto singleRefIndirectParent
+			, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(singleRefIndirectParent, mappedObjects, DomainObjectFactory::createSingleRefIndirectParent, (dto, domain) -> getInstance().setSingleRefIndirectParentValues(dto, domain)
 				, (dto, domain) -> getInstance().setSingleRefIndirectParentSingleReferences(dto, domain, mappedObjects)
 				, (dto, domain) -> {
@@ -72,7 +73,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                found {@link SingleRefIndirectParent} will be returned
 	 * @return an equivalent new created {@link SingleRefIndirectParent} or the found one from the given map
 	 */
-	public static SingleRefIndirectParent convertToSingleRefIndirectParent(SingleRefIndirectParentDto singleRefIndirectParent, Root parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefIndirectParent convertToSingleRefIndirectParent(SingleRefIndirectParentDto singleRefIndirectParent, Root parent
+			, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefIndirectParent result = convertToSingleRefIndirectParent(singleRefIndirectParent, mappedObjects);
 		if (result != null) {
 			parent.setSingleRefIndirectParent(result);
@@ -98,7 +100,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                found {@link SingleRefIndirectParentDto} will be returned
 	 * @return an equivalent new created {@link SingleRefIndirectParentDto} or the found one from the given map
 	 */
-	public static SingleRefIndirectParentDto convertToSingleRefIndirectParentDto(SingleRefIndirectParent singleRefIndirectParent, Map<String, ITransportable> mappedObjects) {
+	public static SingleRefIndirectParentDto convertToSingleRefIndirectParentDto(SingleRefIndirectParent singleRefIndirectParent
+			, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(singleRefIndirectParent, mappedObjects, DtoObjectFactory::createSingleRefIndirectParentDto, (domain, dto) -> getInstance().setSingleRefIndirectParentDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setSingleRefIndirectParentDtoSingleReferences(domain, dto, mappedObjects)
 				, (domain, dto) -> {
@@ -127,7 +130,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                found {@link SingleRefIndirectParentDto} will be returned
 	 * @return an equivalent new created {@link SingleRefIndirectParentDto} or the found one from the given map
 	 */
-	public static SingleRefIndirectParentDto convertToSingleRefIndirectParentDto(SingleRefIndirectParent singleRefIndirectParent, RootDto parent, Map<String, ITransportable> mappedObjects) {
+	public static SingleRefIndirectParentDto convertToSingleRefIndirectParentDto(SingleRefIndirectParent singleRefIndirectParent, RootDto parent
+			, Map<String, ITransportable> mappedObjects) {
 		SingleRefIndirectParentDto result = convertToSingleRefIndirectParentDto(singleRefIndirectParent, mappedObjects);
 		if (result != null) {
 			parent.setSingleRefIndirectParent(result);
@@ -153,7 +157,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                     contained, the found {@link SingleRefOtherIndirectParent} will be returned
 	 * @return an equivalent new created {@link SingleRefOtherIndirectParent} or the found one from the given map
 	 */
-	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent
+			, Map<String, IIdentifiable> mappedObjects) {
 		return convertToDomain(singleRefOtherIndirectParent, mappedObjects, DomainObjectFactory::createSingleRefOtherIndirectParent, (dto, domain) -> getInstance().setSingleRefOtherIndirectParentValues(dto, domain)
 				, (dto, domain) -> getInstance().setSingleRefOtherIndirectParentSingleReferences(dto, domain, mappedObjects)
 				, (dto, domain) -> {
@@ -168,7 +173,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param parent                       the parent of converted result
 	 * @return an equivalent new created {@link SingleRefOtherIndirectParent}
 	 */
-	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent, Root parent) {
+	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent
+			, Root parent) {
 		return convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParent, parent, new HashMap<>());
 	}
 
@@ -182,7 +188,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                     contained, the found {@link SingleRefOtherIndirectParent} will be returned
 	 * @return an equivalent new created {@link SingleRefOtherIndirectParent} or the found one from the given map
 	 */
-	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent, Root parent, Map<String, IIdentifiable> mappedObjects) {
+	public static SingleRefOtherIndirectParent convertToSingleRefOtherIndirectParent(SingleRefOtherIndirectParentDto singleRefOtherIndirectParent
+			, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		SingleRefOtherIndirectParent result = convertToSingleRefOtherIndirectParent(singleRefOtherIndirectParent, mappedObjects);
 		if (result != null) {
 			parent.setSingleRefIndirectOtherParent(result);
@@ -208,7 +215,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                     contained, the found {@link SingleRefOtherIndirectParentDto} will be returned
 	 * @return an equivalent new created {@link SingleRefOtherIndirectParentDto} or the found one from the given map
 	 */
-	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent, Map<String, ITransportable> mappedObjects) {
+	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent
+			, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(singleRefOtherIndirectParent, mappedObjects, DtoObjectFactory::createSingleRefOtherIndirectParentDto, (domain, dto) -> getInstance().setSingleRefOtherIndirectParentDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setSingleRefOtherIndirectParentDtoSingleReferences(domain, dto, mappedObjects)
 				, (domain, dto) -> {
@@ -223,7 +231,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param parent                       the parent of converted result
 	 * @return an equivalent new created {@link SingleRefOtherIndirectParentDto}
 	 */
-	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent, RootDto parent) {
+	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent
+			, RootDto parent) {
 		return convertToSingleRefOtherIndirectParentDto(singleRefOtherIndirectParent, parent, new HashMap<>());
 	}
 
@@ -237,7 +246,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 *                                     contained, the found {@link SingleRefOtherIndirectParentDto} will be returned
 	 * @return an equivalent new created {@link SingleRefOtherIndirectParentDto} or the found one from the given map
 	 */
-	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent, RootDto parent, Map<String, ITransportable> mappedObjects) {
+	public static SingleRefOtherIndirectParentDto convertToSingleRefOtherIndirectParentDto(SingleRefOtherIndirectParent singleRefOtherIndirectParent
+			, RootDto parent, Map<String, ITransportable> mappedObjects) {
 		SingleRefOtherIndirectParentDto result = convertToSingleRefOtherIndirectParentDto(singleRefOtherIndirectParent, mappedObjects);
 		if (result != null) {
 			parent.setSingleRefIndirectOtherParent(result);
@@ -263,7 +273,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setSingleRefIndirectParentDtoSingleReferences(SingleRefIndirectParent domain, SingleRefIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
+	protected void setSingleRefIndirectParentDtoSingleReferences(SingleRefIndirectParent domain, SingleRefIndirectParentDto dto
+			, Map<String, ITransportable> mappedObjects) {
 	}
 
 	/**
@@ -284,7 +295,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
 	 */
 	@SuppressWarnings("java:S1186")
-	protected void setSingleRefIndirectParentSingleReferences(SingleRefIndirectParentDto dto, SingleRefIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
+	protected void setSingleRefIndirectParentSingleReferences(SingleRefIndirectParentDto dto, SingleRefIndirectParent domain
+			, Map<String, IIdentifiable> mappedObjects) {
 	}
 
 	/**
@@ -304,7 +316,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param dto           object where to add the references
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
 	 */
-	protected void setSingleRefOtherIndirectParentDtoSingleReferences(SingleRefOtherIndirectParent domain, SingleRefOtherIndirectParentDto dto, Map<String, ITransportable> mappedObjects) {
+	protected void setSingleRefOtherIndirectParentDtoSingleReferences(SingleRefOtherIndirectParent domain, SingleRefOtherIndirectParentDto dto
+			, Map<String, ITransportable> mappedObjects) {
 		dto.setSingleIndirectRef(SingleIndirectTransportMapper.convertToSingleRefIndirectParentDto(domain.getSingleIndirectRef(), mappedObjects));
 	}
 
@@ -325,7 +338,8 @@ public class SingleIndirectTransportMapper extends AbstractTransportMapper {
 	 * @param domain        object where to add the references
 	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
 	 */
-	protected void setSingleRefOtherIndirectParentSingleReferences(SingleRefOtherIndirectParentDto dto, SingleRefOtherIndirectParent domain, Map<String, IIdentifiable> mappedObjects) {
+	protected void setSingleRefOtherIndirectParentSingleReferences(SingleRefOtherIndirectParentDto dto, SingleRefOtherIndirectParent domain
+			, Map<String, IIdentifiable> mappedObjects) {
 		domain.setSingleIndirectRef(SingleIndirectTransportMapper.convertToSingleRefIndirectParent(dto.getSingleIndirectRef(), mappedObjects));
 	}
 
