@@ -50,6 +50,7 @@ public class AbstractCreatorTest {
 
     protected void initDefaultMock() {
         when(entity.getBaseName()).thenReturn(ENTITY_NAME);
+        when(entity.getTableName()).thenReturn(ENTITY_NAME);
         when(entity.getDescription()).thenReturn("Dummy description");
         when(entity.getIdentificationPrefix()).thenReturn("DU");
         when(entity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
@@ -68,6 +69,7 @@ public class AbstractCreatorTest {
         setMockReturnsReference(targetReference, null, targetEntity, null);
 
         when(targetEntity.getBaseName()).thenReturn("Target");
+        when(targetEntity.getTableName()).thenReturn("Target");
         when(targetEntity.getDescription()).thenReturn("Target description");
         when(targetEntity.getIdentificationPrefix()).thenReturn("TA");
         when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);

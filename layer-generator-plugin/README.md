@@ -55,6 +55,7 @@ groupings | :x: | *N* | List of groupings of entities. Each grouping gets an own
 Property | Nullable | xml type |  Description
 -------- | -------- | ------- | -----------
 baseName | :x: | *A* | Base name of the objects, which will be extended by some postfix for dto or dao
+tableName | :x: | *A* | Name of Table at database. if null the baseName is used
 models | :x: | *A* | Which objects should be generated
 description | :heavy_check_mark: | *A* | Description of the entity. Will be added at javadoc
 identificationPrefix | :heavy_check_mark: | *A* | If there is a use of idGeneratorClass this field is not null able

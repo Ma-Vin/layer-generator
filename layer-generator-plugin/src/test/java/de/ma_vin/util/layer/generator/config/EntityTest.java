@@ -18,6 +18,7 @@ public class EntityTest {
     public void setUp() {
         cut = new Entity();
         cut.setBaseName("baseName");
+        cut.setTableName("tableName");
         cut.setDescription("description");
         cut.setIdentificationPrefix("identificationPrefix");
         cut.setParent("parent");
@@ -55,6 +56,7 @@ public class EntityTest {
 
     @Test
     public void testIsValidNulls() {
+        cut.setTableName(null);
         cut.setDescription(null);
         cut.setIdentificationPrefix(null);
         cut.setParent(null);
@@ -67,6 +69,13 @@ public class EntityTest {
     @Test
     public void testIsValidBaseName() {
         cut.setBaseName(null);
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidTableName() {
+        cut.setTableName("");
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }

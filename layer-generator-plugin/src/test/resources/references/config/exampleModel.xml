@@ -30,7 +30,7 @@
                 <reference referenceName="ext" targetEntity="RootExt" isOwner="true"/>
             </references>
         </entity>
-        <entity baseName="RootExt" models="DOMAIN_DAO_DTO" identificationPrefix="RE">
+        <entity baseName="RootExt" tableName="RootExtension" models="DOMAIN_DAO_DTO" identificationPrefix="RE">
             <fields>
                 <field fieldName="ExtendedInfo" type="String"/>
                 <field fieldName="someEnum" type="AnyEnumType" typePackage="de.enums.anything" isTypeEnum="true"/>

@@ -74,7 +74,7 @@ public class ConfigLoader {
             logger.error("Completion of references could not be completed");
             return false;
         }
-        if (!completeParentEntities()) {
+        if (!completeEntities()) {
             logger.error("Completion of parents could not be completed");
             return false;
         }
@@ -118,7 +118,7 @@ public class ConfigLoader {
 
     private void completeOwner() {
         config.getGroupings().forEach(g -> g.getEntities().forEach(e -> e.setGrouping(g)));
-        completeEntities(this::completeFieldOwner);
+        completeEntityIterator(this::completeFieldOwner);
     }
 
     private boolean completeFieldOwner(List<Entity> entityList) {
@@ -127,7 +127,7 @@ public class ConfigLoader {
     }
 
     private boolean completeReferences() {
-        return completeEntities(this::completeReferencesOfEntities);
+        return completeEntityIterator(this::completeReferencesOfEntities);
     }
 
     private boolean completeReferencesOfEntities(List<Entity> entityList) {
@@ -171,21 +171,24 @@ public class ConfigLoader {
         actualReference.setRealTargetEntity(targetEntity);
     }
 
-    private boolean completeParentEntities() {
-        return completeEntities(this::completeParentEntities);
+    private boolean completeEntities() {
+        return completeEntityIterator(this::completeEntities);
     }
 
-    private boolean completeParentEntities(List<Entity> entities) {
+    private boolean completeEntities(List<Entity> entities) {
         boolean result = true;
         for (Entity e : entities) {
             if (e.getParent() != null && !e.getParent().trim().isEmpty()) {
-                result = result && completeParentEntities(e, e.getParent().trim());
+                result = result && completeEntities(e, e.getParent().trim());
+            }
+            if (e.getTableName() == null) {
+                e.setTableName(e.getBaseName());
             }
         }
         return result;
     }
 
-    private boolean completeParentEntities(Entity actualEntity, String parentName) {
+    private boolean completeEntities(Entity actualEntity, String parentName) {
         Optional<Entity> entity = getEntity(parentName);
         if (entity.isPresent() && Boolean.TRUE.equals(entity.get().getIsAbstract())) {
             actualEntity.setRealParent(entity.get());
@@ -209,7 +212,7 @@ public class ConfigLoader {
     }
 
     private boolean completeFilterFields() {
-        return completeEntities(this::completeFilterFields);
+        return completeEntityIterator(this::completeFilterFields);
     }
 
     private boolean completeFilterFields(List<Entity> entities) {
@@ -253,7 +256,7 @@ public class ConfigLoader {
         return true;
     }
 
-    private boolean completeEntities(EntitiesCompleter entitiesCompleter) {
+    private boolean completeEntityIterator(EntitiesCompleter entitiesCompleter) {
         if (!entitiesCompleter.complete(config.getEntities())) {
             return false;
         }

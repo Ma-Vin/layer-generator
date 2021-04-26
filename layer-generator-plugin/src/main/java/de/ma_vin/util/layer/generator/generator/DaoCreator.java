@@ -86,7 +86,7 @@ public class DaoCreator extends AbstractObjectCreator {
             daoClazz.addImport(BaseDao.class.getName());
             daoClazz.addAnnotation(new Annotation(BaseDao.class, null, "\"" + packageName + "\""));
             daoClazz.addAnnotation(javax.persistence.Entity.class);
-            daoClazz.addAnnotation(new Annotation(Table.class, "name", String.format("\"%ss\"", entity.getBaseName())));
+            daoClazz.addAnnotation(new Annotation(Table.class, "name", String.format("\"%ss\"", entity.getTableName())));
         }
 
         addAttributes(entity, daoClazz, Models.DAO);

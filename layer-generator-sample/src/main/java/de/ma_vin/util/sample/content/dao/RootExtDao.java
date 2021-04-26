@@ -17,7 +17,7 @@ import lombok.ToString;
 @Data
 @Entity
 @EqualsAndHashCode(exclude = {"parentRoot"})
-@Table(name = "RootExts")
+@Table(name = "RootExtensions")
 @ToString(exclude = {"parentRoot"})
 public class RootExtDao implements IIdentifiableDao {
 

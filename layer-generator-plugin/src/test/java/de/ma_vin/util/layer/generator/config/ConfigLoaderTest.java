@@ -98,6 +98,7 @@ public class ConfigLoaderTest {
             , List<Reference> parentReferences) {
 
         when(entity.getBaseName()).thenReturn(entityName);
+        when(entity.getTableName()).thenReturn(entityName);
         when(entity.getFields()).thenReturn(fields);
         doAnswer(a -> when(entity.getFields()).thenReturn(a.getArgument(0)))
                 .when(entity).setFields(any());
@@ -352,5 +353,16 @@ public class ConfigLoaderTest {
         assertTrue(result, "The result of completion should be true");
 
         verify(config).setUseIdGenerator(eq(Boolean.FALSE));
+    }
+
+    @Test
+    public void testCompleteTableName() {
+        when(entity.getTableName()).thenReturn(null);
+
+
+        boolean result = cut.complete();
+        assertTrue(result, "The result of completion should be true");
+
+        verify(entity).setTableName(eq(ENTITY_NAME));
     }
 }

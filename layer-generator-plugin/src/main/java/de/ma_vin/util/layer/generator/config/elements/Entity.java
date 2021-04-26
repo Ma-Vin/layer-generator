@@ -26,6 +26,12 @@ public class Entity {
     private String baseName;
 
     /**
+     * Name of Table at database. if {@code null} the {@code baseName} is used
+     */
+    @XmlAttribute
+    private String tableName;
+
+    /**
      * Which objects should be generated
      */
     @XmlAttribute
@@ -88,6 +94,7 @@ public class Entity {
 
     public boolean isValid(List<String> messages) {
         return validateRequired(baseName, messages, "baseName")
+                && validateNonRequired(tableName, messages, "tableName")
                 && validateNonRequired(description, messages, "description")
                 && validateNonRequired(identificationPrefix, messages, "identificationPrefix")
                 && validateNonRequired(parent, messages, "parent")

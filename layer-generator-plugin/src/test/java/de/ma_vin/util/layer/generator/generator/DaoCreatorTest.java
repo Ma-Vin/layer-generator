@@ -69,6 +69,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         super.initDefaultMock();
 
         when(parentEntity.getBaseName()).thenReturn("Owner");
+        when(parentEntity.getTableName()).thenReturn("Owner");
         when(parentEntity.getDescription()).thenReturn("Owner description");
         when(parentEntity.getIdentificationPrefix()).thenReturn("OW");
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
