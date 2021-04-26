@@ -368,7 +368,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
         if (reference.isList()) {
             daoClazz.addImport(Collection.class.getName());
-            child = new Attribute(propertyBaseName + "s", String.format("%s<%s>", Collection.class.getSimpleName(), childClassName));
+            child = new Attribute(propertyBaseName, String.format("%s<%s>", Collection.class.getSimpleName(), childClassName));
         } else {
             child = new Attribute(propertyBaseName, childClassName);
         }
@@ -403,7 +403,7 @@ public class DaoCreator extends AbstractObjectCreator {
             childClassName = getConnectionTableName(reference);
             daoClazz.addImport(Collection.class.getName());
 
-            child = new Attribute(propertyBaseName + "s", String.format("%s<%s>", Collection.class.getSimpleName(), childClassName));
+            child = new Attribute(propertyBaseName, String.format("%s<%s>", Collection.class.getSimpleName(), childClassName));
 
             Annotation refAnnotation = new Annotation(OneToMany.class.getSimpleName());
             refAnnotation.addParameter(TARGET_ENTITY, childClassName + CLASS_ENDING);

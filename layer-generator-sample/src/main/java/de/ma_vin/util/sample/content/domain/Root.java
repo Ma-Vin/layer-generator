@@ -25,16 +25,16 @@ import lombok.ToString;
  */
 @BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
-@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRefs", "anotherMultiRefs", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParents", "multiRefIndirectOtherParents", "extendings", "filtering", "ext"})
+@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "ext"})
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRefs", "anotherMultiRefs", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParents", "multiRefIndirectOtherParents", "extendings", "filtering", "ext"})
+@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "ext"})
 public class Root implements IIdentifiable {
 
 	public static final String ID_PREFIX = "R";
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<MultiRefTwoParents> anotherMultiRefs = new HashSet<>();
+	private Collection<MultiRefTwoParents> anotherMultiRef = new HashSet<>();
 
 	private SingleRefTwoParents anotherSingleRef;
 
@@ -43,7 +43,7 @@ public class Root implements IIdentifiable {
 	private RootExt ext;
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<ExtendingClass> extendings = new HashSet<>();
+	private Collection<ExtendingClass> extending = new HashSet<>();
 
 	private SomeFilteringOwner filtering;
 
@@ -53,13 +53,13 @@ public class Root implements IIdentifiable {
 	private String identification;
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<MultiRefOtherIndirectParent> multiRefIndirectOtherParents = new HashSet<>();
+	private Collection<MultiRefOneParent> multiRef = new HashSet<>();
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<MultiRefIndirectParent> multiRefIndirectParents = new HashSet<>();
+	private Collection<MultiRefOtherIndirectParent> multiRefIndirectOtherParent = new HashSet<>();
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<MultiRefOneParent> multiRefs = new HashSet<>();
+	private Collection<MultiRefIndirectParent> multiRefIndirectParent = new HashSet<>();
 
 	private String rootName;
 
@@ -70,93 +70,93 @@ public class Root implements IIdentifiable {
 	private SingleRefIndirectParent singleRefIndirectParent;
 
 	/**
-	 * Adds a MultiRefTwoParents
+	 * Adds a MultiRefTwoParents to anotherMultiRef
 	 * 
-	 * @param anotherMultiRef MultiRefTwoParents to add
+	 * @param multiRefTwoParents MultiRefTwoParents to add
 	 */
-	public boolean addAnotherMultiRefs(MultiRefTwoParents anotherMultiRef) {
-		return anotherMultiRefs.add(anotherMultiRef);
+	public boolean addAnotherMultiRef(MultiRefTwoParents multiRefTwoParents) {
+		return anotherMultiRef.add(multiRefTwoParents);
 	}
 
 	/**
-	 * Adds an ExtendingClass
+	 * Adds an ExtendingClass to extending
 	 * 
-	 * @param extending ExtendingClass to add
+	 * @param extendingClass ExtendingClass to add
 	 */
-	public boolean addExtendings(ExtendingClass extending) {
-		return extendings.add(extending);
+	public boolean addExtending(ExtendingClass extendingClass) {
+		return extending.add(extendingClass);
 	}
 
 	/**
-	 * Adds a MultiRefOtherIndirectParent
+	 * Adds a MultiRefOneParent to multiRef
 	 * 
-	 * @param multiRefIndirectOtherParent MultiRefOtherIndirectParent to add
+	 * @param multiRefOneParent MultiRefOneParent to add
 	 */
-	public boolean addMultiRefIndirectOtherParents(MultiRefOtherIndirectParent multiRefIndirectOtherParent) {
-		return multiRefIndirectOtherParents.add(multiRefIndirectOtherParent);
+	public boolean addMultiRef(MultiRefOneParent multiRefOneParent) {
+		return multiRef.add(multiRefOneParent);
 	}
 
 	/**
-	 * Adds a MultiRefIndirectParent
+	 * Adds a MultiRefOtherIndirectParent to multiRefIndirectOtherParent
+	 * 
+	 * @param multiRefOtherIndirectParent MultiRefOtherIndirectParent to add
+	 */
+	public boolean addMultiRefIndirectOtherParent(MultiRefOtherIndirectParent multiRefOtherIndirectParent) {
+		return multiRefIndirectOtherParent.add(multiRefOtherIndirectParent);
+	}
+
+	/**
+	 * Adds a MultiRefIndirectParent to multiRefIndirectParent
 	 * 
 	 * @param multiRefIndirectParent MultiRefIndirectParent to add
 	 */
-	public boolean addMultiRefIndirectParents(MultiRefIndirectParent multiRefIndirectParent) {
-		return multiRefIndirectParents.add(multiRefIndirectParent);
+	public boolean addMultiRefIndirectParent(MultiRefIndirectParent multiRefIndirectParent) {
+		return this.multiRefIndirectParent.add(multiRefIndirectParent);
 	}
 
 	/**
-	 * Adds a MultiRefOneParent
+	 * Removes a MultiRefTwoParents from anotherMultiRef
 	 * 
-	 * @param multiRef MultiRefOneParent to add
+	 * @param multiRefTwoParents MultiRefTwoParents to remove
 	 */
-	public boolean addMultiRefs(MultiRefOneParent multiRef) {
-		return multiRefs.add(multiRef);
+	public boolean removeAnotherMultiRef(MultiRefTwoParents multiRefTwoParents) {
+		return anotherMultiRef.remove(multiRefTwoParents);
 	}
 
 	/**
-	 * Removes a MultiRefTwoParents
+	 * Removes an ExtendingClass from extending
 	 * 
-	 * @param anotherMultiRef MultiRefTwoParents to remove
+	 * @param extendingClass ExtendingClass to remove
 	 */
-	public boolean removeAnotherMultiRefs(MultiRefTwoParents anotherMultiRef) {
-		return anotherMultiRefs.remove(anotherMultiRef);
+	public boolean removeExtending(ExtendingClass extendingClass) {
+		return extending.remove(extendingClass);
 	}
 
 	/**
-	 * Removes an ExtendingClass
+	 * Removes a MultiRefOneParent from multiRef
 	 * 
-	 * @param extending ExtendingClass to remove
+	 * @param multiRefOneParent MultiRefOneParent to remove
 	 */
-	public boolean removeExtendings(ExtendingClass extending) {
-		return extendings.remove(extending);
+	public boolean removeMultiRef(MultiRefOneParent multiRefOneParent) {
+		return multiRef.remove(multiRefOneParent);
 	}
 
 	/**
-	 * Removes a MultiRefOtherIndirectParent
+	 * Removes a MultiRefOtherIndirectParent from multiRefIndirectOtherParent
 	 * 
-	 * @param multiRefIndirectOtherParent MultiRefOtherIndirectParent to remove
+	 * @param multiRefOtherIndirectParent MultiRefOtherIndirectParent to remove
 	 */
-	public boolean removeMultiRefIndirectOtherParents(MultiRefOtherIndirectParent multiRefIndirectOtherParent) {
-		return multiRefIndirectOtherParents.remove(multiRefIndirectOtherParent);
+	public boolean removeMultiRefIndirectOtherParent(MultiRefOtherIndirectParent multiRefOtherIndirectParent) {
+		return multiRefIndirectOtherParent.remove(multiRefOtherIndirectParent);
 	}
 
 	/**
-	 * Removes a MultiRefIndirectParent
+	 * Removes a MultiRefIndirectParent from multiRefIndirectParent
 	 * 
 	 * @param multiRefIndirectParent MultiRefIndirectParent to remove
 	 */
-	public boolean removeMultiRefIndirectParents(MultiRefIndirectParent multiRefIndirectParent) {
-		return multiRefIndirectParents.remove(multiRefIndirectParent);
-	}
-
-	/**
-	 * Removes a MultiRefOneParent
-	 * 
-	 * @param multiRef MultiRefOneParent to remove
-	 */
-	public boolean removeMultiRefs(MultiRefOneParent multiRef) {
-		return multiRefs.remove(multiRef);
+	public boolean removeMultiRefIndirectParent(MultiRefIndirectParent multiRefIndirectParent) {
+		return this.multiRefIndirectParent.remove(multiRefIndirectParent);
 	}
 
 }

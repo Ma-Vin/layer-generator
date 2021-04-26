@@ -47,7 +47,7 @@ public class MultiTransportMapperTest {
         assertEquals(multiRefOneParentDto.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefOneParentDto.getDescription(), result.getDescription(), "Wrong description");
 
-        assertEquals(0, result.getMultiRefs().size(), "Wrong number of MultiRefs");
+        assertEquals(0, result.getMultiRef().size(), "Wrong number of MultiRefs");
     }
 
     @Test

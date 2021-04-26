@@ -85,7 +85,7 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 			, Map<String, IIdentifiable> mappedObjects) {
 		MultiRefOneParent result = convertToMultiRefOneParent(multiRefOneParent, includeChildren, mappedObjects);
 		if (result != null) {
-			parent.getMultiRefs().add(result);
+			parent.getMultiRef().add(result);
 		}
 		return result;
 	}
@@ -150,7 +150,7 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 		MultiRefOneParentDao result = convertToMultiRefOneParentDao(multiRefOneParent, includeChildren, mappedObjects);
 		if (result != null) {
 			result.setParentRoot(parent);
-			parent.getMultiRefs().add(result);
+			parent.getMultiRef().add(result);
 		}
 		return result;
 	}
@@ -205,7 +205,7 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 			, Map<String, IIdentifiable> mappedObjects) {
 		MultiRefTwoParents result = convertToMultiRefTwoParents(multiRefTwoParents, mappedObjects);
 		if (result != null) {
-			parent.getMultiRefs().add(result);
+			parent.getMultiRef().add(result);
 		}
 		return result;
 	}
@@ -236,7 +236,7 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 			, Map<String, IIdentifiable> mappedObjects) {
 		MultiRefTwoParents result = convertToMultiRefTwoParents(multiRefTwoParents, mappedObjects);
 		if (result != null) {
-			parent.getAnotherMultiRefs().add(result);
+			parent.getAnotherMultiRef().add(result);
 		}
 		return result;
 	}
@@ -292,7 +292,7 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 		MultiRefTwoParentsDao result = convertToMultiRefTwoParentsDao(multiRefTwoParents, mappedObjects);
 		if (result != null) {
 			result.setParentMultiRefOneParent(parent);
-			parent.getMultiRefs().add(result);
+			parent.getMultiRef().add(result);
 		}
 		return result;
 	}
@@ -324,7 +324,7 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 		MultiRefTwoParentsDao result = convertToMultiRefTwoParentsDao(multiRefTwoParents, mappedObjects);
 		if (result != null) {
 			result.setParentRoot(parent);
-			parent.getAnotherMultiRefs().add(result);
+			parent.getAnotherMultiRef().add(result);
 		}
 		return result;
 	}
@@ -349,9 +349,9 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 	 */
 	protected void setMultiRefOneParentDaoMultiReferences(MultiRefOneParent domain, MultiRefOneParentDao dao, boolean includeChildren
 			, Map<String, IIdentifiableDao> mappedObjects) {
-		dao.setMultiRefs(new ArrayList<>());
+		dao.setMultiRef(new ArrayList<>());
 		if (includeChildren) {
-			domain.getMultiRefs().forEach(arg ->
+			domain.getMultiRef().forEach(arg ->
 					MultiAccessMapper.convertToMultiRefTwoParentsDao(arg, dao, mappedObjects)
 			);
 		}
@@ -389,7 +389,7 @@ public class MultiAccessMapper extends AbstractAccessMapper {
 	protected void setMultiRefOneParentMultiReferences(MultiRefOneParentDao dao, MultiRefOneParent domain, boolean includeChildren
 			, Map<String, IIdentifiable> mappedObjects) {
 		if (includeChildren) {
-			dao.getMultiRefs().forEach(arg ->
+			dao.getMultiRef().forEach(arg ->
 					MultiAccessMapper.convertToMultiRefTwoParents(arg, domain, mappedObjects)
 			);
 		}

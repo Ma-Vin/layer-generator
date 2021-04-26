@@ -204,25 +204,25 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	 * @param mappedObjects   map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
 	 */
 	protected void setRootDaoMultiReferences(Root domain, RootDao dao, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
-		dao.setMultiRefs(new ArrayList<>());
-		dao.setAnotherMultiRefs(new ArrayList<>());
-		dao.setMultiRefIndirectParents(new ArrayList<>());
-		dao.setMultiRefIndirectOtherParents(new ArrayList<>());
-		dao.setExtendings(new ArrayList<>());
+		dao.setMultiRef(new ArrayList<>());
+		dao.setAnotherMultiRef(new ArrayList<>());
+		dao.setMultiRefIndirectParent(new ArrayList<>());
+		dao.setMultiRefIndirectOtherParent(new ArrayList<>());
+		dao.setExtending(new ArrayList<>());
 		if (includeChildren) {
-			domain.getMultiRefs().forEach(arg ->
+			domain.getMultiRef().forEach(arg ->
 					MultiAccessMapper.convertToMultiRefOneParentDao(arg, true, dao, mappedObjects)
 			);
-			domain.getAnotherMultiRefs().forEach(arg ->
+			domain.getAnotherMultiRef().forEach(arg ->
 					MultiAccessMapper.convertToMultiRefTwoParentsDao(arg, dao, mappedObjects)
 			);
-			domain.getMultiRefIndirectParents().forEach(arg ->
+			domain.getMultiRefIndirectParent().forEach(arg ->
 					MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(arg, dao, mappedObjects)
 			);
-			domain.getMultiRefIndirectOtherParents().forEach(arg ->
+			domain.getMultiRefIndirectOtherParent().forEach(arg ->
 					MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParentDao(arg, true, dao, mappedObjects)
 			);
-			domain.getExtendings().forEach(arg ->
+			domain.getExtending().forEach(arg ->
 					ParentAccessMapper.convertToExtendingClassDao(arg, dao, mappedObjects)
 			);
 		}
@@ -349,19 +349,19 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	 */
 	protected void setRootMultiReferences(RootDao dao, Root domain, boolean includeChildren, Map<String, IIdentifiable> mappedObjects) {
 		if (includeChildren) {
-			dao.getMultiRefs().forEach(arg ->
+			dao.getMultiRef().forEach(arg ->
 					MultiAccessMapper.convertToMultiRefOneParent(arg, true, domain, mappedObjects)
 			);
-			dao.getAnotherMultiRefs().forEach(arg ->
+			dao.getAnotherMultiRef().forEach(arg ->
 					MultiAccessMapper.convertToMultiRefTwoParents(arg, domain, mappedObjects)
 			);
-			dao.getMultiRefIndirectParents().forEach(arg ->
+			dao.getMultiRefIndirectParent().forEach(arg ->
 					MultiIndirectAccessMapper.convertToMultiRefIndirectParent(arg, domain, mappedObjects)
 			);
-			dao.getMultiRefIndirectOtherParents().forEach(arg ->
+			dao.getMultiRefIndirectOtherParent().forEach(arg ->
 					MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParent(arg, true, domain, mappedObjects)
 			);
-			dao.getExtendings().forEach(arg ->
+			dao.getExtending().forEach(arg ->
 					ParentAccessMapper.convertToExtendingClass(arg, domain, mappedObjects)
 			);
 		}

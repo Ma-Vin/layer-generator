@@ -55,12 +55,12 @@ public class FilteringTransportMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(someFilteringOwnerDto.getIdentification(), result.getIdentification(), "Wrong identification");
 
-        assertEquals(0, result.getFilterAs().size(), "Wrong number of FilterA");
-        assertEquals(0, result.getFilterBs().size(), "Wrong number of FilterB");
-        assertEquals(0, result.getFilterCs().size(), "Wrong number of FilterC");
-        assertEquals(0, result.getFilterDaoAs().size(), "Wrong number of FilterDaoA");
-        assertEquals(0, result.getFilterDaoBs().size(), "Wrong number of FilterDaoB");
-        assertEquals(0, result.getFilterDaoCs().size(), "Wrong number of FilterDaoC");
+        assertEquals(0, result.getFilterA().size(), "Wrong number of FilterA");
+        assertEquals(0, result.getFilterB().size(), "Wrong number of FilterB");
+        assertEquals(0, result.getFilterC().size(), "Wrong number of FilterC");
+        assertEquals(0, result.getFilterDaoA().size(), "Wrong number of FilterDaoA");
+        assertEquals(0, result.getFilterDaoB().size(), "Wrong number of FilterDaoB");
+        assertEquals(0, result.getFilterDaoC().size(), "Wrong number of FilterDaoC");
     }
 
     @Test

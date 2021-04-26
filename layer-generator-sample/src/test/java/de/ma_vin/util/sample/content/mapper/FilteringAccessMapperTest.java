@@ -55,12 +55,12 @@ public class FilteringAccessMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(someFilteringOwnerDao.getIdentification(), result.getIdentification(), "Wrong identification");
 
-        assertEquals(0, result.getFilterAs().size(), "Wrong number of FilterA");
-        assertEquals(0, result.getFilterBs().size(), "Wrong number of FilterB");
-        assertEquals(0, result.getFilterCs().size(), "Wrong number of FilterC");
-        assertEquals(0, result.getFilterDaoAs().size(), "Wrong number of FilterDaoA");
-        assertEquals(0, result.getFilterDaoBs().size(), "Wrong number of FilterDaoB");
-        assertEquals(0, result.getFilterDaoCs().size(), "Wrong number of FilterDaoC");
+        assertEquals(0, result.getFilterA().size(), "Wrong number of FilterA");
+        assertEquals(0, result.getFilterB().size(), "Wrong number of FilterB");
+        assertEquals(0, result.getFilterC().size(), "Wrong number of FilterC");
+        assertEquals(0, result.getFilterDaoA().size(), "Wrong number of FilterDaoA");
+        assertEquals(0, result.getFilterDaoB().size(), "Wrong number of FilterDaoB");
+        assertEquals(0, result.getFilterDaoC().size(), "Wrong number of FilterDaoC");
     }
 
     @Test
@@ -69,15 +69,15 @@ public class FilteringAccessMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(someFilteringOwnerDao.getIdentification(), result.getIdentification(), "Wrong identification");
 
-        assertEquals(1, result.getFilterAs().size(), "Wrong number of FilterA");
-        result.getFilterAs().forEach(f -> assertEquals(AnyEnumType.ENUM_VALUE_A, f.getSomeEnum(), "Wrong enum at filter"));
-        assertEquals(1, result.getFilterBs().size(), "Wrong number of FilterB");
-        result.getFilterBs().forEach(f -> assertEquals(AnyEnumType.ENUM_VALUE_B, f.getSomeEnum(), "Wrong enum at filter"));
-        assertEquals(1, result.getFilterCs().size(), "Wrong number of FilterC");
-        result.getFilterCs().forEach(f -> assertEquals(AnyEnumType.ENUM_VALUE_C, f.getSomeEnum(), "Wrong enum at filter"));
-        assertEquals(1, result.getFilterDaoAs().size(), "Wrong number of FilterDaoA");
-        assertEquals(1, result.getFilterDaoBs().size(), "Wrong number of FilterDaoB");
-        assertEquals(1, result.getFilterDaoCs().size(), "Wrong number of FilterDaoC");
+        assertEquals(1, result.getFilterA().size(), "Wrong number of FilterA");
+        result.getFilterA().forEach(f -> assertEquals(AnyEnumType.ENUM_VALUE_A, f.getSomeEnum(), "Wrong enum at filter"));
+        assertEquals(1, result.getFilterB().size(), "Wrong number of FilterB");
+        result.getFilterB().forEach(f -> assertEquals(AnyEnumType.ENUM_VALUE_B, f.getSomeEnum(), "Wrong enum at filter"));
+        assertEquals(1, result.getFilterC().size(), "Wrong number of FilterC");
+        result.getFilterC().forEach(f -> assertEquals(AnyEnumType.ENUM_VALUE_C, f.getSomeEnum(), "Wrong enum at filter"));
+        assertEquals(1, result.getFilterDaoA().size(), "Wrong number of FilterDaoA");
+        assertEquals(1, result.getFilterDaoB().size(), "Wrong number of FilterDaoB");
+        assertEquals(1, result.getFilterDaoC().size(), "Wrong number of FilterDaoC");
     }
 
     @Test
@@ -118,9 +118,9 @@ public class FilteringAccessMapperTest {
         assertEquals(filteredDao.getDescription(), result.getDescription(), "Wrong description");
         assertEquals(filteredDao.getSomeEnum(), result.getSomeEnum(), "Wrong some enum");
 
-        assertTrue(someFilteringOwner.getFilterAs().contains(result), "Wrong ref at someFilteringOwner");
-        assertFalse(someFilteringOwner.getFilterBs().contains(result), "An enum of type A should not be contained at FilterB");
-        assertFalse(someFilteringOwner.getFilterCs().contains(result), "An enum of type A should not be contained at FilterC");
+        assertTrue(someFilteringOwner.getFilterA().contains(result), "Wrong ref at someFilteringOwner");
+        assertFalse(someFilteringOwner.getFilterB().contains(result), "An enum of type A should not be contained at FilterB");
+        assertFalse(someFilteringOwner.getFilterC().contains(result), "An enum of type A should not be contained at FilterC");
     }
 
     @Test
@@ -150,9 +150,9 @@ public class FilteringAccessMapperTest {
         assertEquals(filteredOnlyDaoFieldDao.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(filteredOnlyDaoFieldDao.getDescription(), result.getDescription(), "Wrong description");
 
-        assertFalse(someFilteringOwner.getFilterDaoAs().contains(result), "An enum of type B should not be contained at FilterA");
-        assertTrue(someFilteringOwner.getFilterDaoBs().contains(result), "Wrong ref at someFilteringOwner");
-        assertFalse(someFilteringOwner.getFilterDaoCs().contains(result), "An enum of type B should not be contained at FilterC");
+        assertFalse(someFilteringOwner.getFilterDaoA().contains(result), "An enum of type B should not be contained at FilterA");
+        assertTrue(someFilteringOwner.getFilterDaoB().contains(result), "Wrong ref at someFilteringOwner");
+        assertFalse(someFilteringOwner.getFilterDaoC().contains(result), "An enum of type B should not be contained at FilterC");
     }
 
     @Test
@@ -173,8 +173,8 @@ public class FilteringAccessMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(someFilteringOwner.getIdentification(), result.getIdentification(), "Wrong identification");
 
-        assertEquals(0, result.getAggFiltereds().size(), "Wrong number of Filter");
-        assertEquals(0, result.getAggFilteredOnlyDaoFields().size(), "Wrong number of FilterDao");
+        assertEquals(0, result.getAggFiltered().size(), "Wrong number of Filter");
+        assertEquals(0, result.getAggFilteredOnlyDaoField().size(), "Wrong number of FilterDao");
     }
 
     @Test
@@ -183,8 +183,8 @@ public class FilteringAccessMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(someFilteringOwner.getIdentification(), result.getIdentification(), "Wrong identification");
 
-        assertEquals(3, result.getAggFiltereds().size(), "Wrong number of Filter");
-        assertEquals(3, result.getAggFilteredOnlyDaoFields().size(), "Wrong number of FilterDao");
+        assertEquals(3, result.getAggFiltered().size(), "Wrong number of Filter");
+        assertEquals(3, result.getAggFilteredOnlyDaoField().size(), "Wrong number of FilterDao");
     }
 
     @Test
@@ -225,7 +225,7 @@ public class FilteringAccessMapperTest {
         assertEquals(filtered.getDescription(), result.getDescription(), "Wrong description");
         assertEquals(filtered.getSomeEnum(), result.getSomeEnum(), "Wrong some enum");
 
-        assertTrue(someFilteringOwnerDao.getAggFiltereds().contains(result), "Wrong ref at someFilteringOwner");
+        assertTrue(someFilteringOwnerDao.getAggFiltered().contains(result), "Wrong ref at someFilteringOwner");
     }
 
     @Test
@@ -257,7 +257,7 @@ public class FilteringAccessMapperTest {
         assertEquals(filteredOnlyDaoField.getDescription(), result.getDescription(), "Wrong description");
         assertEquals(AnyEnumType.ENUM_VALUE_C, result.getSomeEnum(), "Wrong some enum");
 
-        assertTrue(someFilteringOwnerDao.getAggFilteredOnlyDaoFields().contains(result), "An enum of type B should be contained at FilterDao");
+        assertTrue(someFilteringOwnerDao.getAggFilteredOnlyDaoField().contains(result), "An enum of type B should be contained at FilterDao");
     }
 
     @Test

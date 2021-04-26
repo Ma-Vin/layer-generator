@@ -58,16 +58,16 @@ public class CommonAccessMapperTest {
         assertNotNull(result.getExt(), "There should be any RootExt");
         assertEquals(rootDao.getExt().getIdentification(), result.getExt().getIdentification(), "Wrong identification at RootExt");
 
-        assertNotNull(result.getMultiRefs(), "There should be any MultiRefs list");
-        assertEquals(0, result.getMultiRefs().size());
-        assertNotNull(result.getAnotherMultiRefs(), "There should be any AnotherMultiRefs list");
-        assertEquals(0, result.getAnotherMultiRefs().size());
-        assertNotNull(result.getMultiRefIndirectParents(), "There should be any MultiRefIndirectParents list");
-        assertEquals(0, result.getMultiRefIndirectParents().size());
-        assertNotNull(result.getMultiRefIndirectOtherParents(), "There should be any MultiRefIndirectOtherParents list");
-        assertEquals(0, result.getMultiRefIndirectOtherParents().size());
-        assertNotNull(result.getExtendings(), "There should be any extending list");
-        assertEquals(0, result.getExtendings().size());
+        assertNotNull(result.getMultiRef(), "There should be any MultiRefs list");
+        assertEquals(0, result.getMultiRef().size());
+        assertNotNull(result.getAnotherMultiRef(), "There should be any AnotherMultiRefs list");
+        assertEquals(0, result.getAnotherMultiRef().size());
+        assertNotNull(result.getMultiRefIndirectParent(), "There should be any MultiRefIndirectParents list");
+        assertEquals(0, result.getMultiRefIndirectParent().size());
+        assertNotNull(result.getMultiRefIndirectOtherParent(), "There should be any MultiRefIndirectOtherParents list");
+        assertEquals(0, result.getMultiRefIndirectOtherParent().size());
+        assertNotNull(result.getExtending(), "There should be any extending list");
+        assertEquals(0, result.getExtending().size());
     }
 
     @Test
@@ -91,16 +91,16 @@ public class CommonAccessMapperTest {
         assertNotNull(result.getExt(), "There should be any RootExt");
         assertEquals(rootDao.getExt().getIdentification(), result.getExt().getIdentification(), "Wrong identification at RootExt");
 
-        assertNotNull(result.getMultiRefs(), "There should be any MultiRefs list");
-        assertEquals(rootDao.getMultiRefs().size(), result.getMultiRefs().size());
-        assertNotNull(result.getAnotherMultiRefs(), "There should be any AnotherMultiRefs list");
-        assertEquals(rootDao.getAnotherMultiRefs().size(), result.getAnotherMultiRefs().size());
-        assertNotNull(result.getMultiRefIndirectParents(), "There should be any MultiRefIndirectParents list");
-        assertEquals(rootDao.getMultiRefIndirectParents().size(), result.getMultiRefIndirectParents().size());
-        assertNotNull(result.getMultiRefIndirectOtherParents(), "There should be any MultiRefIndirectOtherParents list");
-        assertEquals(rootDao.getMultiRefIndirectOtherParents().size(), result.getMultiRefIndirectOtherParents().size());
-        assertNotNull(result.getExtendings(), "There should be any extending list");
-        assertEquals(rootDao.getExtendings().size(), result.getExtendings().size());
+        assertNotNull(result.getMultiRef(), "There should be any MultiRefs list");
+        assertEquals(rootDao.getMultiRef().size(), result.getMultiRef().size());
+        assertNotNull(result.getAnotherMultiRef(), "There should be any AnotherMultiRefs list");
+        assertEquals(rootDao.getAnotherMultiRef().size(), result.getAnotherMultiRef().size());
+        assertNotNull(result.getMultiRefIndirectParent(), "There should be any MultiRefIndirectParents list");
+        assertEquals(rootDao.getMultiRefIndirectParent().size(), result.getMultiRefIndirectParent().size());
+        assertNotNull(result.getMultiRefIndirectOtherParent(), "There should be any MultiRefIndirectOtherParents list");
+        assertEquals(rootDao.getMultiRefIndirectOtherParent().size(), result.getMultiRefIndirectOtherParent().size());
+        assertNotNull(result.getExtending(), "There should be any extending list");
+        assertEquals(rootDao.getExtending().size(), result.getExtending().size());
     }
 
     @Test
@@ -190,16 +190,16 @@ public class CommonAccessMapperTest {
         assertEquals(root.getExt().getIdentification(), result.getExt().getIdentification(), "Wrong identification at RootExt");
         assertEquals(result, result.getExt().getParentRoot(), "Wrong parent at RootExt");
 
-        assertNotNull(result.getMultiRefs(), "There should be any MultiRefs list");
-        assertEquals(0, result.getMultiRefs().size());
-        assertNotNull(result.getAnotherMultiRefs(), "There should be any AnotherMultiRefs list");
-        assertEquals(0, result.getAnotherMultiRefs().size());
-        assertNotNull(result.getMultiRefIndirectParents(), "There should be any MultiRefIndirectParents list");
-        assertEquals(0, result.getMultiRefIndirectParents().size());
-        assertNotNull(result.getMultiRefIndirectOtherParents(), "There should be any MultiRefIndirectOtherParents list");
-        assertEquals(0, result.getMultiRefIndirectOtherParents().size());
-        assertNotNull(result.getExtendings(), "There should be any extending list");
-        assertEquals(0, result.getExtendings().size());
+        assertNotNull(result.getMultiRef(), "There should be any MultiRefs list");
+        assertEquals(0, result.getMultiRef().size());
+        assertNotNull(result.getAnotherMultiRef(), "There should be any AnotherMultiRefs list");
+        assertEquals(0, result.getAnotherMultiRef().size());
+        assertNotNull(result.getMultiRefIndirectParent(), "There should be any MultiRefIndirectParents list");
+        assertEquals(0, result.getMultiRefIndirectParent().size());
+        assertNotNull(result.getMultiRefIndirectOtherParent(), "There should be any MultiRefIndirectOtherParents list");
+        assertEquals(0, result.getMultiRefIndirectOtherParent().size());
+        assertNotNull(result.getExtending(), "There should be any extending list");
+        assertEquals(0, result.getExtending().size());
     }
 
     @Test
@@ -223,21 +223,21 @@ public class CommonAccessMapperTest {
         assertNotNull(result.getExt(), "There should be any RootExt");
         assertEquals(root.getExt().getIdentification(), result.getExt().getIdentification(), "Wrong identification at RootExt");
 
-        assertNotNull(result.getMultiRefs(), "There should be any MultiRefs list");
-        assertEquals(root.getMultiRefs().size(), result.getMultiRefs().size());
-        result.getMultiRefs().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
-        assertNotNull(result.getAnotherMultiRefs(), "There should be any AnotherMultiRefs list");
-        assertEquals(root.getAnotherMultiRefs().size(), result.getAnotherMultiRefs().size());
-        result.getAnotherMultiRefs().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
-        assertNotNull(result.getMultiRefIndirectParents(), "There should be any MultiRefIndirectParents list");
-        assertEquals(root.getMultiRefIndirectParents().size(), result.getMultiRefIndirectParents().size());
-        result.getMultiRefIndirectParents().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
-        assertNotNull(result.getMultiRefIndirectOtherParents(), "There should be any MultiRefIndirectOtherParents list");
-        assertEquals(root.getMultiRefIndirectOtherParents().size(), result.getMultiRefIndirectOtherParents().size());
-        result.getMultiRefIndirectOtherParents().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
-        assertNotNull(result.getExtendings(), "There should be any extending list");
-        assertEquals(root.getExtendings().size(), result.getExtendings().size());
-        result.getExtendings().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
+        assertNotNull(result.getMultiRef(), "There should be any MultiRefs list");
+        assertEquals(root.getMultiRef().size(), result.getMultiRef().size());
+        result.getMultiRef().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
+        assertNotNull(result.getAnotherMultiRef(), "There should be any AnotherMultiRefs list");
+        assertEquals(root.getAnotherMultiRef().size(), result.getAnotherMultiRef().size());
+        result.getAnotherMultiRef().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
+        assertNotNull(result.getMultiRefIndirectParent(), "There should be any MultiRefIndirectParents list");
+        assertEquals(root.getMultiRefIndirectParent().size(), result.getMultiRefIndirectParent().size());
+        result.getMultiRefIndirectParent().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
+        assertNotNull(result.getMultiRefIndirectOtherParent(), "There should be any MultiRefIndirectOtherParents list");
+        assertEquals(root.getMultiRefIndirectOtherParent().size(), result.getMultiRefIndirectOtherParent().size());
+        result.getMultiRefIndirectOtherParent().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
+        assertNotNull(result.getExtending(), "There should be any extending list");
+        assertEquals(root.getExtending().size(), result.getExtending().size());
+        result.getExtending().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
     }
 
     @Test

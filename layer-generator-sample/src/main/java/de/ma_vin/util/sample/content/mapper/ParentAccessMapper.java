@@ -70,7 +70,7 @@ public class ParentAccessMapper extends AbstractAccessMapper {
 	public static ExtendingClass convertToExtendingClass(ExtendingClassDao extendingClass, Root parent, Map<String, IIdentifiable> mappedObjects) {
 		ExtendingClass result = convertToExtendingClass(extendingClass, mappedObjects);
 		if (result != null) {
-			parent.getExtendings().add(result);
+			parent.getExtending().add(result);
 		}
 		return result;
 	}
@@ -123,7 +123,7 @@ public class ParentAccessMapper extends AbstractAccessMapper {
 		ExtendingClassDao result = convertToExtendingClassDao(extendingClass, mappedObjects);
 		if (result != null) {
 			result.setParentRoot(parent);
-			parent.getExtendings().add(result);
+			parent.getExtending().add(result);
 		}
 		return result;
 	}

@@ -96,11 +96,11 @@ public class ObjectFactory {
         result.setRootName(String.format("RootName_%d", id));
         result.setDescription(String.format("Description_%d", id));
 
-        result.setMultiRefs(new ArrayList<>());
-        result.setAnotherMultiRefs(new ArrayList<>());
-        result.setMultiRefIndirectParents(new ArrayList<>());
-        result.setMultiRefIndirectOtherParents(new ArrayList<>());
-        result.setExtendings(new ArrayList<>());
+        result.setMultiRef(new ArrayList<>());
+        result.setAnotherMultiRef(new ArrayList<>());
+        result.setMultiRefIndirectParent(new ArrayList<>());
+        result.setMultiRefIndirectOtherParent(new ArrayList<>());
+        result.setExtending(new ArrayList<>());
 
         return result;
     }
@@ -115,11 +115,11 @@ public class ObjectFactory {
 
         MultiRefOneParentDao multiRefOneParentDao = createMultiRefOneParentDaoWithChildren(getNextId());
         multiRefOneParentDao.setParentRoot(result);
-        result.getMultiRefs().add(multiRefOneParentDao);
+        result.getMultiRef().add(multiRefOneParentDao);
 
         MultiRefTwoParentsDao multiRefTwoParentsDao = createMultiRefTwoParentsDao(getNextId());
         multiRefTwoParentsDao.setParentRoot(result);
-        result.getAnotherMultiRefs().add(multiRefTwoParentsDao);
+        result.getAnotherMultiRef().add(multiRefTwoParentsDao);
 
         result.setSingleRefIndirectParent(createSingleRefIndirectParentDao(getNextId()));
         result.getSingleRefIndirectParent().setParentRoot(result);
@@ -131,17 +131,17 @@ public class ObjectFactory {
 
         MultiRefIndirectParentDao multiRefIndirectParentDao = createMultiRefIndirectParentDao(getNextId());
         multiRefIndirectParentDao.setParentRoot(result);
-        result.getMultiRefIndirectParents().add(multiRefIndirectParentDao);
+        result.getMultiRefIndirectParent().add(multiRefIndirectParentDao);
         addToCreatedMap(multiRefIndirectParentDao);
 
         MultiRefOtherIndirectParentDao multiRefOtherIndirectParentDao
                 = createMultiRefOtherIndirectParentDaoWithChildren(getNextId(), multiRefIndirectParentDao.getIdentification());
         multiRefOtherIndirectParentDao.setParentRoot(result);
-        result.getMultiRefIndirectOtherParents().add(multiRefOtherIndirectParentDao);
+        result.getMultiRefIndirectOtherParent().add(multiRefOtherIndirectParentDao);
 
         ExtendingClassDao extendingClassDao = createExtendingClassDao(getNextId());
         extendingClassDao.setParentRoot(result);
-        result.getExtendings().add(extendingClassDao);
+        result.getExtending().add(extendingClassDao);
 
         result.setFiltering(createSomeFilteringOwnerDaoWithChildren(getNextId()));
 
@@ -194,7 +194,7 @@ public class ObjectFactory {
         MultiRefOneParentDao result = new MultiRefOneParentDao();
         setId(result, id);
         result.setDescription(String.format("Description_%d", id));
-        result.setMultiRefs(new ArrayList<>());
+        result.setMultiRef(new ArrayList<>());
         return result;
     }
 
@@ -202,7 +202,7 @@ public class ObjectFactory {
         MultiRefOneParentDao result = createMultiRefOneParentDao(id);
         MultiRefTwoParentsDao multiRefTwoParentsDao = createMultiRefTwoParentsDao(getNextId());
         multiRefTwoParentsDao.setParentMultiRefOneParent(result);
-        result.getMultiRefs().add(multiRefTwoParentsDao);
+        result.getMultiRef().add(multiRefTwoParentsDao);
         return result;
     }
 
@@ -242,7 +242,7 @@ public class ObjectFactory {
         MultiRefOtherIndirectParentDao result = new MultiRefOtherIndirectParentDao();
         setId(result, id);
         result.setDescription(String.format("Description_%d", id));
-        result.setMultiIndirectRefs(new ArrayList<>());
+        result.setMultiIndirectRef(new ArrayList<>());
         return result;
     }
 
@@ -253,7 +253,7 @@ public class ObjectFactory {
                 MultiRefOtherIndirectParentToMultiRefIndirectParentDao connection = new MultiRefOtherIndirectParentToMultiRefIndirectParentDao();
                 connection.setMultiRefOtherIndirectParent(result);
                 connection.setMultiRefIndirectParent((MultiRefIndirectParentDao) createdDaoObjects.get(identification));
-                result.getMultiIndirectRefs().add(connection);
+                result.getMultiIndirectRef().add(connection);
                 break;
             }
         }
@@ -278,19 +278,19 @@ public class ObjectFactory {
     public static SomeFilteringOwnerDao createSomeFilteringOwnerDao(long id) {
         SomeFilteringOwnerDao result = new SomeFilteringOwnerDao();
         setId(result, id);
-        result.setAggFiltereds(new ArrayList<>());
-        result.setAggFilteredOnlyDaoFields(new ArrayList<>());
+        result.setAggFiltered(new ArrayList<>());
+        result.setAggFilteredOnlyDaoField(new ArrayList<>());
         return result;
     }
 
     public static SomeFilteringOwnerDao createSomeFilteringOwnerDaoWithChildren(long id) {
         SomeFilteringOwnerDao result = createSomeFilteringOwnerDao(id);
-        result.getAggFiltereds().add(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_A));
-        result.getAggFiltereds().add(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_B));
-        result.getAggFiltereds().add(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_C));
-        result.getAggFilteredOnlyDaoFields().add(createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_A));
-        result.getAggFilteredOnlyDaoFields().add(createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_B));
-        result.getAggFilteredOnlyDaoFields().add(createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_C));
+        result.getAggFiltered().add(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_A));
+        result.getAggFiltered().add(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_B));
+        result.getAggFiltered().add(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_C));
+        result.getAggFilteredOnlyDaoField().add(createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_A));
+        result.getAggFilteredOnlyDaoField().add(createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_B));
+        result.getAggFilteredOnlyDaoField().add(createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_C));
         return result;
     }
 
@@ -341,8 +341,8 @@ public class ObjectFactory {
         result.setSingleRef(createSingleRefOneParentWithChildren(getNextId()));
         result.setAnotherSingleRef(createSingleRefTwoParents(getNextId()));
 
-        result.getMultiRefs().add(createMultiRefOneParentWithChildren(getNextId()));
-        result.getAnotherMultiRefs().add(createMultiRefTwoParents(getNextId()));
+        result.getMultiRef().add(createMultiRefOneParentWithChildren(getNextId()));
+        result.getAnotherMultiRef().add(createMultiRefTwoParents(getNextId()));
 
         result.setSingleRefIndirectParent(createSingleRefIndirectParent(getNextId()));
         addToCreatedMap(result.getSingleRefIndirectParent());
@@ -350,11 +350,11 @@ public class ObjectFactory {
                 , result.getSingleRefIndirectParent().getIdentification()));
 
         MultiRefIndirectParent multiRefIndirectParent = createMultiRefIndirectParent(getNextId());
-        result.getMultiRefIndirectParents().add(multiRefIndirectParent);
+        result.getMultiRefIndirectParent().add(multiRefIndirectParent);
         addToCreatedMap(multiRefIndirectParent);
-        result.getMultiRefIndirectOtherParents().add(createMultiRefOtherIndirectParentWithChildren(getNextId(), multiRefIndirectParent.getIdentification()));
+        result.getMultiRefIndirectOtherParent().add(createMultiRefOtherIndirectParentWithChildren(getNextId(), multiRefIndirectParent.getIdentification()));
 
-        result.getExtendings().add(createExtendingClass(getNextId()));
+        result.getExtending().add(createExtendingClass(getNextId()));
 
         result.setFiltering(createSomeFilteringOwnerWithChildren(getNextId()));
 
@@ -411,7 +411,7 @@ public class ObjectFactory {
     public static MultiRefOneParent createMultiRefOneParentWithChildren(long id) {
         MultiRefOneParent result = createMultiRefOneParent(id);
         MultiRefTwoParents multiRefTwoParents = createMultiRefTwoParents(getNextId());
-        result.getMultiRefs().add(multiRefTwoParents);
+        result.getMultiRef().add(multiRefTwoParents);
         return result;
     }
 
@@ -458,7 +458,7 @@ public class ObjectFactory {
         MultiRefOtherIndirectParent result = createMultiRefOtherIndirectParent(id);
         for (String identification : identificationsToUse) {
             if (createdDomainObjects.containsKey(identification) && createdDomainObjects.get(identification) instanceof MultiRefIndirectParent) {
-                result.addMultiIndirectRefs((MultiRefIndirectParent) createdDomainObjects.get(identification));
+                result.addMultiIndirectRef((MultiRefIndirectParent) createdDomainObjects.get(identification));
                 break;
             }
         }
@@ -488,12 +488,12 @@ public class ObjectFactory {
 
     public static SomeFilteringOwner createSomeFilteringOwnerWithChildren(long id) {
         SomeFilteringOwner result = createSomeFilteringOwner(id);
-        result.addFilterAs(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_A));
-        result.addFilterBs(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_B));
-        result.addFilterCs(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_C));
-        result.addFilterDaoAs(createFilteredOnlyDaoField(getNextId()));
-        result.addFilterDaoBs(createFilteredOnlyDaoField(getNextId()));
-        result.addFilterDaoCs(createFilteredOnlyDaoField(getNextId()));
+        result.addFilterA(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_A));
+        result.addFilterB(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_B));
+        result.addFilterC(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_C));
+        result.addFilterDaoA(createFilteredOnlyDaoField(getNextId()));
+        result.addFilterDaoB(createFilteredOnlyDaoField(getNextId()));
+        result.addFilterDaoC(createFilteredOnlyDaoField(getNextId()));
         return result;
     }
 

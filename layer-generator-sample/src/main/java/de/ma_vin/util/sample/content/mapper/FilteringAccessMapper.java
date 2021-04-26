@@ -80,13 +80,13 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		if (result != null) {
 			switch (filtered.getSomeEnum()) {
 				case ENUM_VALUE_A:
-					parent.addFilterAs(result);
+					parent.addFilterA(result);
 					break;
 				case ENUM_VALUE_B:
-					parent.addFilterBs(result);
+					parent.addFilterB(result);
 					break;
 				case ENUM_VALUE_C:
-					parent.addFilterCs(result);
+					parent.addFilterC(result);
 					break;
 				default:
 					log.error("There is not any mapping rule for dummy of type {}", filtered.getSomeEnum());
@@ -143,7 +143,7 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		FilteredDao result = convertToFilteredDao(filtered, mappedObjects);
 		if (result != null) {
 			result.setParentSomeFilteringOwner(parent);
-			parent.getAggFiltereds().add(result);
+			parent.getAggFiltered().add(result);
 		}
 		return result;
 	}
@@ -201,13 +201,13 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		if (result != null) {
 			switch (filteredOnlyDaoField.getSomeEnum()) {
 				case ENUM_VALUE_A:
-					parent.addFilterDaoAs(result);
+					parent.addFilterDaoA(result);
 					break;
 				case ENUM_VALUE_B:
-					parent.addFilterDaoBs(result);
+					parent.addFilterDaoB(result);
 					break;
 				case ENUM_VALUE_C:
-					parent.addFilterDaoCs(result);
+					parent.addFilterDaoC(result);
 					break;
 				default:
 					log.error("There is not any mapping rule for dummy of type {}", filteredOnlyDaoField.getSomeEnum());
@@ -257,7 +257,7 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 		FilteredOnlyDaoFieldDao result = convertToFilteredOnlyDaoFieldDao(filteredOnlyDaoField, someEnum, mappedObjects);
 		if (result != null) {
 			result.setParentSomeFilteringOwner(parent);
-			parent.getAggFilteredOnlyDaoFields().add(result);
+			parent.getAggFilteredOnlyDaoField().add(result);
 		}
 		return result;
 	}
@@ -563,25 +563,25 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	 */
 	protected void setSomeFilteringOwnerDaoMultiReferences(SomeFilteringOwner domain, SomeFilteringOwnerDao dao, boolean includeChildren
 			, Map<String, IIdentifiableDao> mappedObjects) {
-		dao.setAggFiltereds(new ArrayList<>());
-		dao.setAggFilteredOnlyDaoFields(new ArrayList<>());
+		dao.setAggFiltered(new ArrayList<>());
+		dao.setAggFilteredOnlyDaoField(new ArrayList<>());
 		if (includeChildren) {
-			domain.getFilterAs().forEach(arg ->
+			domain.getFilterA().forEach(arg ->
 					FilteringAccessMapper.convertToFilteredDao(arg, dao, mappedObjects)
 			);
-			domain.getFilterBs().forEach(arg ->
+			domain.getFilterB().forEach(arg ->
 					FilteringAccessMapper.convertToFilteredDao(arg, dao, mappedObjects)
 			);
-			domain.getFilterCs().forEach(arg ->
+			domain.getFilterC().forEach(arg ->
 					FilteringAccessMapper.convertToFilteredDao(arg, dao, mappedObjects)
 			);
-			domain.getFilterDaoAs().forEach(arg ->
+			domain.getFilterDaoA().forEach(arg ->
 					FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(arg, dao, AnyEnumType.ENUM_VALUE_A, mappedObjects)
 			);
-			domain.getFilterDaoBs().forEach(arg ->
+			domain.getFilterDaoB().forEach(arg ->
 					FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(arg, dao, AnyEnumType.ENUM_VALUE_B, mappedObjects)
 			);
-			domain.getFilterDaoCs().forEach(arg ->
+			domain.getFilterDaoC().forEach(arg ->
 					FilteringAccessMapper.convertToFilteredOnlyDaoFieldDao(arg, dao, AnyEnumType.ENUM_VALUE_C, mappedObjects)
 			);
 		}
@@ -620,10 +620,10 @@ public class FilteringAccessMapper extends AbstractAccessMapper {
 	protected void setSomeFilteringOwnerMultiReferences(SomeFilteringOwnerDao dao, SomeFilteringOwner domain, boolean includeChildren
 			, Map<String, IIdentifiable> mappedObjects) {
 		if (includeChildren) {
-			dao.getAggFiltereds().forEach(arg ->
+			dao.getAggFiltered().forEach(arg ->
 					FilteringAccessMapper.convertToFiltered(arg, domain, mappedObjects)
 			);
-			dao.getAggFilteredOnlyDaoFields().forEach(arg ->
+			dao.getAggFilteredOnlyDaoField().forEach(arg ->
 					FilteringAccessMapper.convertToFilteredOnlyDaoField(arg, domain, mappedObjects)
 			);
 		}

@@ -16,10 +16,10 @@ import lombok.ToString;
  */
 @BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
-@EqualsAndHashCode(exclude = {"multiRefs"})
+@EqualsAndHashCode(exclude = {"multiRef"})
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-@ToString(exclude = {"multiRefs"})
+@ToString(exclude = {"multiRef"})
 public class MultiRefOneParent implements IIdentifiable {
 
 	public static final String ID_PREFIX = "M1";
@@ -32,24 +32,24 @@ public class MultiRefOneParent implements IIdentifiable {
 	private String identification;
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<MultiRefTwoParents> multiRefs = new HashSet<>();
+	private Collection<MultiRefTwoParents> multiRef = new HashSet<>();
 
 	/**
-	 * Adds a MultiRefTwoParents
+	 * Adds a MultiRefTwoParents to multiRef
 	 * 
-	 * @param multiRef MultiRefTwoParents to add
+	 * @param multiRefTwoParents MultiRefTwoParents to add
 	 */
-	public boolean addMultiRefs(MultiRefTwoParents multiRef) {
-		return multiRefs.add(multiRef);
+	public boolean addMultiRef(MultiRefTwoParents multiRefTwoParents) {
+		return multiRef.add(multiRefTwoParents);
 	}
 
 	/**
-	 * Removes a MultiRefTwoParents
+	 * Removes a MultiRefTwoParents from multiRef
 	 * 
-	 * @param multiRef MultiRefTwoParents to remove
+	 * @param multiRefTwoParents MultiRefTwoParents to remove
 	 */
-	public boolean removeMultiRefs(MultiRefTwoParents multiRef) {
-		return multiRefs.remove(multiRef);
+	public boolean removeMultiRef(MultiRefTwoParents multiRefTwoParents) {
+		return multiRef.remove(multiRefTwoParents);
 	}
 
 }

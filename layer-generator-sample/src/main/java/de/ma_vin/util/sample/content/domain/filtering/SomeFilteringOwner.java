@@ -16,31 +16,31 @@ import lombok.ToString;
  */
 @BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
-@EqualsAndHashCode(exclude = {"filterAs", "filterBs", "filterCs", "filterDaoAs", "filterDaoBs", "filterDaoCs"})
+@EqualsAndHashCode(exclude = {"filterA", "filterB", "filterC", "filterDaoA", "filterDaoB", "filterDaoC"})
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-@ToString(exclude = {"filterAs", "filterBs", "filterCs", "filterDaoAs", "filterDaoBs", "filterDaoCs"})
+@ToString(exclude = {"filterA", "filterB", "filterC", "filterDaoA", "filterDaoB", "filterDaoC"})
 public class SomeFilteringOwner implements IIdentifiable {
 
 	public static final String ID_PREFIX = "F1";
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<Filtered> filterAs = new HashSet<>();
+	private Collection<Filtered> filterA = new HashSet<>();
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<Filtered> filterBs = new HashSet<>();
+	private Collection<Filtered> filterB = new HashSet<>();
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<Filtered> filterCs = new HashSet<>();
+	private Collection<Filtered> filterC = new HashSet<>();
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<FilteredOnlyDaoField> filterDaoAs = new HashSet<>();
+	private Collection<FilteredOnlyDaoField> filterDaoA = new HashSet<>();
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<FilteredOnlyDaoField> filterDaoBs = new HashSet<>();
+	private Collection<FilteredOnlyDaoField> filterDaoB = new HashSet<>();
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<FilteredOnlyDaoField> filterDaoCs = new HashSet<>();
+	private Collection<FilteredOnlyDaoField> filterDaoC = new HashSet<>();
 
 	/**
 	 * Identification of SomeFilteringOwner
@@ -48,111 +48,111 @@ public class SomeFilteringOwner implements IIdentifiable {
 	private String identification;
 
 	/**
-	 * Adds a Filtered
+	 * Adds a Filtered to filterA
 	 * 
-	 * @param filterA Filtered to add
+	 * @param filtered Filtered to add
 	 */
-	public boolean addFilterAs(Filtered filterA) {
-		return filterAs.add(filterA);
+	public boolean addFilterA(Filtered filtered) {
+		return filterA.add(filtered);
 	}
 
 	/**
-	 * Adds a Filtered
+	 * Adds a Filtered to filterB
 	 * 
-	 * @param filterB Filtered to add
+	 * @param filtered Filtered to add
 	 */
-	public boolean addFilterBs(Filtered filterB) {
-		return filterBs.add(filterB);
+	public boolean addFilterB(Filtered filtered) {
+		return filterB.add(filtered);
 	}
 
 	/**
-	 * Adds a Filtered
+	 * Adds a Filtered to filterC
 	 * 
-	 * @param filterC Filtered to add
+	 * @param filtered Filtered to add
 	 */
-	public boolean addFilterCs(Filtered filterC) {
-		return filterCs.add(filterC);
+	public boolean addFilterC(Filtered filtered) {
+		return filterC.add(filtered);
 	}
 
 	/**
-	 * Adds a FilteredOnlyDaoField
+	 * Adds a FilteredOnlyDaoField to filterDaoA
 	 * 
-	 * @param filterDaoA FilteredOnlyDaoField to add
+	 * @param filteredOnlyDaoField FilteredOnlyDaoField to add
 	 */
-	public boolean addFilterDaoAs(FilteredOnlyDaoField filterDaoA) {
-		return filterDaoAs.add(filterDaoA);
+	public boolean addFilterDaoA(FilteredOnlyDaoField filteredOnlyDaoField) {
+		return filterDaoA.add(filteredOnlyDaoField);
 	}
 
 	/**
-	 * Adds a FilteredOnlyDaoField
+	 * Adds a FilteredOnlyDaoField to filterDaoB
 	 * 
-	 * @param filterDaoB FilteredOnlyDaoField to add
+	 * @param filteredOnlyDaoField FilteredOnlyDaoField to add
 	 */
-	public boolean addFilterDaoBs(FilteredOnlyDaoField filterDaoB) {
-		return filterDaoBs.add(filterDaoB);
+	public boolean addFilterDaoB(FilteredOnlyDaoField filteredOnlyDaoField) {
+		return filterDaoB.add(filteredOnlyDaoField);
 	}
 
 	/**
-	 * Adds a FilteredOnlyDaoField
+	 * Adds a FilteredOnlyDaoField to filterDaoC
 	 * 
-	 * @param filterDaoC FilteredOnlyDaoField to add
+	 * @param filteredOnlyDaoField FilteredOnlyDaoField to add
 	 */
-	public boolean addFilterDaoCs(FilteredOnlyDaoField filterDaoC) {
-		return filterDaoCs.add(filterDaoC);
+	public boolean addFilterDaoC(FilteredOnlyDaoField filteredOnlyDaoField) {
+		return filterDaoC.add(filteredOnlyDaoField);
 	}
 
 	/**
-	 * Removes a Filtered
+	 * Removes a Filtered from filterA
 	 * 
-	 * @param filterA Filtered to remove
+	 * @param filtered Filtered to remove
 	 */
-	public boolean removeFilterAs(Filtered filterA) {
-		return filterAs.remove(filterA);
+	public boolean removeFilterA(Filtered filtered) {
+		return filterA.remove(filtered);
 	}
 
 	/**
-	 * Removes a Filtered
+	 * Removes a Filtered from filterB
 	 * 
-	 * @param filterB Filtered to remove
+	 * @param filtered Filtered to remove
 	 */
-	public boolean removeFilterBs(Filtered filterB) {
-		return filterBs.remove(filterB);
+	public boolean removeFilterB(Filtered filtered) {
+		return filterB.remove(filtered);
 	}
 
 	/**
-	 * Removes a Filtered
+	 * Removes a Filtered from filterC
 	 * 
-	 * @param filterC Filtered to remove
+	 * @param filtered Filtered to remove
 	 */
-	public boolean removeFilterCs(Filtered filterC) {
-		return filterCs.remove(filterC);
+	public boolean removeFilterC(Filtered filtered) {
+		return filterC.remove(filtered);
 	}
 
 	/**
-	 * Removes a FilteredOnlyDaoField
+	 * Removes a FilteredOnlyDaoField from filterDaoA
 	 * 
-	 * @param filterDaoA FilteredOnlyDaoField to remove
+	 * @param filteredOnlyDaoField FilteredOnlyDaoField to remove
 	 */
-	public boolean removeFilterDaoAs(FilteredOnlyDaoField filterDaoA) {
-		return filterDaoAs.remove(filterDaoA);
+	public boolean removeFilterDaoA(FilteredOnlyDaoField filteredOnlyDaoField) {
+		return filterDaoA.remove(filteredOnlyDaoField);
 	}
 
 	/**
-	 * Removes a FilteredOnlyDaoField
+	 * Removes a FilteredOnlyDaoField from filterDaoB
 	 * 
-	 * @param filterDaoB FilteredOnlyDaoField to remove
+	 * @param filteredOnlyDaoField FilteredOnlyDaoField to remove
 	 */
-	public boolean removeFilterDaoBs(FilteredOnlyDaoField filterDaoB) {
-		return filterDaoBs.remove(filterDaoB);
+	public boolean removeFilterDaoB(FilteredOnlyDaoField filteredOnlyDaoField) {
+		return filterDaoB.remove(filteredOnlyDaoField);
 	}
 
 	/**
-	 * Removes a FilteredOnlyDaoField
+	 * Removes a FilteredOnlyDaoField from filterDaoC
 	 * 
-	 * @param filterDaoC FilteredOnlyDaoField to remove
+	 * @param filteredOnlyDaoField FilteredOnlyDaoField to remove
 	 */
-	public boolean removeFilterDaoCs(FilteredOnlyDaoField filterDaoC) {
-		return filterDaoCs.remove(filterDaoC);
+	public boolean removeFilterDaoC(FilteredOnlyDaoField filteredOnlyDaoField) {
+		return filterDaoC.remove(filteredOnlyDaoField);
 	}
 
 }

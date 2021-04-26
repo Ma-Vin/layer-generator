@@ -25,13 +25,13 @@ import lombok.ToString;
 @BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRefs", "anotherMultiRefs", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParents", "multiRefIndirectOtherParents", "extendings", "filtering", "ext"})
+@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "ext"})
 @Table(name = "Roots")
-@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRefs", "anotherMultiRefs", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParents", "multiRefIndirectOtherParents", "extendings", "filtering", "ext"})
+@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "ext"})
 public class RootDao implements IIdentifiableDao {
 
 	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefTwoParentsDao.class)
-	private Collection<MultiRefTwoParentsDao> anotherMultiRefs;
+	private Collection<MultiRefTwoParentsDao> anotherMultiRef;
 
 	@OneToOne(mappedBy = "parentRoot", targetEntity = SingleRefTwoParentsDao.class)
 	private SingleRefTwoParentsDao anotherSingleRef;
@@ -43,7 +43,7 @@ public class RootDao implements IIdentifiableDao {
 	private RootExtDao ext;
 
 	@OneToMany(mappedBy = "parentRoot", targetEntity = ExtendingClassDao.class)
-	private Collection<ExtendingClassDao> extendings;
+	private Collection<ExtendingClassDao> extending;
 
 	@OneToOne(mappedBy = "parentRoot", targetEntity = SomeFilteringOwnerDao.class)
 	private SomeFilteringOwnerDao filtering;
@@ -53,14 +53,14 @@ public class RootDao implements IIdentifiableDao {
 	@Id
 	private Long id;
 
+	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefOneParentDao.class)
+	private Collection<MultiRefOneParentDao> multiRef;
+
 	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefOtherIndirectParentDao.class)
-	private Collection<MultiRefOtherIndirectParentDao> multiRefIndirectOtherParents;
+	private Collection<MultiRefOtherIndirectParentDao> multiRefIndirectOtherParent;
 
 	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefIndirectParentDao.class)
-	private Collection<MultiRefIndirectParentDao> multiRefIndirectParents;
-
-	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefOneParentDao.class)
-	private Collection<MultiRefOneParentDao> multiRefs;
+	private Collection<MultiRefIndirectParentDao> multiRefIndirectParent;
 
 	@Column
 	private String rootName;

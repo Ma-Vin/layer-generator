@@ -16,10 +16,10 @@ import lombok.ToString;
  */
 @BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
-@EqualsAndHashCode(exclude = {"multiIndirectRefs"})
+@EqualsAndHashCode(exclude = {"multiIndirectRef"})
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-@ToString(exclude = {"multiIndirectRefs"})
+@ToString(exclude = {"multiIndirectRef"})
 public class MultiRefOtherIndirectParent implements IIdentifiable {
 
 	public static final String ID_PREFIX = "MI1";
@@ -32,24 +32,24 @@ public class MultiRefOtherIndirectParent implements IIdentifiable {
 	private String identification;
 
 	@Setter(AccessLevel.PROTECTED)
-	private Collection<MultiRefIndirectParent> multiIndirectRefs = new HashSet<>();
+	private Collection<MultiRefIndirectParent> multiIndirectRef = new HashSet<>();
 
 	/**
-	 * Adds a MultiRefIndirectParent
+	 * Adds a MultiRefIndirectParent to multiIndirectRef
 	 * 
-	 * @param multiIndirectRef MultiRefIndirectParent to add
+	 * @param multiRefIndirectParent MultiRefIndirectParent to add
 	 */
-	public boolean addMultiIndirectRefs(MultiRefIndirectParent multiIndirectRef) {
-		return multiIndirectRefs.add(multiIndirectRef);
+	public boolean addMultiIndirectRef(MultiRefIndirectParent multiRefIndirectParent) {
+		return multiIndirectRef.add(multiRefIndirectParent);
 	}
 
 	/**
-	 * Removes a MultiRefIndirectParent
+	 * Removes a MultiRefIndirectParent from multiIndirectRef
 	 * 
-	 * @param multiIndirectRef MultiRefIndirectParent to remove
+	 * @param multiRefIndirectParent MultiRefIndirectParent to remove
 	 */
-	public boolean removeMultiIndirectRefs(MultiRefIndirectParent multiIndirectRef) {
-		return multiIndirectRefs.remove(multiIndirectRef);
+	public boolean removeMultiIndirectRef(MultiRefIndirectParent multiRefIndirectParent) {
+		return multiIndirectRef.remove(multiRefIndirectParent);
 	}
 
 }

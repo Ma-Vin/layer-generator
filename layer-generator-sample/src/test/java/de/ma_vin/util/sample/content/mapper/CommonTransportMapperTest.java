@@ -64,16 +64,16 @@ public class CommonTransportMapperTest {
         assertNotNull(result.getExt(), "There should be any RootExt");
         assertEquals(rootDto.getExt().getIdentification(), result.getExt().getIdentification(), "Wrong identification at RootExt");
 
-        assertNotNull(result.getMultiRefs(), "There should be any MultiRefs list");
-        assertEquals(0, result.getMultiRefs().size());
-        assertNotNull(result.getAnotherMultiRefs(), "There should be any AnotherMultiRefs list");
-        assertEquals(0, result.getAnotherMultiRefs().size());
-        assertNotNull(result.getMultiRefIndirectParents(), "There should be any MultiRefIndirectParents list");
-        assertEquals(0, result.getMultiRefIndirectParents().size());
-        assertNotNull(result.getMultiRefIndirectOtherParents(), "There should be any MultiRefIndirectOtherParents list");
-        assertEquals(0, result.getMultiRefIndirectOtherParents().size());
-        assertNotNull(result.getExtendings(), "There should be any extending list");
-        assertEquals(0, result.getExtendings().size());
+        assertNotNull(result.getMultiRef(), "There should be any MultiRefs list");
+        assertEquals(0, result.getMultiRef().size());
+        assertNotNull(result.getAnotherMultiRef(), "There should be any AnotherMultiRefs list");
+        assertEquals(0, result.getAnotherMultiRef().size());
+        assertNotNull(result.getMultiRefIndirectParent(), "There should be any MultiRefIndirectParents list");
+        assertEquals(0, result.getMultiRefIndirectParent().size());
+        assertNotNull(result.getMultiRefIndirectOtherParent(), "There should be any MultiRefIndirectOtherParents list");
+        assertEquals(0, result.getMultiRefIndirectOtherParent().size());
+        assertNotNull(result.getExtending(), "There should be any extending list");
+        assertEquals(0, result.getExtending().size());
     }
 
     @Test

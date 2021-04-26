@@ -17,16 +17,16 @@ import lombok.ToString;
 @BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {"parentRoot", "aggFiltereds", "aggFilteredOnlyDaoFields"})
+@EqualsAndHashCode(exclude = {"parentRoot", "aggFiltered", "aggFilteredOnlyDaoField"})
 @Table(name = "SomeFilteringOwners")
-@ToString(exclude = {"parentRoot", "aggFiltereds", "aggFilteredOnlyDaoFields"})
+@ToString(exclude = {"parentRoot", "aggFiltered", "aggFilteredOnlyDaoField"})
 public class SomeFilteringOwnerDao implements IIdentifiableDao {
 
-	@OneToMany(mappedBy = "parentSomeFilteringOwner", targetEntity = FilteredOnlyDaoFieldDao.class)
-	private Collection<FilteredOnlyDaoFieldDao> aggFilteredOnlyDaoFields;
-
 	@OneToMany(mappedBy = "parentSomeFilteringOwner", targetEntity = FilteredDao.class)
-	private Collection<FilteredDao> aggFiltereds;
+	private Collection<FilteredDao> aggFiltered;
+
+	@OneToMany(mappedBy = "parentSomeFilteringOwner", targetEntity = FilteredOnlyDaoFieldDao.class)
+	private Collection<FilteredOnlyDaoFieldDao> aggFilteredOnlyDaoField;
 
 	@Column(name = "Id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

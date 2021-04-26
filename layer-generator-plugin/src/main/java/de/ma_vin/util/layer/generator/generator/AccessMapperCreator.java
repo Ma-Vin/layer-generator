@@ -185,13 +185,13 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             String getterMethodName = getUpperFirst(referenceToParent.getReferenceName());
 
             if (referenceToParent.isOwner()) {
-                convertMethod.addLine("%sparent.get%ss().add(result);", AbstractGenerateLines.TAB, getterMethodName);
+                convertMethod.addLine("%sparent.get%s().add(result);", AbstractGenerateLines.TAB, getterMethodName);
             } else {
                 convertMethod.addLine("%1$s%2$s connectionTable = %3$s.create%2$s();", AbstractGenerateLines.TAB
                         , DaoCreator.getConnectionTableNameParentRef(referenceToParent), ModelType.DAO.getFactoryClassName());
                 convertMethod.addLine("%sconnectionTable.set%s(result);", AbstractGenerateLines.TAB, entity.getBaseName());
                 convertMethod.addLine("%sconnectionTable.set%s(parent);", AbstractGenerateLines.TAB, referenceToParent.getTargetEntity());
-                convertMethod.addLine("%sparent.get%ss().add(connectionTable);", AbstractGenerateLines.TAB, getterMethodName);
+                convertMethod.addLine("%sparent.get%s().add(connectionTable);", AbstractGenerateLines.TAB, getterMethodName);
             }
         } else {
             convertMethod.addLine("%sparent.set%s(result);", AbstractGenerateLines.TAB, getUpperFirst(referenceToParent.getReferenceName()));
@@ -303,7 +303,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
             getMultiReferences(entity, AccessMapperCreator::isEntityRelevant, DaoCreator::getAggregatedReferences)
                     .forEach(ref -> {
-                        String getterSubName = getUpperFirst(ref.getReferenceName()) + "s";
+                        String getterSubName = getUpperFirst(ref.getReferenceName());
                         setMultiRefMethod.addLine("dao.set%s(new %s<>());", getterSubName, ArrayList.class.getSimpleName());
                     });
             setMultiRefMethod.addLine("if (includeChildren) {");
@@ -355,7 +355,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         UtilTextContainer textContainer = new UtilTextContainer();
         textContainer.mapperName = getMapperName(reference.getRealTargetEntity());
         textContainer.mapperMethodName = getConvertMethodNameDao(reference.getRealTargetEntity());
-        textContainer.getterSubName = getUpperFirst(reference.getReferenceName()) + "s";
+        textContainer.getterSubName = getUpperFirst(reference.getReferenceName());
         textContainer.connectionTableName = DaoCreator.getConnectionTableName(reference);
         textContainer.sourceConnectionName = getUpperFirst(reference.getParent().getBaseName());
         textContainer.targetConnectionName = getUpperFirst(reference.getRealTargetEntity().getBaseName());
@@ -566,7 +566,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             return;
         }
         if (!referenceToParent.isAggregated()) {
-            convertMethod.addLine("%sparent.get%ss().add(result);", AbstractGenerateLines.TAB, getUpperFirst(referenceToParent.getReferenceName()));
+            convertMethod.addLine("%sparent.get%s().add(result);", AbstractGenerateLines.TAB, getUpperFirst(referenceToParent.getReferenceName()));
             return;
         }
         List<Reference> references = referenceToParent.getRealTargetEntity().getReferences().stream()
@@ -577,7 +577,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         references.forEach(ref -> {
             convertMethod.addLine("case %s:", 2, ref.getFilterFieldValue());
-            convertMethod.addLine("parent.add%ss(result);", 3, getUpperFirst(ref.getReferenceName()));
+            convertMethod.addLine("parent.add%s(result);", 3, getUpperFirst(ref.getReferenceName()));
             convertMethod.addLine("break;", 3);
         });
 
@@ -732,7 +732,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         String mapperName = getMapperName(reference.getRealTargetEntity());
         String mapperMethodName = getConvertMethodName(reference.getRealTargetEntity(), DOMAIN_POSTFIX);
-        String getterSubName = getUpperFirst(reference.getReferenceName()) + "s";
+        String getterSubName = getUpperFirst(reference.getReferenceName());
         String targetConnectionName = getUpperFirst(reference.getRealTargetEntity().getBaseName());
 
         mapperClass.addImport(ArrayList.class.getName());

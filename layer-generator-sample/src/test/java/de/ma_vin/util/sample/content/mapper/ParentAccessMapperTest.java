@@ -57,7 +57,7 @@ public class ParentAccessMapperTest {
         assertEquals(extendingClassDao.getDescription(), result.getDescription(), "Wrong description");
         assertEquals(extendingClassDao.getAdditionalDescription(), result.getAdditionalDescription(), "Wrong additional description");
 
-        assertTrue(root.getExtendings().contains(result), "Wrong multi ref at root");
+        assertTrue(root.getExtending().contains(result), "Wrong multi ref at root");
     }
 
     @Test
@@ -89,7 +89,7 @@ public class ParentAccessMapperTest {
         assertEquals(extendingClass.getDescription(), result.getDescription(), "Wrong description");
         assertEquals(extendingClass.getAdditionalDescription(), result.getAdditionalDescription(), "Wrong additional description");
 
-        assertTrue(rootDao.getExtendings().contains(result), "Wrong multi ref at root");
+        assertTrue(rootDao.getExtending().contains(result), "Wrong multi ref at root");
     }
 
     @Test

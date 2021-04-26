@@ -62,7 +62,7 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefIndirectParentDao.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefIndirectParentDao.getDescription(), result.getDescription(), "Wrong description");
 
-        assertTrue(root.getMultiRefIndirectParents().contains(result), "Wrong multi ref at root");
+        assertTrue(root.getMultiRefIndirectParent().contains(result), "Wrong multi ref at root");
     }
 
     @Test
@@ -72,7 +72,7 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefIndirectParentDao.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefIndirectParentDao.getDescription(), result.getDescription(), "Wrong description");
 
-        assertTrue(multiRefOtherIndirectParent.getMultiIndirectRefs().contains(result), "Wrong multi ref at root");
+        assertTrue(multiRefOtherIndirectParent.getMultiIndirectRef().contains(result), "Wrong multi ref at root");
     }
 
     @Test
@@ -94,7 +94,7 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefOtherIndirectParentDao.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefOtherIndirectParentDao.getDescription(), result.getDescription(), "Wrong description");
 
-        assertEquals(0, result.getMultiIndirectRefs().size(), "Wrong number of MultiRefs");
+        assertEquals(0, result.getMultiIndirectRef().size(), "Wrong number of MultiRefs");
     }
 
     @Test
@@ -104,8 +104,8 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefOtherIndirectParentDao.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefOtherIndirectParentDao.getDescription(), result.getDescription(), "Wrong description");
 
-        assertEquals(multiRefOtherIndirectParentDao.getMultiIndirectRefs().size(), result.getMultiIndirectRefs().size(), "Wrong number of MultiRefs");
-        assertTrue(result.getMultiIndirectRefs().stream().anyMatch(o -> o.getIdentification().equals(multiRefIndirectParentDao.getIdentification())), "Wrong multi ref at root");
+        assertEquals(multiRefOtherIndirectParentDao.getMultiIndirectRef().size(), result.getMultiIndirectRef().size(), "Wrong number of MultiRefs");
+        assertTrue(result.getMultiIndirectRef().stream().anyMatch(o -> o.getIdentification().equals(multiRefIndirectParentDao.getIdentification())), "Wrong multi ref at root");
     }
 
     @Test
@@ -115,7 +115,7 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefOtherIndirectParentDao.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefOtherIndirectParentDao.getDescription(), result.getDescription(), "Wrong description");
 
-        assertTrue(root.getMultiRefIndirectOtherParents().contains(result), "Wrong multi ref at root");
+        assertTrue(root.getMultiRefIndirectOtherParent().contains(result), "Wrong multi ref at root");
     }
 
     @Test
@@ -145,7 +145,7 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefIndirectParent.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefIndirectParent.getDescription(), result.getDescription(), "Wrong description");
 
-        assertTrue(rootDao.getMultiRefIndirectParents().contains(result), "Wrong multi ref at root");
+        assertTrue(rootDao.getMultiRefIndirectParent().contains(result), "Wrong multi ref at root");
     }
 
     @Test
@@ -155,7 +155,7 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefIndirectParent.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefIndirectParent.getDescription(), result.getDescription(), "Wrong description");
 
-        assertTrue(multiRefOtherIndirectParentDao.getMultiIndirectRefs().stream().anyMatch(o -> o.getMultiRefIndirectParent().getIdentification().equals(result.getIdentification())), "Wrong multi ref at root");
+        assertTrue(multiRefOtherIndirectParentDao.getMultiIndirectRef().stream().anyMatch(o -> o.getMultiRefIndirectParent().getIdentification().equals(result.getIdentification())), "Wrong multi ref at root");
     }
 
     @Test
@@ -177,7 +177,7 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefOtherIndirectParent.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefOtherIndirectParent.getDescription(), result.getDescription(), "Wrong description");
 
-        assertEquals(0, result.getMultiIndirectRefs().size(), "Wrong number of MultiRefs");
+        assertEquals(0, result.getMultiIndirectRef().size(), "Wrong number of MultiRefs");
     }
 
     @Test
@@ -187,8 +187,8 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefOtherIndirectParent.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefOtherIndirectParent.getDescription(), result.getDescription(), "Wrong description");
 
-        assertEquals(multiRefOtherIndirectParent.getMultiIndirectRefs().size(), result.getMultiIndirectRefs().size(), "Wrong number of MultiRefs");
-        assertTrue(result.getMultiIndirectRefs().stream().anyMatch(o -> o.getMultiRefIndirectParent().getIdentification().equals(multiRefIndirectParent.getIdentification())), "Wrong multi ref at root");
+        assertEquals(multiRefOtherIndirectParent.getMultiIndirectRef().size(), result.getMultiIndirectRef().size(), "Wrong number of MultiRefs");
+        assertTrue(result.getMultiIndirectRef().stream().anyMatch(o -> o.getMultiRefIndirectParent().getIdentification().equals(multiRefIndirectParent.getIdentification())), "Wrong multi ref at root");
     }
 
     @Test
@@ -198,7 +198,7 @@ public class MultiIndirectAccessMapperTest {
         assertEquals(multiRefOtherIndirectParent.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefOtherIndirectParent.getDescription(), result.getDescription(), "Wrong description");
 
-        assertTrue(rootDao.getMultiRefIndirectOtherParents().contains(result), "Wrong multi ref at root");
+        assertTrue(rootDao.getMultiRefIndirectOtherParent().contains(result), "Wrong multi ref at root");
     }
 
     @Test

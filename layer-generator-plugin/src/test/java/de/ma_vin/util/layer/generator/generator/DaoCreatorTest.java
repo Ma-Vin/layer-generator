@@ -225,9 +225,9 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
-        expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\"})");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("@ToString(exclude = {\"targetRefs\"})");
+        expected.add("@ToString(exclude = {\"targetRef\"})");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
@@ -236,7 +236,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	private Long id;");
         expected.add("");
         expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
-        expected.add("	private Collection<TargetDao> targetRefs;");
+        expected.add("	private Collection<TargetDao> targetRef;");
         expected.add("");
         expected.add("}");
 
@@ -473,9 +473,9 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
-        expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\"})");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("@ToString(exclude = {\"targetRefs\"})");
+        expected.add("@ToString(exclude = {\"targetRef\"})");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
@@ -484,7 +484,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	private Long id;");
         expected.add("");
         expected.add("	@OneToMany(mappedBy = \"target\", targetEntity = DummyToTargetDao.class)");
-        expected.add("	private Collection<DummyToTargetDao> targetRefs;");
+        expected.add("	private Collection<DummyToTargetDao> targetRef;");
         expected.add("");
         expected.add("}");
 
@@ -1157,13 +1157,13 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
-        expected.add("@EqualsAndHashCode(exclude = {\"aggTargets\"})");
+        expected.add("@EqualsAndHashCode(exclude = {\"aggTarget\"})");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("@ToString(exclude = {\"aggTargets\"})");
+        expected.add("@ToString(exclude = {\"aggTarget\"})");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
-        expected.add("	private Collection<TargetDao> aggTargets;");
+        expected.add("	private Collection<TargetDao> aggTarget;");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");
         expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
@@ -1206,9 +1206,9 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
-        expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\", \"anotherTargetRef\"})");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("@ToString(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
+        expected.add("@ToString(exclude = {\"targetRef\", \"anotherTargetRef\"})");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@JoinColumn(name = \"anotherTargetRefId\")");
@@ -1221,7 +1221,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	private Long id;");
         expected.add("");
         expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
-        expected.add("	private Collection<TargetDao> targetRefs;");
+        expected.add("	private Collection<TargetDao> targetRef;");
         expected.add("");
         expected.add("}");
 
@@ -1357,9 +1357,9 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@BaseDao(\"de.test.package.dao\")");
         expected.add("@Data");
         expected.add("@Entity");
-        expected.add("@EqualsAndHashCode(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\", \"anotherTargetRef\"})");
         expected.add("@Table(name = \"Dummys\")");
-        expected.add("@ToString(exclude = {\"targetRefs\", \"anotherTargetRef\"})");
+        expected.add("@ToString(exclude = {\"targetRef\", \"anotherTargetRef\"})");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
         expected.add("	@JoinColumn(name = \"anotherTargetRefId\")");
@@ -1372,7 +1372,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	private Long id;");
         expected.add("");
         expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
-        expected.add("	private Collection<TargetDao> targetRefs;");
+        expected.add("	private Collection<TargetDao> targetRef;");
         expected.add("");
         expected.add("}");
 

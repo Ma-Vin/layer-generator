@@ -81,7 +81,7 @@ public class DomainCreator extends AbstractObjectCreator {
         unusedParameterSuppressing.appendValue("\"java:S1068\"");
         domainClazz.addAnnotation(unusedParameterSuppressing);
 
-        if(Boolean.FALSE.equals(entity.getIsAbstract())){
+        if (Boolean.FALSE.equals(entity.getIsAbstract())) {
             domainClazz.addImport(BaseDomain.class.getName());
             domainClazz.addAnnotation(new Annotation(BaseDomain.class, null, "\"" + packageName + "\""));
         }
@@ -130,41 +130,44 @@ public class DomainCreator extends AbstractObjectCreator {
     protected void addReference(Clazz clazz, String packageName, Reference reference, List<String> attributeNames) {
         String childClassName = reference.getTargetEntity();
         String propertyBaseName = getLowerFirst(reference.getReferenceName());
+        String parameterName = getLowerFirst(childClassName);
 
         Attribute child;
 
         if (reference.isList()) {
+            boolean addThis = propertyBaseName.equals(parameterName);
+
             clazz.addImport(Collection.class.getName());
             clazz.addImport(Setter.class.getName());
             clazz.addImport(AccessLevel.class.getName());
             clazz.addImport(HashSet.class.getName());
 
-            child = new Attribute(propertyBaseName + "s", String.format("%s<%s>", Collection.class.getSimpleName(), childClassName));
+            child = new Attribute(propertyBaseName, String.format("%s<%s>", Collection.class.getSimpleName(), childClassName));
             child.addAnnotation(Setter.class.getSimpleName(), null, String.format("%s.%s", AccessLevel.class.getSimpleName(), AccessLevel.PROTECTED.name()));
             child.setInitValue("new HashSet<>()");
 
             JavaDoc addMethodDescription = new JavaDoc();
-            addMethodDescription.addLine(String.format("Adds %s %s", startsWithVowel(childClassName) ? "an" : "a", childClassName));
+            addMethodDescription.addLine(String.format("Adds %s %s to %s", startsWithVowel(childClassName) ? "an" : "a", childClassName, propertyBaseName));
             addMethodDescription.addLine("");
-            addMethodDescription.addLine(String.format("@param %s %s to add", propertyBaseName, childClassName));
+            addMethodDescription.addLine(String.format("@param %s %s to add", parameterName, childClassName));
 
-            Method addMethod = new Method(String.format("add%s", getUpperFirst(child.getAttributeName())));
-            addMethod.addParameter(childClassName, propertyBaseName);
+            Method addMethod = new Method(String.format("add%s", getUpperFirst(propertyBaseName)));
+            addMethod.addParameter(childClassName, parameterName);
             addMethod.setMethodType("boolean");
             addMethod.setQualifier(Qualifier.PUBLIC);
-            addMethod.addLine(String.format("return %s.add(%s);", child.getAttributeName(), propertyBaseName));
+            addMethod.addLine(String.format("return %s%s.add(%s);", addThis ? "this." : "", propertyBaseName, parameterName));
             addMethod.setJavaDoc(addMethodDescription);
 
             JavaDoc removeMethodDescription = new JavaDoc();
-            removeMethodDescription.addLine(String.format("Removes %s %s", startsWithVowel(childClassName) ? "an" : "a", childClassName));
+            removeMethodDescription.addLine(String.format("Removes %s %s from %s", startsWithVowel(childClassName) ? "an" : "a", childClassName, propertyBaseName));
             removeMethodDescription.addLine("");
-            removeMethodDescription.addLine(String.format("@param %s %s to remove", propertyBaseName, childClassName));
+            removeMethodDescription.addLine(String.format("@param %s %s to remove", parameterName, childClassName));
 
-            Method removeMethod = new Method(String.format("remove%s", getUpperFirst(child.getAttributeName())));
-            removeMethod.addParameter(childClassName, propertyBaseName);
+            Method removeMethod = new Method(String.format("remove%s", getUpperFirst(propertyBaseName)));
+            removeMethod.addParameter(childClassName, parameterName);
             removeMethod.setMethodType("boolean");
             removeMethod.setQualifier(Qualifier.PUBLIC);
-            removeMethod.addLine(String.format("return %s.remove(%s);", child.getAttributeName(), propertyBaseName));
+            removeMethod.addLine(String.format("return %s%s.remove(%s);", addThis ? "this." : "", propertyBaseName, parameterName));
             removeMethod.setJavaDoc(removeMethodDescription);
 
             clazz.addMethod(addMethod);

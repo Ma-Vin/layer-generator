@@ -17,9 +17,9 @@ import lombok.ToString;
 @BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {"parentRoot", "multiIndirectRefs"})
+@EqualsAndHashCode(exclude = {"parentRoot", "multiIndirectRef"})
 @Table(name = "MultiRefOtherIndirectParents")
-@ToString(exclude = {"parentRoot", "multiIndirectRefs"})
+@ToString(exclude = {"parentRoot", "multiIndirectRef"})
 public class MultiRefOtherIndirectParentDao implements IIdentifiableDao {
 
 	@Column
@@ -31,7 +31,7 @@ public class MultiRefOtherIndirectParentDao implements IIdentifiableDao {
 	private Long id;
 
 	@OneToMany(mappedBy = "multiRefIndirectParent", targetEntity = MultiRefOtherIndirectParentToMultiRefIndirectParentDao.class)
-	private Collection<MultiRefOtherIndirectParentToMultiRefIndirectParentDao> multiIndirectRefs;
+	private Collection<MultiRefOtherIndirectParentToMultiRefIndirectParentDao> multiIndirectRef;
 
 	@JoinColumn(name = "ParentRootId", nullable = false)
 	@ManyToOne(targetEntity = RootDao.class)

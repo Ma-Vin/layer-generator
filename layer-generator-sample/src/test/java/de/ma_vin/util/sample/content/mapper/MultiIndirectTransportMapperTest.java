@@ -69,7 +69,7 @@ public class MultiIndirectTransportMapperTest {
         assertEquals(multiRefOtherIndirectParentDto.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(multiRefOtherIndirectParentDto.getDescription(), result.getDescription(), "Wrong description");
 
-        assertEquals(0, result.getMultiIndirectRefs().size(), "Wrong number of MultiRefs");
+        assertEquals(0, result.getMultiIndirectRef().size(), "Wrong number of MultiRefs");
     }
 
     @Test
