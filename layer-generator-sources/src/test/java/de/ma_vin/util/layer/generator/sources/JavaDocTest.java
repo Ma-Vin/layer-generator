@@ -74,6 +74,14 @@ public class JavaDocTest {
     }
 
     @Test
+    public void testGenerateAddLineNull() {
+        cut.addLine(null);
+        List<String> result = cut.generate();
+        assertNotNull(result, "There should be any result");
+        assertEquals(0, result.size(), "Wrong number of lines");
+    }
+
+    @Test
     public void testGenerateParam() {
         cut.addParams("first", "description");
         cut.addParams("second", "another description");

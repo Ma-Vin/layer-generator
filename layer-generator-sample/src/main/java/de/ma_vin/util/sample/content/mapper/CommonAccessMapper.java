@@ -296,6 +296,7 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		dao.setDaoEnum(domain.getDaoEnum());
 		dao.setDaoEnumWithText(domain.getDaoEnumWithText());
 		dao.setSomeName(domain.getSomeName());
+		dao.setDocument(domain.getDocument());
 	}
 
 	/**
@@ -337,6 +338,7 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		domain.setDaoEnum(dao.getDaoEnum());
 		domain.setDaoEnumWithText(dao.getDaoEnumWithText());
 		domain.setSomeName(dao.getSomeName());
+		domain.setDocument(dao.getDocument());
 	}
 
 	/**

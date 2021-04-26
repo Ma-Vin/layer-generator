@@ -31,6 +31,9 @@ public class JavaDoc extends AbstractGenerateLines {
     }
 
     public void addLine(String commentLine) {
+        if(commentLine==null){
+            return;
+        }
         commentLines.addAll(splitLine(commentLine, " ", JAVA_DOC_MAX_LENGTH));
     }
 

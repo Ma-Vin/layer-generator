@@ -23,6 +23,13 @@ public class RootExt implements IIdentifiable {
 
 	private AnyEnumType daoEnumWithText;
 
+	/**
+	 * short text
+	 * <br>
+	 * long text
+	 */
+	private String document;
+
 	private String dtoAndDomain;
 
 	private String extendedInfo;

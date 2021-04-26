@@ -59,6 +59,9 @@
                 <field fieldName="someName" type="String">
                     <daoInfo columnName="anyOtherName"/>
                 </field>
+                <field fieldName="document" type="String" shortDescription="short text">
+                    <description>long text</description>
+                </field>
             </fields>
         </entity>
     </entities>

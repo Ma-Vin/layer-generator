@@ -31,6 +31,14 @@ public class RootExtDao implements IIdentifiableDao {
 	@Enumerated(EnumType.STRING)
 	private AnyEnumType daoEnumWithText;
 
+	/**
+	 * short text
+	 * <br>
+	 * long text
+	 */
+	@Column
+	private String document;
+
 	@Column
 	private String extendedInfo;
 

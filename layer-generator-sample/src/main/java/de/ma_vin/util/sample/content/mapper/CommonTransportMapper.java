@@ -244,6 +244,7 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		dto.setDaoEnum(domain.getDaoEnum());
 		dto.setDaoEnumWithText(domain.getDaoEnumWithText());
 		dto.setSomeName(domain.getSomeName());
+		dto.setDocument(domain.getDocument());
 	}
 
 	/**
@@ -274,6 +275,7 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		domain.setDaoEnum(dto.getDaoEnum());
 		domain.setDaoEnumWithText(dto.getDaoEnumWithText());
 		domain.setSomeName(dto.getSomeName());
+		domain.setDocument(dto.getDocument());
 	}
 
 	/**

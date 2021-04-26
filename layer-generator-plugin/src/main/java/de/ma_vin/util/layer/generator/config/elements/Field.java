@@ -43,6 +43,12 @@ public class Field {
     private Boolean isTypeEnum = Boolean.FALSE;
 
     /**
+     * Short description of the attribute
+     */
+    @XmlAttribute
+    private String shortDescription;
+
+    /**
      * Description of the attribute
      */
     private String description;
@@ -64,6 +70,7 @@ public class Field {
     public boolean isValid(List<String> messages) {
         return validateRequired(fieldName, messages, "fieldName")
                 && validateRequired(type, messages, "type")
+                && validateNonRequired(shortDescription, messages, "shortDescription")
                 && validateNonRequired(description, messages, "description")
                 && validateNonRequired(typePackage, messages, "typePackage")
                 && (daoInfo == null || daoInfo.isValid());

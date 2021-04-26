@@ -116,9 +116,15 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
      */
     protected Attribute createAttribute(Field field, String... annotations) {
         Attribute attribute = new Attribute(getLowerFirst(field.getFieldName()), field.getType());
-        if (field.getDescription() != null) {
-            attribute.setJavaDoc(new JavaDoc(field.getDescription()));
+
+        JavaDoc javaDoc = new JavaDoc();
+        javaDoc.addLine(field.getShortDescription());
+        if (field.getDescription() != null && field.getShortDescription() != null) {
+            javaDoc.addLine("<br>");
         }
+        javaDoc.addLine(field.getDescription());
+        attribute.setJavaDoc(javaDoc);
+
         for (String annotation : annotations) {
             attribute.addAnnotation(annotation);
         }

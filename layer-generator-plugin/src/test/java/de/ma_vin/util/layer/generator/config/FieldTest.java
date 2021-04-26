@@ -21,6 +21,7 @@ public class FieldTest {
         cut.setFieldName("fieldName");
         cut.setType("type");
         cut.setTypePackage("typePackage");
+        cut.setShortDescription("shortDescription");
         cut.setDescription("description");
         cut.setDaoInfo(new DaoInfo());
 
@@ -36,6 +37,7 @@ public class FieldTest {
     @Test
     public void testIsValidNulls() {
         cut.setTypePackage(null);
+        cut.setShortDescription(null);
         cut.setDescription(null);
         cut.setDaoInfo(null);
         assertTrue(cut.isValid(messages), "Entity should be valid");
@@ -66,6 +68,13 @@ public class FieldTest {
     @Test
     public void testIsValidDescription() {
         cut.setDescription("");
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidShortDescription() {
+        cut.setShortDescription("");
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }

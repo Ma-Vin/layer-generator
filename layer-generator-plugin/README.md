@@ -76,6 +76,7 @@ fieldName | :x: | *A* | Name of the attribute
 type | :x: | *A* | Type of the attribute
 typePackage | :heavy_check_mark: | *A* | package of the type if necessary
 isTypeEnum | :heavy_check_mark: | *A* | indication if the field is an enum or not (Default ist *false*)
+shortDescription | :heavy_check_mark: | *A* | Short description of the attribute
 description | :heavy_check_mark: | *N* | Description of the attribute
 models | :heavy_check_mark: | *A* | For which object is this field relevant
 daoInfo | :heavy_check_mark: | *N* | additional information for database.
