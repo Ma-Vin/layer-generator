@@ -3,6 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
+import de.ma_vin.util.layer.generator.config.elements.Index;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.exceptions.NotSupportedMethodException;
 
@@ -86,7 +87,10 @@ public class DaoCreator extends AbstractObjectCreator {
             daoClazz.addImport(BaseDao.class.getName());
             daoClazz.addAnnotation(new Annotation(BaseDao.class, null, "\"" + packageName + "\""));
             daoClazz.addAnnotation(javax.persistence.Entity.class);
-            daoClazz.addAnnotation(new Annotation(Table.class, "name", String.format("\"%ss\"", entity.getTableName())));
+            Annotation tableAnnotation = new Annotation(Table.class, "name", String.format("\"%ss\"", entity.getTableName()));
+            addIndices(entity, tableAnnotation);
+            daoClazz.addAnnotation(tableAnnotation);
+
         }
 
         addAttributes(entity, daoClazz, Models.DAO);
@@ -95,6 +99,50 @@ public class DaoCreator extends AbstractObjectCreator {
         addDaoIdentificationMethods(daoClazz, entity);
 
         return writeClassFile(getPackageDir(entity, packageDir), daoClazz.getClassName(), daoClazz);
+    }
+
+    /**
+     * Adds Indices to the {@link Table} annotation
+     *
+     * @param entity          entity which is owner of the indices
+     * @param tableAnnotation annotation of the table
+     */
+    private void addIndices(Entity entity, Annotation tableAnnotation) {
+        if (entity.getIndices().isEmpty()) {
+            return;
+        }
+        List<String> indexAnnotations = new ArrayList<>();
+        for (Index i : entity.getIndices()) {
+            Annotation indexAnnotation = new Annotation(javax.persistence.Index.class, "name", "\"" + i.getIndexName() + "\"");
+            indexAnnotation.addParameter("columnList", "\"" + getIndexColumnList(i) + "\"");
+            if (Boolean.TRUE.equals(i.getIsUnique())) {
+                indexAnnotation.addParameter("unique", "true");
+            }
+            indexAnnotations.addAll(indexAnnotation.generate());
+        }
+        tableAnnotation.addParameterArray("indexes", indexAnnotations);
+    }
+
+    /**
+     * Creates the columnList value for an index
+     *
+     * @param index index whose list is asked for
+     * @return the columnList
+     */
+    private String getIndexColumnList(Index index) {
+        StringBuilder columnList = new StringBuilder();
+        index.getFields().forEach(fs -> {
+            if (fs.getField().getDaoInfo() != null && fs.getField().getDaoInfo().getColumnName() != null) {
+                columnList.append(fs.getField().getDaoInfo().getColumnName());
+            } else {
+                columnList.append(fs.getField().getFieldName());
+            }
+            if (!fs.isAscending()) {
+                columnList.append(" DESC");
+            }
+            columnList.append(", ");
+        });
+        return columnList.toString().substring(0, columnList.length() - 2);
     }
 
     @Override

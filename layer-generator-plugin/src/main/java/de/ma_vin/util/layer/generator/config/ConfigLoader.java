@@ -112,6 +112,9 @@ public class ConfigLoader {
             if (e.getFields() == null) {
                 e.setFields(new ArrayList<>());
             }
+            if (e.getIndices() == null) {
+                e.setIndices(new ArrayList<>());
+            }
             e.setParentRefs(new ArrayList<>());
         });
     }
@@ -181,6 +184,7 @@ public class ConfigLoader {
             if (e.getParent() != null && !e.getParent().trim().isEmpty()) {
                 result = result && completeEntities(e, e.getParent().trim());
             }
+            result = result && completeIndices(e);
             if (e.getTableName() == null) {
                 e.setTableName(e.getBaseName());
             }
@@ -253,6 +257,57 @@ public class ConfigLoader {
             filterField.get().getDaoInfo().setNullable(Boolean.FALSE);
         }
 
+        return true;
+    }
+
+    /**
+     * Completes the indices of an entity
+     *
+     * @param entity entity to complete
+     * @return {@code true} if completion was successful
+     */
+    private boolean completeIndices(Entity entity) {
+        boolean result = true;
+        for (Index i : entity.getIndices()) {
+            i.setFields(new ArrayList<>());
+            for (String s : i.getFieldList().split(",")) {
+                result = addFieldAtIndex(s, entity, i) && result;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds a field to an index
+     *
+     * @param fieldListPart field from the field list
+     * @param entity        owner of the index and the referenced fields
+     * @param index         owner of the field list
+     * @return {@code true} if completion was successful
+     */
+    private boolean addFieldAtIndex(String fieldListPart, Entity entity, Index index) {
+        FieldSorting fieldSorting = new FieldSorting();
+        fieldSorting.setField(null);
+        String fieldName = fieldListPart.trim();
+        if (fieldName.endsWith(" ASC")) {
+            fieldName = fieldName.substring(0, fieldName.length() - 3).trim();
+        }
+        if (fieldName.endsWith(" DESC")) {
+            fieldSorting.setAscending(false);
+            fieldName = fieldName.substring(0, fieldName.length() - 4).trim();
+        }
+        for (Field f : entity.getFields()) {
+            if (f.getFieldName().equalsIgnoreCase(fieldName)) {
+                fieldSorting.setField(f);
+                break;
+            }
+        }
+        if (fieldSorting.getField() == null) {
+            logger.error(String.format("The field %s at index %s could not be found at entity %s."
+                    , fieldName, index.getIndexName(), entity.getBaseName()));
+            return false;
+        }
+        index.getFields().add(fieldSorting);
         return true;
     }
 

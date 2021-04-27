@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class ConfigLoaderTest {
     private static final String REFERENCE_NAME = "ReferenceName";
     private static final String FIELD_NAME = "FieldName";
     private static final String GROUPING_FIELD_NAME = "GroupingFieldName";
+    private static final String FIELD_LIST = FIELD_NAME;
 
     AutoCloseable openMocks;
 
@@ -47,12 +49,15 @@ public class ConfigLoaderTest {
     private Field entityField;
     @Mock
     private Field groupingEntityField;
+    @Mock
+    private Index index;
 
 
     private ConfigLoader cut;
 
-    private List<Reference> entityParentReferences = new ArrayList<>();
-    private List<Reference> groupingEntityParentReferences = new ArrayList<>();
+    private final List<Reference> entityParentReferences = new ArrayList<>();
+    private final List<Reference> groupingEntityParentReferences = new ArrayList<>();
+    private final List<FieldSorting> fieldSortings = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
@@ -61,6 +66,7 @@ public class ConfigLoaderTest {
         initDefaultNonMocks();
         initDefaultMocks();
     }
+
     @AfterEach
     public void tearDown() throws Exception {
         openMocks.close();
@@ -70,18 +76,19 @@ public class ConfigLoaderTest {
         cut.setConfig(config);
         entityParentReferences.clear();
         groupingEntityParentReferences.clear();
+        fieldSortings.clear();
     }
 
     private void initDefaultMocks() {
-        when(config.getEntities()).thenReturn(Arrays.asList(entity));
-        when(config.getGroupings()).thenReturn(Arrays.asList(grouping));
+        when(config.getEntities()).thenReturn(Collections.singletonList(entity));
+        when(config.getGroupings()).thenReturn(Collections.singletonList(grouping));
 
-        when(grouping.getEntities()).thenReturn(Arrays.asList(groupingEntity));
+        when(grouping.getEntities()).thenReturn(Collections.singletonList(groupingEntity));
 
-        defaultMockEntity(entity, ENTITY_NAME, Arrays.asList(entityField), Arrays.asList(reference)
-                , entityParentReferences);
+        defaultMockEntity(entity, ENTITY_NAME, Collections.singletonList(entityField), Collections.singletonList(index)
+                , Collections.singletonList(reference), entityParentReferences);
 
-        defaultMockEntity(groupingEntity, GROUPING_ENTITY_NAME, Arrays.asList(groupingEntityField), null
+        defaultMockEntity(groupingEntity, GROUPING_ENTITY_NAME, Collections.singletonList(groupingEntityField), null, null
                 , groupingEntityParentReferences);
 
         when(reference.getReferenceName()).thenReturn(REFERENCE_NAME);
@@ -92,9 +99,12 @@ public class ConfigLoaderTest {
 
         when(entityField.getFieldName()).thenReturn(FIELD_NAME);
         when(groupingEntityField.getFieldName()).thenReturn(GROUPING_FIELD_NAME);
+
+        when(index.getFieldList()).thenReturn(FIELD_LIST);
+        when(index.getFields()).thenReturn(fieldSortings);
     }
 
-    private void defaultMockEntity(Entity entity, String entityName, List<Field> fields, List<Reference> references
+    private void defaultMockEntity(Entity entity, String entityName, List<Field> fields, List<Index> indices, List<Reference> references
             , List<Reference> parentReferences) {
 
         when(entity.getBaseName()).thenReturn(entityName);
@@ -102,6 +112,9 @@ public class ConfigLoaderTest {
         when(entity.getFields()).thenReturn(fields);
         doAnswer(a -> when(entity.getFields()).thenReturn(a.getArgument(0)))
                 .when(entity).setFields(any());
+        when(entity.getIndices()).thenReturn(indices);
+        doAnswer(a -> when(entity.getIndices()).thenReturn(a.getArgument(0)))
+                .when(entity).setIndices(any());
         doAnswer(a -> {
             parentReferences.clear();
             parentReferences.addAll(a.getArgument(0));
@@ -141,6 +154,11 @@ public class ConfigLoaderTest {
         verify(reference).setParent(eq(entity));
         verify(reference).setRealTargetEntity(eq(groupingEntity));
         verify(reference, never()).setRealFilterField(any());
+
+        verify(index).setFields(any());
+        assertEquals(1, fieldSortings.size(), "Wrong number of index fields");
+        assertTrue(fieldSortings.get(0).isAscending(), "The field at index should be ascending");
+        assertEquals(entityField, fieldSortings.get(0).getField(), "Wrong field at index");
 
         verify(config).setUseIdGenerator(eq(Boolean.FALSE));
     }
@@ -223,7 +241,7 @@ public class ConfigLoaderTest {
     @Test
     public void testCompleteSuperClass() {
         Entity parentEntity = mock(Entity.class);
-        defaultMockEntity(parentEntity, "ParentEntity", null, null, new ArrayList<>());
+        defaultMockEntity(parentEntity, "ParentEntity", null, null, null, new ArrayList<>());
         when(parentEntity.getIsAbstract()).thenReturn(Boolean.TRUE);
         when(entity.getParent()).thenReturn("ParentEntity");
         when(config.getEntities()).thenReturn(Arrays.asList(entity, parentEntity));
@@ -237,7 +255,7 @@ public class ConfigLoaderTest {
     @Test
     public void testCompleteSuperClassNotAbstract() {
         Entity parentEntity = mock(Entity.class);
-        defaultMockEntity(parentEntity, "ParentEntity", null, null, new ArrayList<>());
+        defaultMockEntity(parentEntity, "ParentEntity", null, null, null, new ArrayList<>());
         when(parentEntity.getIsAbstract()).thenReturn(Boolean.FALSE);
         when(entity.getParent()).thenReturn("ParentEntity");
         when(config.getEntities()).thenReturn(Arrays.asList(entity, parentEntity));
@@ -251,7 +269,7 @@ public class ConfigLoaderTest {
     @Test
     public void testCompleteSuperClassNotExisting() {
         Entity parentEntity = mock(Entity.class);
-        defaultMockEntity(parentEntity, "ParentEntity", null, null, new ArrayList<>());
+        defaultMockEntity(parentEntity, "ParentEntity", null, null, null, new ArrayList<>());
         when(parentEntity.getIsAbstract()).thenReturn(Boolean.TRUE);
         when(entity.getParent()).thenReturn("OtherParentEntity");
         when(config.getEntities()).thenReturn(Arrays.asList(entity, parentEntity));
@@ -326,7 +344,7 @@ public class ConfigLoaderTest {
     }
 
     @Test
-    public void testCompleteIdGenerator(){
+    public void testCompleteIdGenerator() {
         when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.test");
         when(config.getIdGeneratorClass()).thenReturn("IdGenerator");
 
@@ -337,7 +355,7 @@ public class ConfigLoaderTest {
     }
 
     @Test
-    public void testCompleteInvalidIdGenerator(){
+    public void testCompleteInvalidIdGenerator() {
         when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.test");
 
         boolean result = cut.complete();
@@ -364,5 +382,35 @@ public class ConfigLoaderTest {
         assertTrue(result, "The result of completion should be true");
 
         verify(entity).setTableName(eq(ENTITY_NAME));
+    }
+
+    @Test
+    public void testCompleteIndexAsc() {
+        when(index.getFieldList()).thenReturn(FIELD_NAME + " ASC");
+        boolean result = cut.complete();
+        assertTrue(result, "The result of completion should be true");
+        verify(index).setFields(any());
+        assertEquals(1, fieldSortings.size(), "Wrong number of index fields");
+        assertTrue(fieldSortings.get(0).isAscending(), "The field at index should be ascending");
+        assertEquals(entityField, fieldSortings.get(0).getField(), "Wrong field at index");
+    }
+
+    @Test
+    public void testCompleteIndexDesc() {
+        when(index.getFieldList()).thenReturn(FIELD_NAME + " DESC");
+        boolean result = cut.complete();
+        assertTrue(result, "The result of completion should be true");
+        verify(index).setFields(any());
+        assertEquals(1, fieldSortings.size(), "Wrong number of index fields");
+        assertFalse(fieldSortings.get(0).isAscending(), "The field at index should be descending");
+        assertEquals(entityField, fieldSortings.get(0).getField(), "Wrong field at index");
+    }
+
+    @Test
+    public void testCompleteNonExisting() {
+        when(index.getFieldList()).thenReturn("AnyRandomField");
+        boolean result = cut.complete();
+        assertFalse(result, "The result of completion should be false");
+        assertEquals(0, fieldSortings.size(), "Wrong number of index fields");
     }
 }

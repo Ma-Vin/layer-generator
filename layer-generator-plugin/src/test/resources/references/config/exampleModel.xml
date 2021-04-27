@@ -60,6 +60,9 @@
                     <description>Long text</description>
                 </field>
             </fields>
+            <indices>
+                <index indexName="SomeIndex" fieldList="someInteger ASC, someName DESC"/>
+            </indices>
         </entity>
     </entities>
     <groupings>

@@ -23,6 +23,7 @@ public class EntityTest {
         cut.setIdentificationPrefix("identificationPrefix");
         cut.setParent("parent");
         cut.setFields(Collections.EMPTY_LIST);
+        cut.setIndices(Collections.EMPTY_LIST);
         cut.setReferences(Collections.EMPTY_LIST);
 
         messages.clear();
@@ -61,6 +62,7 @@ public class EntityTest {
         cut.setIdentificationPrefix(null);
         cut.setParent(null);
         cut.setFields(null);
+        cut.setIndices(null);
         cut.setReferences(null);
         assertTrue(cut.isValid(messages), "Entity should be valid");
         assertEquals(0, messages.size(), "Wrong number of messages");

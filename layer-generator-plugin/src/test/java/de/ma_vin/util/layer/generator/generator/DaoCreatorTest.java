@@ -3,10 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import de.ma_vin.util.layer.generator.config.elements.DaoInfo;
-import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Models;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.log.LogImpl;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
@@ -1374,6 +1371,151 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
         expected.add("	private Collection<TargetDao> targetRef;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectWithIndex() {
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
+        Index index = mock(Index.class);
+        when(entity.getIndices()).thenReturn(Collections.singletonList(index));
+        FieldSorting fieldSorting = mock(FieldSorting.class);
+        when(index.getFields()).thenReturn(Collections.singletonList(fieldSorting));
+        when(index.getIndexName()).thenReturn("IX_NAME");
+        when(index.getIsUnique()).thenReturn(Boolean.TRUE);
+        when(fieldSorting.getField()).thenReturn(field);
+        when(fieldSorting.isAscending()).thenReturn(Boolean.TRUE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@Table(indexes = {@Index(columnList = \"anyField\", name = \"IX_NAME\", unique = true)}, name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column");
+        expected.add("	private String anyField;");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectWithIndexDesc() {
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
+        Index index = mock(Index.class);
+        when(entity.getIndices()).thenReturn(Collections.singletonList(index));
+        FieldSorting fieldSorting = mock(FieldSorting.class);
+        when(index.getFields()).thenReturn(Collections.singletonList(fieldSorting));
+        when(index.getIndexName()).thenReturn("IX_NAME");
+        when(fieldSorting.getField()).thenReturn(field);
+        when(fieldSorting.isAscending()).thenReturn(Boolean.FALSE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@Table(indexes = {@Index(columnList = \"anyField DESC\", name = \"IX_NAME\")}, name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column");
+        expected.add("	private String anyField;");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectWithIndexDaoColumnName() {
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
+        Index index = mock(Index.class);
+        when(entity.getIndices()).thenReturn(Collections.singletonList(index));
+        FieldSorting fieldSorting = mock(FieldSorting.class);
+        when(index.getFields()).thenReturn(Collections.singletonList(fieldSorting));
+        when(index.getIndexName()).thenReturn("IX_NAME");
+        when(fieldSorting.getField()).thenReturn(field);
+        when(fieldSorting.isAscending()).thenReturn(Boolean.TRUE);
+
+        when(field.getDaoInfo()).thenReturn(daoInfo);
+        when(daoInfo.getColumnName()).thenReturn("differentName");
+        when(daoInfo.getNullable()).thenReturn(null);
+        when(daoInfo.getLength()).thenReturn(null);
+        when(daoInfo.getPrecision()).thenReturn(null);
+        when(daoInfo.getScale()).thenReturn(null);
+        when(daoInfo.getUseEnumText()).thenReturn(null);
+
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@Table(indexes = {@Index(columnList = \"differentName\", name = \"IX_NAME\")}, name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"differentName\")");
+        expected.add("	private String anyField;");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
 

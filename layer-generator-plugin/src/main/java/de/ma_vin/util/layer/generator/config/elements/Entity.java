@@ -15,8 +15,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
-@EqualsAndHashCode(exclude = {"references", "parentRefs", "fields", "realParent"})
-@ToString(exclude = {"references", "parentRefs", "fields", "realParent"})
+@EqualsAndHashCode(exclude = {"references", "parentRefs", "fields", "indices", "realParent"})
+@ToString(exclude = {"references", "parentRefs", "fields", "indices", "realParent"})
 public class Entity {
 
     /**
@@ -69,6 +69,13 @@ public class Entity {
     private List<Field> fields;
 
     /**
+     * Indices of the entity
+     */
+    @XmlElementWrapper
+    @XmlElement(name = "index")
+    private List<Index> indices;
+
+    /**
      * References to other entities
      */
     @XmlElementWrapper
@@ -99,6 +106,7 @@ public class Entity {
                 && validateNonRequired(identificationPrefix, messages, "identificationPrefix")
                 && validateNonRequired(parent, messages, "parent")
                 && (fields == null || fields.stream().allMatch(f -> f.isValid(messages)))
+                && (indices == null || indices.stream().allMatch(i -> i.isValid(messages)))
                 && (references == null || (references.stream().allMatch(r -> r.isValid(messages))
                 && Reference.isFilterFieldValid(baseName, references, messages)));
     }
