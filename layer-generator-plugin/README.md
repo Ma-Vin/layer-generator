@@ -62,6 +62,7 @@ identificationPrefix | :heavy_check_mark: | *A* | If there is a use of idGenerat
 parent | :heavy_check_mark: | *A* | super entity which is extended by this entity. The super entity has to abstract.
 isAbstract | :heavy_check_mark: | *A* | indication if the generated java class should be abstract
 fields | :heavy_check_mark: | *N* | List of attributes of the entity
+indices | :heavy_check_mark: | *N* | List of indices of the entity
 references | :heavy_check_mark: | *N* | References to other entities
 
 #### Grouping
@@ -81,6 +82,13 @@ shortDescription | :heavy_check_mark: | *A* | Short description of the attribute
 description | :heavy_check_mark: | *N* | Description of the attribute
 models | :heavy_check_mark: | *A* | For which object is this field relevant
 daoInfo | :heavy_check_mark: | *N* | additional information for database.
+
+#### Index
+Property | Nullable | xml type |  Description
+-------- | -------- | ------- | -----------
+indexName | :x: | *A* | Name of the index
+isUnique | :heavy_check_mark: | *A* | Indicator if this is an unique index
+fieldList | :x: | *A* | List of field names which define columns of the index. Comma separated
 
 #### DaoInfo
 Property | Nullable | xml type |  Description
