@@ -73,7 +73,7 @@ public class Field {
                 && validateNonRequired(shortDescription, messages, "shortDescription")
                 && validateNonRequired(description, messages, "description")
                 && validateNonRequired(typePackage, messages, "typePackage")
-                && (daoInfo == null || daoInfo.isValid());
+                && (daoInfo == null || daoInfo.isValid(messages));
     }
 
     public Models getModels() {

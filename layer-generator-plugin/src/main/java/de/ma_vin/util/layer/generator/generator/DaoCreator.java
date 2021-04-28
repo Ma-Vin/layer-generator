@@ -176,6 +176,10 @@ public class DaoCreator extends AbstractObjectCreator {
             addParamIfExists(columnAnnotation, "length", field.getDaoInfo().getLength());
             addParamIfExists(columnAnnotation, "precision", field.getDaoInfo().getPrecision());
             addParamIfExists(columnAnnotation, "scale", field.getDaoInfo().getScale());
+            addParamIfExists(columnAnnotation, "columnDefinition", field.getDaoInfo().getColumnDefinition());
+            if ((Boolean.TRUE.equals(field.getDaoInfo().getIsLobType()))) {
+                attribute.addAnnotation(Lob.class);
+            }
         }
         return attribute;
     }

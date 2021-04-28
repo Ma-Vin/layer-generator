@@ -58,6 +58,7 @@
                 </field>
                 <field fieldName="document" type="String" shortDescription="short text">
                     <description>Long text</description>
+                    <daoInfo columnDefinition="BLOB" isLobType="true"/>
                 </field>
             </fields>
             <indices>

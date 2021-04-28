@@ -671,6 +671,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         when(daoInfo.getPrecision()).thenReturn(4);
         when(daoInfo.getScale()).thenReturn(2);
         when(daoInfo.getUseEnumText()).thenReturn(Boolean.TRUE);
+        when(daoInfo.getColumnDefinition()).thenReturn("BLOB");
+        when(daoInfo.getIsLobType()).thenReturn(Boolean.TRUE);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
@@ -692,8 +694,9 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("@Table(name = \"Dummys\")");
         expected.add("public class DummyDao implements IIdentifiableDao {");
         expected.add("");
-        expected.add("	@Column(length = 5, name = \"differentName\", nullable = false, precision = 4, scale = 2)");
+        expected.add("	@Column(columnDefinition = \"BLOB\", length = 5, name = \"differentName\", nullable = false, precision = 4, scale = 2)");
         expected.add("	@Enumerated(EnumType.STRING)");
+        expected.add("	@Lob");
         expected.add("	private CustomEnum anyField;");
         expected.add("");
         expected.add("	@Column(name = \"Id\")");

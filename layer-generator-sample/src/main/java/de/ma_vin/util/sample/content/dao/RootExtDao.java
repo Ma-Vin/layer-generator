@@ -36,7 +36,8 @@ public class RootExtDao implements IIdentifiableDao {
 	 * <br>
 	 * long text
 	 */
-	@Column
+	@Column(columnDefinition = "BLOB")
+	@Lob
 	private String document;
 
 	@Column

@@ -1,11 +1,14 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
+import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
+
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import java.util.List;
 
 /**
  * Can be used to override default jpa column values
@@ -53,7 +56,20 @@ public class DaoInfo {
     @XmlAttribute
     private Boolean useEnumText;
 
-    public boolean isValid() {
-        return true;
+    /**
+     * (Optional) The SQL fragment that is used when generating the DDL for the column.
+     */
+    @XmlAttribute
+    private String columnDefinition;
+
+    /**
+     * Specifies that a persistent property or field should be persisted as a large object to a database-supported large object type.
+     */
+    @XmlAttribute
+    private Boolean isLobType;
+
+    public boolean isValid(List<String> messages) {
+        return validateNonRequired(columnName, messages, "columnName")
+                && validateNonRequired(columnDefinition, messages, "columnDefinition");
     }
 }
