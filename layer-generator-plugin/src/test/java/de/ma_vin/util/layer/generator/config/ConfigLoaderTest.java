@@ -407,6 +407,19 @@ public class ConfigLoaderTest {
     }
 
     @Test
+    public void testCompleteIndexId() {
+        when(index.getFieldList()).thenReturn("Id");
+        boolean result = cut.complete();
+        assertTrue(result, "The result of completion should be true");
+        verify(index).setFields(any());
+        assertEquals(1, fieldSortings.size(), "Wrong number of index fields");
+        assertTrue(fieldSortings.get(0).isAscending(), "The field at index should be ascending");
+        assertNotNull(fieldSortings.get(0).getField(), "The field should not be null");
+        assertEquals("Id", fieldSortings.get(0).getField().getFieldName(), "Wrong field at index");
+    }
+
+
+    @Test
     public void testCompleteNonExisting() {
         when(index.getFieldList()).thenReturn("AnyRandomField");
         boolean result = cut.complete();

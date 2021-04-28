@@ -3,6 +3,7 @@ package de.ma_vin.util.layer.generator.config;
 import de.ma_vin.util.layer.generator.config.elements.*;
 import lombok.Data;
 
+import javax.persistence.Id;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -296,10 +297,16 @@ public class ConfigLoader {
             fieldSorting.setAscending(false);
             fieldName = fieldName.substring(0, fieldName.length() - 4).trim();
         }
-        for (Field f : entity.getFields()) {
-            if (f.getFieldName().equalsIgnoreCase(fieldName)) {
-                fieldSorting.setField(f);
-                break;
+        if (fieldName.equalsIgnoreCase(Id.class.getSimpleName())) {
+            fieldSorting.setField(new Field());
+            fieldSorting.getField().setFieldName(Id.class.getSimpleName());
+            fieldSorting.getField().setType(Long.class.getSimpleName());
+        } else {
+            for (Field f : entity.getFields()) {
+                if (f.getFieldName().equalsIgnoreCase(fieldName)) {
+                    fieldSorting.setField(f);
+                    break;
+                }
             }
         }
         if (fieldSorting.getField() == null) {
