@@ -156,18 +156,11 @@ public class ConfigLoader {
     }
 
     private void addParentReferenceAndTarget(Entity actualEntity, Reference actualReference, Entity targetEntity) {
-        Reference parentRef = new Reference();
+        Reference parentRef = actualReference.copy();
         parentRef.setTargetEntity(actualEntity.getBaseName());
         parentRef.setRealTargetEntity(actualEntity);
         parentRef.setParent(targetEntity);
-        parentRef.setIsOwner(actualReference.isOwner());
-        parentRef.setIsList(actualReference.isList());
-        parentRef.setReferenceName(actualReference.getReferenceName());
         parentRef.setReverse(true);
-        parentRef.setFilterField(actualReference.getFilterField());
-        parentRef.setRealFilterField(actualReference.getRealFilterField());
-        parentRef.setFilterFieldValue(actualReference.getFilterFieldValue());
-
         targetEntity.getParentRefs().add(parentRef);
 
 
@@ -250,7 +243,8 @@ public class ConfigLoader {
                     , reference.getFilterField(), reference.getReferenceName(), reference.getTargetEntity()));
             return false;
         }
-        reference.setRealFilterField(filterField.get());
+
+        filterField.ifPresent(reference::setRealFilterField);
 
         if (!reference.isReverse() && filterField.get().getDaoInfo() != null && Boolean.TRUE.equals(filterField.get().getDaoInfo().getNullable())) {
             logger.warn(String.format("The filter field %s at %s is marked as nullable. This is not allowed and will be set to not nullable."
