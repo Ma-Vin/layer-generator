@@ -245,7 +245,7 @@ public class ConfigLoader {
                 .filter(f -> f.getFieldName().equals(reference.getFilterField()))
                 .findFirst();
 
-        if (filterField.isEmpty() || Boolean.FALSE.equals(filterField.get().getIsTypeEnum())) {
+        if (!reference.isReverse() && (filterField.isEmpty() || Boolean.FALSE.equals(filterField.get().getIsTypeEnum()))) {
             logger.error(String.format("The filter field %s of reference %s could not be found at entity %s or is not an enum type"
                     , reference.getFilterField(), reference.getReferenceName(), reference.getTargetEntity()));
             return false;
