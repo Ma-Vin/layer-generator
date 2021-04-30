@@ -424,6 +424,9 @@ public class DaoCreator extends AbstractObjectCreator {
         } else {
             child = new Attribute(propertyBaseName, childClassName);
         }
+        if (reference.getShortDescription() != null) {
+            child.setJavaDoc(new JavaDoc(reference.getShortDescription()));
+        }
 
         Annotation refAnnotation = new Annotation(refTypeName);
         refAnnotation.addParameter(TARGET_ENTITY, childClassName + CLASS_ENDING);
@@ -472,6 +475,9 @@ public class DaoCreator extends AbstractObjectCreator {
             child.addAnnotation(ManyToOne.class, TARGET_ENTITY, childClassName + CLASS_ENDING);
             child.addAnnotation(JoinColumn.class, "name", String.format(PLACEHOLDER_ID, propertyBaseName));
             daoClazz.addImport(getPackageAndClass(reference, packageName, DAO_POSTFIX));
+        }
+        if (reference.getShortDescription() != null) {
+            child.setJavaDoc(new JavaDoc(reference.getShortDescription()));
         }
         daoClazz.addAttribute(child);
 

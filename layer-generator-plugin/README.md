@@ -99,12 +99,15 @@ length | :heavy_check_mark: | *A* | The column length.
 precision | :heavy_check_mark: | *A* | The precision for a decimal column
 scale | :heavy_check_mark: | *A* | The scale for a decimal column.
 useEnumText | :heavy_check_mark: | *A* | True if enum values should be stored by text and not by id
+columnDefinition | :heavy_check_mark: | *A* | The SQL fragment that is used when generating the DDL for the column.
+isLobType | :heavy_check_mark: | *A* | Specifies that a persistent property or field should be persisted as a large object to a database-supported large object type.
 
 #### Reference
 Property | Nullable | xml type |  Description
 -------- | -------- | ------- | -----------
 referenceName | :x: | *A* | Name of the reference
 targetEntity | :x: | *A* | The baseName of the entity where to point at
+shortDescription | :heavy_check_mark: | *A* | Short description of the reference
 filterField | :heavy_check_mark: | *A* | Field of enum type to filter references from one entity to another multiple times
 filterFieldValue | :heavy_check_mark: | *A* | Value which should be used for filtering
 isOwner | :heavy_check_mark: | *A* | *true* if the parent should also be the parent at database. Otherwise some connection table will be generated (Default ist *false*)

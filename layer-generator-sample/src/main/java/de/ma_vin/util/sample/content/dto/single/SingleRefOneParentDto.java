@@ -25,6 +25,9 @@ public class SingleRefOneParentDto implements ITransportable {
 	 */
 	private String identification;
 
+	/**
+	 * Instance with two parents
+	 */
 	private SingleRefTwoParentsDto singleRef;
 
 }

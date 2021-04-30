@@ -129,7 +129,9 @@ public class DtoCreator extends AbstractObjectCreator {
         }
 
         Attribute child = new Attribute(getLowerFirst(reference.getReferenceName()), reference.getTargetEntity() + DTO_POSTFIX);
-
+        if (reference.getShortDescription() != null) {
+            child.setJavaDoc(new JavaDoc(reference.getShortDescription()));
+        }
         clazz.addAttribute(child);
         clazz.addImport(getPackageAndClass(reference, packageName, DTO_POSTFIX));
 

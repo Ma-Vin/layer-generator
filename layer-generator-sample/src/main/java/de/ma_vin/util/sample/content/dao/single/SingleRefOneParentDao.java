@@ -33,6 +33,9 @@ public class SingleRefOneParentDao implements IIdentifiableDao {
 	@OneToOne(targetEntity = RootDao.class)
 	private RootDao parentRoot;
 
+	/**
+	 * Instance with two parents
+	 */
 	@OneToOne(mappedBy = "parentSingleRefOneParent", targetEntity = SingleRefTwoParentsDao.class)
 	private SingleRefTwoParentsDao singleRef;
 

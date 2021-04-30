@@ -1526,4 +1526,100 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
         checkSingleFile("DummyDao.java", expected);
     }
+
+    @Test
+    public void testCreateDataAccessObjectRelationDescription() {
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.getShortDescription()).thenReturn("Some description");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import java.util.Collection;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(exclude = {\"targetRef\"})");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Some description");
+        expected.add("	 */");
+        expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
+        expected.add("	private Collection<TargetDao> targetRef;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+    @Test
+    public void testCreateDataAccessObjectUniqueRelationDescription() {
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(targetReference.getShortDescription()).thenReturn("Some description");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(exclude = {\"targetRef\"})");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Some description");
+        expected.add("	 */");
+        expected.add("	@OneToOne(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
+        expected.add("	private TargetDao targetRef;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
 }

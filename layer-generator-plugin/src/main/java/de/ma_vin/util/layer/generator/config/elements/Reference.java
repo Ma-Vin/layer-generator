@@ -32,6 +32,12 @@ public class Reference {
     private String targetEntity;
 
     /**
+     * Short description of the reference
+     */
+    @XmlAttribute
+    private String shortDescription;
+
+    /**
      * Field of enum type to filter references from one entity to another multiple times
      */
     @XmlAttribute
@@ -79,6 +85,7 @@ public class Reference {
     public boolean isValid(List<String> messages) {
         return validateRequired(targetEntity, messages, "targetEntity")
                 && validateRequired(referenceName, messages, "referenceName")
+                && validateNonRequired(shortDescription, messages, "shortDescription")
                 && validateNonRequired(filterField, messages, "filterField")
                 && (filterField == null || validateNonRequired(filterFieldValue, messages, "filterFieldValue"));
     }
@@ -114,6 +121,7 @@ public class Reference {
 
         result.referenceName = getReferenceName();
         result.targetEntity = getTargetEntity();
+        result.shortDescription = getShortDescription();
         result.filterField = getFilterField();
         result.realFilterField = getRealFilterField();
         result.filterFieldValue = getFilterFieldValue();
@@ -133,6 +141,10 @@ public class Reference {
 
     public String getTargetEntity() {
         return targetEntity;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
     }
 
     public String getFilterField() {

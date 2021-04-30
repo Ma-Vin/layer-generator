@@ -30,6 +30,9 @@ public class MultiRefOneParentDao implements IIdentifiableDao {
 	@Id
 	private Long id;
 
+	/**
+	 * Instance with two parents
+	 */
 	@OneToMany(mappedBy = "parentMultiRefOneParent", targetEntity = MultiRefTwoParentsDao.class)
 	private Collection<MultiRefTwoParentsDao> multiRef;
 

@@ -77,7 +77,8 @@
                         <field fieldName="description" type="String"/>
                     </fields>
                     <references>
-                        <reference referenceName="singleRef" targetEntity="SingleRefTwoParents" isOwner="true"/>
+                        <reference referenceName="singleRef" targetEntity="SingleRefTwoParents" isOwner="true"
+                                   shortDescription="Instance with two parents"/>
                     </references>
                 </entity>
                 <entity baseName="SingleRefTwoParents" models="DOMAIN_DAO_DTO" identificationPrefix="S2">
@@ -95,7 +96,7 @@
                     </fields>
                     <references>
                         <reference referenceName="multiRef" targetEntity="MultiRefTwoParents" isOwner="true"
-                                   isList="true"/>
+                                   isList="true" shortDescription="Instances with two parents"/>
                     </references>
                 </entity>
                 <entity baseName="MultiRefTwoParents" models="DOMAIN_DAO_DTO" identificationPrefix="M2">

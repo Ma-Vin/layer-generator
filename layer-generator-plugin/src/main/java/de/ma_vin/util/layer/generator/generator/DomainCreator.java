@@ -175,7 +175,9 @@ public class DomainCreator extends AbstractObjectCreator {
         } else {
             child = new Attribute(propertyBaseName, childClassName);
         }
-
+        if (reference.getShortDescription() != null) {
+            child.setJavaDoc(new JavaDoc(reference.getShortDescription()));
+        }
         clazz.addAttribute(child);
         clazz.addImport(getPackageAndClass(reference, packageName));
 

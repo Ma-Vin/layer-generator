@@ -27,6 +27,9 @@ public class SingleRefOneParent implements IIdentifiable {
 	 */
 	private String identification;
 
+	/**
+	 * Instance with two parents
+	 */
 	private SingleRefTwoParents singleRef;
 
 }

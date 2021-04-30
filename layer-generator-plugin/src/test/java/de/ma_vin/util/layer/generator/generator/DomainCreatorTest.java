@@ -520,4 +520,120 @@ public class DomainCreatorTest extends AbstractCreatorTest {
 
         checkSingleFile("Dummy.java", expected);
     }
+
+    @Test
+    public void testCreateDomainObjectUniqueRelationShortDescription() {
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(targetReference.getShortDescription()).thenReturn("Some description");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.domain.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated domain class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
+        expected.add("@Data");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("@ToString(exclude = {\"targetRef\"})");
+        expected.add("public class Dummy implements IIdentifiable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Some description");
+        expected.add("	 */");
+        expected.add("	private Target targetRef;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+
+        checkSingleFile("Dummy.java", expected);
+    }
+
+    @Test
+    public void testCreateDomainObjectRelationShortDescription() {
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.getShortDescription()).thenReturn("Some description");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.domain.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import java.util.Collection;");
+        expected.add("import java.util.HashSet;");
+        expected.add("import lombok.AccessLevel;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("import lombok.Setter;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated domain class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
+        expected.add("@Data");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("@ToString(exclude = {\"targetRef\"})");
+        expected.add("public class Dummy implements IIdentifiable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Some description");
+        expected.add("	 */");
+        expected.add("	@Setter(AccessLevel.PROTECTED)");
+        expected.add("	private Collection<Target> targetRef = new HashSet<>();");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Adds a Target to targetRef");
+        expected.add("	 * ");
+        expected.add("	 * @param target Target to add");
+        expected.add("	 */");
+        expected.add("	public boolean addTargetRef(Target target) {");
+        expected.add("		return targetRef.add(target);");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Removes a Target from targetRef");
+        expected.add("	 * ");
+        expected.add("	 * @param target Target to remove");
+        expected.add("	 */");
+        expected.add("	public boolean removeTargetRef(Target target) {");
+        expected.add("		return targetRef.remove(target);");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+
+        checkSingleFile("Dummy.java", expected);
+    }
 }

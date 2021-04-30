@@ -491,4 +491,51 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
         checkSingleFile("DummyDto.java", expected);
     }
+
+    @Test
+    public void testCreateDataTransportObjectUniqueRelationShortDescription() {
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(targetReference.getShortDescription()).thenReturn("Some description");
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
+        expected.add("@Data");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("@ToString(exclude = {\"targetRef\"})");
+        expected.add("public class DummyDto implements ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Some description");
+        expected.add("	 */");
+        expected.add("	private TargetDto targetRef;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+
+        checkSingleFile("DummyDto.java", expected);
+    }
 }

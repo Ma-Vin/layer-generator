@@ -21,6 +21,7 @@ public class ReferenceTest {
         cut.setTargetEntity("Target");
         cut.setIsOwner(true);
         cut.setIsList(true);
+        cut.setShortDescription("shortDescription");
         cut.setFilterField("filterField");
         cut.setFilterFieldValue("filterValue");
 
@@ -122,6 +123,7 @@ public class ReferenceTest {
 
     @Test
     public void testIsValidNulls() {
+        cut.setShortDescription(null);
         cut.setFilterField(null);
         cut.setFilterFieldValue(null);
         assertTrue(cut.isValid(messages), "Entity should be valid");
@@ -138,6 +140,13 @@ public class ReferenceTest {
     @Test
     public void testIsValidReferenceName() {
         cut.setReferenceName(null);
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidShortDescription() {
+        cut.setShortDescription("");
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }
