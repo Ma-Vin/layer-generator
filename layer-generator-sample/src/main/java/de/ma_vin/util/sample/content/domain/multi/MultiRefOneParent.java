@@ -32,7 +32,7 @@ public class MultiRefOneParent implements IIdentifiable {
 	private String identification;
 
 	/**
-	 * Instance with two parents
+	 * Instances with two parents
 	 */
 	@Setter(AccessLevel.PROTECTED)
 	private Collection<MultiRefTwoParents> multiRef = new HashSet<>();
