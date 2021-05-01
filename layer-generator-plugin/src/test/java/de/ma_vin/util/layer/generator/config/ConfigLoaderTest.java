@@ -102,6 +102,8 @@ public class ConfigLoaderTest {
 
         when(index.getFieldList()).thenReturn(FIELD_LIST);
         when(index.getFields()).thenReturn(fieldSortings);
+
+        doCallRealMethod().when(reference).copy();
     }
 
     private void defaultMockEntity(Entity entity, String entityName, List<Field> fields, List<Index> indices, List<Reference> references
