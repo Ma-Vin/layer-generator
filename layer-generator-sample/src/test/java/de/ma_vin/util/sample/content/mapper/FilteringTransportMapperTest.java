@@ -22,11 +22,13 @@ public class FilteringTransportMapperTest {
     private Filtered filtered;
     private SomeFilteringOwner someFilteringOwner;
     private FilteredOnlyDaoField filteredOnlyDaoField;
+    private SomeDifferentFilteringNotOwner someDifferentFilteringNotOwner;
 
     private RootDto rootDto;
     private SomeFilteringOwnerDto someFilteringOwnerDto;
     private FilteredDto filteredDto;
     private FilteredOnlyDaoFieldDto filteredOnlyDaoFieldDto;
+    private SomeDifferentFilteringNotOwnerDto someDifferentFilteringNotOwnerDto;
 
     Map<String, IIdentifiable> mappedObjects = new HashMap<>();
     Map<String, ITransportable> mappedDtoObjects = new HashMap<>();
@@ -40,12 +42,14 @@ public class FilteringTransportMapperTest {
         filteredDto = createFilteredDto(getNextId(), AnyEnumType.ENUM_VALUE_A);
         filteredOnlyDaoFieldDto = createFilteredOnlyDaoFieldDto(getNextId(), AnyEnumType.ENUM_VALUE_B);
         someFilteringOwnerDto = createSomeFilteringOwnerDto(getNextId());
+        someDifferentFilteringNotOwnerDto = createSomeDifferentFilteringNotOwnerDto(getNextId());
         rootDto = createRootDto(getNextId());
 
         initObjectFactory();
         filtered = createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_C);
         filteredOnlyDaoField = createFilteredOnlyDaoField(getNextId());
         someFilteringOwner = createSomeFilteringOwnerWithChildren(getNextId());
+        someDifferentFilteringNotOwner = createSomeDifferentFilteringNotOwnerWithChildren(getNextId());
         root = createRoot(getNextId());
     }
 
@@ -110,7 +114,7 @@ public class FilteringTransportMapperTest {
         FilteredOnlyDaoField result = FilteringTransportMapper.convertToFilteredOnlyDaoField(filteredOnlyDaoFieldDto);
         assertNotNull(result, "There should be any result");
         assertEquals(filteredOnlyDaoFieldDto.getIdentification(), result.getIdentification(), "Wrong identification");
-        assertEquals(filteredOnlyDaoFieldDto.getDescription(), result.getDescription(), "Wrong description");
+        assertEquals(filteredOnlyDaoFieldDto.getDescriptionOnlyDaoField(), result.getDescriptionOnlyDaoField(), "Wrong description");
     }
 
     @Test
@@ -122,6 +126,38 @@ public class FilteringTransportMapperTest {
     public void testConvertToFilteredOnlyDaoFieldAgain() {
         FilteredOnlyDaoField result = FilteringTransportMapper.convertToFilteredOnlyDaoField(filteredOnlyDaoFieldDto, mappedObjects);
         FilteredOnlyDaoField convertAgainResult = FilteringTransportMapper.convertToFilteredOnlyDaoField(filteredOnlyDaoFieldDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
+    public void testConvertToSomeDifferentFilteringNotOwner() {
+        SomeDifferentFilteringNotOwner result = FilteringTransportMapper.convertToSomeDifferentFilteringNotOwner(someDifferentFilteringNotOwnerDto);
+        assertNotNull(result, "There should be any result");
+        assertEquals(someDifferentFilteringNotOwnerDto.getIdentification(), result.getIdentification(), "Wrong identification");
+
+        assertEquals(0, result.getFilterA().size(), "Wrong number of FilterA");
+        assertEquals(0, result.getFilterB().size(), "Wrong number of FilterB");
+        assertEquals(0, result.getFilterC().size(), "Wrong number of FilterC");
+    }
+
+    @Test
+    public void testConvertToSomeDifferentFilteringNotOwnerWithParent() {
+        SomeDifferentFilteringNotOwner result = FilteringTransportMapper.convertToSomeDifferentFilteringNotOwner(someDifferentFilteringNotOwnerDto, root);
+        assertNotNull(result, "There should be any result");
+        assertEquals(someDifferentFilteringNotOwnerDto.getIdentification(), result.getIdentification(), "Wrong identification");
+
+        assertEquals(root.getNonOwnerFiltering(), result, "Wrong ref at root");
+    }
+
+    @Test
+    public void testConvertToSomeDifferentFilteringNotOwnerNull() {
+        assertNull(FilteringTransportMapper.convertToSomeDifferentFilteringNotOwner(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSomeDifferentFilteringNotOwnerAgain() {
+        SomeDifferentFilteringNotOwner result = FilteringTransportMapper.convertToSomeDifferentFilteringNotOwner(someDifferentFilteringNotOwnerDto, mappedObjects);
+        SomeDifferentFilteringNotOwner convertAgainResult = FilteringTransportMapper.convertToSomeDifferentFilteringNotOwner(someDifferentFilteringNotOwnerDto, mappedObjects);
         assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 
@@ -168,7 +204,7 @@ public class FilteringTransportMapperTest {
     }
 
     @Test
-    public void ttestConvertToFilteredDtoAgain() {
+    public void testConvertToFilteredDtoAgain() {
         FilteredDto result = FilteringTransportMapper.convertToFilteredDto(filtered, mappedDtoObjects);
         FilteredDto convertAgainResult = FilteringTransportMapper.convertToFilteredDto(filtered, mappedDtoObjects);
         assertSame(result, convertAgainResult, "Converting again with map should return the same object");
@@ -179,7 +215,7 @@ public class FilteringTransportMapperTest {
         FilteredOnlyDaoFieldDto result = FilteringTransportMapper.convertToFilteredOnlyDaoFieldDto(filteredOnlyDaoField);
         assertNotNull(result, "There should be any result");
         assertEquals(filteredOnlyDaoField.getIdentification(), result.getIdentification(), "Wrong identification");
-        assertEquals(filteredOnlyDaoField.getDescription(), result.getDescription(), "Wrong description");
+        assertEquals(filteredOnlyDaoField.getDescriptionOnlyDaoField(), result.getDescriptionOnlyDaoField(), "Wrong description");
     }
 
     @Test
@@ -191,6 +227,34 @@ public class FilteringTransportMapperTest {
     public void testConvertToFilteredOnlyDaoFieldDtoAgain() {
         FilteredOnlyDaoFieldDto result = FilteringTransportMapper.convertToFilteredOnlyDaoFieldDto(filteredOnlyDaoField, mappedDtoObjects);
         FilteredOnlyDaoFieldDto convertAgainResult = FilteringTransportMapper.convertToFilteredOnlyDaoFieldDto(filteredOnlyDaoField, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
+    public void testConvertToSomeDifferentFilteringNotOwnerDto() {
+        SomeDifferentFilteringNotOwnerDto result = FilteringTransportMapper.convertToSomeDifferentFilteringNotOwnerDto(someDifferentFilteringNotOwner);
+        assertNotNull(result, "There should be any result");
+        assertEquals(someDifferentFilteringNotOwner.getIdentification(), result.getIdentification(), "Wrong identification");
+    }
+
+    @Test
+    public void testConvertToSomeDifferentFilteringNotOwnerDtoWithParent() {
+        SomeDifferentFilteringNotOwnerDto result = FilteringTransportMapper.convertToSomeDifferentFilteringNotOwnerDto(someDifferentFilteringNotOwner, rootDto);
+        assertNotNull(result, "There should be any result");
+        assertEquals(someDifferentFilteringNotOwner.getIdentification(), result.getIdentification(), "Wrong identification");
+
+        assertEquals(rootDto.getNonOwnerFiltering(), result, "Wrong ref at root");
+    }
+
+    @Test
+    public void testConvertToSomeDifferentFilteringNotOwnerDtoNull() {
+        assertNull(FilteringTransportMapper.convertToSomeDifferentFilteringNotOwnerDto(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToSomeDifferentFilteringNotOwnerDtoAgain() {
+        SomeDifferentFilteringNotOwnerDto result = FilteringTransportMapper.convertToSomeDifferentFilteringNotOwnerDto(someDifferentFilteringNotOwner, mappedDtoObjects);
+        SomeDifferentFilteringNotOwnerDto convertAgainResult = FilteringTransportMapper.convertToSomeDifferentFilteringNotOwnerDto(someDifferentFilteringNotOwner, mappedDtoObjects);
         assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 

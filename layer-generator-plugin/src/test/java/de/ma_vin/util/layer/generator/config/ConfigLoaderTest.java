@@ -51,6 +51,8 @@ public class ConfigLoaderTest {
     private Field groupingEntityField;
     @Mock
     private Index index;
+    @Mock
+    private NonOwnerFilterField nonOwnerFilterField;
 
 
     private ConfigLoader cut;
@@ -343,6 +345,18 @@ public class ConfigLoaderTest {
 
         verify(reference).setRealFilterField(eq(groupingEntityField));
         verify(daoInfo, never()).setNullable(any());
+    }
+
+    @Test
+    public void testCompleteFilterFieldNotExistingAndNotPackageButFiltering() {
+        when(reference.getFilterField()).thenReturn(GROUPING_FIELD_NAME + "1");
+        when(reference.isOwner()).thenReturn(Boolean.FALSE);
+        when(groupingEntityField.getIsTypeEnum()).thenReturn(Boolean.TRUE);
+
+        boolean result = cut.complete();
+        assertFalse(result, "The result of completion should be false");
+
+        verify(reference, never()).setRealFilterField(any());
     }
 
     @Test

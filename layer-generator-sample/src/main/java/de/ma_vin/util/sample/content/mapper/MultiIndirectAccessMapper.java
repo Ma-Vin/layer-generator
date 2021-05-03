@@ -430,12 +430,9 @@ public class MultiIndirectAccessMapper extends AbstractAccessMapper {
 			, boolean includeChildren, Map<String, IIdentifiableDao> mappedObjects) {
 		dao.setMultiIndirectRef(new ArrayList<>());
 		if (includeChildren) {
-			domain.getMultiIndirectRef().forEach(arg -> {
-				MultiRefOtherIndirectParentToMultiRefIndirectParentDao connectionTable = new MultiRefOtherIndirectParentToMultiRefIndirectParentDao();
-				connectionTable.setMultiRefOtherIndirectParent(dao);
-				connectionTable.setMultiRefIndirectParent(MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(arg, mappedObjects));
-				dao.getMultiIndirectRef().add(connectionTable);
-			});
+			domain.getMultiIndirectRef().forEach(arg ->
+					MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(arg, dao, mappedObjects)
+			);
 		}
 	}
 

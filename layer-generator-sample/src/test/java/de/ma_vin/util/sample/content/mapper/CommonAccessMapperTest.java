@@ -55,6 +55,8 @@ public class CommonAccessMapperTest {
         assertEquals(rootDao.getSingleRefIndirectOtherParent().getIdentification(), result.getSingleRefIndirectOtherParent().getIdentification(), "Wrong identification at SingleRefIndirectOtherParent");
         assertNotNull(result.getFiltering(), "There should be any Filtering");
         assertEquals(rootDao.getFiltering().getIdentification(), result.getFiltering().getIdentification(), "Wrong identification at Filtering");
+        assertNotNull(result.getNonOwnerFiltering(), "There should be any Non Owner Filtering");
+        assertEquals(rootDao.getNonOwnerFiltering().getIdentification(), result.getNonOwnerFiltering().getIdentification(), "Wrong identification at Non Owner Filtering");
         assertNotNull(result.getExt(), "There should be any RootExt");
         assertEquals(rootDao.getExt().getIdentification(), result.getExt().getIdentification(), "Wrong identification at RootExt");
 
@@ -88,6 +90,8 @@ public class CommonAccessMapperTest {
         assertEquals(rootDao.getSingleRefIndirectOtherParent().getIdentification(), result.getSingleRefIndirectOtherParent().getIdentification(), "Wrong identification at SingleRefIndirectOtherParent");
         assertNotNull(result.getFiltering(), "There should be any Filtering");
         assertEquals(rootDao.getFiltering().getIdentification(), result.getFiltering().getIdentification(), "Wrong identification at Filtering");
+        assertNotNull(result.getNonOwnerFiltering(), "There should be any Non Owner Filtering");
+        assertEquals(rootDao.getNonOwnerFiltering().getIdentification(), result.getNonOwnerFiltering().getIdentification(), "Wrong identification at Non Owner Filtering");
         assertNotNull(result.getExt(), "There should be any RootExt");
         assertEquals(rootDao.getExt().getIdentification(), result.getExt().getIdentification(), "Wrong identification at RootExt");
 
@@ -186,6 +190,9 @@ public class CommonAccessMapperTest {
         assertNotNull(result.getFiltering(), "There should be any Filtering");
         assertEquals(root.getFiltering().getIdentification(), result.getFiltering().getIdentification(), "Wrong identification at Filtering");
         assertEquals(result, result.getFiltering().getParentRoot(), "Wrong parent at Filtering");
+        assertNotNull(result.getNonOwnerFiltering(), "There should be any Non Owner Filtering");
+        assertEquals(root.getNonOwnerFiltering().getIdentification(), result.getNonOwnerFiltering().getIdentification(), "Wrong identification at Non Owner Filtering");
+        assertEquals(result, result.getNonOwnerFiltering().getParentRoot(), "Wrong parent at Non Owner Filtering");
         assertNotNull(result.getExt(), "There should be any RootExt");
         assertEquals(root.getExt().getIdentification(), result.getExt().getIdentification(), "Wrong identification at RootExt");
         assertEquals(result, result.getExt().getParentRoot(), "Wrong parent at RootExt");
@@ -220,6 +227,9 @@ public class CommonAccessMapperTest {
         assertEquals(root.getSingleRefIndirectOtherParent().getIdentification(), result.getSingleRefIndirectOtherParent().getIdentification(), "Wrong identification at SingleRefIndirectOtherParent");
         assertNotNull(result.getFiltering(), "There should be any Filtering");
         assertEquals(root.getFiltering().getIdentification(), result.getFiltering().getIdentification(), "Wrong identification at Filtering");
+        assertNotNull(result.getNonOwnerFiltering(), "There should be any Non Owner Filtering");
+        assertEquals(root.getNonOwnerFiltering().getIdentification(), result.getNonOwnerFiltering().getIdentification(), "Wrong identification at Non Owner Filtering");
+        assertEquals(result, result.getNonOwnerFiltering().getParentRoot(), "Wrong parent at Non Owner Filtering");
         assertNotNull(result.getExt(), "There should be any RootExt");
         assertEquals(root.getExt().getIdentification(), result.getExt().getIdentification(), "Wrong identification at RootExt");
 

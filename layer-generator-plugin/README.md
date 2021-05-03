@@ -112,6 +112,14 @@ filterField | :heavy_check_mark: | *A* | Field of enum type to filter references
 filterFieldValue | :heavy_check_mark: | *A* | Value which should be used for filtering
 isOwner | :heavy_check_mark: | *A* | *true* if the parent should also be the parent at database. Otherwise some connection table will be generated (Default ist *false*)
 isList | :heavy_check_mark: | *A* | Indicator if a one to one relation or an one to many relation exists (Default ist *false*)
+nonOwnerFilterField | :heavy_check_mark: | *N* |  Filtering on non owner references whose target value differs from target entity values
+
+#### NonOwnerFilterField
+Property | Nullable | xml type |  Description
+-------- | -------- | ------- | -----------
+filterFieldPackage | :x: | *A* | Package of the filtering enum. Only in case of filtered reference, non ownership. Will be used at connection table.
+filterFieldType | :x: | *A* | Field of enum type to filter references from one entity to another multiple times
+filterFieldValue | :x: | *A* | Value which should be used for filtering.
 
 #### Models
 Available model values.

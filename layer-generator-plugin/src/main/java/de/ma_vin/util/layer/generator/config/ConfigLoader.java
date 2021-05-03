@@ -214,33 +214,27 @@ public class ConfigLoader {
     }
 
     private boolean completeFilterFields(List<Entity> entities) {
-        boolean result = true;
-        for (Entity e : entities) {
-            for (Reference ref : e.getReferences()) {
-                if (ref.getFilterField() == null) {
-                    continue;
-                }
-                result = completeFilterFields(ref) && result;
-            }
-            for (Reference ref : e.getParentRefs()) {
-                if (ref.getFilterField() == null) {
-                    continue;
-                }
-                result = completeFilterFields(ref) && result;
-            }
-        }
-        return result;
+        return entities.stream().allMatch(e -> completeFilterFieldsAtRef(e.getReferences()) && completeFilterFieldsAtRef(e.getParentRefs()));
+    }
+
+    private boolean completeFilterFieldsAtRef(List<Reference> references) {
+        return references.stream().allMatch(this::completeFilterFields);
     }
 
     private boolean completeFilterFields(Reference reference) {
+        if (reference.getFilterField() == null) {
+            return true;
+        }
         Entity filterOwnerEntity = reference.isReverse() ? reference.getParent() : reference.getRealTargetEntity();
         Optional<Field> filterField = filterOwnerEntity.getFields().stream()
                 .filter(f -> f.getFieldName().equals(reference.getFilterField()))
                 .findFirst();
 
-        if (!reference.isReverse() && (filterField.isEmpty() || Boolean.FALSE.equals(filterField.get().getIsTypeEnum()))) {
-            logger.error(String.format("The filter field %s of reference %s could not be found at entity %s or is not an enum type"
-                    , reference.getFilterField(), reference.getReferenceName(), reference.getTargetEntity()));
+        if (filterField.isEmpty() || Boolean.FALSE.equals(filterField.get().getIsTypeEnum())) {
+            if (!reference.isReverse()) {
+                logger.error(String.format("The filter field %s of reference %s could not be found at entity %s or is not an enum type"
+                        , reference.getFilterField(), reference.getReferenceName(), reference.getTargetEntity()));
+            }
             return false;
         }
 

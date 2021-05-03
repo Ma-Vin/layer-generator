@@ -3,8 +3,14 @@ package de.ma_vin.util.sample.content.dao;
 import de.ma_vin.util.sample.content.dao.dao.OnlyDaoDao;
 import de.ma_vin.util.sample.content.dao.domain.dao.DomainAndDaoDao;
 import de.ma_vin.util.sample.content.dao.filtering.FilteredDao;
+import de.ma_vin.util.sample.content.dao.filtering.FilteredNotOwnerDao;
 import de.ma_vin.util.sample.content.dao.filtering.FilteredOnlyDaoFieldDao;
+import de.ma_vin.util.sample.content.dao.filtering.FilteredOnlyDaoFieldNotOwnerDao;
+import de.ma_vin.util.sample.content.dao.filtering.SomeDifferentFilteringNotOwnerDao;
+import de.ma_vin.util.sample.content.dao.filtering.SomeDifferentFilteringNotOwnerToFilteredDao;
 import de.ma_vin.util.sample.content.dao.filtering.SomeFilteringOwnerDao;
+import de.ma_vin.util.sample.content.dao.filtering.SomeFilteringOwnerToFilteredNotOwnerDao;
+import de.ma_vin.util.sample.content.dao.filtering.SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefTwoParentsDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefIndirectParentDao;
@@ -34,8 +40,16 @@ public class DaoObjectFactory {
 		return new FilteredDao();
 	}
 
+	public static FilteredNotOwnerDao createFilteredNotOwnerDao() {
+		return new FilteredNotOwnerDao();
+	}
+
 	public static FilteredOnlyDaoFieldDao createFilteredOnlyDaoFieldDao() {
 		return new FilteredOnlyDaoFieldDao();
+	}
+
+	public static FilteredOnlyDaoFieldNotOwnerDao createFilteredOnlyDaoFieldNotOwnerDao() {
+		return new FilteredOnlyDaoFieldNotOwnerDao();
 	}
 
 	public static MultiRefIndirectParentDao createMultiRefIndirectParentDao() {
@@ -86,8 +100,24 @@ public class DaoObjectFactory {
 		return new SingleRefTwoParentsDao();
 	}
 
+	public static SomeDifferentFilteringNotOwnerDao createSomeDifferentFilteringNotOwnerDao() {
+		return new SomeDifferentFilteringNotOwnerDao();
+	}
+
+	public static SomeDifferentFilteringNotOwnerToFilteredDao createSomeDifferentFilteringNotOwnerToFilteredDao() {
+		return new SomeDifferentFilteringNotOwnerToFilteredDao();
+	}
+
 	public static SomeFilteringOwnerDao createSomeFilteringOwnerDao() {
 		return new SomeFilteringOwnerDao();
+	}
+
+	public static SomeFilteringOwnerToFilteredNotOwnerDao createSomeFilteringOwnerToFilteredNotOwnerDao() {
+		return new SomeFilteringOwnerToFilteredNotOwnerDao();
+	}
+
+	public static SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao createSomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao() {
+		return new SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao();
 	}
 
 }

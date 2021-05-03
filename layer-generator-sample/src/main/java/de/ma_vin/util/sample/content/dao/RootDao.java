@@ -2,6 +2,7 @@ package de.ma_vin.util.sample.content.dao;
 
 import de.ma_vin.ape.utils.generators.IdGenerator;
 import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
+import de.ma_vin.util.sample.content.dao.filtering.SomeDifferentFilteringNotOwnerDao;
 import de.ma_vin.util.sample.content.dao.filtering.SomeFilteringOwnerDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefTwoParentsDao;
@@ -25,9 +26,9 @@ import lombok.ToString;
 @BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "ext"})
+@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "nonOwnerFiltering", "ext"})
 @Table(name = "Roots")
-@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "ext"})
+@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "nonOwnerFiltering", "ext"})
 public class RootDao implements IIdentifiableDao {
 
 	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefTwoParentsDao.class)
@@ -61,6 +62,9 @@ public class RootDao implements IIdentifiableDao {
 
 	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefIndirectParentDao.class)
 	private Collection<MultiRefIndirectParentDao> multiRefIndirectParent;
+
+	@OneToOne(mappedBy = "parentRoot", targetEntity = SomeDifferentFilteringNotOwnerDao.class)
+	private SomeDifferentFilteringNotOwnerDao nonOwnerFiltering;
 
 	@Column
 	private String rootName;

@@ -6,18 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Generated dto class of FilteredOnlyDaoField
+ * Generated dto class of SomeDifferentFilteringNotOwner
  */
 @BaseDto("de.ma_vin.util.sample.content.dto")
 @Data
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-public class FilteredOnlyDaoFieldDto implements ITransportable {
-
-	private String descriptionOnlyDaoField;
+public class SomeDifferentFilteringNotOwnerDto implements ITransportable {
 
 	/**
-	 * Identification of FilteredOnlyDaoField
+	 * Identification of SomeDifferentFilteringNotOwner
 	 */
 	private String identification;
 

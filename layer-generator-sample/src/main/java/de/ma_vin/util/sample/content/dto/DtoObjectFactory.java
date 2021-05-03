@@ -4,6 +4,7 @@ import de.ma_vin.util.sample.content.dto.domain.dto.DomainAndDtoDto;
 import de.ma_vin.util.sample.content.dto.dto.OnlyDtoDto;
 import de.ma_vin.util.sample.content.dto.filtering.FilteredDto;
 import de.ma_vin.util.sample.content.dto.filtering.FilteredOnlyDaoFieldDto;
+import de.ma_vin.util.sample.content.dto.filtering.SomeDifferentFilteringNotOwnerDto;
 import de.ma_vin.util.sample.content.dto.filtering.SomeFilteringOwnerDto;
 import de.ma_vin.util.sample.content.dto.multi.MultiRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.multi.MultiRefTwoParentsDto;
@@ -79,6 +80,10 @@ public class DtoObjectFactory {
 
 	public static SingleRefTwoParentsDto createSingleRefTwoParentsDto() {
 		return new SingleRefTwoParentsDto();
+	}
+
+	public static SomeDifferentFilteringNotOwnerDto createSomeDifferentFilteringNotOwnerDto() {
+		return new SomeDifferentFilteringNotOwnerDto();
 	}
 
 	public static SomeFilteringOwnerDto createSomeFilteringOwnerDto() {

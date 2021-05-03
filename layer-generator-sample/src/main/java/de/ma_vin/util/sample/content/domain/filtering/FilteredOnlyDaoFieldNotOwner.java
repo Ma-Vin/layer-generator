@@ -6,20 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Generated domain class of FilteredOnlyDaoField
+ * Generated domain class of FilteredOnlyDaoFieldNotOwner
  */
 @BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-public class FilteredOnlyDaoField implements IIdentifiable {
+public class FilteredOnlyDaoFieldNotOwner implements IIdentifiable {
 
-	public static final String ID_PREFIX = "F4";
+	public static final String ID_PREFIX = "F5";
 
-	private String descriptionOnlyDaoField;
+	private String descriptionOnlyDaoFieldNotOwner;
 
 	/**
-	 * Identification of FilteredOnlyDaoField
+	 * Identification of FilteredOnlyDaoFieldNotOwner
 	 */
 	private String identification;
 

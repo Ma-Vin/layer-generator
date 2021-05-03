@@ -22,7 +22,7 @@ import lombok.ToString;
 public class FilteredOnlyDaoFieldDao implements IIdentifiableDao {
 
 	@Column
-	private String description;
+	private String descriptionOnlyDaoField;
 
 	@Column(name = "Id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class FilteredOnlyDaoFieldDao implements IIdentifiableDao {
 
 	@Column
 	@Enumerated(EnumType.STRING)
-	private AnyEnumType someEnum;
+	private AnyEnumType someEnumOnlyDaoField;
 
 	@Override
 	public String getIdentification() {

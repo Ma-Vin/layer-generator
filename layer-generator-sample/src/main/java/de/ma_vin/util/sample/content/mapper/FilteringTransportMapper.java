@@ -6,12 +6,14 @@ import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.filtering.Filtered;
 import de.ma_vin.util.sample.content.domain.filtering.FilteredOnlyDaoField;
+import de.ma_vin.util.sample.content.domain.filtering.SomeDifferentFilteringNotOwner;
 import de.ma_vin.util.sample.content.domain.filtering.SomeFilteringOwner;
 import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.dto.filtering.FilteredDto;
 import de.ma_vin.util.sample.content.dto.filtering.FilteredOnlyDaoFieldDto;
+import de.ma_vin.util.sample.content.dto.filtering.SomeDifferentFilteringNotOwnerDto;
 import de.ma_vin.util.sample.content.dto.filtering.SomeFilteringOwnerDto;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,6 +129,122 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 				, (domain, dto) -> getInstance().setFilteredOnlyDaoFieldDtoSingleReferences(domain, dto, mappedObjects)
 				, (domain, dto) -> {
 		});
+	}
+
+	/**
+	 * Converts a(n) {@link SomeDifferentFilteringNotOwnerDto} to a(n) {@link SomeDifferentFilteringNotOwner}
+	 *
+	 * @param someDifferentFilteringNotOwner the source object which should be converted
+	 * @return an equivalent new created {@link SomeDifferentFilteringNotOwner}
+	 */
+	public static SomeDifferentFilteringNotOwner convertToSomeDifferentFilteringNotOwner(SomeDifferentFilteringNotOwnerDto someDifferentFilteringNotOwner) {
+		return convertToSomeDifferentFilteringNotOwner(someDifferentFilteringNotOwner, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link SomeDifferentFilteringNotOwnerDto} to a(n) {@link SomeDifferentFilteringNotOwner}
+	 *
+	 * @param someDifferentFilteringNotOwner the source object which should be converted
+	 * @param mappedObjects                  map which contains already mapped objects. If an identification of {@code someDifferentFilteringNotOwner} is
+	 *                                       contained, the found {@link SomeDifferentFilteringNotOwner} will be returned
+	 * @return an equivalent new created {@link SomeDifferentFilteringNotOwner} or the found one from the given map
+	 */
+	public static SomeDifferentFilteringNotOwner convertToSomeDifferentFilteringNotOwner(SomeDifferentFilteringNotOwnerDto someDifferentFilteringNotOwner
+			, Map<String, IIdentifiable> mappedObjects) {
+		return convertToDomain(someDifferentFilteringNotOwner, mappedObjects, DomainObjectFactory::createSomeDifferentFilteringNotOwner, (dto, domain) -> getInstance().setSomeDifferentFilteringNotOwnerValues(dto, domain)
+				, (dto, domain) -> getInstance().setSomeDifferentFilteringNotOwnerSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
+	}
+
+	/**
+	 * Converts a(n) {@link SomeDifferentFilteringNotOwnerDto} to a(n) {@link SomeDifferentFilteringNotOwner} and sets the result to the corresponding
+	 * reference property at the parent
+	 *
+	 * @param someDifferentFilteringNotOwner the source object which should be converted
+	 * @param parent                         the parent of converted result
+	 * @return an equivalent new created {@link SomeDifferentFilteringNotOwner}
+	 */
+	public static SomeDifferentFilteringNotOwner convertToSomeDifferentFilteringNotOwner(SomeDifferentFilteringNotOwnerDto someDifferentFilteringNotOwner
+			, Root parent) {
+		return convertToSomeDifferentFilteringNotOwner(someDifferentFilteringNotOwner, parent, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link SomeDifferentFilteringNotOwnerDto} to a(n) {@link SomeDifferentFilteringNotOwner} and sets the result to the corresponding
+	 * reference property at the parent
+	 *
+	 * @param someDifferentFilteringNotOwner the source object which should be converted
+	 * @param parent                         the parent of converted result
+	 * @param mappedObjects                  map which contains already mapped objects. If an identification of {@code someDifferentFilteringNotOwner} is
+	 *                                       contained, the found {@link SomeDifferentFilteringNotOwner} will be returned
+	 * @return an equivalent new created {@link SomeDifferentFilteringNotOwner} or the found one from the given map
+	 */
+	public static SomeDifferentFilteringNotOwner convertToSomeDifferentFilteringNotOwner(SomeDifferentFilteringNotOwnerDto someDifferentFilteringNotOwner
+			, Root parent, Map<String, IIdentifiable> mappedObjects) {
+		SomeDifferentFilteringNotOwner result = convertToSomeDifferentFilteringNotOwner(someDifferentFilteringNotOwner, mappedObjects);
+		if (result != null) {
+			parent.setNonOwnerFiltering(result);
+		}
+		return result;
+	}
+
+	/**
+	 * Converts a(n) {@link SomeDifferentFilteringNotOwner} to a(n) {@link SomeDifferentFilteringNotOwnerDto}
+	 *
+	 * @param someDifferentFilteringNotOwner the source object which should be converted
+	 * @return an equivalent new created {@link SomeDifferentFilteringNotOwnerDto}
+	 */
+	public static SomeDifferentFilteringNotOwnerDto convertToSomeDifferentFilteringNotOwnerDto(SomeDifferentFilteringNotOwner someDifferentFilteringNotOwner) {
+		return convertToSomeDifferentFilteringNotOwnerDto(someDifferentFilteringNotOwner, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link SomeDifferentFilteringNotOwner} to a(n) {@link SomeDifferentFilteringNotOwnerDto}
+	 *
+	 * @param someDifferentFilteringNotOwner the source object which should be converted
+	 * @param mappedObjects                  map which contains already mapped objects. If an identification of {@code someDifferentFilteringNotOwner} is
+	 *                                       contained, the found {@link SomeDifferentFilteringNotOwnerDto} will be returned
+	 * @return an equivalent new created {@link SomeDifferentFilteringNotOwnerDto} or the found one from the given map
+	 */
+	public static SomeDifferentFilteringNotOwnerDto convertToSomeDifferentFilteringNotOwnerDto(SomeDifferentFilteringNotOwner someDifferentFilteringNotOwner
+			, Map<String, ITransportable> mappedObjects) {
+		return convertToDto(someDifferentFilteringNotOwner, mappedObjects, DtoObjectFactory::createSomeDifferentFilteringNotOwnerDto, (domain, dto) -> getInstance().setSomeDifferentFilteringNotOwnerDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setSomeDifferentFilteringNotOwnerDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
+	}
+
+	/**
+	 * Converts a(n) {@link SomeDifferentFilteringNotOwner} to a(n) {@link SomeDifferentFilteringNotOwnerDto} and sets the result to the corresponding
+	 * reference property at the parent
+	 *
+	 * @param someDifferentFilteringNotOwner the source object which should be converted
+	 * @param parent                         the parent of converted result
+	 * @return an equivalent new created {@link SomeDifferentFilteringNotOwnerDto}
+	 */
+	public static SomeDifferentFilteringNotOwnerDto convertToSomeDifferentFilteringNotOwnerDto(SomeDifferentFilteringNotOwner someDifferentFilteringNotOwner
+			, RootDto parent) {
+		return convertToSomeDifferentFilteringNotOwnerDto(someDifferentFilteringNotOwner, parent, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link SomeDifferentFilteringNotOwner} to a(n) {@link SomeDifferentFilteringNotOwnerDto} and sets the result to the corresponding
+	 * reference property at the parent
+	 *
+	 * @param someDifferentFilteringNotOwner the source object which should be converted
+	 * @param parent                         the parent of converted result
+	 * @param mappedObjects                  map which contains already mapped objects. If an identification of {@code someDifferentFilteringNotOwner} is
+	 *                                       contained, the found {@link SomeDifferentFilteringNotOwnerDto} will be returned
+	 * @return an equivalent new created {@link SomeDifferentFilteringNotOwnerDto} or the found one from the given map
+	 */
+	public static SomeDifferentFilteringNotOwnerDto convertToSomeDifferentFilteringNotOwnerDto(SomeDifferentFilteringNotOwner someDifferentFilteringNotOwner
+			, RootDto parent, Map<String, ITransportable> mappedObjects) {
+		SomeDifferentFilteringNotOwnerDto result = convertToSomeDifferentFilteringNotOwnerDto(someDifferentFilteringNotOwner, mappedObjects);
+		if (result != null) {
+			parent.setNonOwnerFiltering(result);
+		}
+		return result;
 	}
 
 	/**
@@ -292,7 +410,7 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	 * @param dto    object where to set the values
 	 */
 	protected void setFilteredOnlyDaoFieldDtoValues(FilteredOnlyDaoField domain, FilteredOnlyDaoFieldDto dto) {
-		dto.setDescription(domain.getDescription());
+		dto.setDescriptionOnlyDaoField(domain.getDescriptionOnlyDaoField());
 	}
 
 	/**
@@ -314,7 +432,7 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	 * @param domain object where to set the values
 	 */
 	protected void setFilteredOnlyDaoFieldValues(FilteredOnlyDaoFieldDto dto, FilteredOnlyDaoField domain) {
-		domain.setDescription(dto.getDescription());
+		domain.setDescriptionOnlyDaoField(dto.getDescriptionOnlyDaoField());
 	}
 
 	/**
@@ -337,6 +455,50 @@ public class FilteringTransportMapper extends AbstractTransportMapper {
 	protected void setFilteredValues(FilteredDto dto, Filtered domain) {
 		domain.setDescription(dto.getDescription());
 		domain.setSomeEnum(dto.getSomeEnum());
+	}
+
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setSomeDifferentFilteringNotOwnerDtoSingleReferences(SomeDifferentFilteringNotOwner domain, SomeDifferentFilteringNotOwnerDto dto
+			, Map<String, ITransportable> mappedObjects) {
+	}
+
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setSomeDifferentFilteringNotOwnerDtoValues(SomeDifferentFilteringNotOwner domain, SomeDifferentFilteringNotOwnerDto dto) {
+	}
+
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setSomeDifferentFilteringNotOwnerSingleReferences(SomeDifferentFilteringNotOwnerDto dto, SomeDifferentFilteringNotOwner domain
+			, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setSomeDifferentFilteringNotOwnerValues(SomeDifferentFilteringNotOwnerDto dto, SomeDifferentFilteringNotOwner domain) {
 	}
 
 	/**

@@ -144,6 +144,7 @@ public class ObjectFactory {
         result.getExtending().add(extendingClassDao);
 
         result.setFiltering(createSomeFilteringOwnerDaoWithChildren(getNextId()));
+        result.setNonOwnerFiltering(createSomeDifferentFilteringNotOwnerDaoWithChildren(getNextId()));
 
         result.setExt(createRootExtDao(getNextId()));
 
@@ -280,6 +281,8 @@ public class ObjectFactory {
         setId(result, id);
         result.setAggFiltered(new ArrayList<>());
         result.setAggFilteredOnlyDaoField(new ArrayList<>());
+        result.setAggFilteredNotOwner(new ArrayList<>());
+        result.setAggFilteredOnlyDaoFieldNotOwner(new ArrayList<>());
         return result;
     }
 
@@ -288,9 +291,36 @@ public class ObjectFactory {
         result.getAggFiltered().add(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_A));
         result.getAggFiltered().add(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_B));
         result.getAggFiltered().add(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_C));
+
+        SomeFilteringOwnerToFilteredNotOwnerDao connectionA = new SomeFilteringOwnerToFilteredNotOwnerDao();
+        connectionA.setSomeFilteringOwner(result);
+        connectionA.setFilteredNotOwner(createFilteredNotOwnerDao(getNextId(), AnyEnumType.ENUM_VALUE_A));
+        result.getAggFilteredNotOwner().add(connectionA);
+        SomeFilteringOwnerToFilteredNotOwnerDao connectionB = new SomeFilteringOwnerToFilteredNotOwnerDao();
+        connectionB.setSomeFilteringOwner(result);
+        connectionB.setFilteredNotOwner(createFilteredNotOwnerDao(getNextId(), AnyEnumType.ENUM_VALUE_B));
+        result.getAggFilteredNotOwner().add(connectionB);
+        SomeFilteringOwnerToFilteredNotOwnerDao connectionC = new SomeFilteringOwnerToFilteredNotOwnerDao();
+        connectionC.setSomeFilteringOwner(result);
+        connectionC.setFilteredNotOwner(createFilteredNotOwnerDao(getNextId(), AnyEnumType.ENUM_VALUE_C));
+        result.getAggFilteredNotOwner().add(connectionC);
+
         result.getAggFilteredOnlyDaoField().add(createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_A));
         result.getAggFilteredOnlyDaoField().add(createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_B));
         result.getAggFilteredOnlyDaoField().add(createFilteredOnlyDaoFieldDao(getNextId(), AnyEnumType.ENUM_VALUE_C));
+
+        SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao onlyDaoConnectionA = new SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao();
+        onlyDaoConnectionA.setSomeFilteringOwner(result);
+        onlyDaoConnectionA.setFilteredOnlyDaoFieldNotOwner(createFilteredOnlyDaoFieldNotOwnerDao(getNextId(), AnyEnumType.ENUM_VALUE_A));
+        result.getAggFilteredOnlyDaoFieldNotOwner().add(onlyDaoConnectionA);
+        SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao onlyDaoConnectionB = new SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao();
+        onlyDaoConnectionB.setSomeFilteringOwner(result);
+        onlyDaoConnectionB.setFilteredOnlyDaoFieldNotOwner(createFilteredOnlyDaoFieldNotOwnerDao(getNextId(), AnyEnumType.ENUM_VALUE_B));
+        result.getAggFilteredOnlyDaoFieldNotOwner().add(onlyDaoConnectionB);
+        SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao onlyDaoConnectionC = new SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao();
+        onlyDaoConnectionC.setSomeFilteringOwner(result);
+        onlyDaoConnectionC.setFilteredOnlyDaoFieldNotOwner(createFilteredOnlyDaoFieldNotOwnerDao(getNextId(), AnyEnumType.ENUM_VALUE_C));
+        result.getAggFilteredOnlyDaoFieldNotOwner().add(onlyDaoConnectionC);
         return result;
     }
 
@@ -302,11 +332,58 @@ public class ObjectFactory {
         return result;
     }
 
+    public static FilteredNotOwnerDao createFilteredNotOwnerDao(long id, AnyEnumType enumType) {
+        FilteredNotOwnerDao result = new FilteredNotOwnerDao();
+        setId(result, id);
+        result.setDescriptionNotOwner(String.format("Description_%d", id));
+        result.setSomeEnumNotOwner(enumType);
+        return result;
+    }
+
     public static FilteredOnlyDaoFieldDao createFilteredOnlyDaoFieldDao(long id, AnyEnumType enumType) {
         FilteredOnlyDaoFieldDao result = new FilteredOnlyDaoFieldDao();
         setId(result, id);
-        result.setDescription(String.format("Description_%d", id));
-        result.setSomeEnum(enumType);
+        result.setDescriptionOnlyDaoField(String.format("Description_%d", id));
+        result.setSomeEnumOnlyDaoField(enumType);
+        return result;
+    }
+
+    public static FilteredOnlyDaoFieldNotOwnerDao createFilteredOnlyDaoFieldNotOwnerDao(long id, AnyEnumType enumType) {
+        FilteredOnlyDaoFieldNotOwnerDao result = new FilteredOnlyDaoFieldNotOwnerDao();
+        setId(result, id);
+        result.setDescriptionOnlyDaoFieldNotOwner(String.format("Description_%d", id));
+        result.setSomeEnumOnlyDaoFieldNotOwner(enumType);
+        return result;
+    }
+
+    public static SomeDifferentFilteringNotOwnerDao createSomeDifferentFilteringNotOwnerDao(long id) {
+        SomeDifferentFilteringNotOwnerDao result = new SomeDifferentFilteringNotOwnerDao();
+        setId(result, id);
+        result.setAggFiltered(new ArrayList<>());
+        return result;
+    }
+
+    public static SomeDifferentFilteringNotOwnerDao createSomeDifferentFilteringNotOwnerDaoWithChildren(long id) {
+        SomeDifferentFilteringNotOwnerDao result = createSomeDifferentFilteringNotOwnerDao(id);
+
+        SomeDifferentFilteringNotOwnerToFilteredDao connectionA = new SomeDifferentFilteringNotOwnerToFilteredDao();
+        connectionA.setSomeDifferentFilteringNotOwner(result);
+        connectionA.setFiltered(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_B));
+        connectionA.setFilterAnyEnumType(AnyEnumType.ENUM_VALUE_A);
+        result.getAggFiltered().add(connectionA);
+
+        SomeDifferentFilteringNotOwnerToFilteredDao connectionB = new SomeDifferentFilteringNotOwnerToFilteredDao();
+        connectionB.setSomeDifferentFilteringNotOwner(result);
+        connectionB.setFiltered(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_C));
+        connectionB.setFilterAnyEnumType(AnyEnumType.ENUM_VALUE_B);
+        result.getAggFiltered().add(connectionB);
+
+        SomeDifferentFilteringNotOwnerToFilteredDao connectionC = new SomeDifferentFilteringNotOwnerToFilteredDao();
+        connectionC.setSomeDifferentFilteringNotOwner(result);
+        connectionC.setFiltered(createFilteredDao(getNextId(), AnyEnumType.ENUM_VALUE_A));
+        connectionC.setFilterAnyEnumType(AnyEnumType.ENUM_VALUE_C);
+        result.getAggFiltered().add(connectionC);
+
         return result;
     }
 
@@ -357,6 +434,7 @@ public class ObjectFactory {
         result.getExtending().add(createExtendingClass(getNextId()));
 
         result.setFiltering(createSomeFilteringOwnerWithChildren(getNextId()));
+        result.setNonOwnerFiltering(createSomeDifferentFilteringNotOwnerWithChildren(getNextId()));
 
         result.setExt(createRootExt(getNextId()));
 
@@ -488,12 +566,23 @@ public class ObjectFactory {
 
     public static SomeFilteringOwner createSomeFilteringOwnerWithChildren(long id) {
         SomeFilteringOwner result = createSomeFilteringOwner(id);
+
         result.addFilterA(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_A));
         result.addFilterB(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_B));
         result.addFilterC(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_C));
+
+        result.addFilterNotOwnerA(createFilteredNotOwner(getNextId(), AnyEnumType.ENUM_VALUE_A));
+        result.addFilterNotOwnerB(createFilteredNotOwner(getNextId(), AnyEnumType.ENUM_VALUE_B));
+        result.addFilterNotOwnerC(createFilteredNotOwner(getNextId(), AnyEnumType.ENUM_VALUE_C));
+
         result.addFilterDaoA(createFilteredOnlyDaoField(getNextId()));
         result.addFilterDaoB(createFilteredOnlyDaoField(getNextId()));
         result.addFilterDaoC(createFilteredOnlyDaoField(getNextId()));
+
+        result.addFilterDaoNotOwnerA(createFilteredOnlyDaoFieldNotOwner(getNextId()));
+        result.addFilterDaoNotOwnerB(createFilteredOnlyDaoFieldNotOwner(getNextId()));
+        result.addFilterDaoNotOwnerC(createFilteredOnlyDaoFieldNotOwner(getNextId()));
+
         return result;
     }
 
@@ -505,10 +594,41 @@ public class ObjectFactory {
         return result;
     }
 
+    public static FilteredNotOwner createFilteredNotOwner(long id, AnyEnumType enumType) {
+        FilteredNotOwner result = new FilteredNotOwner();
+        setId(result, id, FilteredNotOwner.ID_PREFIX);
+        result.setDescriptionNotOwner(String.format("Description_%d", id));
+        result.setSomeEnumNotOwner(enumType);
+        return result;
+    }
+
     public static FilteredOnlyDaoField createFilteredOnlyDaoField(long id) {
         FilteredOnlyDaoField result = new FilteredOnlyDaoField();
         setId(result, id, FilteredOnlyDaoField.ID_PREFIX);
-        result.setDescription(String.format("Description_%d", id));
+        result.setDescriptionOnlyDaoField(String.format("Description_%d", id));
+        return result;
+    }
+
+    public static FilteredOnlyDaoFieldNotOwner createFilteredOnlyDaoFieldNotOwner(long id) {
+        FilteredOnlyDaoFieldNotOwner result = new FilteredOnlyDaoFieldNotOwner();
+        setId(result, id, FilteredOnlyDaoFieldNotOwner.ID_PREFIX);
+        result.setDescriptionOnlyDaoFieldNotOwner(String.format("Description_%d", id));
+        return result;
+    }
+
+    public static SomeDifferentFilteringNotOwner createSomeDifferentFilteringNotOwner(long id) {
+        SomeDifferentFilteringNotOwner result = new SomeDifferentFilteringNotOwner();
+        setId(result, id, SomeDifferentFilteringNotOwner.ID_PREFIX);
+        return result;
+    }
+
+    public static SomeDifferentFilteringNotOwner createSomeDifferentFilteringNotOwnerWithChildren(long id) {
+        SomeDifferentFilteringNotOwner result = createSomeDifferentFilteringNotOwner(id);
+
+        result.addFilterA(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_B));
+        result.addFilterB(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_C));
+        result.addFilterC(createFiltered(getNextId(), AnyEnumType.ENUM_VALUE_A));
+
         return result;
     }
 
@@ -547,6 +667,7 @@ public class ObjectFactory {
         result.setSingleRefIndirectOtherParent(createSingleRefOtherIndirectParentDtoWithChildren(getNextId()));
 
         result.setFiltering(createSomeFilteringOwnerDto(getNextId()));
+        result.setNonOwnerFiltering(createSomeDifferentFilteringNotOwnerDto(getNextId()));
 
         result.setExt(createRootExtDto(getNextId()));
 
@@ -670,7 +791,13 @@ public class ObjectFactory {
     public static FilteredOnlyDaoFieldDto createFilteredOnlyDaoFieldDto(long id, AnyEnumType enumType) {
         FilteredOnlyDaoFieldDto result = new FilteredOnlyDaoFieldDto();
         setId(result, id, FilteredOnlyDaoField.ID_PREFIX);
-        result.setDescription(String.format("Description_%d", id));
+        result.setDescriptionOnlyDaoField(String.format("Description_%d", id));
+        return result;
+    }
+
+    public static SomeDifferentFilteringNotOwnerDto createSomeDifferentFilteringNotOwnerDto(long id) {
+        SomeDifferentFilteringNotOwnerDto result = new SomeDifferentFilteringNotOwnerDto();
+        setId(result, id, SomeDifferentFilteringNotOwner.ID_PREFIX);
         return result;
     }
 

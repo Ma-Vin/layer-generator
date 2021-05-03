@@ -4,7 +4,10 @@ import de.ma_vin.util.sample.content.domain.domain.OnlyDomain;
 import de.ma_vin.util.sample.content.domain.domain.dao.DomainAndDao;
 import de.ma_vin.util.sample.content.domain.domain.dto.DomainAndDto;
 import de.ma_vin.util.sample.content.domain.filtering.Filtered;
+import de.ma_vin.util.sample.content.domain.filtering.FilteredNotOwner;
 import de.ma_vin.util.sample.content.domain.filtering.FilteredOnlyDaoField;
+import de.ma_vin.util.sample.content.domain.filtering.FilteredOnlyDaoFieldNotOwner;
+import de.ma_vin.util.sample.content.domain.filtering.SomeDifferentFilteringNotOwner;
 import de.ma_vin.util.sample.content.domain.filtering.SomeFilteringOwner;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefOneParent;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
@@ -38,8 +41,16 @@ public class DomainObjectFactory {
 		return new Filtered();
 	}
 
+	public static FilteredNotOwner createFilteredNotOwner() {
+		return new FilteredNotOwner();
+	}
+
 	public static FilteredOnlyDaoField createFilteredOnlyDaoField() {
 		return new FilteredOnlyDaoField();
+	}
+
+	public static FilteredOnlyDaoFieldNotOwner createFilteredOnlyDaoFieldNotOwner() {
+		return new FilteredOnlyDaoFieldNotOwner();
 	}
 
 	public static MultiRefIndirectParent createMultiRefIndirectParent() {
@@ -84,6 +95,10 @@ public class DomainObjectFactory {
 
 	public static SingleRefTwoParents createSingleRefTwoParents() {
 		return new SingleRefTwoParents();
+	}
+
+	public static SomeDifferentFilteringNotOwner createSomeDifferentFilteringNotOwner() {
+		return new SomeDifferentFilteringNotOwner();
 	}
 
 	public static SomeFilteringOwner createSomeFilteringOwner() {

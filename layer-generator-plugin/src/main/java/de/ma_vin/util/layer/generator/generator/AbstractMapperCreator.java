@@ -383,29 +383,31 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      */
     protected Method createConvertMethodWithParentWithoutMap(Clazz mapperClass, CreateMethodParameterContainer parameterContainer
             , Reference referenceToParent, String packageName) {
-        return createConvertMethodWithParentWithoutMap(mapperClass, parameterContainer, referenceToParent, packageName, false);
+        return createConvertMethodWithParentWithoutMap(mapperClass, parameterContainer, referenceToParent, packageName, false, false);
     }
 
     /**
      * Creates mapping methods with a given parent but without a map parameter
      *
-     * @param mapperClass              class where to add methods at
-     * @param parameterContainer       container for default parameter to create convert method
-     * @param referenceToParent        reference to parent which should be used for the parent parameter
-     * @param packageName              name of base package
-     * @param singleValueModelRelevant {@code true} if values, which are provided by only one model, should be passed as parameter.
+     * @param mapperClass               class where to add methods at
+     * @param parameterContainer        container for default parameter to create convert method
+     * @param referenceToParent         reference to parent which should be used for the parent parameter
+     * @param packageName               name of base package
+     * @param singleValueModelRelevant  {@code true} if values, which are provided by only one model, should be passed as parameter.
+     * @param referenceToParentRelevant {@code true} if values, which are provided by parent reference, should be passed as parameter.
      * @return the created method
      */
     protected Method createConvertMethodWithParentWithoutMap(Clazz mapperClass, CreateMethodParameterContainer parameterContainer
-            , Reference referenceToParent, String packageName, boolean singleValueModelRelevant) {
+            , Reference referenceToParent, String packageName, boolean singleValueModelRelevant, boolean referenceToParentRelevant) {
 
         Method convertMethod = createConvertMethodWithParentBase(mapperClass, parameterContainer, referenceToParent, packageName);
 
-        convertMethod.addLine("return %s(%s,%s parent,%s new %s<>());"
+        convertMethod.addLine("return %s(%s,%s parent,%s%s new %s<>());"
                 , getConvertMethodName(parameterContainer.entity, parameterContainer.classParameterPostFix)
                 , getLowerFirst(parameterContainer.entity.getBaseName())
                 , hasIncludeChildrenParameter(parameterContainer.entity, parameterContainer.entityChecker) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , singleValueModelRelevant ? getParameterOfRelevantSingleModelValuesText(parameterContainer.entity) : ""
+                , referenceToParentRelevant ? getParameterOfParentReferencesText(referenceToParent) : ""
                 , HashMap.class.getSimpleName()
         );
         mapperClass.addMethod(convertMethod);
@@ -423,6 +425,14 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @return Text which can be added as parameter
      */
     protected abstract String getParameterOfRelevantSingleModelValuesText(Entity entity);
+
+    /**
+     * Determines the values of parameters which are provided by only one model and should be set at some convert method call
+     *
+     * @param referenceToParent reference to parent which should be used for the parent parameter
+     * @return Text which can be added as parameter
+     */
+    protected abstract String getParameterOfParentReferencesText(Reference referenceToParent);
 
     /**
      * Creates a basic convert method with parent parameter

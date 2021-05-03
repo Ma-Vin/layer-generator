@@ -109,6 +109,11 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         return "";
     }
 
+    @Override
+    protected String getParameterOfParentReferencesText(Reference referenceToParent) {
+        return "";
+    }
+
     /**
      * Determines the name of the converting method
      *

@@ -243,6 +243,7 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		SingleIndirectAccessMapper.convertToSingleRefIndirectParentDao(domain.getSingleRefIndirectParent(), dao, mappedObjects);
 		SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParentDao(domain.getSingleRefIndirectOtherParent(), dao, mappedObjects);
 		FilteringAccessMapper.convertToSomeFilteringOwnerDao(domain.getFiltering(), includeChildren, dao, mappedObjects);
+		FilteringAccessMapper.convertToSomeDifferentFilteringNotOwnerDao(domain.getNonOwnerFiltering(), includeChildren, dao, mappedObjects);
 		CommonAccessMapper.convertToRootExtDao(domain.getExt(), dao, mappedObjects);
 	}
 
@@ -384,6 +385,7 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		SingleIndirectAccessMapper.convertToSingleRefIndirectParent(dao.getSingleRefIndirectParent(), domain, mappedObjects);
 		SingleIndirectAccessMapper.convertToSingleRefOtherIndirectParent(dao.getSingleRefIndirectOtherParent(), domain, mappedObjects);
 		FilteringAccessMapper.convertToSomeFilteringOwner(dao.getFiltering(), includeChildren, domain, mappedObjects);
+		FilteringAccessMapper.convertToSomeDifferentFilteringNotOwner(dao.getNonOwnerFiltering(), includeChildren, domain, mappedObjects);
 		CommonAccessMapper.convertToRootExt(dao.getExt(), domain, mappedObjects);
 	}
 

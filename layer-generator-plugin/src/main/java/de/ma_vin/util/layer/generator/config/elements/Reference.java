@@ -82,12 +82,18 @@ public class Reference {
     @XmlTransient
     private boolean isReverse;
 
+    /**
+     * Filtering on non owner references whose target value differs from target entity values
+     */
+    private NonOwnerFilterField nonOwnerFilterField;
+
     public boolean isValid(List<String> messages) {
         return validateRequired(targetEntity, messages, "targetEntity")
                 && validateRequired(referenceName, messages, "referenceName")
                 && validateNonRequired(shortDescription, messages, "shortDescription")
                 && validateNonRequired(filterField, messages, "filterField")
-                && (filterField == null || validateNonRequired(filterFieldValue, messages, "filterFieldValue"));
+                && (filterField == null || validateNonRequired(filterFieldValue, messages, "filterFieldValue"))
+                && (nonOwnerFilterField == null || (Boolean.FALSE.equals(isOwner) && nonOwnerFilterField.isValid(messages)));
     }
 
     /**
@@ -101,12 +107,21 @@ public class Reference {
      */
     public static boolean isFilterFieldValid(String entity, List<Reference> references, List<String> messages) {
         boolean result = references.stream().filter(ref -> ref.isList).noneMatch(ref -> references.stream()
-                .filter(ref2 -> ref2.isList && ref.targetEntity.equals(ref2.targetEntity) && ref2.filterField == null)
+                .filter(ref2 -> ref2.isList && ref.targetEntity.equals(ref2.targetEntity) && ref2.filterField == null && ref2.getNonOwnerFilterField() == null)
                 .count() > 1);
         if (!result) {
             messages.add(String.format("There multiple reference from %s to the same target", entity));
         }
         return result;
+    }
+
+    /**
+     * Checks whether a filter criteria for non owner exists
+     *
+     * @return {@code true} if there exists a filter
+     */
+    public boolean isConnectionFiltering() {
+        return nonOwnerFilterField != null;
     }
 
     /**
@@ -131,6 +146,7 @@ public class Reference {
         result.isList = isList();
         result.isAggregated = isAggregated();
         result.isReverse = isReverse();
+        result.nonOwnerFilterField = getNonOwnerFilterField();
 
         return result;
     }
@@ -181,5 +197,9 @@ public class Reference {
 
     public boolean isReverse() {
         return isReverse;
+    }
+
+    public NonOwnerFilterField getNonOwnerFilterField() {
+        return nonOwnerFilterField;
     }
 }

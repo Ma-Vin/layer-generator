@@ -52,7 +52,7 @@ public class ConfigLoaderIT {
         assertTrue(root.isPresent(), "Root should be an entity without grouping");
         assertTrue(rootExt.isPresent(), "RootExt should be an entity without grouping");
 
-        assertEquals(11, root.get().getReferences().size(), "Wrong number of references at root");
+        assertEquals(12, root.get().getReferences().size(), "Wrong number of references at root");
         assertEquals(15, rootExt.get().getFields().size(), "Wrong number of fields at rootExt");
 
         Assertions.assertNotNull(configLoader.getConfig().getGroupings(), "There should be some groupings");

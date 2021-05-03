@@ -535,6 +535,13 @@ public class DaoCreator extends AbstractObjectCreator {
         targetAttribute.addAnnotation(Id.class);
         connectionClazz.addAttribute(targetAttribute);
 
+        if (reference.isConnectionFiltering()) {
+            Attribute filterAttribute = new Attribute(reference.getNonOwnerFilterField().getFilterFieldName(), reference.getNonOwnerFilterField().getFilterFieldType());
+            connectionClazz.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, reference.getNonOwnerFilterField().getFilterFieldPackage()
+                    , reference.getNonOwnerFilterField().getFilterFieldType()));
+            connectionClazz.addAttribute(filterAttribute);
+        }
+
         connectionClazz.addInnerClazz(getInnerIdClass(baseClassName + "Id"
                 , getLowerFirst(reference.getParent().getBaseName()) + "Id"
                 , getLowerFirst(reference.getTargetEntity()) + "Id"));

@@ -17,16 +17,22 @@ import lombok.ToString;
 @BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {"parentRoot", "aggFiltered", "aggFilteredOnlyDaoField"})
+@EqualsAndHashCode(exclude = {"parentRoot", "aggFilteredOnlyDaoFieldNotOwner", "aggFiltered", "aggFilteredOnlyDaoField", "aggFilteredNotOwner"})
 @Table(name = "SomeFilteringOwners")
-@ToString(exclude = {"parentRoot", "aggFiltered", "aggFilteredOnlyDaoField"})
+@ToString(exclude = {"parentRoot", "aggFilteredOnlyDaoFieldNotOwner", "aggFiltered", "aggFilteredOnlyDaoField", "aggFilteredNotOwner"})
 public class SomeFilteringOwnerDao implements IIdentifiableDao {
 
 	@OneToMany(mappedBy = "parentSomeFilteringOwner", targetEntity = FilteredDao.class)
 	private Collection<FilteredDao> aggFiltered;
 
+	@OneToMany(mappedBy = "filteredNotOwner", targetEntity = SomeFilteringOwnerToFilteredNotOwnerDao.class)
+	private Collection<SomeFilteringOwnerToFilteredNotOwnerDao> aggFilteredNotOwner;
+
 	@OneToMany(mappedBy = "parentSomeFilteringOwner", targetEntity = FilteredOnlyDaoFieldDao.class)
 	private Collection<FilteredOnlyDaoFieldDao> aggFilteredOnlyDaoField;
+
+	@OneToMany(mappedBy = "filteredOnlyDaoFieldNotOwner", targetEntity = SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao.class)
+	private Collection<SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao> aggFilteredOnlyDaoFieldNotOwner;
 
 	@Column(name = "Id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

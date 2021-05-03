@@ -202,6 +202,7 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		SingleIndirectTransportMapper.convertToSingleRefIndirectParentDto(domain.getSingleRefIndirectParent(), dto, mappedObjects);
 		SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParentDto(domain.getSingleRefIndirectOtherParent(), dto, mappedObjects);
 		FilteringTransportMapper.convertToSomeFilteringOwnerDto(domain.getFiltering(), dto, mappedObjects);
+		FilteringTransportMapper.convertToSomeDifferentFilteringNotOwnerDto(domain.getNonOwnerFiltering(), dto, mappedObjects);
 		CommonTransportMapper.convertToRootExtDto(domain.getExt(), dto, mappedObjects);
 	}
 
@@ -291,6 +292,7 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 		SingleIndirectTransportMapper.convertToSingleRefIndirectParent(dto.getSingleRefIndirectParent(), domain, mappedObjects);
 		SingleIndirectTransportMapper.convertToSingleRefOtherIndirectParent(dto.getSingleRefIndirectOtherParent(), domain, mappedObjects);
 		FilteringTransportMapper.convertToSomeFilteringOwner(dto.getFiltering(), domain, mappedObjects);
+		FilteringTransportMapper.convertToSomeDifferentFilteringNotOwner(dto.getNonOwnerFiltering(), domain, mappedObjects);
 		CommonTransportMapper.convertToRootExt(dto.getExt(), domain, mappedObjects);
 	}
 

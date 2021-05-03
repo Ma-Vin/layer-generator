@@ -1,6 +1,7 @@
 package de.ma_vin.util.sample.content.domain;
 
 import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;
+import de.ma_vin.util.sample.content.domain.filtering.SomeDifferentFilteringNotOwner;
 import de.ma_vin.util.sample.content.domain.filtering.SomeFilteringOwner;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefOneParent;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
@@ -25,10 +26,10 @@ import lombok.ToString;
  */
 @BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
-@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "ext"})
+@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "nonOwnerFiltering", "ext"})
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "ext"})
+@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "nonOwnerFiltering", "ext"})
 public class Root implements IIdentifiable {
 
 	public static final String ID_PREFIX = "R";
@@ -60,6 +61,8 @@ public class Root implements IIdentifiable {
 
 	@Setter(AccessLevel.PROTECTED)
 	private Collection<MultiRefIndirectParent> multiRefIndirectParent = new HashSet<>();
+
+	private SomeDifferentFilteringNotOwner nonOwnerFiltering;
 
 	private String rootName;
 

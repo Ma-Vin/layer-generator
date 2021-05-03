@@ -1,6 +1,7 @@
 package de.ma_vin.util.sample.content.dto;
 
 import de.ma_vin.util.layer.generator.annotations.model.BaseDto;
+import de.ma_vin.util.sample.content.dto.filtering.SomeDifferentFilteringNotOwnerDto;
 import de.ma_vin.util.sample.content.dto.filtering.SomeFilteringOwnerDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefTwoParentsDto;
@@ -16,10 +17,10 @@ import lombok.ToString;
  */
 @BaseDto("de.ma_vin.util.sample.content.dto")
 @Data
-@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "filtering", "ext"})
+@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "filtering", "nonOwnerFiltering", "ext"})
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-@ToString(exclude = {"singleRef", "anotherSingleRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "filtering", "ext"})
+@ToString(exclude = {"singleRef", "anotherSingleRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "filtering", "nonOwnerFiltering", "ext"})
 public class RootDto implements ITransportable {
 
 	private SingleRefTwoParentsDto anotherSingleRef;
@@ -34,6 +35,8 @@ public class RootDto implements ITransportable {
 	 * Identification of Root
 	 */
 	private String identification;
+
+	private SomeDifferentFilteringNotOwnerDto nonOwnerFiltering;
 
 	private String rootName;
 
