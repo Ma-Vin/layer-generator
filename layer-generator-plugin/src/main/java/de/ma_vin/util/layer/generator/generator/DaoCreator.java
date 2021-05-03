@@ -142,7 +142,7 @@ public class DaoCreator extends AbstractObjectCreator {
             }
             columnList.append(", ");
         });
-        return columnList.toString().substring(0, columnList.length() - 2);
+        return columnList.substring(0, columnList.length() - 2);
     }
 
     @Override

@@ -2742,10 +2742,10 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
+        expected.add("import de.test.package.dao.AnotherOwnerToDummyDao;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
-        expected.add("import de.test.package.dao.grouping.AnotherOwnerToDummyDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
         expected.add("import de.test.package.domain.AnotherOwner;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
@@ -5379,8 +5379,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
+        expected.add("import de.test.package.dao.OwnerToDummyDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
-        expected.add("import de.test.package.dao.grouping.OwnerToDummyDao;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
@@ -5847,8 +5847,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
+        expected.add("import de.test.package.dao.OwnerToDummyDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
-        expected.add("import de.test.package.dao.grouping.OwnerToDummyDao;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");

@@ -168,7 +168,8 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         mapperClass.addMethod(convertMethodWithMap);
         if (referenceToParent.isList() && !referenceToParent.isOwner()) {
-            mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, getPackage(entity, daoPackageName), DaoCreator.getConnectionTableNameParentRef(referenceToParent)));
+            mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, getPackage(referenceToParent.getRealTargetEntity(), daoPackageName)
+                    , DaoCreator.getConnectionTableNameParentRef(referenceToParent)));
         }
         mapperClass.addImport(Map.class.getName());
     }
