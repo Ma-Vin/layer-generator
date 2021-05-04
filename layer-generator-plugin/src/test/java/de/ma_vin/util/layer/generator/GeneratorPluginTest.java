@@ -3,6 +3,7 @@ package de.ma_vin.util.layer.generator;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import de.ma_vin.util.layer.generator.config.ConfigLoader;
 import de.ma_vin.util.layer.generator.config.elements.Config;
@@ -10,6 +11,7 @@ import de.ma_vin.util.layer.generator.generator.ModelGenerator;
 import de.ma_vin.util.layer.generator.log.LogImpl;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -21,6 +23,8 @@ import java.nio.file.Path;
 import java.nio.file.spi.FileSystemProvider;
 
 public class GeneratorPluginTest {
+
+    AutoCloseable openMocks;
 
     @Mock
     private MavenProject project;
@@ -89,7 +93,7 @@ public class GeneratorPluginTest {
         };
         cut.setLog(new LogImpl());
 
-        initMocks(this);
+        openMocks = openMocks(this);
         cut.setProject(project);
         cut.setGenerateTargetDirectory("target/temp/generated");
         cut.setGenerateDto(true);
@@ -142,10 +146,31 @@ public class GeneratorPluginTest {
         }
     }
 
+    @AfterEach
+    public void tearDown() throws Exception {
+        openMocks.close();
+    }
+
     @Test
     public void testDefault() {
         try {
             cut.execute();
+        } catch (MojoExecutionException e) {
+            fail("Exception occurs but not expected: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testDefaultSkip() {
+        cut.setSkip(true);
+        try {
+            cut.execute();
+
+            verify(baseDir, never()).exists();
+            verify(targetDir, never()).exists();
+            verify(modelDir, never()).exists();
+            verify(packageBaseDir, never()).exists();
+            verify(packageBaseSubDir, never()).exists();
         } catch (MojoExecutionException e) {
             fail("Exception occurs but not expected: " + e.getMessage());
         }

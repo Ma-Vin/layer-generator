@@ -31,6 +31,7 @@ modelDefinitionDirectory | src/main/resources/ | relative project directory wher
 modelDefinitionFilename | model.xml | xml which provides the model definition. Has to satisfy the config.xsd
 cleanTargetDirectory | false | if true all files and directories within the *generate-target*
 cleanBasePackage | true | if true all files and directories within the corresponding directory of *basePackage* (defined in the *model-file*)
+skip | false | if true the entire generating will be skipped
 
 ### Model definition
 In addition to the maven properties the plug in is configured by a xml file. This xml has to satisfy the generated config.xsd. 

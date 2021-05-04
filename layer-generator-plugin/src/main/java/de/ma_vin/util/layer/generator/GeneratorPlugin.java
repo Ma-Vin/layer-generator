@@ -46,12 +46,20 @@ public class GeneratorPlugin extends AbstractMojo {
     @Parameter(property = "clean-base-package", defaultValue = "true")
     private boolean cleanBasePackage;
 
+    @Parameter(property = "skip", defaultValue = "false")
+    private boolean skip;
+
     private File targetDir;
     private File modelFile;
     private Config config;
 
     @Override
     public void execute() throws MojoExecutionException {
+        if (skip) {
+            getLog().info("Skip generating");
+            return;
+        }
+
         getLog().info("Start to generating model objects");
 
         printProperties();
