@@ -522,9 +522,9 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expectedConnection.add("	@SuppressWarnings(\"java:S1068\")");
         expectedConnection.add("	public static class DummyToTargetId implements Serializable {");
         expectedConnection.add("");
-        expectedConnection.add("		private Long dummyId;");
+        expectedConnection.add("		private Long dummy;");
         expectedConnection.add("");
-        expectedConnection.add("		private Long targetId;");
+        expectedConnection.add("		private Long target;");
         expectedConnection.add("");
         expectedConnection.add("	}");
         expectedConnection.add("");

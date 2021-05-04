@@ -33,9 +33,9 @@ public class MultiRefOtherIndirectParentToMultiRefIndirectParentDao {
 	@SuppressWarnings("java:S1068")
 	public static class MultiRefOtherIndirectParentToMultiRefIndirectParentId implements Serializable {
 
-		private Long multiRefIndirectParentId;
+		private Long multiRefIndirectParent;
 
-		private Long multiRefOtherIndirectParentId;
+		private Long multiRefOtherIndirectParent;
 
 	}
 

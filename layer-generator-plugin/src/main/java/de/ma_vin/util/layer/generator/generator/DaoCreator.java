@@ -543,8 +543,7 @@ public class DaoCreator extends AbstractObjectCreator {
         }
 
         connectionClazz.addInnerClazz(getInnerIdClass(baseClassName + "Id"
-                , getLowerFirst(reference.getParent().getBaseName()) + "Id"
-                , getLowerFirst(reference.getTargetEntity()) + "Id"));
+                , getLowerFirst(reference.getParent().getBaseName()), getLowerFirst(reference.getTargetEntity())));
 
         writeClassFile(packageDir, clazzName, connectionClazz);
 

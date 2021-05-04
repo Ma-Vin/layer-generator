@@ -36,9 +36,9 @@ public class SomeDifferentFilteringNotOwnerToFilteredDao {
 	@SuppressWarnings("java:S1068")
 	public static class SomeDifferentFilteringNotOwnerToFilteredId implements Serializable {
 
-		private Long filteredId;
+		private Long filtered;
 
-		private Long someDifferentFilteringNotOwnerId;
+		private Long someDifferentFilteringNotOwner;
 
 	}
 
