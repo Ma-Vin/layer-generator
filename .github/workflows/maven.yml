@@ -32,5 +32,6 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: Build and analyze layer generator sources
       env:
+        GITHUB_TOKEN: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: mvn clean -B install org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P sonar-cloud --file pom.xml
