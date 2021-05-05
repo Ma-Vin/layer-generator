@@ -39,7 +39,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/Ma-Vin/layer-generator</url>
+            <url>https://maven.pkg.github.com/Ma-Vin/de.ma_vin.util.layerGenerator</url>
         </repository>
     </distributionManagement>
 
