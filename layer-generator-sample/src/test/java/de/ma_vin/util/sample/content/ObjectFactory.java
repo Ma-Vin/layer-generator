@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.content;
 
-import de.ma_vin.ape.utils.generators.IdGenerator;
+import de.ma_vin.util.sample.given.IdGenerator;
 import de.ma_vin.util.sample.content.dao.*;
 import de.ma_vin.util.sample.content.dao.dao.OnlyDaoDao;
 import de.ma_vin.util.sample.content.dao.domain.dao.DomainAndDaoDao;

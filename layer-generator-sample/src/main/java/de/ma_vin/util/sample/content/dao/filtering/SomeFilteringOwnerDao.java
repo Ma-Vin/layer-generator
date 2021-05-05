@@ -1,10 +1,10 @@
 package de.ma_vin.util.sample.content.dao.filtering;
 
-import de.ma_vin.ape.utils.generators.IdGenerator;
 import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.domain.filtering.SomeFilteringOwner;
+import de.ma_vin.util.sample.given.IdGenerator;
 import java.util.Collection;
 import javax.persistence.*;
 import lombok.Data;

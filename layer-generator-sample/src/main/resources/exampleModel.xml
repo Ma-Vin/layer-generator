@@ -3,7 +3,7 @@
     <dtoPackage>dto</dtoPackage>
     <domainPackage>domain</domainPackage>
     <daoPackage>dao</daoPackage>
-    <idGeneratorPackage>de.ma_vin.ape.utils.generators</idGeneratorPackage>
+    <idGeneratorPackage>de.ma_vin.util.sample.given</idGeneratorPackage>
     <idGeneratorClass>IdGenerator</idGeneratorClass>
     <entities>
         <entity baseName="Root" models="DOMAIN_DAO_DTO" identificationPrefix="R">

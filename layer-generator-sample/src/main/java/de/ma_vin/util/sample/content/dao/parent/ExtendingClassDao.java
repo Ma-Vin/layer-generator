@@ -1,9 +1,9 @@
 package de.ma_vin.util.sample.content.dao.parent;
 
-import de.ma_vin.ape.utils.generators.IdGenerator;
 import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
+import de.ma_vin.util.sample.given.IdGenerator;
 import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

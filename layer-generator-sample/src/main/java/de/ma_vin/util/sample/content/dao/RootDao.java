@@ -1,6 +1,5 @@
 package de.ma_vin.util.sample.content.dao;
 
-import de.ma_vin.ape.utils.generators.IdGenerator;
 import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.sample.content.dao.filtering.SomeDifferentFilteringNotOwnerDao;
 import de.ma_vin.util.sample.content.dao.filtering.SomeFilteringOwnerDao;
@@ -14,6 +13,7 @@ import de.ma_vin.util.sample.content.dao.single.SingleRefTwoParentsDao;
 import de.ma_vin.util.sample.content.dao.single.indirect.SingleRefIndirectParentDao;
 import de.ma_vin.util.sample.content.dao.single.indirect.SingleRefOtherIndirectParentDao;
 import de.ma_vin.util.sample.content.domain.Root;
+import de.ma_vin.util.sample.given.IdGenerator;
 import java.util.Collection;
 import javax.persistence.*;
 import lombok.Data;
