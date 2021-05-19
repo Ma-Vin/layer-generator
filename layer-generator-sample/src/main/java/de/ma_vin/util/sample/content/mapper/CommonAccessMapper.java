@@ -208,6 +208,7 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		dao.setAnotherMultiRef(new ArrayList<>());
 		dao.setMultiRefIndirectParent(new ArrayList<>());
 		dao.setMultiRefIndirectOtherParent(new ArrayList<>());
+		dao.setMultiRefIndirectSelfReference(new ArrayList<>());
 		dao.setExtending(new ArrayList<>());
 		if (includeChildren) {
 			domain.getMultiRef().forEach(arg ->
@@ -221,6 +222,9 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 			);
 			domain.getMultiRefIndirectOtherParent().forEach(arg ->
 					MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParentDao(arg, true, dao, mappedObjects)
+			);
+			domain.getMultiRefIndirectSelfReference().forEach(arg ->
+					MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReferenceDao(arg, true, dao, mappedObjects)
 			);
 			domain.getExtending().forEach(arg ->
 					ParentAccessMapper.convertToExtendingClassDao(arg, dao, mappedObjects)
@@ -363,6 +367,9 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 			);
 			dao.getMultiRefIndirectOtherParent().forEach(arg ->
 					MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParent(arg, true, domain, mappedObjects)
+			);
+			dao.getMultiRefIndirectSelfReference().forEach(arg ->
+					MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReference(arg, true, domain, mappedObjects)
 			);
 			dao.getExtending().forEach(arg ->
 					ParentAccessMapper.convertToExtendingClass(arg, domain, mappedObjects)

@@ -545,6 +545,107 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     }
 
     @Test
+    public void testCreateDataAccessObjectRelationNotOwnerSameTarget() {
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
+        when(targetEntity.getBaseName()).thenReturn(ENTITY_NAME);
+        when(targetEntity.getTableName()).thenReturn(ENTITY_NAME);
+        setMockReturnsReference(targetReference, "Sub" + ENTITY_NAME, ENTITY_NAME, null, null, Boolean.TRUE, Boolean.FALSE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import java.util.Collection;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@EqualsAndHashCode(exclude = {\"subDummy\"})");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("@ToString(exclude = {\"subDummy\"})");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	@OneToMany(mappedBy = \"dummy\", targetEntity = DummyToDummyDao.class)");
+        expected.add("	private Collection<DummyToDummyDao> subDummy;");
+        expected.add("");
+        expected.add("}");
+
+        List<String> expectedConnection = new ArrayList<>();
+        expectedConnection.add("package de.test.package.dao.group;");
+        expectedConnection.add("");
+        expectedConnection.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expectedConnection.add("import java.io.Serializable;");
+        expectedConnection.add("import javax.persistence.*;");
+        expectedConnection.add("import lombok.AllArgsConstructor;");
+        expectedConnection.add("import lombok.Data;");
+        expectedConnection.add("import lombok.NoArgsConstructor;");
+        expectedConnection.add("");
+        expectedConnection.add("@AllArgsConstructor");
+        expectedConnection.add("@BaseDao(\"de.test.package.dao\")");
+        expectedConnection.add("@Data");
+        expectedConnection.add("@Entity");
+        expectedConnection.add("@IdClass(DummyToDummyDao.DummyToDummyId.class)");
+        expectedConnection.add("@NoArgsConstructor");
+        expectedConnection.add("@SuppressWarnings(\"java:S1948\")");
+        expectedConnection.add("@Table(name = \"DummyToDummys\")");
+        expectedConnection.add("public class DummyToDummyDao {");
+        expectedConnection.add("");
+        expectedConnection.add("	@Id");
+        expectedConnection.add("	@JoinColumn(name = \"DummyId\")");
+        expectedConnection.add("	@ManyToOne(targetEntity = DummyDao.class)");
+        expectedConnection.add("	private DummyDao dummy;");
+        expectedConnection.add("");
+        expectedConnection.add("	@Id");
+        expectedConnection.add("	@JoinColumn(name = \"SubDummyId\")");
+        expectedConnection.add("	@OneToOne(targetEntity = DummyDao.class)");
+        expectedConnection.add("	private DummyDao subDummy;");
+        expectedConnection.add("");
+        expectedConnection.add("	@AllArgsConstructor");
+        expectedConnection.add("	@Data");
+        expectedConnection.add("	@NoArgsConstructor");
+        expectedConnection.add("	@SuppressWarnings(\"java:S1068\")");
+        expectedConnection.add("	public static class DummyToDummyId implements Serializable {");
+        expectedConnection.add("");
+        expectedConnection.add("		private Long dummy;");
+        expectedConnection.add("");
+        expectedConnection.add("		private Long subDummy;");
+        expectedConnection.add("");
+        expectedConnection.add("	}");
+        expectedConnection.add("");
+        expectedConnection.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        assertEquals(2, writtenFileContents.size(), "Wrong number of files");
+        assertTrue(writtenFileContents.containsKey("DummyDao.java"));
+        assertTrue(writtenFileContents.containsKey("DummyToDummyDao.java"));
+
+        if (expected.size() != writtenFileContents.get("DummyDao.java").size()
+                || expectedConnection.size() != writtenFileContents.get("DummyToDummyDao.java").size()) {
+            logFileContents();
+        }
+        TestUtil.checkList(expected, writtenFileContents.get("DummyDao.java"));
+        TestUtil.checkList(expectedConnection, writtenFileContents.get("DummyToDummyDao.java"));
+    }
+
+    @Test
     public void testCreateDataAccessObjectUniqueParentRelationNotOwner() {
         when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);

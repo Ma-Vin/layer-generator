@@ -68,6 +68,8 @@ public class CommonAccessMapperTest {
         assertEquals(0, result.getMultiRefIndirectParent().size());
         assertNotNull(result.getMultiRefIndirectOtherParent(), "There should be any MultiRefIndirectOtherParents list");
         assertEquals(0, result.getMultiRefIndirectOtherParent().size());
+        assertNotNull(result.getMultiRefIndirectSelfReference(), "There should be any MultiRefIndirectSelfReference list");
+        assertEquals(0, result.getMultiRefIndirectSelfReference().size());
         assertNotNull(result.getExtending(), "There should be any extending list");
         assertEquals(0, result.getExtending().size());
     }
@@ -103,6 +105,8 @@ public class CommonAccessMapperTest {
         assertEquals(rootDao.getMultiRefIndirectParent().size(), result.getMultiRefIndirectParent().size());
         assertNotNull(result.getMultiRefIndirectOtherParent(), "There should be any MultiRefIndirectOtherParents list");
         assertEquals(rootDao.getMultiRefIndirectOtherParent().size(), result.getMultiRefIndirectOtherParent().size());
+        assertNotNull(result.getMultiRefIndirectSelfReference(), "There should be any MultiRefIndirectSelfReference list");
+        assertEquals(rootDao.getMultiRefIndirectSelfReference().size(), result.getMultiRefIndirectSelfReference().size());
         assertNotNull(result.getExtending(), "There should be any extending list");
         assertEquals(rootDao.getExtending().size(), result.getExtending().size());
     }
@@ -205,6 +209,8 @@ public class CommonAccessMapperTest {
         assertEquals(0, result.getMultiRefIndirectParent().size());
         assertNotNull(result.getMultiRefIndirectOtherParent(), "There should be any MultiRefIndirectOtherParents list");
         assertEquals(0, result.getMultiRefIndirectOtherParent().size());
+        assertNotNull(result.getMultiRefIndirectSelfReference(), "There should be any MultiRefIndirectSelfReference list");
+        assertEquals(0, result.getMultiRefIndirectSelfReference().size());
         assertNotNull(result.getExtending(), "There should be any extending list");
         assertEquals(0, result.getExtending().size());
     }
@@ -245,6 +251,9 @@ public class CommonAccessMapperTest {
         assertNotNull(result.getMultiRefIndirectOtherParent(), "There should be any MultiRefIndirectOtherParents list");
         assertEquals(root.getMultiRefIndirectOtherParent().size(), result.getMultiRefIndirectOtherParent().size());
         result.getMultiRefIndirectOtherParent().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
+        assertNotNull(result.getMultiRefIndirectSelfReference(), "There should be any MultiRefIndirectOtherParents list");
+        assertEquals(root.getMultiRefIndirectSelfReference().size(), result.getMultiRefIndirectSelfReference().size());
+        result.getMultiRefIndirectSelfReference().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));
         assertNotNull(result.getExtending(), "There should be any extending list");
         assertEquals(root.getExtending().size(), result.getExtending().size());
         result.getExtending().forEach(o -> assertEquals(result, o.getParentRoot(), "Wrong parent at " + o.toString()));

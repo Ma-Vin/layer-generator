@@ -12,6 +12,7 @@ import de.ma_vin.util.sample.content.domain.filtering.SomeFilteringOwner;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefOneParent;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
 import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefIndirectParent;
+import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefIndirectSelfReference;
 import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefOtherIndirectParent;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
 import de.ma_vin.util.sample.content.domain.single.SingleRefOneParent;
@@ -55,6 +56,10 @@ public class DomainObjectFactory {
 
 	public static MultiRefIndirectParent createMultiRefIndirectParent() {
 		return new MultiRefIndirectParent();
+	}
+
+	public static MultiRefIndirectSelfReference createMultiRefIndirectSelfReference() {
+		return new MultiRefIndirectSelfReference();
 	}
 
 	public static MultiRefOneParent createMultiRefOneParent() {

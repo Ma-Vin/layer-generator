@@ -21,10 +21,14 @@ public class MultiIndirectAccessMapperTest {
     private RootDao rootDao;
     private MultiRefIndirectParentDao multiRefIndirectParentDao;
     private MultiRefOtherIndirectParentDao multiRefOtherIndirectParentDao;
+    private MultiRefIndirectSelfReferenceDao multiRefIndirectSelfReferenceDao;
+    private MultiRefIndirectSelfReferenceDao subMultiRefIndirectSelfReferenceDao;
 
     private Root root;
     private MultiRefIndirectParent multiRefIndirectParent;
     private MultiRefOtherIndirectParent multiRefOtherIndirectParent;
+    private MultiRefIndirectSelfReference multiRefIndirectSelfReference;
+    private MultiRefIndirectSelfReference subMultiRefIndirectSelfReference;
 
     Map<String, IIdentifiable> mappedObjects = new HashMap<>();
     Map<String, IIdentifiableDao> mappedDaoObjects = new HashMap<>();
@@ -38,12 +42,16 @@ public class MultiIndirectAccessMapperTest {
         multiRefIndirectParentDao = createMultiRefIndirectParentDao(getNextId());
         addToCreatedMap(multiRefIndirectParentDao);
         multiRefOtherIndirectParentDao = createMultiRefOtherIndirectParentDaoWithChildren(getNextId(), multiRefIndirectParentDao.getIdentification());
+        multiRefIndirectSelfReferenceDao = createMultiRefIndirectSelfReferenceDao(getNextId());
+        subMultiRefIndirectSelfReferenceDao = createMultiRefIndirectSelfReferenceDao(getNextId());
         rootDao = createRootDao(getNextId());
 
         initObjectFactory();
         multiRefIndirectParent = createMultiRefIndirectParent(getNextId());
         addToCreatedMap(multiRefIndirectParent);
         multiRefOtherIndirectParent = createMultiRefOtherIndirectParentWithChildren(getNextId(), multiRefIndirectParent.getIdentification());
+        multiRefIndirectSelfReference = createMultiRefIndirectSelfReference(getNextId());
+        subMultiRefIndirectSelfReference = createMultiRefIndirectSelfReference(getNextId());
         root = createRoot(getNextId());
     }
 
@@ -131,6 +139,55 @@ public class MultiIndirectAccessMapperTest {
     }
 
     @Test
+    public void testConvertToMultiRefIndirectSelfReference() {
+        MultiRefIndirectSelfReference result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDao, false);
+        assertNotNull(result, "There should be any result");
+        assertEquals(multiRefIndirectSelfReferenceDao.getIdentification(), result.getIdentification(), "Wrong identification");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceWithChildren() {
+        MultiRefIndirectSelfReferenceToMultiRefIndirectSelfReferenceDao con = new MultiRefIndirectSelfReferenceToMultiRefIndirectSelfReferenceDao();
+        con.setSubMultiRefIndirectSelfReference(subMultiRefIndirectSelfReferenceDao);
+        con.setMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDao);
+        multiRefIndirectSelfReferenceDao.getSelfRefs().add(con);
+        MultiRefIndirectSelfReference result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDao, true);
+        assertNotNull(result, "There should be any result");
+        assertEquals(multiRefIndirectSelfReferenceDao.getIdentification(), result.getIdentification(), "Wrong identification");
+        assertEquals(1, result.getSelfRefs().size(), "Wrong number of children");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceWithParent() {
+        MultiRefIndirectSelfReference result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDao, false, root);
+        assertNotNull(result, "There should be any result");
+        assertEquals(multiRefIndirectSelfReferenceDao.getIdentification(), result.getIdentification(), "Wrong identification");
+
+        assertTrue(root.getMultiRefIndirectSelfReference().contains(result), "Wrong multi ref at root");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceWithOtherParent() {
+        MultiRefIndirectSelfReference result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReference(subMultiRefIndirectSelfReferenceDao, false, multiRefIndirectSelfReference);
+        assertNotNull(result, "There should be any result");
+        assertEquals(subMultiRefIndirectSelfReferenceDao.getIdentification(), result.getIdentification(), "Wrong identification");
+
+        assertTrue(multiRefIndirectSelfReference.getSelfRefs().contains(result), "Wrong multi ref at root");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceNull() {
+        assertNull(MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReference(null, false), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceAgain() {
+        MultiRefIndirectSelfReference result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDao, false, mappedObjects);
+        MultiRefIndirectSelfReference convertAgainResult = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDao, false, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
     public void testConvertToMultiRefIndirectParentDao() {
         MultiRefIndirectParentDao result = MultiIndirectAccessMapper.convertToMultiRefIndirectParentDao(multiRefIndirectParent);
         assertNotNull(result, "There should be any result");
@@ -210,6 +267,52 @@ public class MultiIndirectAccessMapperTest {
     public void testConvertToMultiRefOtherIndirectParentDaoAgain() {
         MultiRefOtherIndirectParentDao result = MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParentDao(multiRefOtherIndirectParent, false, mappedDaoObjects);
         MultiRefOtherIndirectParentDao convertAgainResult = MultiIndirectAccessMapper.convertToMultiRefOtherIndirectParentDao(multiRefOtherIndirectParent, false, mappedDaoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceDao() {
+        MultiRefIndirectSelfReferenceDao result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReferenceDao(multiRefIndirectSelfReference, false);
+        assertNotNull(result, "There should be any result");
+        assertEquals(multiRefIndirectSelfReference.getIdentification(), result.getIdentification(), "Wrong identification");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceDaoWithChildren() {
+        multiRefIndirectSelfReference.addSelfRefs(subMultiRefIndirectSelfReference);
+        MultiRefIndirectSelfReferenceDao result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReferenceDao(multiRefIndirectSelfReference, true);
+        assertNotNull(result, "There should be any result");
+        assertEquals(multiRefIndirectSelfReference.getIdentification(), result.getIdentification(), "Wrong identification");
+        assertEquals(1, result.getSelfRefs().size(), "Wrong number of children");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceDaoWithParent() {
+        MultiRefIndirectSelfReferenceDao result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReferenceDao(multiRefIndirectSelfReference, false, rootDao);
+        assertNotNull(result, "There should be any result");
+        assertEquals(multiRefIndirectSelfReference.getIdentification(), result.getIdentification(), "Wrong identification");
+
+        assertTrue(rootDao.getMultiRefIndirectSelfReference().contains(result), "Wrong multi ref at root");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceDaoWithOtherParent() {
+        MultiRefIndirectSelfReferenceDao result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReferenceDao(subMultiRefIndirectSelfReference, false, multiRefIndirectSelfReferenceDao);
+        assertNotNull(result, "There should be any result");
+        assertEquals(subMultiRefIndirectSelfReference.getIdentification(), result.getIdentification(), "Wrong identification");
+
+        assertTrue(multiRefIndirectSelfReferenceDao.getSelfRefs().stream().anyMatch(o -> o.getSubMultiRefIndirectSelfReference().getIdentification().equals(result.getIdentification())), "Wrong multi ref at root");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceDaoNull() {
+        assertNull(MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReferenceDao(null, false), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceDaoAgain() {
+        MultiRefIndirectSelfReferenceDao result = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReferenceDao(multiRefIndirectSelfReference, false, mappedDaoObjects);
+        MultiRefIndirectSelfReferenceDao convertAgainResult = MultiIndirectAccessMapper.convertToMultiRefIndirectSelfReferenceDao(multiRefIndirectSelfReference, false, mappedDaoObjects);
         assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 

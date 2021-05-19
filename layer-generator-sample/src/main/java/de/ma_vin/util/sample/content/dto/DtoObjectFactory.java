@@ -9,6 +9,7 @@ import de.ma_vin.util.sample.content.dto.filtering.SomeFilteringOwnerDto;
 import de.ma_vin.util.sample.content.dto.multi.MultiRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.multi.MultiRefTwoParentsDto;
 import de.ma_vin.util.sample.content.dto.multi.indirect.MultiRefIndirectParentDto;
+import de.ma_vin.util.sample.content.dto.multi.indirect.MultiRefIndirectSelfReferenceDto;
 import de.ma_vin.util.sample.content.dto.multi.indirect.MultiRefOtherIndirectParentDto;
 import de.ma_vin.util.sample.content.dto.parent.ExtendingClassDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefOneParentDto;
@@ -40,6 +41,10 @@ public class DtoObjectFactory {
 
 	public static MultiRefIndirectParentDto createMultiRefIndirectParentDto() {
 		return new MultiRefIndirectParentDto();
+	}
+
+	public static MultiRefIndirectSelfReferenceDto createMultiRefIndirectSelfReferenceDto() {
+		return new MultiRefIndirectSelfReferenceDto();
 	}
 
 	public static MultiRefOneParentDto createMultiRefOneParentDto() {

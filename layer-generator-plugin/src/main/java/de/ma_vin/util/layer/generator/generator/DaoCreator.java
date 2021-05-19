@@ -503,6 +503,14 @@ public class DaoCreator extends AbstractObjectCreator {
     private Clazz createConnectionTable(String packageName, String basePackageName, Reference reference, File packageDir) {
         String clazzName = getConnectionTableName(reference);
         String baseClassName = clazzName.substring(0, clazzName.length() - 3);
+        String sourcePropertyName = getLowerFirst(reference.getParent().getBaseName());
+        String targetPropertyName = getLowerFirst(reference.getTargetEntity());
+        if (sourcePropertyName.equals(targetPropertyName)) {
+            targetPropertyName = "sub" + getUpperFirst(targetPropertyName);
+        }
+        String sourceJoinColumnName = String.format(PLACEHOLDER_ID, getUpperFirst(sourcePropertyName));
+        String targetJoinColumnName = String.format(PLACEHOLDER_ID, getUpperFirst(targetPropertyName));
+
         Clazz connectionClazz = new Clazz(packageName, clazzName);
 
         connectionClazz.addImport(BaseDao.class.getName());
@@ -523,15 +531,15 @@ public class DaoCreator extends AbstractObjectCreator {
         connectionClazz.addAnnotation(new Annotation(IdClass.class, null, String.format("%s.%sId.class", clazzName, baseClassName)));
         connectionClazz.addAnnotation(new Annotation(SuppressWarnings.class.getSimpleName(), null, "\"java:S1948\""));
 
-        Attribute sourceAttribute = new Attribute(getLowerFirst(reference.getParent().getBaseName()), reference.getParent().getBaseName() + DAO_POSTFIX);
+        Attribute sourceAttribute = new Attribute(sourcePropertyName, reference.getParent().getBaseName() + DAO_POSTFIX);
         sourceAttribute.addAnnotation(ManyToOne.class, TARGET_ENTITY, reference.getParent().getBaseName() + "Dao.class");
-        sourceAttribute.addAnnotation(JoinColumn.class, "name", String.format(PLACEHOLDER_ID, reference.getParent().getBaseName()));
+        sourceAttribute.addAnnotation(JoinColumn.class, "name", sourceJoinColumnName);
         sourceAttribute.addAnnotation(Id.class);
         connectionClazz.addAttribute(sourceAttribute);
 
-        Attribute targetAttribute = new Attribute(getLowerFirst(reference.getTargetEntity()), reference.getTargetEntity() + DAO_POSTFIX);
+        Attribute targetAttribute = new Attribute(targetPropertyName, reference.getTargetEntity() + DAO_POSTFIX);
         targetAttribute.addAnnotation(OneToOne.class, TARGET_ENTITY, reference.getTargetEntity() + DAO_POSTFIX + CLASS_ENDING);
-        targetAttribute.addAnnotation(JoinColumn.class, "name", String.format(PLACEHOLDER_ID, reference.getTargetEntity()));
+        targetAttribute.addAnnotation(JoinColumn.class, "name", targetJoinColumnName);
         targetAttribute.addAnnotation(Id.class);
         connectionClazz.addAttribute(targetAttribute);
 
@@ -542,8 +550,7 @@ public class DaoCreator extends AbstractObjectCreator {
             connectionClazz.addAttribute(filterAttribute);
         }
 
-        connectionClazz.addInnerClazz(getInnerIdClass(baseClassName + "Id"
-                , getLowerFirst(reference.getParent().getBaseName()), getLowerFirst(reference.getTargetEntity())));
+        connectionClazz.addInnerClazz(getInnerIdClass(baseClassName + "Id", sourcePropertyName, targetPropertyName));
 
         writeClassFile(packageDir, clazzName, connectionClazz);
 

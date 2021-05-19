@@ -6,6 +6,7 @@ import de.ma_vin.util.sample.content.domain.filtering.SomeFilteringOwner;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefOneParent;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
 import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefIndirectParent;
+import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefIndirectSelfReference;
 import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefOtherIndirectParent;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
 import de.ma_vin.util.sample.content.domain.single.SingleRefOneParent;
@@ -26,10 +27,10 @@ import lombok.ToString;
  */
 @BaseDomain("de.ma_vin.util.sample.content.domain")
 @Data
-@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "nonOwnerFiltering", "ext"})
+@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "multiRefIndirectSelfReference", "extending", "filtering", "nonOwnerFiltering", "ext"})
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "nonOwnerFiltering", "ext"})
+@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "multiRefIndirectSelfReference", "extending", "filtering", "nonOwnerFiltering", "ext"})
 public class Root implements IIdentifiable {
 
 	public static final String ID_PREFIX = "R";
@@ -61,6 +62,9 @@ public class Root implements IIdentifiable {
 
 	@Setter(AccessLevel.PROTECTED)
 	private Collection<MultiRefIndirectParent> multiRefIndirectParent = new HashSet<>();
+
+	@Setter(AccessLevel.PROTECTED)
+	private Collection<MultiRefIndirectSelfReference> multiRefIndirectSelfReference = new HashSet<>();
 
 	private SomeDifferentFilteringNotOwner nonOwnerFiltering;
 
@@ -118,6 +122,15 @@ public class Root implements IIdentifiable {
 	}
 
 	/**
+	 * Adds a MultiRefIndirectSelfReference to multiRefIndirectSelfReference
+	 * 
+	 * @param multiRefIndirectSelfReference MultiRefIndirectSelfReference to add
+	 */
+	public boolean addMultiRefIndirectSelfReference(MultiRefIndirectSelfReference multiRefIndirectSelfReference) {
+		return this.multiRefIndirectSelfReference.add(multiRefIndirectSelfReference);
+	}
+
+	/**
 	 * Removes a MultiRefTwoParents from anotherMultiRef
 	 * 
 	 * @param multiRefTwoParents MultiRefTwoParents to remove
@@ -160,6 +173,15 @@ public class Root implements IIdentifiable {
 	 */
 	public boolean removeMultiRefIndirectParent(MultiRefIndirectParent multiRefIndirectParent) {
 		return this.multiRefIndirectParent.remove(multiRefIndirectParent);
+	}
+
+	/**
+	 * Removes a MultiRefIndirectSelfReference from multiRefIndirectSelfReference
+	 * 
+	 * @param multiRefIndirectSelfReference MultiRefIndirectSelfReference to remove
+	 */
+	public boolean removeMultiRefIndirectSelfReference(MultiRefIndirectSelfReference multiRefIndirectSelfReference) {
+		return this.multiRefIndirectSelfReference.remove(multiRefIndirectSelfReference);
 	}
 
 }

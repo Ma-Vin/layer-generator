@@ -19,9 +19,11 @@ public class MultiIndirectTransportMapperTest {
 
     private MultiRefIndirectParent multiRefIndirectParent;
     private MultiRefOtherIndirectParent multiRefOtherIndirectParent;
+    private MultiRefIndirectSelfReference multiRefIndirectSelfReference;
 
     private MultiRefIndirectParentDto multiRefIndirectParentDto;
     private MultiRefOtherIndirectParentDto multiRefOtherIndirectParentDto;
+    private MultiRefIndirectSelfReferenceDto multiRefIndirectSelfReferenceDto;
 
     Map<String, IIdentifiable> mappedObjects = new HashMap<>();
     Map<String, ITransportable> mappedDtoObjects = new HashMap<>();
@@ -35,11 +37,13 @@ public class MultiIndirectTransportMapperTest {
         multiRefIndirectParentDto = createMultiRefIndirectParentDto(getNextId());
         addToCreatedMap(multiRefIndirectParentDto);
         multiRefOtherIndirectParentDto = createMultiRefOtherIndirectParentDto(getNextId());
+        multiRefIndirectSelfReferenceDto = createMultiRefIndirectSelfReferenceDto(getNextId());
 
         initObjectFactory();
         multiRefIndirectParent = createMultiRefIndirectParent(getNextId());
         addToCreatedMap(multiRefIndirectParent);
         multiRefOtherIndirectParent = createMultiRefOtherIndirectParentWithChildren(getNextId(), multiRefIndirectParent.getIdentification());
+        multiRefIndirectSelfReference = createMultiRefIndirectSelfReference(getNextId());
     }
 
     @Test
@@ -85,6 +89,26 @@ public class MultiIndirectTransportMapperTest {
     }
 
     @Test
+    public void testConvertToMultiRefIndirectSelfReference() {
+        MultiRefIndirectSelfReference result = MultiIndirectTransportMapper.convertToMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDto);
+        assertNotNull(result, "There should be any result");
+        assertEquals(multiRefIndirectSelfReferenceDto.getIdentification(), result.getIdentification(), "Wrong identification");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceNull() {
+        assertNull(MultiIndirectTransportMapper.convertToMultiRefIndirectSelfReference(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceAgain() {
+        MultiRefIndirectSelfReference result = MultiIndirectTransportMapper.convertToMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDto, mappedObjects);
+        MultiRefIndirectSelfReference convertAgainResult = MultiIndirectTransportMapper.convertToMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDto, mappedObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+
+    @Test
     public void testConvertToMultiRefIndirectParentDto() {
         MultiRefIndirectParentDto result = MultiIndirectTransportMapper.convertToMultiRefIndirectParentDto(multiRefIndirectParent);
         assertNotNull(result, "There should be any result");
@@ -121,6 +145,25 @@ public class MultiIndirectTransportMapperTest {
     public void testConvertToMultiRefOtherIndirectParentDtoAgain() {
         MultiRefOtherIndirectParentDto result = MultiIndirectTransportMapper.convertToMultiRefOtherIndirectParentDto(multiRefOtherIndirectParent, mappedDtoObjects);
         MultiRefOtherIndirectParentDto convertAgainResult = MultiIndirectTransportMapper.convertToMultiRefOtherIndirectParentDto(multiRefOtherIndirectParent, mappedDtoObjects);
+        assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceDto() {
+        MultiRefIndirectSelfReferenceDto result = MultiIndirectTransportMapper.convertToMultiRefIndirectSelfReferenceDto(multiRefIndirectSelfReference);
+        assertNotNull(result, "There should be any result");
+        assertEquals(multiRefIndirectSelfReference.getIdentification(), result.getIdentification(), "Wrong identification");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceDtoNull() {
+        assertNull(MultiIndirectTransportMapper.convertToMultiRefIndirectSelfReferenceDto(null), "The result should be null");
+    }
+
+    @Test
+    public void testConvertToMultiRefIndirectSelfReferenceDtoAgain() {
+        MultiRefIndirectSelfReferenceDto result = MultiIndirectTransportMapper.convertToMultiRefIndirectSelfReferenceDto(multiRefIndirectSelfReference, mappedDtoObjects);
+        MultiRefIndirectSelfReferenceDto convertAgainResult = MultiIndirectTransportMapper.convertToMultiRefIndirectSelfReferenceDto(multiRefIndirectSelfReference, mappedDtoObjects);
         assertSame(result, convertAgainResult, "Converting again with map should return the same object");
     }
 

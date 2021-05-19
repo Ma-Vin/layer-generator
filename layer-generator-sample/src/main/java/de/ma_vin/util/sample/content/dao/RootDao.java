@@ -6,6 +6,7 @@ import de.ma_vin.util.sample.content.dao.filtering.SomeFilteringOwnerDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefTwoParentsDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefIndirectParentDao;
+import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefIndirectSelfReferenceDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefOtherIndirectParentDao;
 import de.ma_vin.util.sample.content.dao.parent.ExtendingClassDao;
 import de.ma_vin.util.sample.content.dao.single.SingleRefOneParentDao;
@@ -26,9 +27,9 @@ import lombok.ToString;
 @BaseDao("de.ma_vin.util.sample.content.dao")
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "nonOwnerFiltering", "ext"})
+@EqualsAndHashCode(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "multiRefIndirectSelfReference", "extending", "filtering", "nonOwnerFiltering", "ext"})
 @Table(name = "Roots")
-@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "extending", "filtering", "nonOwnerFiltering", "ext"})
+@ToString(exclude = {"singleRef", "anotherSingleRef", "multiRef", "anotherMultiRef", "singleRefIndirectParent", "singleRefIndirectOtherParent", "multiRefIndirectParent", "multiRefIndirectOtherParent", "multiRefIndirectSelfReference", "extending", "filtering", "nonOwnerFiltering", "ext"})
 public class RootDao implements IIdentifiableDao {
 
 	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefTwoParentsDao.class)
@@ -62,6 +63,9 @@ public class RootDao implements IIdentifiableDao {
 
 	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefIndirectParentDao.class)
 	private Collection<MultiRefIndirectParentDao> multiRefIndirectParent;
+
+	@OneToMany(mappedBy = "parentRoot", targetEntity = MultiRefIndirectSelfReferenceDao.class)
+	private Collection<MultiRefIndirectSelfReferenceDao> multiRefIndirectSelfReference;
 
 	@OneToOne(mappedBy = "parentRoot", targetEntity = SomeDifferentFilteringNotOwnerDao.class)
 	private SomeDifferentFilteringNotOwnerDao nonOwnerFiltering;

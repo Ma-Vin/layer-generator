@@ -100,6 +100,7 @@ public class ObjectFactory {
         result.setAnotherMultiRef(new ArrayList<>());
         result.setMultiRefIndirectParent(new ArrayList<>());
         result.setMultiRefIndirectOtherParent(new ArrayList<>());
+        result.setMultiRefIndirectSelfReference(new ArrayList<>());
         result.setExtending(new ArrayList<>());
 
         return result;
@@ -133,6 +134,15 @@ public class ObjectFactory {
         multiRefIndirectParentDao.setParentRoot(result);
         result.getMultiRefIndirectParent().add(multiRefIndirectParentDao);
         addToCreatedMap(multiRefIndirectParentDao);
+
+        MultiRefIndirectSelfReferenceDao multiRefIndirectSelfReferenceDao = createMultiRefIndirectSelfReferenceDao(getNextId());
+        MultiRefIndirectSelfReferenceDao subMultiRefIndirectSelfReferenceDao = createMultiRefIndirectSelfReferenceDao(getNextId());
+        result.getMultiRefIndirectSelfReference().add(multiRefIndirectSelfReferenceDao);
+        result.getMultiRefIndirectSelfReference().add(subMultiRefIndirectSelfReferenceDao);
+        MultiRefIndirectSelfReferenceToMultiRefIndirectSelfReferenceDao selfConnection = new MultiRefIndirectSelfReferenceToMultiRefIndirectSelfReferenceDao();
+        selfConnection.setMultiRefIndirectSelfReference(multiRefIndirectSelfReferenceDao);
+        selfConnection.setSubMultiRefIndirectSelfReference(subMultiRefIndirectSelfReferenceDao);
+        multiRefIndirectSelfReferenceDao.getSelfRefs().add(selfConnection);
 
         MultiRefOtherIndirectParentDao multiRefOtherIndirectParentDao
                 = createMultiRefOtherIndirectParentDaoWithChildren(getNextId(), multiRefIndirectParentDao.getIdentification());
@@ -265,6 +275,13 @@ public class ObjectFactory {
         MultiRefIndirectParentDao result = new MultiRefIndirectParentDao();
         setId(result, id);
         result.setDescription(String.format("Description_%d", id));
+        return result;
+    }
+
+    public static MultiRefIndirectSelfReferenceDao createMultiRefIndirectSelfReferenceDao(long id) {
+        MultiRefIndirectSelfReferenceDao result = new MultiRefIndirectSelfReferenceDao();
+        result.setSelfRefs(new ArrayList<>());
+        setId(result, id);
         return result;
     }
 
@@ -431,6 +448,12 @@ public class ObjectFactory {
         addToCreatedMap(multiRefIndirectParent);
         result.getMultiRefIndirectOtherParent().add(createMultiRefOtherIndirectParentWithChildren(getNextId(), multiRefIndirectParent.getIdentification()));
 
+        MultiRefIndirectSelfReference multiRefIndirectSelfReference = createMultiRefIndirectSelfReference(getNextId());
+        MultiRefIndirectSelfReference subMultiRefIndirectSelfReference = createMultiRefIndirectSelfReference(getNextId());
+        multiRefIndirectSelfReference.addSelfRefs(subMultiRefIndirectSelfReference);
+        result.addMultiRefIndirectSelfReference(multiRefIndirectSelfReference);
+        result.addMultiRefIndirectSelfReference(subMultiRefIndirectSelfReference);
+
         result.getExtending().add(createExtendingClass(getNextId()));
 
         result.setFiltering(createSomeFilteringOwnerWithChildren(getNextId()));
@@ -547,6 +570,12 @@ public class ObjectFactory {
         MultiRefIndirectParent result = new MultiRefIndirectParent();
         setId(result, id, MultiRefIndirectParent.ID_PREFIX);
         result.setDescription(String.format("Description_%d", id));
+        return result;
+    }
+
+    public static MultiRefIndirectSelfReference createMultiRefIndirectSelfReference(long id) {
+        MultiRefIndirectSelfReference result = new MultiRefIndirectSelfReference();
+        setId(result, id, MultiRefIndirectSelfReference.ID_PREFIX);
         return result;
     }
 
@@ -763,6 +792,12 @@ public class ObjectFactory {
         MultiRefIndirectParentDto result = new MultiRefIndirectParentDto();
         setId(result, id, MultiRefIndirectParent.ID_PREFIX);
         result.setDescription(String.format("Description_%d", id));
+        return result;
+    }
+
+    public static MultiRefIndirectSelfReferenceDto createMultiRefIndirectSelfReferenceDto(long id) {
+        MultiRefIndirectSelfReferenceDto result = new MultiRefIndirectSelfReferenceDto();
+        setId(result, id, MultiRefIndirectSelfReference.ID_PREFIX);
         return result;
     }
 

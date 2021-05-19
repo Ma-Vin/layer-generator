@@ -193,7 +193,9 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             } else {
                 convertMethod.addLine("%1$s%2$s connectionTable = %3$s.create%2$s();", AbstractGenerateLines.TAB
                         , DaoCreator.getConnectionTableNameParentRef(referenceToParent), ModelType.DAO.getFactoryClassName());
-                convertMethod.addLine("%sconnectionTable.set%s(result);", AbstractGenerateLines.TAB, entity.getBaseName());
+                String resultPropertyName = entity.getBaseName().equals(referenceToParent.getTargetEntity())
+                        ? "Sub" + getUpperFirst(entity.getBaseName()) : getUpperFirst(entity.getBaseName());
+                convertMethod.addLine("%sconnectionTable.set%s(result);", AbstractGenerateLines.TAB, resultPropertyName);
                 convertMethod.addLine("%sconnectionTable.set%s(parent);", AbstractGenerateLines.TAB, referenceToParent.getTargetEntity());
                 if (referenceToParent.isConnectionFiltering()) {
                     convertMethod.addLine("%sconnectionTable.set%s(%s);", AbstractGenerateLines.TAB
@@ -718,6 +720,9 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         String mapperMethodName = getConvertMethodName(reference.getRealTargetEntity(), DOMAIN_POSTFIX);
         String getterSubName = getUpperFirst(reference.getReferenceName());
         String targetConnectionName = getUpperFirst(reference.getRealTargetEntity().getBaseName());
+        if (targetConnectionName.equalsIgnoreCase(reference.getParent().getBaseName())) {
+            targetConnectionName = "Sub" + targetConnectionName;
+        }
 
         mapperClass.addImport(ArrayList.class.getName());
         convertMethod.addLine("dao.get%s().forEach(arg ->", 1, getterSubName);

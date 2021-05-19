@@ -20,6 +20,7 @@
                 <reference referenceName="singleRefIndirectOtherParent" targetEntity="SingleRefOtherIndirectParent" isOwner="true"/>
                 <reference referenceName="multiRefIndirectParent" targetEntity="MultiRefIndirectParent" isOwner="true" isList="true"/>
                 <reference referenceName="multiRefIndirectOtherParent" targetEntity="MultiRefOtherIndirectParent" isOwner="true" isList="true"/>
+                <reference referenceName="multiRefIndirectSelfReference" targetEntity="MultiRefIndirectSelfReference" isOwner="true" isList="true"/>
                 <reference referenceName="extending" targetEntity="ExtendingClass" isOwner="true" isList="true"/>
                 <reference referenceName="filtering" targetEntity="SomeFilteringOwner" isOwner="true"/>
                 <reference referenceName="nonOwnerFiltering" targetEntity="SomeDifferentFilteringNotOwner" isOwner="true"/>
@@ -130,6 +131,11 @@
                     <fields>
                         <field fieldName="description" type="String"/>
                     </fields>
+                </entity>
+                <entity baseName="MultiRefIndirectSelfReference" models="DOMAIN_DAO_DTO" identificationPrefix="MI2">
+                    <references>
+                        <reference referenceName="selfRefs" targetEntity="MultiRefIndirectSelfReference" isList="true"/>
+                    </references>
                 </entity>
             </entities>
         </grouping>

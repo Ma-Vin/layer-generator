@@ -4,10 +4,12 @@ import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
 import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefIndirectParent;
+import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefIndirectSelfReference;
 import de.ma_vin.util.sample.content.domain.multi.indirect.MultiRefOtherIndirectParent;
 import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.multi.indirect.MultiRefIndirectParentDto;
+import de.ma_vin.util.sample.content.dto.multi.indirect.MultiRefIndirectSelfReferenceDto;
 import de.ma_vin.util.sample.content.dto.multi.indirect.MultiRefOtherIndirectParentDto;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,6 +73,58 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 			, Map<String, ITransportable> mappedObjects) {
 		return convertToDto(multiRefIndirectParent, mappedObjects, DtoObjectFactory::createMultiRefIndirectParentDto, (domain, dto) -> getInstance().setMultiRefIndirectParentDtoValues(domain, dto)
 				, (domain, dto) -> getInstance().setMultiRefIndirectParentDtoSingleReferences(domain, dto, mappedObjects)
+				, (domain, dto) -> {
+		});
+	}
+
+	/**
+	 * Converts a(n) {@link MultiRefIndirectSelfReferenceDto} to a(n) {@link MultiRefIndirectSelfReference}
+	 *
+	 * @param multiRefIndirectSelfReference the source object which should be converted
+	 * @return an equivalent new created {@link MultiRefIndirectSelfReference}
+	 */
+	public static MultiRefIndirectSelfReference convertToMultiRefIndirectSelfReference(MultiRefIndirectSelfReferenceDto multiRefIndirectSelfReference) {
+		return convertToMultiRefIndirectSelfReference(multiRefIndirectSelfReference, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link MultiRefIndirectSelfReferenceDto} to a(n) {@link MultiRefIndirectSelfReference}
+	 *
+	 * @param multiRefIndirectSelfReference the source object which should be converted
+	 * @param mappedObjects                 map which contains already mapped objects. If an identification of {@code multiRefIndirectSelfReference} is
+	 *                                      contained, the found {@link MultiRefIndirectSelfReference} will be returned
+	 * @return an equivalent new created {@link MultiRefIndirectSelfReference} or the found one from the given map
+	 */
+	public static MultiRefIndirectSelfReference convertToMultiRefIndirectSelfReference(MultiRefIndirectSelfReferenceDto multiRefIndirectSelfReference
+			, Map<String, IIdentifiable> mappedObjects) {
+		return convertToDomain(multiRefIndirectSelfReference, mappedObjects, DomainObjectFactory::createMultiRefIndirectSelfReference, (dto, domain) -> getInstance().setMultiRefIndirectSelfReferenceValues(dto, domain)
+				, (dto, domain) -> getInstance().setMultiRefIndirectSelfReferenceSingleReferences(dto, domain, mappedObjects)
+				, (dto, domain) -> {
+		});
+	}
+
+	/**
+	 * Converts a(n) {@link MultiRefIndirectSelfReference} to a(n) {@link MultiRefIndirectSelfReferenceDto}
+	 *
+	 * @param multiRefIndirectSelfReference the source object which should be converted
+	 * @return an equivalent new created {@link MultiRefIndirectSelfReferenceDto}
+	 */
+	public static MultiRefIndirectSelfReferenceDto convertToMultiRefIndirectSelfReferenceDto(MultiRefIndirectSelfReference multiRefIndirectSelfReference) {
+		return convertToMultiRefIndirectSelfReferenceDto(multiRefIndirectSelfReference, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link MultiRefIndirectSelfReference} to a(n) {@link MultiRefIndirectSelfReferenceDto}
+	 *
+	 * @param multiRefIndirectSelfReference the source object which should be converted
+	 * @param mappedObjects                 map which contains already mapped objects. If an identification of {@code multiRefIndirectSelfReference} is
+	 *                                      contained, the found {@link MultiRefIndirectSelfReferenceDto} will be returned
+	 * @return an equivalent new created {@link MultiRefIndirectSelfReferenceDto} or the found one from the given map
+	 */
+	public static MultiRefIndirectSelfReferenceDto convertToMultiRefIndirectSelfReferenceDto(MultiRefIndirectSelfReference multiRefIndirectSelfReference
+			, Map<String, ITransportable> mappedObjects) {
+		return convertToDto(multiRefIndirectSelfReference, mappedObjects, DtoObjectFactory::createMultiRefIndirectSelfReferenceDto, (domain, dto) -> getInstance().setMultiRefIndirectSelfReferenceDtoValues(domain, dto)
+				, (domain, dto) -> getInstance().setMultiRefIndirectSelfReferenceDtoSingleReferences(domain, dto, mappedObjects)
 				, (domain, dto) -> {
 		});
 	}
@@ -179,6 +233,50 @@ public class MultiIndirectTransportMapper extends AbstractTransportMapper {
 	 */
 	protected void setMultiRefIndirectParentValues(MultiRefIndirectParentDto dto, MultiRefIndirectParent domain) {
 		domain.setDescription(dto.getDescription());
+	}
+
+	/**
+	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dto           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectSelfReferenceDtoSingleReferences(MultiRefIndirectSelfReference domain, MultiRefIndirectSelfReferenceDto dto
+			, Map<String, ITransportable> mappedObjects) {
+	}
+
+	/**
+	 * Takes over values from {@code domain} to {@code dto} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dto    object where to set the values
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectSelfReferenceDtoValues(MultiRefIndirectSelfReference domain, MultiRefIndirectSelfReferenceDto dto) {
+	}
+
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dto           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dto} to {@code domain}
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectSelfReferenceSingleReferences(MultiRefIndirectSelfReferenceDto dto, MultiRefIndirectSelfReference domain
+			, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	/**
+	 * Takes over values from {@code dto} to {@code domain} which are not of reference type
+	 *
+	 * @param dto    source of the given values
+	 * @param domain object where to set the values
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setMultiRefIndirectSelfReferenceValues(MultiRefIndirectSelfReferenceDto dto, MultiRefIndirectSelfReference domain) {
 	}
 
 	/**

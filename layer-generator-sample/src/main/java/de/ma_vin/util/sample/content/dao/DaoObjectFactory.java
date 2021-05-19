@@ -14,6 +14,8 @@ import de.ma_vin.util.sample.content.dao.filtering.SomeFilteringOwnerToFilteredO
 import de.ma_vin.util.sample.content.dao.multi.MultiRefOneParentDao;
 import de.ma_vin.util.sample.content.dao.multi.MultiRefTwoParentsDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefIndirectParentDao;
+import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefIndirectSelfReferenceDao;
+import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefIndirectSelfReferenceToMultiRefIndirectSelfReferenceDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefOtherIndirectParentDao;
 import de.ma_vin.util.sample.content.dao.multi.indirect.MultiRefOtherIndirectParentToMultiRefIndirectParentDao;
 import de.ma_vin.util.sample.content.dao.parent.ExtendingClassDao;
@@ -54,6 +56,14 @@ public class DaoObjectFactory {
 
 	public static MultiRefIndirectParentDao createMultiRefIndirectParentDao() {
 		return new MultiRefIndirectParentDao();
+	}
+
+	public static MultiRefIndirectSelfReferenceDao createMultiRefIndirectSelfReferenceDao() {
+		return new MultiRefIndirectSelfReferenceDao();
+	}
+
+	public static MultiRefIndirectSelfReferenceToMultiRefIndirectSelfReferenceDao createMultiRefIndirectSelfReferenceToMultiRefIndirectSelfReferenceDao() {
+		return new MultiRefIndirectSelfReferenceToMultiRefIndirectSelfReferenceDao();
 	}
 
 	public static MultiRefOneParentDao createMultiRefOneParentDao() {
