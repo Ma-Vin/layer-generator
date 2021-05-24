@@ -3,7 +3,9 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.log.LogImpl;
+import de.ma_vin.util.layer.generator.sources.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -92,12 +94,80 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
 
     @Test
-    public void testCreateDataTransportObjectNoDomain() {
+    public void testCreateDataTransportObjectNoDto() {
         when(entity.getModels()).thenReturn(Models.DAO);
 
         assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
 
         assertEquals(0, writtenFileContents.size(), "Wrong number of files");
+    }
+
+    @DisplayName("Create object with id for only dto entity")
+    @Test
+    public void testCreateDataTransportObjectOnlyDto() {
+        when(entity.getModels()).thenReturn(Models.DTO);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
+        expected.add("@Data");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class DummyDto implements ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+
+        checkSingleFile("DummyDto.java", expected);
+    }
+
+    @DisplayName("Create object without id for only dto entity")
+    @Test
+    public void testCreateDataTransportObjectOnlyDtoWithoutId() {
+        when(entity.getModels()).thenReturn(Models.DTO);
+        when(entity.getGenIdIfDto()).thenReturn(Boolean.FALSE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import de.test.package.dto.IBasicTransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
+        expected.add("@Data");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class DummyDto implements IBasicTransportable {");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+
+        checkSingleFile("DummyDto.java", expected);
     }
 
     @Test
@@ -333,7 +403,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
         expected.add("package de.test.package.dto;");
         expected.add("");
-        expected.add("public interface ITransportable {");
+        expected.add("public interface ITransportable extends IBasicTransportable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * @return the id of the dto");
@@ -347,9 +417,26 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
+        List<String> basicExpected = new ArrayList<>();
+
+        basicExpected.add("package de.test.package.dto;");
+        basicExpected.add("");
+        basicExpected.add("public interface IBasicTransportable {");
+        basicExpected.add("");
+        basicExpected.add("}");
+
         assertTrue(cut.createDataTransportObjectInterface(BASE_PACKAGE + ".dto", basePackageDir));
 
-        checkSingleFile(DtoCreator.DTO_INTERFACE + ".java", expected);
+        assertEquals(2, writtenFileContents.size(), "Wrong number of files");
+        assertTrue(writtenFileContents.containsKey(DtoCreator.DTO_INTERFACE + ".java"));
+        assertTrue(writtenFileContents.containsKey(DtoCreator.DTO_BASIC_INTERFACE + ".java"));
+
+        if (expected.size() != writtenFileContents.get(DtoCreator.DTO_INTERFACE + ".java").size()
+                || basicExpected.size() != writtenFileContents.get(DtoCreator.DTO_BASIC_INTERFACE + ".java").size()) {
+            logFileContents();
+        }
+        TestUtil.checkList(expected, writtenFileContents.get(DtoCreator.DTO_INTERFACE + ".java"));
+        TestUtil.checkList(basicExpected, writtenFileContents.get(DtoCreator.DTO_BASIC_INTERFACE + ".java"));
     }
 
     @Test
@@ -359,7 +446,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
         expected.add("package de.test.package.dto;");
         expected.add("");
-        expected.add("public interface ITransportable {");
+        expected.add("public interface ITransportable extends IBasicTransportable {");
         expected.add("");
         expected.add("	/**");
         expected.add("	 * @return the identification of the dto");
@@ -373,9 +460,26 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
+        List<String> basicExpected = new ArrayList<>();
+
+        basicExpected.add("package de.test.package.dto;");
+        basicExpected.add("");
+        basicExpected.add("public interface IBasicTransportable {");
+        basicExpected.add("");
+        basicExpected.add("}");
+
         assertTrue(cut.createDataTransportObjectInterface(BASE_PACKAGE + ".dto", basePackageDir));
 
-        checkSingleFile(DtoCreator.DTO_INTERFACE + ".java", expected);
+        assertEquals(2, writtenFileContents.size(), "Wrong number of files");
+        assertTrue(writtenFileContents.containsKey(DtoCreator.DTO_INTERFACE + ".java"));
+        assertTrue(writtenFileContents.containsKey(DtoCreator.DTO_BASIC_INTERFACE + ".java"));
+
+        if (expected.size() != writtenFileContents.get(DtoCreator.DTO_INTERFACE + ".java").size()
+                || basicExpected.size() != writtenFileContents.get(DtoCreator.DTO_BASIC_INTERFACE + ".java").size()) {
+            logFileContents();
+        }
+        TestUtil.checkList(expected, writtenFileContents.get(DtoCreator.DTO_INTERFACE + ".java"));
+        TestUtil.checkList(basicExpected, writtenFileContents.get(DtoCreator.DTO_BASIC_INTERFACE + ".java"));
     }
 
     @Test

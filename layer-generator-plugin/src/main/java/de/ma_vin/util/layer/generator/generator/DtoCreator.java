@@ -21,6 +21,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class DtoCreator extends AbstractObjectCreator {
 
+    public static final String DTO_BASIC_INTERFACE = "IBasicTransportable";
     public static final String DTO_INTERFACE = "ITransportable";
     public static final String DTO_POSTFIX = "Dto";
 
@@ -29,7 +30,10 @@ public class DtoCreator extends AbstractObjectCreator {
     }
 
     public boolean createDataTransportObjectInterface(String basePackageName, File basePackageDir) {
+        Interface dtoInterfaceBasic = new Interface(basePackageName, DTO_BASIC_INTERFACE);
+
         Interface dtoInterface = new Interface(basePackageName, DTO_INTERFACE);
+        dtoInterface.setExtension(DTO_BASIC_INTERFACE);
 
         if (config.isUseIdGenerator()) {
             dtoInterface.addMethodDeclarationWithDescription(String.class.getSimpleName(), "getIdentification"
@@ -41,7 +45,8 @@ public class DtoCreator extends AbstractObjectCreator {
             dtoInterface.addMethodDeclarationWithDescription("void", "setId", "@param id the id of the dto", "Long", "id");
         }
 
-        return writeClassFile(basePackageDir, dtoInterface.getInterfaceName(), dtoInterface);
+        return writeClassFile(basePackageDir, dtoInterfaceBasic.getInterfaceName(), dtoInterfaceBasic)
+                & writeClassFile(basePackageDir, dtoInterface.getInterfaceName(), dtoInterface);
     }
 
     /**
@@ -60,8 +65,8 @@ public class DtoCreator extends AbstractObjectCreator {
 
         Clazz dtoClazz = new Clazz(getPackage(entity, packageName), entity.getBaseName() + DTO_POSTFIX);
         if (entity.hasNoParent()) {
-            dtoClazz.addInterface(DTO_INTERFACE);
-            dtoClazz.addImport(String.format("%s.%s", packageName, DTO_INTERFACE));
+            dtoClazz.addInterface(isBasicTransportable(entity) ? DTO_BASIC_INTERFACE : DTO_INTERFACE);
+            dtoClazz.addImport(String.format("%s.%s", packageName, isBasicTransportable(entity) ? DTO_BASIC_INTERFACE : DTO_INTERFACE));
         }
         checkAndAddParent(dtoClazz, entity, packageName, DTO_POSTFIX);
 
@@ -82,7 +87,7 @@ public class DtoCreator extends AbstractObjectCreator {
         unusedParameterSuppressing.appendValue("\"java:S1068\"");
         dtoClazz.addAnnotation(unusedParameterSuppressing);
 
-        if(Boolean.FALSE.equals(entity.getIsAbstract())){
+        if (Boolean.FALSE.equals(entity.getIsAbstract())) {
             dtoClazz.addImport(BaseDto.class.getName());
             dtoClazz.addAnnotation(new Annotation(BaseDto.class, null, "\"" + packageName + "\""));
         }
@@ -101,6 +106,10 @@ public class DtoCreator extends AbstractObjectCreator {
      * @param entity   Entity which is used for generating
      */
     private void addIdentificationAttribute(Clazz dtoClazz, Entity entity) {
+        if (isBasicTransportable(entity)) {
+            logger.debug(String.format("Skip adding identification for %s, because its an only dto entity", dtoClazz.getClassName()));
+            return;
+        }
         String ofPostFix = dtoClazz.getClassName().substring(0, dtoClazz.getClassName().length() - 3);
         if (config.isUseIdGenerator()) {
             logger.debug("Identification will be created for " + dtoClazz.getClassName());
@@ -136,5 +145,9 @@ public class DtoCreator extends AbstractObjectCreator {
         clazz.addImport(getPackageAndClass(reference, packageName, DTO_POSTFIX));
 
         attributeNames.add(child.getAttributeName());
+    }
+
+    private boolean isBasicTransportable(Entity entity) {
+        return Boolean.FALSE.equals(entity.getGenIdIfDto()) && Models.DTO.equals(entity.getModels());
     }
 }

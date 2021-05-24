@@ -1,7 +1,7 @@
 package de.ma_vin.util.sample.content.dto.dto;
 
 import de.ma_vin.util.layer.generator.annotations.model.BaseDto;
-import de.ma_vin.util.sample.content.dto.ITransportable;
+import de.ma_vin.util.sample.content.dto.IBasicTransportable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,13 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-public class OnlyDtoDto implements ITransportable {
+public class OnlyDtoDto implements IBasicTransportable {
 
 	private String description;
-
-	/**
-	 * Identification of OnlyDto
-	 */
-	private String identification;
 
 }

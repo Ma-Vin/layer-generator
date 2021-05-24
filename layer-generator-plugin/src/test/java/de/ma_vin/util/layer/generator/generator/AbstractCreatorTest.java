@@ -57,6 +57,7 @@ public class AbstractCreatorTest {
         when(entity.getGrouping()).thenReturn(grouping);
         when(entity.hasParent()).thenReturn(Boolean.FALSE);
         when(entity.hasNoParent()).thenReturn(Boolean.TRUE);
+        when(entity.getGenIdIfDto()).thenReturn(Boolean.TRUE);
 
         when(field.getFieldName()).thenReturn("anyField");
         when(field.getType()).thenReturn("String");

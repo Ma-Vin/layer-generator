@@ -177,7 +177,7 @@
         </grouping>
         <grouping groupingPackage="dto">
             <entities>
-                <entity baseName="OnlyDto" models="DTO" identificationPrefix="D3">
+                <entity baseName="OnlyDto" models="DTO" identificationPrefix="D3" genIdIfDto="false">
                     <fields>
                         <field fieldName="description" type="String"/>
                     </fields>

@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.content.dto;
 
-public interface ITransportable {
+public interface ITransportable extends IBasicTransportable {
 
 	/**
 	 * @return the identification of the dto

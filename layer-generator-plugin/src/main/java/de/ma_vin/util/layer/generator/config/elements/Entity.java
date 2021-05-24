@@ -62,6 +62,12 @@ public class Entity {
     private Boolean isAbstract = Boolean.FALSE;
 
     /**
+     * Indicator whether to generate identification at entity, if the entity exists only at dto model
+     */
+    @XmlAttribute
+    private Boolean genIdIfDto = Boolean.TRUE;
+
+    /**
      * Attributes of the entity
      */
     @XmlElementWrapper

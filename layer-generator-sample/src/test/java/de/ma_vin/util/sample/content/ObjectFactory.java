@@ -852,7 +852,6 @@ public class ObjectFactory {
 
     public static OnlyDtoDto createOnlyDtoDto(long id) {
         OnlyDtoDto result = new OnlyDtoDto();
-        setId(result, id, "ODD");
         result.setDescription(String.format("Description_%d", id));
         return result;
     }
