@@ -8,8 +8,8 @@ It is the third module at ***Util Layer Generator***
 For basic usage add a plugin entry like
 ```
 <groupId>de.ma_vin.util.layer.generator</groupId>
-<artifactId>layer-generator</artifactId>
-<version>1.0-SNAPSHOT</version>
+<artifactId>layer-generator-plugin</artifactId>
+<version>1.0</version>
 <executions>
     <execution>
         <goals>
