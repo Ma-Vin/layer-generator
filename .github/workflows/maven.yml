@@ -30,8 +30,14 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: java
     - name: Build and analyze layer generator sources
       env:
         GITHUB_TOKEN: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: mvn clean -B install org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P sonar-cloud --file pom.xml
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
