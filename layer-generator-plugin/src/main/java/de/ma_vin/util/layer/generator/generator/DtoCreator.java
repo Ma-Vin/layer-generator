@@ -94,7 +94,7 @@ public class DtoCreator extends AbstractObjectCreator {
 
         addIdentificationAttribute(dtoClazz, entity);
         addAttributes(entity, dtoClazz, Models.DTO);
-        addReferences(entity, dtoClazz, packageName);
+        addReferences(entity, dtoClazz, packageName, Models::isDto);
 
         return writeClassFile(getPackageDir(entity, packageDir), dtoClazz.getClassName(), dtoClazz);
     }

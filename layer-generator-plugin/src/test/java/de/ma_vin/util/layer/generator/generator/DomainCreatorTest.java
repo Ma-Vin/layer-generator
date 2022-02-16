@@ -4,6 +4,7 @@ import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.log.LogImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -175,6 +176,46 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         checkSingleFile("Dummy.java", expected);
     }
 
+
+    @DisplayName("Create a domain object with an one to one relation, but the target does not support the domain model")
+    @Test
+    public void testCreateDomainObjectUniqueRelationButNonDomain() {
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(targetEntity.getModels()).thenReturn(Models.DAO);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.domain.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated domain class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
+        expected.add("@Data");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class Dummy implements IIdentifiable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+
+        checkSingleFile("Dummy.java", expected);
+    }
+
     @Test
     public void testCreateDomainObjectRelation() {
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
@@ -232,6 +273,45 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("	public boolean removeTargetRef(Target target) {");
         expected.add("		return targetRef.remove(target);");
         expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+
+        checkSingleFile("Dummy.java", expected);
+    }
+
+
+    @DisplayName("Create a domain object with an one to many relation, but the target does not support the domain model")
+    @Test
+    public void testCreateDomainObjectRelationButNonDomain() {
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetEntity.getModels()).thenReturn(Models.DAO);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.domain.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
+        expected.add("import de.test.package.domain.IIdentifiable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated domain class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDomain(\"de.test.package.domain\")");
+        expected.add("@Data");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class Dummy implements IIdentifiable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
 

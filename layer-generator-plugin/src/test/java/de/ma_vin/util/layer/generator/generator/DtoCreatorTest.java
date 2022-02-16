@@ -247,10 +247,90 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         checkSingleFile("DummyDto.java", expected);
     }
 
+
+    @DisplayName("Create a data transport object with an one to one relation, but the target does not support the transport model")
+    @Test
+    public void testCreateDataTransportObjectUniqueRelationButNonDto() {
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
+        expected.add("@Data");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class DummyDto implements ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+
+        checkSingleFile("DummyDto.java", expected);
+    }
+
+
     @Test
     public void testCreateDataTransportObjectRelation() {
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
+        expected.add("@Data");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("public class DummyDto implements ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+
+        checkSingleFile("DummyDto.java", expected);
+    }
+
+
+    @DisplayName("Create a data transport object with an one to many relation, but the target does not support the transport model")
+    @Test
+    public void testCreateDataTransportObjectRelationButNotDto() {
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");

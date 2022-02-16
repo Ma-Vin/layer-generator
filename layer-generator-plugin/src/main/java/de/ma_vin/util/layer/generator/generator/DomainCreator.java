@@ -88,7 +88,7 @@ public class DomainCreator extends AbstractObjectCreator {
 
         addIdentificationAttribute(domainClazz, entity);
         addAttributes(entity, domainClazz, Models.DOMAIN);
-        addReferences(entity, domainClazz, packageName);
+        addReferences(entity, domainClazz, packageName, Models::isDomain);
 
         return writeClassFile(getPackageDir(entity, packageDir), domainClazz.getClassName(), domainClazz);
     }

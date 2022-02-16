@@ -92,14 +92,17 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
     /**
      * Adds all necessary references to the class
      *
-     * @param entity      entity whose references should be added
-     * @param clazz       Class where to add attributes
-     * @param packageName base package name where other referenced class are found
+     * @param entity         entity whose references should be added
+     * @param clazz          Class where to add attributes
+     * @param packageName    base package name where other referenced class are found
+     * @param modelValidator Checks whether the reference targets have the required {@link Models}
      */
-    protected void addReferences(Entity entity, Clazz clazz, String packageName) {
+    protected void addReferences(Entity entity, Clazz clazz, String packageName, ModelValidator modelValidator) {
         List<String> attributes = new ArrayList<>();
 
-        entity.getReferences().forEach(ref -> addReference(clazz, packageName, ref, attributes));
+        entity.getReferences().stream()
+                .filter(ref -> modelValidator.checkModel(ref.getRealTargetEntity().getModels()))
+                .forEach(ref -> addReference(clazz, packageName, ref, attributes));
 
         logger.debug(String.format("%d references added to %s", attributes.size(), clazz.getClassName()));
         addExcludeAttributes(clazz, attributes);
@@ -178,5 +181,10 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
             return createFile(basePackageDir, dir);
         }
         return basePackageDir;
+    }
+
+    @FunctionalInterface
+    public interface ModelValidator {
+        boolean checkModel(Models model);
     }
 }

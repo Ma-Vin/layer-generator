@@ -8,6 +8,7 @@ import de.ma_vin.util.layer.generator.log.LogImpl;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -199,6 +200,46 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         checkSingleFile("DummyDao.java", expected);
     }
 
+
+    @DisplayName("Create a data object with an one to one relation, but the target does not support the dao model")
+    @Test
+    public void testCreateDataAccessObjectUniqueRelationButNonDao() {
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
     @Test
     public void testCreateDataAccessObjectRelation() {
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
@@ -235,6 +276,45 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("	@OneToMany(mappedBy = \"parentDummy\", targetEntity = TargetDao.class)");
         expected.add("	private Collection<TargetDao> targetRef;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+
+    @DisplayName("Create a data object with an one to many relation, but the target does not support the dao model")
+    @Test
+    public void testCreateDataAccessObjectRelationButNonDao() {
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
+        when(targetReference.getParent()).thenReturn(entity);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
         expected.add("");
         expected.add("}");
 
@@ -289,6 +369,47 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         checkSingleFile("DummyDao.java", expected);
     }
 
+
+    @DisplayName("Create a data object with an one to one relation from parent, but the parent does not support the dao model")
+    @Test
+    public void testCreateDataAccessObjectUniqueParentRelationButNonDao() {
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
+        when(parentReference.getParent()).thenReturn(entity);
+        when(parentReference.isList()).thenReturn(Boolean.FALSE);
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
+
     @Test
     public void testCreateDataAccessObjectParentRelation() {
         when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
@@ -333,6 +454,45 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
         checkSingleFile("DummyDao.java", expected);
     }
+
+    @DisplayName("Create a data object with an many to one relation from parent, but the parent does not support the dao model")
+    @Test
+    public void testCreateDataAccessObjectParentRelationButNonDao() {
+        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
+        when(parentReference.getParent()).thenReturn(entity);
+        when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dao.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import javax.persistence.*;");
+        expected.add("import lombok.Data;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dao class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDao(\"de.test.package.dao\")");
+        expected.add("@Data");
+        expected.add("@Entity");
+        expected.add("@Table(name = \"Dummys\")");
+        expected.add("public class DummyDao implements IIdentifiableDao {");
+        expected.add("");
+        expected.add("	@Column(name = \"Id\")");
+        expected.add("	@GeneratedValue(strategy = GenerationType.IDENTITY)");
+        expected.add("	@Id");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+
+        checkSingleFile("DummyDao.java", expected);
+    }
+
 
     @Test
     public void testCreateDataAccessObjectMultiDifferentParentRelation() {

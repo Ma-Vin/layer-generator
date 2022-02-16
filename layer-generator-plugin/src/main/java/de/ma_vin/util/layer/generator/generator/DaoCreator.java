@@ -208,7 +208,7 @@ public class DaoCreator extends AbstractObjectCreator {
     }
 
     @Override
-    protected void addReferences(Entity entity, Clazz clazz, String packageName) {
+    protected void addReferences(Entity entity, Clazz clazz, String packageName, ModelValidator modelValidator) {
         throw new NotSupportedMethodException("Method addReferences(Entity entity, Clazz clazz, String packageName) should not be used in context data access object");
     }
 
@@ -233,8 +233,11 @@ public class DaoCreator extends AbstractObjectCreator {
         boolean isSingle = treatedParentReferences.stream().filter(Reference::isOwner).count() == 1;
         treatedParentReferences.stream()
                 .filter(Reference::isOwner)
+                .filter(ref-> ref.getRealTargetEntity().getModels().isDao())
                 .forEach(ref -> addParentRef(daoClazz, packageName, ref, isSingle, attributes));
-        getTreatedReferences(entity.getReferences()).forEach(ref -> addChildRef(daoClazz, packageName, ref, attributes, packageDir));
+        getTreatedReferences(entity.getReferences()).stream()
+                .filter(ref-> ref.getRealTargetEntity().getModels().isDao())
+                .forEach(ref -> addChildRef(daoClazz, packageName, ref, attributes, packageDir));
 
         addExcludeAttributes(daoClazz, attributes);
     }
