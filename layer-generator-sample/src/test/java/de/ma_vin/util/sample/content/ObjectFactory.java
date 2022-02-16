@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content;
 
+import de.ma_vin.util.sample.content.dto.domain.DerivedFromDomainDto;
 import de.ma_vin.util.sample.given.IdGenerator;
 import de.ma_vin.util.sample.content.dao.*;
 import de.ma_vin.util.sample.content.dao.dao.OnlyDaoDao;
@@ -853,6 +854,19 @@ public class ObjectFactory {
     public static OnlyDtoDto createOnlyDtoDto(long id) {
         OnlyDtoDto result = new OnlyDtoDto();
         result.setDescription(String.format("Description_%d", id));
+        return result;
+    }
+
+    public static DerivedFromDomainDto createDerivedFromDomainDto(long id) {
+        DerivedFromDomainDto result = new DerivedFromDomainDto();
+        setId(result, id, SingleRefOneParent.ID_PREFIX);
+        result.setDescription(String.format("Description_%d", id));
+        return result;
+    }
+
+    public static DerivedFromDomainDto createDerivedFromDomainDtoWithChildren(long id) {
+        DerivedFromDomainDto result = createDerivedFromDomainDto(id);
+        result.setSingleRef(createSingleRefTwoParentsDto(getNextId()));
         return result;
     }
 }

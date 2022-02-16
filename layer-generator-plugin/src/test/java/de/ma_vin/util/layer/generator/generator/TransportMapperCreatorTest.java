@@ -26,11 +26,14 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     public static final String MAPPER_PACKAGE_NAME = BASE_PACKAGE + ".mapper";
     public static final String DTO_PACKAGE_NAME = BASE_PACKAGE + ".dto";
     public static final String DOMAIN_PACKAGE_NAME = BASE_PACKAGE + ".domain";
+    public static final String DERIVED_FROM_ENTITY_NAME = "DerivedFromDummy";
     private TransportMapperCreator cut;
     private List<Entity> entities = new ArrayList<>();
 
     @Mock
     private Entity parentEntity;
+    @Mock
+    private Entity derivedFromEntity;
     @Mock
     private Reference parentReference;
     @Mock
@@ -2479,5 +2482,210 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
         assertTrue(cut.createAbstractTransportMapper(MAPPER_PACKAGE_NAME, mapperPackageDir, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
         checkSingleFile(String.format("%s.java", TransportMapperCreator.ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME), expected);
+    }
+
+
+    @Test
+    public void testCreateTransportMapperFieldDerivedFrom() {
+        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getModels()).thenReturn(Models.DTO);
+        when(entity.getRealDerivedFrom()).thenReturn(derivedFromEntity);
+        when(derivedFromEntity.getBaseName()).thenReturn(DERIVED_FROM_ENTITY_NAME);
+        when(derivedFromEntity.getTableName()).thenReturn(DERIVED_FROM_ENTITY_NAME);
+        when(derivedFromEntity.getDescription()).thenReturn("Dummy description");
+        when(derivedFromEntity.getIdentificationPrefix()).thenReturn("DU");
+        when(derivedFromEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(derivedFromEntity.getGrouping()).thenReturn(grouping);
+        when(derivedFromEntity.hasParent()).thenReturn(Boolean.FALSE);
+        when(derivedFromEntity.hasNoParent()).thenReturn(Boolean.TRUE);
+        when(derivedFromEntity.getGenIdIfDto()).thenReturn(Boolean.TRUE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
+        expected.add("import de.test.package.domain.group.DerivedFromDummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import de.test.package.dto.group.DummyDto;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" */");
+        expected.add("@BaseTransportMapper");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingTransportMapper instance;");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Converts a(n) {@link DerivedFromDummy} to a(n) {@link DummyDto}");
+        expected.add("	 *");
+        expected.add("	 * @param derivedFromDummy the source object which should be converted");
+        expected.add("	 * @return an equivalent new created {@link DummyDto}");
+        expected.add("	 */");
+        expected.add("	public static DummyDto convertToDummyDto(DerivedFromDummy derivedFromDummy) {");
+        expected.add("		return convertToDummyDto(derivedFromDummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Converts a(n) {@link DerivedFromDummy} to a(n) {@link DummyDto}");
+        expected.add("	 *");
+        expected.add("	 * @param derivedFromDummy the source object which should be converted");
+        expected.add("	 * @param mappedObjects    map which contains already mapped objects. If an identification of {@code dummy} is contained, the found {@link DummyDto}");
+        expected.add("	 *                         will be returned");
+        expected.add("	 * @return an equivalent new created {@link DummyDto} or the found one from the given map");
+        expected.add("	 */");
+        expected.add("	public static DummyDto convertToDummyDto(DerivedFromDummy derivedFromDummy, Map<String, ITransportable> mappedObjects) {");
+        expected.add("		return convertToDto(derivedFromDummy, mappedObjects, DtoObjectFactory::createDummyDto, (domain, dto) -> getInstance().setDummyDtoValues(domain, dto)");
+        expected.add("				, (domain, dto) -> getInstance().setDummyDtoSingleReferences(domain, dto, mappedObjects)");
+        expected.add("				, (domain, dto) -> {");
+        expected.add("		});");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingTransportMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}");
+        expected.add("	 *");
+        expected.add("	 * @param domain        source of the given references");
+        expected.add("	 * @param dto           object where to add the references");
+        expected.add("	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}");
+        expected.add("	 */");
+        expected.add("	@SuppressWarnings(\"java:S1186\")");
+        expected.add("	protected void setDummyDtoSingleReferences(DerivedFromDummy domain, DummyDto dto, Map<String, ITransportable> mappedObjects) {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Takes over values from {@code domain} to {@code dto} which are not of reference type");
+        expected.add("	 *");
+        expected.add("	 * @param domain source of the given values");
+        expected.add("	 * @param dto    object where to set the values");
+        expected.add("	 */");
+        expected.add("	protected void setDummyDtoValues(DerivedFromDummy domain, DummyDto dto) {");
+        expected.add("		dto.setAnyField(domain.getAnyField());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+    }
+
+    @Test
+    public void testCreateTransportMapperSingleRefDerivedFrom() {
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getRealDerivedFrom()).thenReturn(derivedFromEntity);
+        when(derivedFromEntity.getBaseName()).thenReturn(DERIVED_FROM_ENTITY_NAME);
+        when(derivedFromEntity.getTableName()).thenReturn(DERIVED_FROM_ENTITY_NAME);
+        when(derivedFromEntity.getDescription()).thenReturn("Dummy description");
+        when(derivedFromEntity.getIdentificationPrefix()).thenReturn("DU");
+        when(derivedFromEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(derivedFromEntity.getGrouping()).thenReturn(grouping);
+        when(derivedFromEntity.hasParent()).thenReturn(Boolean.FALSE);
+        when(derivedFromEntity.hasNoParent()).thenReturn(Boolean.TRUE);
+        when(derivedFromEntity.getGenIdIfDto()).thenReturn(Boolean.TRUE);
+
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.mapper;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import de.test.package.domain.DomainObjectFactory;");
+        expected.add("import de.test.package.domain.group.DerivedFromDummy;");
+        expected.add("import de.test.package.dto.DtoObjectFactory;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import de.test.package.dto.group.DummyDto;");
+        expected.add("import java.util.HashMap;");
+        expected.add("import java.util.Map;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" */");
+        expected.add("@BaseTransportMapper");
+        expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * singleton");
+        expected.add("	 */");
+        expected.add("	private static GroupingTransportMapper instance;");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Converts a(n) {@link DerivedFromDummy} to a(n) {@link DummyDto}");
+        expected.add("	 *");
+        expected.add("	 * @param derivedFromDummy the source object which should be converted");
+        expected.add("	 * @return an equivalent new created {@link DummyDto}");
+        expected.add("	 */");
+        expected.add("	public static DummyDto convertToDummyDto(DerivedFromDummy derivedFromDummy) {");
+        expected.add("		return convertToDummyDto(derivedFromDummy, new HashMap<>());");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Converts a(n) {@link DerivedFromDummy} to a(n) {@link DummyDto}");
+        expected.add("	 *");
+        expected.add("	 * @param derivedFromDummy the source object which should be converted");
+        expected.add("	 * @param mappedObjects    map which contains already mapped objects. If an identification of {@code dummy} is contained, the found {@link DummyDto}");
+        expected.add("	 *                         will be returned");
+        expected.add("	 * @return an equivalent new created {@link DummyDto} or the found one from the given map");
+        expected.add("	 */");
+        expected.add("	public static DummyDto convertToDummyDto(DerivedFromDummy derivedFromDummy, Map<String, ITransportable> mappedObjects) {");
+        expected.add("		return convertToDto(derivedFromDummy, mappedObjects, DtoObjectFactory::createDummyDto, (domain, dto) -> getInstance().setDummyDtoValues(domain, dto)");
+        expected.add("				, (domain, dto) -> getInstance().setDummyDtoSingleReferences(domain, dto, mappedObjects)");
+        expected.add("				, (domain, dto) -> {");
+        expected.add("		});");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * @return the singleton");
+        expected.add("	 */");
+        expected.add("	public static GroupingTransportMapper getInstance() {");
+        expected.add("		if (instance == null) {");
+        expected.add("			instance = TransportMapperFactory.createGroupingTransportMapper();");
+        expected.add("		}");
+        expected.add("		return instance;");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Adds the references at {@code dto} which are not of type {@link java.util.Collection}");
+        expected.add("	 *");
+        expected.add("	 * @param domain        source of the given references");
+        expected.add("	 * @param dto           object where to add the references");
+        expected.add("	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dto}");
+        expected.add("	 */");
+        expected.add("	protected void setDummyDtoSingleReferences(DerivedFromDummy domain, DummyDto dto, Map<String, ITransportable> mappedObjects) {");
+        expected.add("		GroupTransportMapper.convertToTargetDto(domain.getTargetRef(), dto, mappedObjects);");
+        expected.add("	}");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Takes over values from {@code domain} to {@code dto} which are not of reference type");
+        expected.add("	 *");
+        expected.add("	 * @param domain source of the given values");
+        expected.add("	 * @param dto    object where to set the values");
+        expected.add("	 */");
+        expected.add("	@SuppressWarnings(\"java:S1186\")");
+        expected.add("	protected void setDummyDtoValues(DerivedFromDummy domain, DummyDto dto) {");
+        expected.add("	}");
+        expected.add("");
+        expected.add("}");
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+
+        checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
 }

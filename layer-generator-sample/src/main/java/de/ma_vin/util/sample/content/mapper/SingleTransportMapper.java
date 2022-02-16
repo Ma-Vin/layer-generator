@@ -9,6 +9,7 @@ import de.ma_vin.util.sample.content.domain.single.SingleRefTwoParents;
 import de.ma_vin.util.sample.content.dto.DtoObjectFactory;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
+import de.ma_vin.util.sample.content.dto.domain.DerivedFromDomainDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefTwoParentsDto;
 import java.util.HashMap;
@@ -248,6 +249,37 @@ public class SingleTransportMapper extends AbstractTransportMapper {
 				, (domain, dto) -> getInstance().setSingleRefTwoParentsDtoSingleReferences(domain, dto, mappedObjects)
 				, (domain, dto) -> {
 		});
+	}
+
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDto} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @return an equivalent new created {@link SingleRefTwoParentsDto}
+	 */
+	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, DerivedFromDomainDto parent) {
+		return convertToSingleRefTwoParentsDto(singleRefTwoParents, parent, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link SingleRefTwoParents} to a(n) {@link SingleRefTwoParentsDto} and sets the result to the corresponding reference property at the
+	 * parent
+	 *
+	 * @param singleRefTwoParents the source object which should be converted
+	 * @param parent              the parent of converted result
+	 * @param mappedObjects       map which contains already mapped objects. If an identification of {@code singleRefTwoParents} is contained, the found
+	 *                            {@link SingleRefTwoParentsDto} will be returned
+	 * @return an equivalent new created {@link SingleRefTwoParentsDto} or the found one from the given map
+	 */
+	public static SingleRefTwoParentsDto convertToSingleRefTwoParentsDto(SingleRefTwoParents singleRefTwoParents, DerivedFromDomainDto parent
+			, Map<String, ITransportable> mappedObjects) {
+		SingleRefTwoParentsDto result = convertToSingleRefTwoParentsDto(singleRefTwoParents, mappedObjects);
+		if (result != null) {
+			parent.setSingleRef(result);
+		}
+		return result;
 	}
 
 	/**

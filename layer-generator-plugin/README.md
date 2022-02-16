@@ -62,6 +62,7 @@ description | :heavy_check_mark: | *A* | Description of the entity. Will be adde
 identificationPrefix | :heavy_check_mark: | *A* | If there is a use of idGeneratorClass this field is not null able
 parent | :heavy_check_mark: | *A* | super entity which is extended by this entity. The super entity has to abstract.
 isAbstract | :heavy_check_mark: | *A* | indication if the generated java class should be abstract
+derivedFrom | :heavy_check_mark: | *A* | Entity to derive from. The actual entity will be at the transport model and the source has to support the domain model. The generated mapper work only one way: from domain model to transport one
 fields | :heavy_check_mark: | *N* | List of attributes of the entity
 indices | :heavy_check_mark: | *N* | List of indices of the entity
 references | :heavy_check_mark: | *N* | References to other entities

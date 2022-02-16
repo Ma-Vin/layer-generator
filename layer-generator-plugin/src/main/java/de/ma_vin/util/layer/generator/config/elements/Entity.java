@@ -62,6 +62,13 @@ public class Entity {
     private Boolean isAbstract = Boolean.FALSE;
 
     /**
+     * Entity to derive from.
+     * Generated Mapper work only one way, from domain model to transport one
+     */
+    @XmlAttribute
+    private String derivedFrom;
+
+    /**
      * Indicator whether to generate identification at entity, if the entity exists only at dto model
      */
     @XmlAttribute
@@ -95,6 +102,9 @@ public class Entity {
     private Entity realParent;
 
     @XmlTransient
+    private Entity realDerivedFrom;
+
+    @XmlTransient
     private Grouping grouping;
 
     public boolean hasParent() {
@@ -111,6 +121,7 @@ public class Entity {
                 && validateNonRequired(description, messages, "description")
                 && validateNonRequired(identificationPrefix, messages, "identificationPrefix")
                 && validateNonRequired(parent, messages, "parent")
+                && validateNonRequired(derivedFrom, messages, "derivedFrom")
                 && (fields == null || fields.stream().allMatch(f -> f.isValid(messages)))
                 && (indices == null || indices.stream().allMatch(i -> i.isValid(messages)))
                 && (references == null || (references.stream().allMatch(r -> r.isValid(messages))
@@ -118,6 +129,9 @@ public class Entity {
     }
 
     public Models getModels() {
+        if (derivedFrom != null) {
+            return Models.DTO;
+        }
         return models != null ? models : Models.DOMAIN_DAO_DTO;
     }
 }

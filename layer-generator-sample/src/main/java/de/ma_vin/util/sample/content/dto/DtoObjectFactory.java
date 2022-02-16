@@ -1,5 +1,6 @@
 package de.ma_vin.util.sample.content.dto;
 
+import de.ma_vin.util.sample.content.dto.domain.DerivedFromDomainDto;
 import de.ma_vin.util.sample.content.dto.domain.dto.DomainAndDtoDto;
 import de.ma_vin.util.sample.content.dto.dto.OnlyDtoDto;
 import de.ma_vin.util.sample.content.dto.filtering.FilteredDto;
@@ -21,6 +22,10 @@ import de.ma_vin.util.sample.extending.ExtendedExtendingClassDto;
 public class DtoObjectFactory {
 
 	private DtoObjectFactory() {
+	}
+
+	public static DerivedFromDomainDto createDerivedFromDomainDto() {
+		return new DerivedFromDomainDto();
 	}
 
 	public static DomainAndDtoDto createDomainAndDtoDto() {

@@ -19,8 +19,6 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
     public static final String ABSTRACT_ACCESS_MAPPER_CLASS_NAME = "AbstractAccessMapper";
     public static final String MAPPER_TYPE_NAME = "Access";
-    public static final String DAO_POSTFIX = "Dao";
-    public static final String DOMAIN_POSTFIX = "";
     public static final String CONVERT_TO_DAO_NAME = "convertToDao";
     public static final String CONVERT_TO_DOMAIN_NAME = "convertToDomain";
     public static final String DAO_PARAMETER = "dao";

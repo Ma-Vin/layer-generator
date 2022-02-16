@@ -3,13 +3,10 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
 import de.ma_vin.util.layer.generator.builder.MapperType;
 import de.ma_vin.util.layer.generator.builder.ModelType;
+import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
 import de.ma_vin.util.layer.generator.sources.Clazz;
 import de.ma_vin.util.layer.generator.sources.Method;
-import de.ma_vin.util.layer.generator.config.elements.Config;
-import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Field;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
@@ -20,8 +17,6 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
     public static final String ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME = "AbstractTransportMapper";
     public static final String MAPPER_TYPE_NAME = "Transport";
-    public static final String DTO_POSTFIX = "Dto";
-    public static final String DOMAIN_POSTFIX = "";
     public static final String CONVERT_TO_DTO_NAME = "convertToDto";
     public static final String CONVERT_TO_DOMAIN_NAME = "convertToDomain";
     public static final String DTO_PARAMETER = "dto";
@@ -138,7 +133,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      */
     private void createConvertToDomainMethods(Clazz mapperClass, Entity entity, String dtoPackageName, String domainPackageName) {
-        if (!isEntityRelevant(entity)) {
+        if (!isEntityRelevant(entity) || entity.getRealDerivedFrom() != null) {
             logger.debug(String.format("Entity %s is not need to converted by %s", entity.getBaseName(), mapperClass.getClassName()));
             return;
         }
@@ -148,6 +143,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
 
         entity.getParentRefs().stream()
                 .filter(ref -> ref.isOwner() && !ref.isList())
+                .filter(ref -> ref.getRealTargetEntity().getRealDerivedFrom() == null)
                 .forEach(ref ->
                         createConvertToDomainMethodWithParent(mapperClass, entity, ref, domainPackageName)
                 );
@@ -240,7 +236,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
             return;
         }
         mapperClass.addImport(getPackageAndClass(entity, dtoPackageName, DTO_POSTFIX));
-        mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
+        mapperClass.addImport(getPackageAndClass(entity.getRealDerivedFrom() == null ? entity : entity.getRealDerivedFrom(), domainPackageName, DOMAIN_POSTFIX));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, dtoPackageName, DtoCreator.DTO_INTERFACE));
 
         entity.getParentRefs().stream()
@@ -306,7 +302,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         addMappedObjectsParam(convertMethodWithMap, entity, DtoCreator.DTO_INTERFACE, DTO_POSTFIX);
 
         convertMethodWithMap.addLine("return convertToDto(%1$s, %2$s, DtoObjectFactory::create%3$sDto, (%4$s, %5$s) -> getInstance().set%3$sDtoValues(%4$s, %5$s)"
-                , getLowerFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
+                , getLowerFirst(getSourceEntityBaseName(entity, DOMAIN_POSTFIX)), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
                 , DOMAIN_PARAMETER, DTO_PARAMETER);
         convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sDtoSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
                 , DOMAIN_PARAMETER, DTO_PARAMETER, getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT
@@ -330,7 +326,9 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @return {@code true} if the entity is relevant for the mapper
      */
     private static boolean isEntityRelevant(Entity entity) {
-        return entity.getModels().isDto() && entity.getModels().isDomain();
+        return entity.getModels().isDto() && (
+                entity.getModels().isDomain() || (entity.getRealDerivedFrom() != null && entity.getRealDerivedFrom().getModels().isDomain())
+        );
     }
 
     /**

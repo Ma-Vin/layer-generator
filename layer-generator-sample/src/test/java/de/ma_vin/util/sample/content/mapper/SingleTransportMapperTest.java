@@ -6,6 +6,7 @@ import de.ma_vin.util.sample.content.domain.single.SingleRefOneParent;
 import de.ma_vin.util.sample.content.domain.single.SingleRefTwoParents;
 import de.ma_vin.util.sample.content.dto.ITransportable;
 import de.ma_vin.util.sample.content.dto.RootDto;
+import de.ma_vin.util.sample.content.dto.domain.DerivedFromDomainDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefOneParentDto;
 import de.ma_vin.util.sample.content.dto.single.SingleRefTwoParentsDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,7 @@ public class SingleTransportMapperTest {
     private RootDto rootDto;
     private SingleRefOneParentDto singleRefOneParentDto;
     private SingleRefTwoParentsDto singleRefTwoParentsDto;
+    private DerivedFromDomainDto derivedFromDomainDto;
 
     Map<String, IIdentifiable> mappedObjects = new HashMap<>();
     Map<String, ITransportable> mappedDtoObjects = new HashMap<>();
@@ -43,6 +45,9 @@ public class SingleTransportMapperTest {
         singleRefOneParentDto = createSingleRefOneParentDtoWithChildren(getNextId());
         singleRefTwoParentsDto = createSingleRefTwoParentsDto(getNextId());
         rootDto = createRootDto(getNextId());
+        derivedFromDomainDto = createDerivedFromDomainDto(getNextId());
+        derivedFromDomainDto.setIdentification(singleRefOneParentDto.getIdentification());
+        derivedFromDomainDto.setSingleRef(singleRefTwoParentsDto);
     }
 
     @Test
@@ -170,7 +175,7 @@ public class SingleTransportMapperTest {
         assertEquals(singleRefTwoParents.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(singleRefTwoParents.getDescription(), result.getDescription(), "Wrong description");
 
-        assertEquals(result, singleRefOneParentDto.getSingleRef(), "Wrong single ref at root");
+        assertEquals(result, singleRefTwoParentsDto, "Wrong single ref at root");
     }
 
     @Test
@@ -183,6 +188,16 @@ public class SingleTransportMapperTest {
         SingleRefTwoParentsDto result = SingleTransportMapper.convertToSingleRefTwoParentsDto(singleRefTwoParents, mappedDtoObjects);
         SingleRefTwoParentsDto convertAgainResult = SingleTransportMapper.convertToSingleRefTwoParentsDto(singleRefTwoParents, mappedDtoObjects);
         assertSame(result, convertAgainResult, "Converting again with map should return the same object");
+    }
+
+    @Test
+    public void testConvertToSingleRefTwoParentsDtoWithOtherParentFromDerivedFrom() {
+        SingleRefTwoParentsDto result = SingleTransportMapper.convertToSingleRefTwoParentsDto(singleRefTwoParents, derivedFromDomainDto);
+        assertNotNull(result, "There should be any result");
+        assertEquals(singleRefTwoParents.getIdentification(), result.getIdentification(), "Wrong identification");
+        assertEquals(singleRefTwoParents.getDescription(), result.getDescription(), "Wrong description");
+
+        assertEquals(result, singleRefTwoParentsDto, "Wrong single ref at root");
     }
 
     @Test

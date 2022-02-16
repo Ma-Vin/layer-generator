@@ -22,6 +22,7 @@ public class EntityTest {
         cut.setDescription("description");
         cut.setIdentificationPrefix("identificationPrefix");
         cut.setParent("parent");
+        cut.setDerivedFrom("derivedFrom");
         cut.setFields(Collections.EMPTY_LIST);
         cut.setIndices(Collections.EMPTY_LIST);
         cut.setReferences(Collections.EMPTY_LIST);
@@ -99,6 +100,13 @@ public class EntityTest {
     @Test
     public void testIsValidParent() {
         cut.setParent("");
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidDerivedFrom() {
+        cut.setDerivedFrom("");
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }

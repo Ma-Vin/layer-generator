@@ -29,6 +29,10 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     public static final String MAP_DECLARATION_TEXT = "%s<String, %s>";
     public static final String RETURN_RESULT_TEXT = "return result;";
 
+    public static final String DTO_POSTFIX = "Dto";
+    public static final String DOMAIN_POSTFIX = "";
+    public static final String DAO_POSTFIX = "Dao";
+
     AbstractMapperCreator(Config config, Log logger) {
         super(config, logger);
     }
@@ -186,7 +190,10 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
 
         Method setValueMethod = new Method(String.format("set%s%sValues", getUpperFirst(entity.getBaseName()), targetClassParameterPostFix));
         setValueMethod.setQualifier(Qualifier.PROTECTED);
-        setValueMethod.addParameter(String.format("%s%s", getUpperFirst(entity.getBaseName()), sourceClassParameterPostFix), sourceParameter);
+
+        String sourceBaseName = getSourceEntityBaseName(entity, sourceClassParameterPostFix);
+
+        setValueMethod.addParameter(String.format("%s%s", getUpperFirst(sourceBaseName), sourceClassParameterPostFix), sourceParameter);
         setValueMethod.addParameter(String.format("%s%s", getUpperFirst(entity.getBaseName()), targetClassParameterPostFix), targetParameter);
 
         determineAlFields(entity).stream()
@@ -240,10 +247,11 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         List<Reference> relevantReferences = getSingleReferences(parameterContainer.entity, parameterContainer.entityChecker, referenceFilter);
 
         boolean hasIncludeChildrenParameter = hasSingleRefWithChildren(relevantReferences, parameterContainer.entityChecker);
+        String sourceBaseName = getSourceEntityBaseName(parameterContainer.entity, parameterContainer.sourceClassParameterPostFix);
 
         Method setSingleRefMethod = new Method(String.format("set%s%sSingleReferences", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.classParameterPostFix));
         setSingleRefMethod.setQualifier(Qualifier.PROTECTED);
-        setSingleRefMethod.addParameter(String.format("%s%s", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.sourceClassParameterPostFix), sourceParameter);
+        setSingleRefMethod.addParameter(String.format("%s%s", sourceBaseName, parameterContainer.sourceClassParameterPostFix), sourceParameter);
         setSingleRefMethod.addParameter(String.format("%s%s", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.classParameterPostFix), targetParameter);
         if (hasIncludeChildrenParameter) {
             setSingleRefMethod.addParameter("boolean", INCLUDE_CHILDREN_PARAMETER);
@@ -318,9 +326,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         convertMethod.setStatic(true);
         convertMethod.setJavaDoc(new JavaDoc());
 
-        String objParamName = getLowerFirst(parameterContainer.entity.getBaseName());
-        convertMethod.addParameter(String.format("%s%s", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.sourceClassParameterPostFix), objParamName);
-        convertMethod.getJavaDoc().addParams(objParamName, "the source object which should be converted");
+        addToConvertParameter(convertMethod, parameterContainer);
 
         if (hasIncludeChildrenParameter(parameterContainer.entity, parameterContainer.entityChecker)) {
             convertMethod.addParameter("boolean", INCLUDE_CHILDREN_PARAMETER);
@@ -332,6 +338,34 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
                 , getUpperFirst(parameterContainer.getEntity().getBaseName()), parameterContainer.getClassParameterPostFix());
 
         return convertMethod;
+    }
+
+
+    /**
+     * Adds the parameter for the object which is to convert.
+     * In case of a derived entity the derived from will be used
+     *
+     * @param convertMethod      Method which is converting
+     * @param parameterContainer parameterContainer container for default parameter to create convert method
+     */
+    private void addToConvertParameter(Method convertMethod, CreateMethodParameterContainer parameterContainer) {
+        String entityBaseName = getSourceEntityBaseName(parameterContainer.entity, parameterContainer.sourceClassParameterPostFix);
+        String objParamName = getLowerFirst(entityBaseName);
+        String objParamClassName = String.format("%s%s", getUpperFirst(entityBaseName), parameterContainer.sourceClassParameterPostFix);
+        convertMethod.addParameter(objParamClassName, objParamName);
+        convertMethod.getJavaDoc().addParams(objParamName, "the source object which should be converted");
+    }
+
+    /**
+     * Determines the base name of an entity. The entity should have the source role.
+     *
+     * @param entity        the entity whose base name is asked vor
+     * @param entityPostFix The post fix of the entity
+     * @return the base name of the entity.
+     * If the entity is derived from another one and the source is a {@code DOMAIN_POSTFIX}, the name will be taken from the derived from
+     */
+    protected String getSourceEntityBaseName(Entity entity, String entityPostFix) {
+        return entity.getRealDerivedFrom() != null && DOMAIN_POSTFIX.equals(entityPostFix) ? entity.getRealDerivedFrom().getBaseName() : entity.getBaseName();
     }
 
     /**
@@ -360,7 +394,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         Method convertMethod = createConvertMethodBase(parameterContainer);
         convertMethod.addLine("return %s(%s,%s%s new %s<>());"
                 , getConvertMethodName(parameterContainer.entity, parameterContainer.classParameterPostFix)
-                , getLowerFirst(parameterContainer.entity.getBaseName())
+                , getLowerFirst(getSourceEntityBaseName(parameterContainer.entity, parameterContainer.sourceClassParameterPostFix))
                 , hasIncludeChildrenParameter(parameterContainer.entity, parameterContainer.entityChecker) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , singleValueModelRelevant ? getParameterOfRelevantSingleModelValuesText(parameterContainer.entity) : ""
                 , HashMap.class.getSimpleName());
@@ -553,8 +587,9 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param targetClassPostFix postfix for classes which will be the result
      */
     protected void addConvertMethodDescriptionWithParent(Method convertMethod, Entity entity, String sourceClassPostFix, String targetClassPostFix) {
-        convertMethod.getJavaDoc().addLine("Converts a(n) {@link %1$s%2$s} to a(n) {@link %1$s%3$s} and sets the result to the corresponding reference property at the parent"
-                , getUpperFirst(entity.getBaseName()), sourceClassPostFix, targetClassPostFix);
+        convertMethod.getJavaDoc().addLine("Converts a(n) {@link %1$s%2$s} to a(n) {@link %3$s%4$s} and sets the result to the corresponding reference property at the parent"
+                , getUpperFirst(getSourceEntityBaseName(entity, sourceClassPostFix)), sourceClassPostFix
+                , getUpperFirst(entity.getBaseName()), targetClassPostFix);
     }
 
     /**
@@ -566,8 +601,9 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param targetClassPostFix postfix for classes which will be the result
      */
     protected void addConvertMethodDescription(Method convertMethod, Entity entity, String sourceClassPostFix, String targetClassPostFix) {
-        convertMethod.getJavaDoc().addLine("Converts a(n) {@link %1$s%2$s} to a(n) {@link %1$s%3$s}"
-                , getUpperFirst(entity.getBaseName()), sourceClassPostFix, targetClassPostFix);
+        convertMethod.getJavaDoc().addLine("Converts a(n) {@link %1$s%2$s} to a(n) {@link %3$s%4$s}"
+                , getUpperFirst(getSourceEntityBaseName(entity, sourceClassPostFix)), sourceClassPostFix
+                , getUpperFirst(entity.getBaseName()), targetClassPostFix);
     }
 
     /**

@@ -10,6 +10,7 @@ import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.log.LogImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -25,9 +26,11 @@ import java.util.List;
 public class ConfigLoaderTest {
 
     private static final String ENTITY_NAME = "EntityName";
+    private static final String DERIVED_ENTITY_NAME = "DerivedEntityName";
     private static final String GROUPING_ENTITY_NAME = "GroupingEntityName";
     private static final String REFERENCE_NAME = "ReferenceName";
     private static final String FIELD_NAME = "FieldName";
+    private static final String OTHER_FIELD_NAME = "OtherFieldName";
     private static final String GROUPING_FIELD_NAME = "GroupingFieldName";
     private static final String FIELD_LIST = FIELD_NAME;
 
@@ -42,11 +45,15 @@ public class ConfigLoaderTest {
     @Mock
     private Entity groupingEntity;
     @Mock
+    private Entity derivedEntity;
+    @Mock
     private Grouping grouping;
     @Mock
     private Reference reference;
     @Mock
     private Field entityField;
+    @Mock
+    private Field derivedEntityField;
     @Mock
     private Field groupingEntityField;
     @Mock
@@ -82,13 +89,16 @@ public class ConfigLoaderTest {
     }
 
     private void initDefaultMocks() {
-        when(config.getEntities()).thenReturn(Collections.singletonList(entity));
+        when(config.getEntities()).thenReturn(Arrays.asList(entity, derivedEntity));
         when(config.getGroupings()).thenReturn(Collections.singletonList(grouping));
 
         when(grouping.getEntities()).thenReturn(Collections.singletonList(groupingEntity));
 
         defaultMockEntity(entity, ENTITY_NAME, Collections.singletonList(entityField), Collections.singletonList(index)
                 , Collections.singletonList(reference), entityParentReferences);
+        defaultMockEntity(derivedEntity, DERIVED_ENTITY_NAME, Collections.singletonList(entityField), null
+                , null, new ArrayList<>());
+        when(derivedEntity.getDerivedFrom()).thenReturn(ENTITY_NAME);
 
         defaultMockEntity(groupingEntity, GROUPING_ENTITY_NAME, Collections.singletonList(groupingEntityField), null, null
                 , groupingEntityParentReferences);
@@ -100,6 +110,7 @@ public class ConfigLoaderTest {
         doAnswer(a -> when(reference.getRealTargetEntity()).thenReturn(a.getArgument(0))).when(reference).setRealTargetEntity(any());
 
         when(entityField.getFieldName()).thenReturn(FIELD_NAME);
+        when(derivedEntityField.getFieldName()).thenReturn(OTHER_FIELD_NAME);
         when(groupingEntityField.getFieldName()).thenReturn(GROUPING_FIELD_NAME);
 
         when(index.getFieldList()).thenReturn(FIELD_LIST);
@@ -113,6 +124,7 @@ public class ConfigLoaderTest {
 
         when(entity.getBaseName()).thenReturn(entityName);
         when(entity.getTableName()).thenReturn(entityName);
+        when(entity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(entity.getFields()).thenReturn(fields);
         doAnswer(a -> when(entity.getFields()).thenReturn(a.getArgument(0)))
                 .when(entity).setFields(any());
@@ -128,6 +140,8 @@ public class ConfigLoaderTest {
         doAnswer(a -> when(entity.getReferences()).thenReturn(a.getArgument(0)))
                 .when(entity).setReferences(any());
         when(entity.getParentRefs()).thenReturn(parentReferences);
+        doAnswer(a -> when(entity.getRealDerivedFrom()).thenReturn(a.getArgument(0)))
+                .when(entity).setRealDerivedFrom(any());
     }
 
     @Test
@@ -141,6 +155,14 @@ public class ConfigLoaderTest {
         verify(entity, never()).setReferences(any());
         verify(entity, never()).setRealParent(any());
         assertEquals(0, entityParentReferences.size(), "Wrong number of set parent references at entity");
+        verify(entity, never()).setRealDerivedFrom(any());
+
+        verify(derivedEntity, never()).setGrouping(any());
+        verify(derivedEntity, never()).setFields(any());
+        verify(derivedEntity).setParentRefs(any());
+        verify(derivedEntity).setReferences(any());
+        verify(derivedEntity, never()).setRealParent(any());
+        verify(derivedEntity).setRealDerivedFrom(any());
 
         verify(groupingEntity).setGrouping(eq(grouping));
         verify(groupingEntity, never()).setFields(any());
@@ -441,5 +463,41 @@ public class ConfigLoaderTest {
         boolean result = cut.complete();
         assertFalse(result, "The result of completion should be false");
         assertEquals(0, fieldSortings.size(), "Wrong number of index fields");
+    }
+
+    @DisplayName("The config cannot completed because the derived from entity does not exists")
+    @Test
+    public void testCompleteRealDerivedFromNonExisting() {
+        when(derivedEntity.getDerivedFrom()).thenReturn("AnyRandomEntityName");
+        boolean result = cut.complete();
+        assertFalse(result, "The result of completion should be false");
+        verify(derivedEntity, never()).setRealDerivedFrom(any());
+    }
+
+    @DisplayName("The config cannot completed because the derived from entity is abstract")
+    @Test
+    public void testCompleteRealDerivedFromIsAbstract() {
+        when(entity.getIsAbstract()).thenReturn(Boolean.TRUE);
+        boolean result = cut.complete();
+        assertFalse(result, "The result of completion should be false");
+        verify(derivedEntity, never()).setRealDerivedFrom(any());
+    }
+
+    @DisplayName("The config cannot completed because the derived from entity does not support domain model")
+    @Test
+    public void testCompleteRealDerivedFromIsNotDomain() {
+        when(entity.getModels()).thenReturn(Models.DAO);
+        boolean result = cut.complete();
+        assertFalse(result, "The result of completion should be false");
+        verify(derivedEntity, never()).setRealDerivedFrom(any());
+    }
+
+    @DisplayName("The config cannot completed because the derived from entity does not contain all required fields")
+    @Test
+    public void testCompleteRealDerivedFromMissingFields() {
+        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(derivedEntityField));
+        boolean result = cut.complete();
+        assertFalse(result, "The result of completion should be false");
+        verify(derivedEntity, never()).setRealDerivedFrom(any());
     }
 }

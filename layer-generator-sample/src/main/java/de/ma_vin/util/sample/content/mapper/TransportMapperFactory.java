@@ -15,6 +15,10 @@ public class TransportMapperFactory {
 		return new DomainDtoTransportMapper();
 	}
 
+	public static DomainTransportMapper createDomainTransportMapper() {
+		return new DomainTransportMapper();
+	}
+
 	public static FilteringTransportMapper createFilteringTransportMapper() {
 		return new FilteringTransportMapper();
 	}

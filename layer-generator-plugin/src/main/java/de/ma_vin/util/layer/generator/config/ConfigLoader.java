@@ -176,7 +176,10 @@ public class ConfigLoader {
         boolean result = true;
         for (Entity e : entities) {
             if (e.getParent() != null && !e.getParent().trim().isEmpty()) {
-                result = result && completeEntities(e, e.getParent().trim());
+                result = result && completeEntitiesWithParent(e, e.getParent().trim());
+            }
+            if (e.getDerivedFrom() != null && !e.getDerivedFrom().trim().isEmpty()) {
+                result = result && completeEntitiesDerived(e, e.getDerivedFrom().trim());
             }
             result = result && completeIndices(e);
             if (e.getTableName() == null) {
@@ -186,7 +189,7 @@ public class ConfigLoader {
         return result;
     }
 
-    private boolean completeEntities(Entity actualEntity, String parentName) {
+    private boolean completeEntitiesWithParent(Entity actualEntity, String parentName) {
         Optional<Entity> entity = getEntity(parentName);
         if (entity.isPresent() && Boolean.TRUE.equals(entity.get().getIsAbstract())) {
             actualEntity.setRealParent(entity.get());
@@ -194,6 +197,28 @@ public class ConfigLoader {
         }
         logger.error(String.format("The parent %s of entity %s could not be found", parentName, actualEntity.getBaseName()));
         return false;
+    }
+
+    private boolean completeEntitiesDerived(Entity actualEntity, String derivedFromName) {
+        Optional<Entity> entity = getEntity(derivedFromName);
+        if (entity.isEmpty() || Boolean.TRUE.equals(entity.get().getIsAbstract())) {
+            logger.error(String.format("The entity %s, from which %s is to be derived, could not be found"
+                    , derivedFromName, actualEntity.getBaseName()));
+            return false;
+        }
+        if (!entity.get().getModels().isDomain()) {
+            logger.error(String.format("The entity %s, from which %s is to be derived, has to be model which include domain"
+                    , derivedFromName, actualEntity.getBaseName()));
+            return false;
+        }
+        if (!actualEntity.getFields().stream().allMatch(f1 -> entity.get().getFields().stream().anyMatch(f2 -> f2.equals(f1)))) {
+            logger.error(String.format("The entity %s, from which %s is to be derived, does not have all required fields"
+                    , derivedFromName, actualEntity.getBaseName()));
+            return false;
+        }
+        actualEntity.setRealDerivedFrom(entity.get());
+        return true;
+
     }
 
     Optional<Entity> getEntity(String entityName) {
