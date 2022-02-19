@@ -219,7 +219,7 @@ public class ConfigLoader {
                     , derivedFromName, actualEntity.getBaseName()));
             return false;
         }
-        if (!actualEntity.getFields().stream().allMatch(f -> existsFieldAtEntity(f, entity.get()))) {
+        if (!actualEntity.getFields().stream().allMatch(f -> existsDerivedFromFieldAtEntity(f, entity.get()))) {
             logger.error(String.format("The entity %s, from which %s is to be derived, does not have all required fields"
                     , derivedFromName, actualEntity.getBaseName()));
             return false;
@@ -235,13 +235,33 @@ public class ConfigLoader {
      * @param entity entity where to search at
      * @return {@code true} if there is an equal field at the entity or at its parent. Otherwise {@code false}
      */
-    private boolean existsFieldAtEntity(Field field, Entity entity) {
-        if (entity.getFields().stream().anyMatch(f2 -> f2.equals(field))
-                || (entity.hasParent() && existsFieldAtEntity(field, entity.getRealParent()))) {
+    private boolean existsDerivedFromFieldAtEntity(Field field, Entity entity) {
+        if (entity.getFields().stream().anyMatch(f -> checkAndDerive(field, f))
+                || (entity.hasParent() && existsDerivedFromFieldAtEntity(field, entity.getRealParent()))) {
             return true;
         }
         logger.error(String.format("The field %s does not exists at %s or its parent", field.getFieldName(), entity.getBaseName()));
         return false;
+    }
+
+    /**
+     * if the fields equals by name the other properties will be taken over
+     *
+     * @param field            field where to set the properties
+     * @param derivedFromField field where to get from properties
+     * @return {@code true} if the field names equals. Otherwise {@ode false}
+     */
+    private boolean checkAndDerive(Field field, Field derivedFromField) {
+        if (!field.getFieldName().equals(derivedFromField.getFieldName())) {
+            return false;
+        }
+        field.setType(derivedFromField.getType());
+        field.setTypePackage(derivedFromField.getTypePackage());
+        field.setIsTypeEnum(derivedFromField.getIsTypeEnum());
+        field.setShortDescription(derivedFromField.getShortDescription());
+        field.setDescription(derivedFromField.getDescription());
+        field.setModels(Models.DOMAIN_DTO);
+        return true;
     }
 
     private Optional<Entity> getEntity(String entityName) {

@@ -58,6 +58,8 @@ public class ConfigLoaderTest {
     @Mock
     private Field parentEntityField;
     @Mock
+    private Field derivedEntityField;
+    @Mock
     private Field groupingEntityField;
     @Mock
     private Index index;
@@ -117,6 +119,7 @@ public class ConfigLoaderTest {
 
         when(entityField.getFieldName()).thenReturn(FIELD_NAME);
         when(parentEntityField.getFieldName()).thenReturn(OTHER_FIELD_NAME);
+        when(derivedEntityField.getFieldName()).thenReturn(FIELD_NAME);
         when(groupingEntityField.getFieldName()).thenReturn(GROUPING_FIELD_NAME);
 
         when(index.getFieldList()).thenReturn(FIELD_LIST);
@@ -502,7 +505,8 @@ public class ConfigLoaderTest {
     @DisplayName("The config cannot completed because the derived from entity does not contain all required fields")
     @Test
     public void testCompleteRealDerivedFromMissingFields() {
-        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(parentEntityField));
+        when(derivedEntityField.getFieldName()).thenReturn(OTHER_FIELD_NAME);
+        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(derivedEntityField));
         boolean result = cut.complete();
         assertFalse(result, "The result of completion should be false");
         verify(derivedEntity, never()).setRealDerivedFrom(any());
@@ -511,9 +515,10 @@ public class ConfigLoaderTest {
     @DisplayName("The config completed with an field from the parent of the derived from entity")
     @Test
     public void testCompleteRealDerivedFromParent() {
+        when(derivedEntityField.getFieldName()).thenReturn(OTHER_FIELD_NAME);
         when(entity.getParent()).thenReturn(PARENT_ENTITY_NAME);
         when(entity.hasParent()).thenReturn(Boolean.TRUE);
-        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(parentEntityField));
+        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(derivedEntityField));
         boolean result = cut.complete();
         assertTrue(result, "The result of completion should be true");
         verify(derivedEntity).setRealDerivedFrom(any());
