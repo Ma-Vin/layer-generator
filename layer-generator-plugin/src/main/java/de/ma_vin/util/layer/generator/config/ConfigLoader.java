@@ -179,7 +179,7 @@ public class ConfigLoader {
                 result = result && completeEntitiesWithParent(e, e.getParent().trim());
             }
             if (e.getDerivedFrom() != null && !e.getDerivedFrom().trim().isEmpty()) {
-                result = result && completeEntitiesDerived(e, e.getDerivedFrom().trim());
+                result = result && completeEntitiesDerived(e);
             }
             result = result && completeIndices(e);
             if (e.getTableName() == null) {
@@ -199,7 +199,15 @@ public class ConfigLoader {
         return false;
     }
 
-    private boolean completeEntitiesDerived(Entity actualEntity, String derivedFromName) {
+    /**
+     * Completes an {@link Entity} which is based on another one and sets the {@link Entity#setRealDerivedFrom(Entity)}
+     *
+     * @param actualEntity entity which is to complete
+     * @return {@code true} if the derived from entity could be found, is not abstract, provides all necessary fields
+     * and is at least a domain one. Otherwise {@code false}.
+     */
+    private boolean completeEntitiesDerived(Entity actualEntity) {
+        String derivedFromName = actualEntity.getDerivedFrom().trim();
         Optional<Entity> entity = getEntity(derivedFromName);
         if (entity.isEmpty() || Boolean.TRUE.equals(entity.get().getIsAbstract())) {
             logger.error(String.format("The entity %s, from which %s is to be derived, could not be found"
@@ -211,17 +219,32 @@ public class ConfigLoader {
                     , derivedFromName, actualEntity.getBaseName()));
             return false;
         }
-        if (!actualEntity.getFields().stream().allMatch(f1 -> entity.get().getFields().stream().anyMatch(f2 -> f2.equals(f1)))) {
+        if (!actualEntity.getFields().stream().allMatch(f -> existsFieldAtEntity(f, entity.get()))) {
             logger.error(String.format("The entity %s, from which %s is to be derived, does not have all required fields"
                     , derivedFromName, actualEntity.getBaseName()));
             return false;
         }
         actualEntity.setRealDerivedFrom(entity.get());
         return true;
-
     }
 
-    Optional<Entity> getEntity(String entityName) {
+    /**
+     * Checks whether there exists an equal {@link Field} at a given {@link Entity} or not.
+     *
+     * @param field  field to check
+     * @param entity entity where to search at
+     * @return {@code true} if there is an equal field at the entity or at its parent. Otherwise {@code false}
+     */
+    private boolean existsFieldAtEntity(Field field, Entity entity) {
+        if (entity.getFields().stream().anyMatch(f2 -> f2.equals(field))
+                || (entity.hasParent() && existsFieldAtEntity(field, entity.getRealParent()))) {
+            return true;
+        }
+        logger.error(String.format("The field %s does not exists at %s or its parent", field.getFieldName(), entity.getBaseName()));
+        return false;
+    }
+
+    private Optional<Entity> getEntity(String entityName) {
         Optional<Entity> result = config.getEntities().stream()
                 .filter(e -> e.getBaseName().equals(entityName))
                 .findFirst();

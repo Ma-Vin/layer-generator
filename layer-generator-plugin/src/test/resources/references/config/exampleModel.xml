@@ -173,6 +173,16 @@
                         <field fieldName="description" type="String"/>
                     </fields>
                 </entity>
+                <entity baseName="DerivedFromDomain" identificationPrefix="D3"
+                        derivedFrom="SingleRefOneParent" description="Derived from SingleRefOneParent">
+                    <fields>
+                        <field fieldName="description" type="String"/>
+                    </fields>
+                    <references>
+                        <reference referenceName="singleRef" targetEntity="SingleRefTwoParents" isOwner="true"
+                                   shortDescription="Instance with two parents"/>
+                    </references>
+                </entity>
             </entities>
         </grouping>
         <grouping groupingPackage="dto">

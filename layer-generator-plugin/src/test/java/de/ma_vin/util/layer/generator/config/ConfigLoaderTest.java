@@ -27,6 +27,7 @@ public class ConfigLoaderTest {
 
     private static final String ENTITY_NAME = "EntityName";
     private static final String DERIVED_ENTITY_NAME = "DerivedEntityName";
+    private static final String PARENT_ENTITY_NAME = "ParentEntityName";
     private static final String GROUPING_ENTITY_NAME = "GroupingEntityName";
     private static final String REFERENCE_NAME = "ReferenceName";
     private static final String FIELD_NAME = "FieldName";
@@ -47,13 +48,15 @@ public class ConfigLoaderTest {
     @Mock
     private Entity derivedEntity;
     @Mock
+    private Entity parentEntity;
+    @Mock
     private Grouping grouping;
     @Mock
     private Reference reference;
     @Mock
     private Field entityField;
     @Mock
-    private Field derivedEntityField;
+    private Field parentEntityField;
     @Mock
     private Field groupingEntityField;
     @Mock
@@ -89,7 +92,7 @@ public class ConfigLoaderTest {
     }
 
     private void initDefaultMocks() {
-        when(config.getEntities()).thenReturn(Arrays.asList(entity, derivedEntity));
+        when(config.getEntities()).thenReturn(Arrays.asList(entity, derivedEntity, parentEntity));
         when(config.getGroupings()).thenReturn(Collections.singletonList(grouping));
 
         when(grouping.getEntities()).thenReturn(Collections.singletonList(groupingEntity));
@@ -99,6 +102,9 @@ public class ConfigLoaderTest {
         defaultMockEntity(derivedEntity, DERIVED_ENTITY_NAME, Collections.singletonList(entityField), null
                 , null, new ArrayList<>());
         when(derivedEntity.getDerivedFrom()).thenReturn(ENTITY_NAME);
+        defaultMockEntity(parentEntity, PARENT_ENTITY_NAME, Collections.singletonList(parentEntityField), null
+                , null, new ArrayList<>());
+        when(parentEntity.getIsAbstract()).thenReturn(Boolean.TRUE);
 
         defaultMockEntity(groupingEntity, GROUPING_ENTITY_NAME, Collections.singletonList(groupingEntityField), null, null
                 , groupingEntityParentReferences);
@@ -110,7 +116,7 @@ public class ConfigLoaderTest {
         doAnswer(a -> when(reference.getRealTargetEntity()).thenReturn(a.getArgument(0))).when(reference).setRealTargetEntity(any());
 
         when(entityField.getFieldName()).thenReturn(FIELD_NAME);
-        when(derivedEntityField.getFieldName()).thenReturn(OTHER_FIELD_NAME);
+        when(parentEntityField.getFieldName()).thenReturn(OTHER_FIELD_NAME);
         when(groupingEntityField.getFieldName()).thenReturn(GROUPING_FIELD_NAME);
 
         when(index.getFieldList()).thenReturn(FIELD_LIST);
@@ -142,6 +148,7 @@ public class ConfigLoaderTest {
         when(entity.getParentRefs()).thenReturn(parentReferences);
         doAnswer(a -> when(entity.getRealDerivedFrom()).thenReturn(a.getArgument(0)))
                 .when(entity).setRealDerivedFrom(any());
+        doAnswer(a -> when(entity.getRealParent()).thenReturn(a.getArgument(0))).when(entity).setRealParent(any());
     }
 
     @Test
@@ -495,9 +502,20 @@ public class ConfigLoaderTest {
     @DisplayName("The config cannot completed because the derived from entity does not contain all required fields")
     @Test
     public void testCompleteRealDerivedFromMissingFields() {
-        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(derivedEntityField));
+        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(parentEntityField));
         boolean result = cut.complete();
         assertFalse(result, "The result of completion should be false");
         verify(derivedEntity, never()).setRealDerivedFrom(any());
+    }
+
+    @DisplayName("The config completed with an field from the parent of the derived from entity")
+    @Test
+    public void testCompleteRealDerivedFromParent() {
+        when(entity.getParent()).thenReturn(PARENT_ENTITY_NAME);
+        when(entity.hasParent()).thenReturn(Boolean.TRUE);
+        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(parentEntityField));
+        boolean result = cut.complete();
+        assertTrue(result, "The result of completion should be true");
+        verify(derivedEntity).setRealDerivedFrom(any());
     }
 }
