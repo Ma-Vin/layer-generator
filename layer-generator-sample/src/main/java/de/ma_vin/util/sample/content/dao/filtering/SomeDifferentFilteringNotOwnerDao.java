@@ -22,7 +22,7 @@ import lombok.ToString;
 @ToString(exclude = {"parentRoot", "aggFiltered"})
 public class SomeDifferentFilteringNotOwnerDao implements IIdentifiableDao {
 
-	@OneToMany(mappedBy = "filtered", targetEntity = SomeDifferentFilteringNotOwnerToFilteredDao.class)
+	@OneToMany(mappedBy = "someDifferentFilteringNotOwner", targetEntity = SomeDifferentFilteringNotOwnerToFilteredDao.class)
 	private Collection<SomeDifferentFilteringNotOwnerToFilteredDao> aggFiltered;
 
 	@Column(name = "Id")

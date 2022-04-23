@@ -25,13 +25,13 @@ public class SomeFilteringOwnerDao implements IIdentifiableDao {
 	@OneToMany(mappedBy = "parentSomeFilteringOwner", targetEntity = FilteredDao.class)
 	private Collection<FilteredDao> aggFiltered;
 
-	@OneToMany(mappedBy = "filteredNotOwner", targetEntity = SomeFilteringOwnerToFilteredNotOwnerDao.class)
+	@OneToMany(mappedBy = "someFilteringOwner", targetEntity = SomeFilteringOwnerToFilteredNotOwnerDao.class)
 	private Collection<SomeFilteringOwnerToFilteredNotOwnerDao> aggFilteredNotOwner;
 
 	@OneToMany(mappedBy = "parentSomeFilteringOwner", targetEntity = FilteredOnlyDaoFieldDao.class)
 	private Collection<FilteredOnlyDaoFieldDao> aggFilteredOnlyDaoField;
 
-	@OneToMany(mappedBy = "filteredOnlyDaoFieldNotOwner", targetEntity = SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao.class)
+	@OneToMany(mappedBy = "someFilteringOwner", targetEntity = SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao.class)
 	private Collection<SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao> aggFilteredOnlyDaoFieldNotOwner;
 
 	@Column(name = "Id")

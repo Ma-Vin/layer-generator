@@ -641,7 +641,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("	@Id");
         expected.add("	private Long id;");
         expected.add("");
-        expected.add("	@OneToMany(mappedBy = \"target\", targetEntity = DummyToTargetDao.class)");
+        expected.add("	@OneToMany(mappedBy = \"dummy\", targetEntity = DummyToTargetDao.class)");
         expected.add("	private Collection<DummyToTargetDao> targetRef;");
         expected.add("");
         expected.add("}");

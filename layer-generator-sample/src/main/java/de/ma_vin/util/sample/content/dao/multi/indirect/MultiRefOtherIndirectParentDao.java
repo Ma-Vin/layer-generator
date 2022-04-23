@@ -30,7 +30,7 @@ public class MultiRefOtherIndirectParentDao implements IIdentifiableDao {
 	@Id
 	private Long id;
 
-	@OneToMany(mappedBy = "multiRefIndirectParent", targetEntity = MultiRefOtherIndirectParentToMultiRefIndirectParentDao.class)
+	@OneToMany(mappedBy = "multiRefOtherIndirectParent", targetEntity = MultiRefOtherIndirectParentToMultiRefIndirectParentDao.class)
 	private Collection<MultiRefOtherIndirectParentToMultiRefIndirectParentDao> multiIndirectRef;
 
 	@JoinColumn(name = "ParentRootId", nullable = false)

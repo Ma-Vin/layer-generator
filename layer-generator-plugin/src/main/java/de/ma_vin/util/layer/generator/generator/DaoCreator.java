@@ -465,7 +465,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
             Annotation refAnnotation = new Annotation(OneToMany.class.getSimpleName());
             refAnnotation.addParameter(TARGET_ENTITY, childClassName + CLASS_ENDING);
-            refAnnotation.addParameter("mappedBy", String.format("\"%s\"", getLowerFirst(reference.getTargetEntity())));
+            refAnnotation.addParameter("mappedBy", String.format("\"%s\"", getLowerFirst(reference.getParent().getBaseName())));
             child.addAnnotation(refAnnotation);
 
             Clazz connectionTableClazz = createConnectionTable(daoClazz.getPackageName(), packageName
