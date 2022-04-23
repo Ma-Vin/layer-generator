@@ -15,13 +15,7 @@
     <description>An example of usage of plugin and annotation</description>
 
     <properties>
-        <maven.compiler.target>14</maven.compiler.target>
-        <maven.compiler.source>14</maven.compiler.source>
-
-        <maven.plugin-dependency.version>3.1.2</maven.plugin-dependency.version>
-        <javax-persistence.version>2.2</javax-persistence.version>
-        <build.helper.maven.verson>3.2.0</build.helper.maven.verson>
-
+        <maven.plugin-dependency.version>3.3.0</maven.plugin-dependency.version>
     </properties>
 
     <build>

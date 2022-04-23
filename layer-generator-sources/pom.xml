@@ -15,13 +15,6 @@
     <name>Util Layer Generator Sources</name>
     <description>Util classes to generate java sources</description>
 
-    <properties>
-        <maven.compiler.source>12</maven.compiler.source>
-        <maven.compiler.target>12</maven.compiler.target>
-
-        <sonar.java.source>12</sonar.java.source>
-    </properties>
-
     <build>
         <plugins>
             <plugin>

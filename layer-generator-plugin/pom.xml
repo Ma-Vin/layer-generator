@@ -16,14 +16,9 @@
     <description>Generator maven plugin to create domain model, data transport and/or data access objects</description>
 
     <properties>
-        <maven.plugin-annotations.version>3.6.0</maven.plugin-annotations.version>
-        <maven.plugin-plugin.version>3.6.0</maven.plugin-plugin.version>
-        <maven.plugin-source.version>3.2.1</maven.plugin-source.version>
-        <maven.plugin-resource.version>3.2.0</maven.plugin-resource.version>
-        <javax-persistence.version>2.2</javax-persistence.version>
-        <jaxb2.plugin.version>2.5.0</jaxb2.plugin.version>
+        <jaxb2.plugin.version>3.1.0</jaxb2.plugin.version>
         <jaxb.api.version>2.3.1</jaxb.api.version>
-        <asm.version>9.1</asm.version>
+        <asm.version>9.3</asm.version>
 
     </properties>
 
@@ -49,7 +44,7 @@
             <dependency>
                 <groupId>org.apache.maven</groupId>
                 <artifactId>maven-plugin-api</artifactId>
-                <version>${maven.plugin.version}</version>
+                <version>${maven.plugin-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven.plugin-tools</groupId>
@@ -60,7 +55,7 @@
             <dependency>
                 <groupId>org.apache.maven</groupId>
                 <artifactId>maven-core</artifactId>
-                <version>${maven.plugin.version}</version>
+                <version>${maven.plugin-api.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
