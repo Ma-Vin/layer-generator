@@ -2,9 +2,9 @@ name: Build and analyze
 
 on:
   push:
-    branches: [ master ]
+    branches: [ release/v1.3 ]
   pull_request:
-    branches: [ master ]
+    branches: [ release/v1.3 ]
 
 jobs:
   build:

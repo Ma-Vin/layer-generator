@@ -1,4 +1,4 @@
-![Maven Workflow Action](https://github.com/Ma-Vin/de.ma_vin.util.layerGenerator/actions/workflows/maven.yml/badge.svg)
+![Maven Workflow Action](https://github.com/Ma-Vin/de.ma_vin.util.layerGenerator/actions/workflows/maven.yml/badge.svg?branch=release%2Fv1.3)
 
 # Util Layer Generator Sources
 Module which contains util classes to generate java sources.
