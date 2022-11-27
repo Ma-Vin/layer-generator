@@ -2,9 +2,9 @@ name: Build and analyze
 
 on:
   push:
-    branches: [ master ]
+    branches: [ release/v1.4 ]
   pull_request:
-    branches: [ master ]
+    branches: [ release/v1.4 ]
 
 jobs:
   build:
@@ -42,31 +42,31 @@ jobs:
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator
-        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
+        ignore-versions: ^(?!1\.4$).*$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: delete old versions of layer-generator-plugin
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator-plugin
-        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
+        ignore-versions: ^(?!1\.4$).*$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: delete old versions of layer-generator-annotation
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator-annotation
-        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
+        ignore-versions: ^(?!1\.4$).*$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: delete old versions of layer-generator-sources
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator-sources
-        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
+        ignore-versions: ^(?!1\.4$).*$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: delete old versions of layer-generator-sample
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator-sample
-        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
+        ignore-versions: ^(?!1\.4$).*$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: Deploy layer generator
       env:

@@ -4,7 +4,7 @@
     <groupId>de.ma_vin.util.layer.generator</groupId>
     <artifactId>layer-generator</artifactId>
     <packaging>pom</packaging>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4</version>
 
     <modules>
         <module>layer-generator-sources</module>
