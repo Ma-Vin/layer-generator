@@ -42,31 +42,31 @@ jobs:
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator
-        ignore-versions: ^(?!.*?1\.4-SNAPSHOT).*
+        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: delete old versions of layer-generator-plugin
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator-plugin
-        ignore-versions: ^(?!.*?1\.4-SNAPSHOT).*
+        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: delete old versions of layer-generator-annotation
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator-annotation
-        ignore-versions: ^(?!.*?1\.4-SNAPSHOT).*
+        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: delete old versions of layer-generator-sources
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator-sources
-        ignore-versions: ^(?!.*?1\.4-SNAPSHOT).*
+        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: delete old versions of layer-generator-sample
       uses: actions/delete-package-versions@v2
       with:
         package-name: de.ma_vin.util.layer.generator.layer-generator-sample
-        ignore-versions: ^(?!.*?1\.4-SNAPSHOT).*
+        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: Deploy layer generator
       env:
