@@ -13,7 +13,7 @@ import java.util.*;
 
 @SupportedAnnotationTypes(
         "de.ma_vin.util.layer.generator.annotations.model.*")
-@SupportedSourceVersion(SourceVersion.RELEASE_14)
+@SupportedSourceVersion(SourceVersion.RELEASE_17)
 @Log4j2
 public class ObjectFactoryBuilder extends AbstractFactoryBuilder {
     @Override
