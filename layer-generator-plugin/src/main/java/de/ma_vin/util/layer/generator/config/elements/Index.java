@@ -4,7 +4,7 @@ import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.validateR
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.*;
 import java.util.List;
 
 /**

@@ -4,7 +4,7 @@ import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.sample.content.dao.RootDao;
 import de.ma_vin.util.sample.content.domain.parent.ExtendingClass;
 import de.ma_vin.util.sample.given.IdGenerator;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

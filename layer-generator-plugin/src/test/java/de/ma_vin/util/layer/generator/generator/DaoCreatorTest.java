@@ -87,7 +87,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -130,7 +130,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao;");
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -167,7 +167,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -214,7 +214,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -250,8 +250,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import java.util.Collection;");
-        expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -297,7 +297,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -335,7 +335,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -383,7 +383,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -421,7 +421,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -467,7 +467,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -521,7 +521,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -572,7 +572,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -617,8 +617,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import java.util.Collection;");
-        expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -650,8 +650,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expectedConnection.add("package de.test.package.dao.group;");
         expectedConnection.add("");
         expectedConnection.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expectedConnection.add("import jakarta.persistence.*;");
         expectedConnection.add("import java.io.Serializable;");
-        expectedConnection.add("import javax.persistence.*;");
         expectedConnection.add("import lombok.AllArgsConstructor;");
         expectedConnection.add("import lombok.Data;");
         expectedConnection.add("import lombok.NoArgsConstructor;");
@@ -718,8 +718,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import java.util.Collection;");
-        expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -751,8 +751,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expectedConnection.add("package de.test.package.dao.group;");
         expectedConnection.add("");
         expectedConnection.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
+        expectedConnection.add("import jakarta.persistence.*;");
         expectedConnection.add("import java.io.Serializable;");
-        expectedConnection.add("import javax.persistence.*;");
         expectedConnection.add("import lombok.AllArgsConstructor;");
         expectedConnection.add("import lombok.Data;");
         expectedConnection.add("import lombok.NoArgsConstructor;");
@@ -817,7 +817,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -854,7 +854,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -889,7 +889,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -941,7 +941,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.custom.CustomEnum;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -992,7 +992,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.custom.CustomEnum;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -1033,7 +1033,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import the.enum.package.AnyEnum;");
         expected.add("");
@@ -1077,7 +1077,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.domain.group.Dummy;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -1131,7 +1131,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.AnotherDummyDao;");
         expected.add("import de.test.package.domain.group.Dummy;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -1180,7 +1180,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.ma_vin.ape.utils.generators.IdGenerator;");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -1286,7 +1286,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -1323,7 +1323,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -1361,7 +1361,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.AnotherDummyDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -1405,8 +1405,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import java.util.Collection;");
-        expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -1454,8 +1454,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import java.util.Collection;");
-        expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -1506,7 +1506,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -1556,7 +1556,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -1605,8 +1605,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import java.util.Collection;");
-        expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -1660,7 +1660,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -1705,7 +1705,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -1759,7 +1759,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("");
         expected.add("/**");
@@ -1799,8 +1799,8 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import java.util.Collection;");
-        expected.add("import javax.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");
@@ -1848,7 +1848,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
-        expected.add("import javax.persistence.*;");
+        expected.add("import jakarta.persistence.*;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
         expected.add("import lombok.ToString;");

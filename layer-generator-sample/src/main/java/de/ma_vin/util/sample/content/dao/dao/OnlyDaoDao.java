@@ -3,7 +3,7 @@ package de.ma_vin.util.sample.content.dao.dao;
 import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.given.IdGenerator;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Data;
 
 /**

@@ -7,7 +7,7 @@ import de.ma_vin.util.layer.generator.config.elements.Index;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.exceptions.NotSupportedMethodException;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import lombok.*;
 import org.apache.maven.plugin.logging.Log;
@@ -77,7 +77,7 @@ public class DaoCreator extends AbstractObjectCreator {
         }
         daoClazz.setDescription(javaDoc);
 
-        daoClazz.addImport("javax.persistence.*");
+        daoClazz.addImport("jakarta.persistence.*");
         daoClazz.addImport(Data.class.getName());
 
         daoClazz.addAnnotation(Data.class);
@@ -86,7 +86,7 @@ public class DaoCreator extends AbstractObjectCreator {
         } else {
             daoClazz.addImport(BaseDao.class.getName());
             daoClazz.addAnnotation(new Annotation(BaseDao.class, null, "\"" + packageName + "\""));
-            daoClazz.addAnnotation(javax.persistence.Entity.class);
+            daoClazz.addAnnotation(jakarta.persistence.Entity.class);
             Annotation tableAnnotation = new Annotation(Table.class, "name", String.format("\"%ss\"", entity.getTableName()));
             addIndices(entity, tableAnnotation);
             daoClazz.addAnnotation(tableAnnotation);
@@ -113,7 +113,7 @@ public class DaoCreator extends AbstractObjectCreator {
         }
         List<String> indexAnnotations = new ArrayList<>();
         for (Index i : entity.getIndices()) {
-            Annotation indexAnnotation = new Annotation(javax.persistence.Index.class, "name", "\"" + i.getIndexName() + "\"");
+            Annotation indexAnnotation = new Annotation(jakarta.persistence.Index.class, "name", "\"" + i.getIndexName() + "\"");
             indexAnnotation.addParameter("columnList", "\"" + getIndexColumnList(i) + "\"");
             if (Boolean.TRUE.equals(i.getIsUnique())) {
                 indexAnnotation.addParameter("unique", "true");
@@ -520,13 +520,13 @@ public class DaoCreator extends AbstractObjectCreator {
         connectionClazz.addImport(AllArgsConstructor.class.getName());
         connectionClazz.addImport(Data.class.getName());
         connectionClazz.addImport(NoArgsConstructor.class.getName());
-        connectionClazz.addImport("javax.persistence.*");
+        connectionClazz.addImport("jakarta.persistence.*");
         connectionClazz.addImport("java.io.Serializable");
         connectionClazz.addImport(getPackageAndClass(reference, basePackageName, DAO_POSTFIX));
         connectionClazz.addImport(getPackageAndClass(reference.getParent(), basePackageName, DAO_POSTFIX));
 
         connectionClazz.addAnnotation(new Annotation(BaseDao.class, null, "\"" + basePackageName + "\""));
-        connectionClazz.addAnnotation(javax.persistence.Entity.class.getSimpleName());
+        connectionClazz.addAnnotation(jakarta.persistence.Entity.class.getSimpleName());
         connectionClazz.addAnnotation(AllArgsConstructor.class.getSimpleName());
         connectionClazz.addAnnotation(Data.class.getSimpleName());
         connectionClazz.addAnnotation(NoArgsConstructor.class.getSimpleName());

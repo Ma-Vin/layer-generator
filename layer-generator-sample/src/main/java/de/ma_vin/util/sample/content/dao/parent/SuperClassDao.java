@@ -1,7 +1,7 @@
 package de.ma_vin.util.sample.content.dao.parent;
 
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Data;
 
 /**

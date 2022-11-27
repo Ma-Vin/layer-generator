@@ -5,7 +5,7 @@ import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.domain.filtering.FilteredNotOwner;
 import de.ma_vin.util.sample.given.AnyEnumType;
 import de.ma_vin.util.sample.given.IdGenerator;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Data;
 
 /**

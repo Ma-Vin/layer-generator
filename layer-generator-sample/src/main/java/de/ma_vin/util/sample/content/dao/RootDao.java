@@ -15,8 +15,8 @@ import de.ma_vin.util.sample.content.dao.single.indirect.SingleRefIndirectParent
 import de.ma_vin.util.sample.content.dao.single.indirect.SingleRefOtherIndirectParentDao;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.given.IdGenerator;
+import jakarta.persistence.*;
 import java.util.Collection;
-import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

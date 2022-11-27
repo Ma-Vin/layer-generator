@@ -48,19 +48,19 @@
         <maven.compiler.source>17</maven.compiler.source>
 
         <maven.plugin.version>3.10.1</maven.plugin.version>
-        <maven.plugin-annotations.version>3.6.4</maven.plugin-annotations.version>
-        <maven.plugin-api.version>3.8.5</maven.plugin-api.version>
-        <maven.plugin-plugin.version>3.6.4</maven.plugin-plugin.version>
-        <maven.plugin-resource.version>3.2.0</maven.plugin-resource.version>
+        <maven.plugin-annotations.version>3.7.0</maven.plugin-annotations.version>
+        <maven.plugin-api.version>3.8.6</maven.plugin-api.version>
+        <maven.plugin-plugin.version>3.7.0</maven.plugin-plugin.version>
+        <maven.plugin-resource.version>3.3.0</maven.plugin-resource.version>
         <maven.plugin-source.version>3.2.1</maven.plugin-source.version>
-        <maven.plugin-jar.version>3.2.2</maven.plugin-jar.version>
-        <maven.surefire.failsafe.version>3.0.0-M6</maven.surefire.failsafe.version>
+        <maven.plugin-jar.version>3.3.0</maven.plugin-jar.version>
+        <maven.surefire.failsafe.version>3.0.0-M7</maven.surefire.failsafe.version>
         <jacoco.plugin.version>0.8.8</jacoco.plugin.version>
-        <javax-persistence.version>2.2</javax-persistence.version>
-        <junit.jupiter.version>5.8.2</junit.jupiter.version>
+        <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
+        <junit.version>5.9.1</junit.version>
         <lombok.version>1.18.24</lombok.version>
-        <log4j.version>2.17.2</log4j.version>
-        <mockito.version>4.5.1</mockito.version>
+        <log4j.version>2.19.0</log4j.version>
+        <mockito.version>4.9.0</mockito.version>
         <sonar.plugin.version>3.9.1.2184</sonar.plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -110,26 +110,18 @@
                 <version>${lombok.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit.jupiter.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit.jupiter.version}</version>
-                <scope>test</scope>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
+                <artifactId>log4j-bom</artifactId>
                 <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>${log4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>

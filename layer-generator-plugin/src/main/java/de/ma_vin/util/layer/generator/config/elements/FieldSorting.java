@@ -3,7 +3,7 @@ package de.ma_vin.util.layer.generator.config.elements;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 /**
  * Class to combine a field with som sorting direction for {@link Index}
