@@ -12,6 +12,7 @@ import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ import java.util.Optional;
 
 import org.apache.maven.plugin.logging.Log;
 import org.xml.sax.SAXException;
+import org.yaml.snakeyaml.LoaderOptions;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 @Data
 public class ConfigLoader {
@@ -39,6 +43,31 @@ public class ConfigLoader {
     }
 
     public boolean load() {
+        if (!configFile.getName().contains(".")) {
+            return false;
+        }
+        return switch (configFile.getName().substring(configFile.getName().lastIndexOf("."))) {
+            case ".xml" -> loadXml();
+            case ".yaml", ".yml" -> loadYaml();
+            default -> false;
+        };
+    }
+
+    private boolean loadYaml() {
+        LoaderOptions loaderOptions = new LoaderOptions();
+        Yaml yaml = new Yaml(new Constructor(Config.class, loaderOptions));
+        try {
+            config = yaml.load(new FileInputStream(configFile));
+            return validate() && complete();
+        } catch (FileNotFoundException e) {
+            logger.error("Could not load config file:");
+            logger.error(e);
+            return false;
+        }
+    }
+
+
+    private boolean loadXml() {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Config.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -250,7 +279,7 @@ public class ConfigLoader {
      *
      * @param field            field where to set the properties
      * @param derivedFromField field where to get from properties
-     * @return {@code true} if the field names equals. Otherwise {@ode false}
+     * @return {@code true} if the field names equals. Otherwise {@code false}
      */
     private boolean checkAndDerive(Field field, Field derivedFromField) {
         if (!field.getFieldName().equals(derivedFromField.getFieldName())) {

@@ -162,10 +162,29 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes/xsd</outputDirectory>
+                            <outputDirectory>${project.build.outputDirectory}/xsd</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/target/generated-resources/xsd</directory>
+                                    <directory>${project.build.directory}/generated-resources/xsd</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>*.xsd</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-test-resources</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.testOutputDirectory}/xsd</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-resources/xsd</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.xsd</include>

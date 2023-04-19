@@ -3,7 +3,6 @@ package de.ma_vin.util.layer.generator.config.elements;
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import jakarta.xml.bind.annotation.*;
@@ -17,7 +16,6 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
-@EqualsAndHashCode(exclude = {"groupings", "entities"})
 @ToString(exclude = {"groupings", "entities"})
 public class Config {
 
