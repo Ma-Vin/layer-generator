@@ -47,20 +47,23 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
 
-        <maven.plugin.version>3.10.1</maven.plugin.version>
-        <maven.plugin-annotations.version>3.7.0</maven.plugin-annotations.version>
-        <maven.plugin-api.version>3.8.6</maven.plugin-api.version>
-        <maven.plugin-plugin.version>3.7.0</maven.plugin-plugin.version>
-        <maven.plugin-resource.version>3.3.0</maven.plugin-resource.version>
+        <maven.plugin.version>3.11.0</maven.plugin.version>
+        <maven.plugin-annotations.version>3.8.1</maven.plugin-annotations.version>
+        <maven.plugin-api.version>3.9.1</maven.plugin-api.version>
+        <maven.plugin-dependency.version>3.5.0</maven.plugin-dependency.version>
+        <maven.plugin-plugin.version>3.8.1</maven.plugin-plugin.version>
+        <maven.plugin-resource.version>3.3.1</maven.plugin-resource.version>
         <maven.plugin-source.version>3.2.1</maven.plugin-source.version>
         <maven.plugin-jar.version>3.3.0</maven.plugin-jar.version>
-        <maven.surefire.failsafe.version>3.0.0-M7</maven.surefire.failsafe.version>
-        <jacoco.plugin.version>0.8.8</jacoco.plugin.version>
+        <maven.surefire.failsafe.version>3.0.0</maven.surefire.failsafe.version>
+        <jacoco.plugin.version>0.8.9</jacoco.plugin.version>
+        <jaxb2.plugin.version>3.1.0</jaxb2.plugin.version>
+        <jakarta.api.version>4.0.0</jakarta.api.version>
         <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
-        <junit.version>5.9.1</junit.version>
-        <lombok.version>1.18.24</lombok.version>
-        <log4j.version>2.19.0</log4j.version>
-        <mockito.version>4.9.0</mockito.version>
+        <junit.version>5.9.2</junit.version>
+        <lombok.version>1.18.26</lombok.version>
+        <log4j.version>2.20.0</log4j.version>
+        <mockito.version>5.3.1</mockito.version>
         <sonar.plugin.version>3.9.1.2184</sonar.plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

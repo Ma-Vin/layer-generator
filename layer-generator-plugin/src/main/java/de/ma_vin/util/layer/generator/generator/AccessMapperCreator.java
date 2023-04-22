@@ -241,10 +241,10 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         convertMethodWithMap.addLine("return convertToDao(%1$s, %2$s, DaoObjectFactory::create%3$sDao, (%4$s, %5$s) -> getInstance().set%3$sDaoValues(%4$s, %5$s%6$s)"
                 , getLowerFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
                 , DOMAIN_PARAMETER, DAO_PARAMETER, filterParameter);
-        convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sDaoSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
+        convertMethodWithMap.addTabbedLine(", (%1$s, %2$s) -> getInstance().set%3$sDaoSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
                 , DOMAIN_PARAMETER, DAO_PARAMETER, getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT
                 , hasSingleRefWithChildren(entity, AccessMapperCreator::isEntityRelevant, l -> l) ? INCLUDE_CHILDREN_PARAMETER_WITH_COMMA : "");
-        convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sDaoMultiReferences(%1$s, %2$s, %5$s%4$s));", 2, DOMAIN_PARAMETER, DAO_PARAMETER
+        convertMethodWithMap.addTabbedLine(", (%1$s, %2$s) -> getInstance().set%3$sDaoMultiReferences(%1$s, %2$s, %5$s%4$s));", 2, DOMAIN_PARAMETER, DAO_PARAMETER
                 , getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, hasIncludeChildrenParameter ? INCLUDE_CHILDREN_PARAMETER_WITH_COMMA : "");
 
         mapperClass.addMethod(convertMethodWithMap);
@@ -365,12 +365,12 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         mapperClass.addImport(ArrayList.class.getName());
 
-        convertMethod.addLine("domain.get%s().forEach(arg ->", 1, textContainer.getterSubName);
+        convertMethod.addTabbedLine("domain.get%s().forEach(arg ->", 1, textContainer.getterSubName);
 
         addWithChildrenDaoMultiRef(mapperClass, convertMethod, reference, hasIncludeChildrenParameter, textContainer);
         addWithoutChildrenDaoMultiRef(mapperClass, convertMethod, reference, hasIncludeChildrenParameter, textContainer);
 
-        convertMethod.addLine(");", 1);
+        convertMethod.addTabbedLine(");", 1);
     }
 
     /**
@@ -386,7 +386,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             , boolean hasIncludeChildrenParameter, UtilTextContainer textContainer) {
 
         if (hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg, true, dao,%s %s)"
+            convertMethod.addTabbedLine("%s.%s(arg, true, dao,%s %s)"
                     , 3, textContainer.mapperName, textContainer.mapperMethodName, getFilterValueText(mapperClass, reference), MAPPED_OBJECTS_PARAMETER_TEXT);
         }
     }
@@ -404,7 +404,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             , UtilTextContainer textContainer) {
 
         if (!hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg, dao,%s %s)"
+            convertMethod.addTabbedLine("%s.%s(arg, dao,%s %s)"
                     , 3, textContainer.mapperName, textContainer.mapperMethodName, getFilterValueText(mapperClass, reference), MAPPED_OBJECTS_PARAMETER_TEXT);
         }
     }
@@ -543,26 +543,26 @@ public class AccessMapperCreator extends AbstractMapperCreator {
                 .collect(Collectors.toList());
 
         if (referenceToParent.isConnectionFiltering()) {
-            convertMethod.addLine("switch (%s) {", 1, getLowerFirst(referenceToParent.getNonOwnerFilterField().getFilterFieldName()));
+            convertMethod.addTabbedLine("switch (%s) {", 1, getLowerFirst(referenceToParent.getNonOwnerFilterField().getFilterFieldName()));
         } else {
-            convertMethod.addLine("switch (%s.get%s()) {", 1, getLowerFirst(referenceToParent.getParent().getBaseName()), getUpperFirst(referenceToParent.getFilterField()));
+            convertMethod.addTabbedLine("switch (%s.get%s()) {", 1, getLowerFirst(referenceToParent.getParent().getBaseName()), getUpperFirst(referenceToParent.getFilterField()));
         }
 
         references.forEach(ref -> {
-            convertMethod.addLine("case %s:", 2, ref.isConnectionFiltering() ? ref.getNonOwnerFilterField().getFilterFieldValue() : ref.getFilterFieldValue());
-            convertMethod.addLine("parent.add%s(result);", 3, getUpperFirst(ref.getReferenceName()));
-            convertMethod.addLine("break;", 3);
+            convertMethod.addTabbedLine("case %s:", 2, ref.isConnectionFiltering() ? ref.getNonOwnerFilterField().getFilterFieldValue() : ref.getFilterFieldValue());
+            convertMethod.addTabbedLine("parent.add%s(result);", 3, getUpperFirst(ref.getReferenceName()));
+            convertMethod.addTabbedLine("break;", 3);
         });
 
-        convertMethod.addLine("default:", 2);
+        convertMethod.addTabbedLine("default:", 2);
         if (referenceToParent.isConnectionFiltering()) {
-            convertMethod.addLine("log.error(\"There is not any mapping rule for %s of type {}\", %s);", 3
+            convertMethod.addTabbedLine("log.error(\"There is not any mapping rule for %s of type {}\", %s);", 3
                     , getLowerFirst(referenceToParent.getParent().getBaseName()), getLowerFirst(referenceToParent.getNonOwnerFilterField().getFilterFieldName()));
         } else {
-            convertMethod.addLine("log.error(\"There is not any mapping rule for %1$s of type {}\", %1$s.get%2$s());", 3
+            convertMethod.addTabbedLine("log.error(\"There is not any mapping rule for %1$s of type {}\", %1$s.get%2$s());", 3
                     , getLowerFirst(referenceToParent.getParent().getBaseName()), getUpperFirst(referenceToParent.getFilterField()));
         }
-        convertMethod.addLine("}", 1);
+        convertMethod.addTabbedLine("}", 1);
 
         mapperClass.addImport(Log4j2.class.getName());
         mapperClass.addAnnotation(Log4j2.class.getSimpleName());
@@ -652,10 +652,10 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         convertMethodWithMap.addLine("return convertToDomain(%1$s, %2$s, DomainObjectFactory::create%3$s, (%4$s, %5$s) -> getInstance().set%3$sValues(%4$s, %5$s)"
                 , getLowerFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
                 , DAO_PARAMETER, DOMAIN_PARAMETER);
-        convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
+        convertMethodWithMap.addTabbedLine(", (%1$s, %2$s) -> getInstance().set%3$sSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
                 , DAO_PARAMETER, DOMAIN_PARAMETER, getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT
                 , hasSingleRefWithChildren(entity, AccessMapperCreator::isEntityRelevant, DaoCreator::getAggregatedReferences) ? INCLUDE_CHILDREN_PARAMETER_WITH_COMMA : "");
-        convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sMultiReferences(%1$s, %2$s, %5$s%4$s));", 2, DAO_PARAMETER, DOMAIN_PARAMETER
+        convertMethodWithMap.addTabbedLine(", (%1$s, %2$s) -> getInstance().set%3$sMultiReferences(%1$s, %2$s, %5$s%4$s));", 2, DAO_PARAMETER, DOMAIN_PARAMETER
                 , getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, hasIncludeChildrenParameter ? INCLUDE_CHILDREN_PARAMETER_WITH_COMMA : "");
 
         mapperClass.addMethod(convertMethodWithMap);
@@ -723,31 +723,31 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         }
 
         mapperClass.addImport(ArrayList.class.getName());
-        convertMethod.addLine("dao.get%s().forEach(arg ->", 1, getterSubName);
+        convertMethod.addTabbedLine("dao.get%s().forEach(arg ->", 1, getterSubName);
 
         if (reference.isOwner() && hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg, true, domain, %s)"
+            convertMethod.addTabbedLine("%s.%s(arg, true, domain, %s)"
                     , 3, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (reference.isOwner() && !hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg, domain, %s)"
+            convertMethod.addTabbedLine("%s.%s(arg, domain, %s)"
                     , 3, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (reference.isConnectionFiltering() && hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg.get%s(), true, domain, arg.get%s(), %s)"
+            convertMethod.addTabbedLine("%s.%s(arg.get%s(), true, domain, arg.get%s(), %s)"
                     , 3, mapperName, mapperMethodName, targetConnectionName, getUpperFirst(reference.getNonOwnerFilterField().getFilterFieldName())
                     , MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (!reference.isConnectionFiltering() && hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg.get%s(), true, domain, %s)"
+            convertMethod.addTabbedLine("%s.%s(arg.get%s(), true, domain, %s)"
                     , 3, mapperName, mapperMethodName, targetConnectionName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (reference.isConnectionFiltering() && !hasIncludeChildrenParameter) {
-            convertMethod.addLine("%s.%s(arg.get%s(), domain, arg.get%s(), %s)"
+            convertMethod.addTabbedLine("%s.%s(arg.get%s(), domain, arg.get%s(), %s)"
                     , 3, mapperName, mapperMethodName, targetConnectionName, getUpperFirst(reference.getNonOwnerFilterField().getFilterFieldName())
                     , MAPPED_OBJECTS_PARAMETER_TEXT);
         } else {
-            convertMethod.addLine("%s.%s(arg.get%s(), domain, %s)"
+            convertMethod.addTabbedLine("%s.%s(arg.get%s(), domain, %s)"
                     , 3, mapperName, mapperMethodName, targetConnectionName, MAPPED_OBJECTS_PARAMETER_TEXT);
         }
 
-        convertMethod.addLine(");", 1);
+        convertMethod.addTabbedLine(");", 1);
     }
 
     /**

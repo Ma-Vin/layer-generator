@@ -1,6 +1,7 @@
 package de.ma_vin.util.layer.generator.sources;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
  * Class to generate sources for classes
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
     private String packageName;
     private String className;
@@ -203,7 +205,7 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
         this.description = description;
     }
 
-    public void setDescription(String description, String... args) {
+    public void setDescription(String description, Object... args) {
         setDescription(new JavaDoc(String.format(description, args)));
     }
 }

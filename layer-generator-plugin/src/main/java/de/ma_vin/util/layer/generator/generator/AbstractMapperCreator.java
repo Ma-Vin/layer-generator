@@ -91,7 +91,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         getInstanceMethod.setStatic(true);
         getInstanceMethod.setQualifier(Qualifier.PUBLIC);
         getInstanceMethod.addLine("if (instance == null) {");
-        getInstanceMethod.addLine("instance = %s.create%s();", 1, mapperType.getFactoryClassName(), mapperClass.getClassName());
+        getInstanceMethod.addTabbedLine("instance = %s.create%s();", 1, mapperType.getFactoryClassName(), mapperClass.getClassName());
         getInstanceMethod.addLine("}");
         getInstanceMethod.addLine("return instance;");
         mapperClass.addMethod(getInstanceMethod);
@@ -128,9 +128,9 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         convertToMethod.addLine("return %s(%s, %s, %s, %s, %s, %s", CONVERT_TO_METHOD_NAME, SOURCE_VARIABLE, MAPPED_OBJECTS_PARAMETER_TEXT
                 , OBJECT_CREATOR_PARAMETER, VALUE_MAPPER_PARAMETER, SINGLE_REFERENCE_MAPPER_PARAMETER, MULTI_REFERENCE_MAPPER_PARAMETER);
         if (config.isUseIdGenerator()) {
-            convertToMethod.addLine(", %s::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));", 2, SOURCE_GENERIC);
+            convertToMethod.addTabbedLine(", %s::getIdentification, (s, t) -> t.setIdentification(s.getIdentification()));", 2, SOURCE_GENERIC);
         } else {
-            convertToMethod.addLine(", s -> s.getClass().getSimpleName() + s.getId().longValue(), (s, t) -> t.setId(s.getId()));", 2, SOURCE_GENERIC);
+            convertToMethod.addTabbedLine(", s -> s.getClass().getSimpleName() + s.getId().longValue(), (s, t) -> t.setId(s.getId()));", 2, SOURCE_GENERIC);
         }
 
         mapperClass.addMethod(convertToMethod);

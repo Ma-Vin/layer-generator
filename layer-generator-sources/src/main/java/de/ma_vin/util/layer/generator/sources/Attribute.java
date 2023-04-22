@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.sources;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Attribute extends AbstractGenerateLines implements Comparable<Attribute> {
     private JavaDoc javaDoc = null;
     private List<Annotation> annotations = new ArrayList<>();

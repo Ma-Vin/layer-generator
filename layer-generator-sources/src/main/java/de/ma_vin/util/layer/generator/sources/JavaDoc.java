@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.sources;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class JavaDoc extends AbstractGenerateLines {
     public static final int JAVA_DOC_MAX_LENGTH = MAX_LENGTH - 3;
     public static final String PARAM = "@param";
@@ -37,7 +39,7 @@ public class JavaDoc extends AbstractGenerateLines {
         commentLines.addAll(splitLine(commentLine, " ", JAVA_DOC_MAX_LENGTH));
     }
 
-    public void addLine(String commentLine, String... args) {
+    public void addLine(String commentLine, Object... args) {
         addLine(String.format(commentLine, args));
     }
 
@@ -59,7 +61,7 @@ public class JavaDoc extends AbstractGenerateLines {
         return result;
     }
 
-    public void addParams(String parameter, String description, String... args) {
+    public void addParams(String parameter, String description, Object... args) {
         addParams(parameter, String.format(description, args));
     }
 
@@ -75,7 +77,7 @@ public class JavaDoc extends AbstractGenerateLines {
         this.returnDescription = returnDescription;
     }
 
-    public void setReturnDescription(String returnDescription, String... args) {
+    public void setReturnDescription(String returnDescription, Object... args) {
         setReturnDescription(String.format(returnDescription, args));
     }
 

@@ -140,12 +140,12 @@ public class CommonMapperCreator extends AbstractCreator {
      */
     private void addConvertToMethodBody(Method convertToMethod) {
         convertToMethod.addLine("if (%s == null) {", SOURCE_VARIABLE);
-        convertToMethod.addLine("return null;", 1);
+        convertToMethod.addTabbedLine("return null;", 1);
         convertToMethod.addLine("}");
         convertToMethod.addEmptyLine();
         convertToMethod.addLine("String identification = identificationGetter.getIdentification(%s);", SOURCE_VARIABLE);
         convertToMethod.addLine("if (!mappedObjects.isEmpty() && mappedObjects.containsKey(identification)) {");
-        convertToMethod.addLine("return (%s) mappedObjects.get(identification);", 1, TARGET_GENERIC);
+        convertToMethod.addTabbedLine("return (%s) mappedObjects.get(identification);", 1, TARGET_GENERIC);
         convertToMethod.addLine("}");
         convertToMethod.addEmptyLine();
         convertToMethod.addLine("%s %s = objectCreator.create();", TARGET_GENERIC, TARGET_VARIABLE);

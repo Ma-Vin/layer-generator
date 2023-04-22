@@ -1,6 +1,7 @@
 package de.ma_vin.util.layer.generator.sources;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Interface extends AbstractGenerateLines implements Comparable<Interface> {
 
     private String packageName;
@@ -117,7 +119,7 @@ public class Interface extends AbstractGenerateLines implements Comparable<Inter
         this.description = description;
     }
 
-    public void setDescription(String description, String... args) {
+    public void setDescription(String description, Object... args) {
         setDescription(new JavaDoc(String.format(description, args)));
     }
 

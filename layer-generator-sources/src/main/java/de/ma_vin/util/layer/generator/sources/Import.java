@@ -2,12 +2,14 @@ package de.ma_vin.util.layer.generator.sources;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Import extends AbstractGenerateLines implements Comparable<Import> {
 
     String importedClass;

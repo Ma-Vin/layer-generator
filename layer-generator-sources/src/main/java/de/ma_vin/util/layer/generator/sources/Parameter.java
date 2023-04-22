@@ -2,9 +2,11 @@ package de.ma_vin.util.layer.generator.sources;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class Parameter implements IComparableWithText<Parameter> {
     private String parameterType;
     private String parameterName;

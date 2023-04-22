@@ -65,6 +65,10 @@ public abstract class AbstractBuilderTest {
         when(processingEnv.getFiler()).thenReturn(filer);
         when(processingEnv.getTypeUtils()).thenReturn(utilTypes);
         try {
+            when(filer.createSourceFile(any())).then(a -> {
+                when(javaFileObject.getName()).thenReturn(a.getArgument(0));
+                return javaFileObject;
+            });
             when(filer.createSourceFile(any(), any())).then(a -> {
                 when(javaFileObject.getName()).thenReturn(a.getArgument(0));
                 return javaFileObject;

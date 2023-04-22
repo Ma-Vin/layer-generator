@@ -15,11 +15,6 @@
     <name>Util Layer Generator Plugin</name>
     <description>Generator maven plugin to create domain model, data transport and/or data access objects</description>
 
-    <properties>
-        <jaxb2.plugin.version>3.1.0</jaxb2.plugin.version>
-        <jakarta.api.version>4.0.0</jakarta.api.version>
-    </properties>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

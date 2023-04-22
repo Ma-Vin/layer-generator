@@ -14,10 +14,6 @@
     <name>Util Layer Generator Sample</name>
     <description>An example of usage of plugin and annotation</description>
 
-    <properties>
-        <maven.plugin-dependency.version>3.3.0</maven.plugin-dependency.version>
-    </properties>
-
     <build>
         <plugins>
             <plugin>

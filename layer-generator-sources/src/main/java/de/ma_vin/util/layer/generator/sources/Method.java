@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.sources;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.TreeSet;
  */
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Method extends AbstractGenerateLines implements Comparable<Method> {
     protected JavaDoc javaDoc = null;
     protected List<Annotation> annotations = new ArrayList<>();
@@ -38,15 +40,15 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         methodBody.add(methodLine);
     }
 
-    public void addLine(String methodLine, String... args) {
+    public void addLine(String methodLine, Object... args) {
         methodBody.add(String.format(methodLine, args));
     }
 
-    public void addLine(String methodLine, int numTabs) {
+    public void addTabbedLine(String methodLine, int numTabs) {
         addLine(getTabs(numTabs) + methodLine);
     }
 
-    public void addLine(String methodLine, int numTabs, String... args) {
+    public void addTabbedLine(String methodLine, int numTabs, Object... args) {
         addLine(getTabs(numTabs) + methodLine, args);
     }
 

@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.sources;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.*;
 
@@ -10,6 +11,7 @@ import java.util.*;
  */
 @Data
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class Annotation extends AbstractGenerateLines implements Comparable<Annotation> {
 
     private String annotationName;

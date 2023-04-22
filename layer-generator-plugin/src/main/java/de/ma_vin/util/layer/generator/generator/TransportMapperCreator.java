@@ -207,10 +207,10 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         convertMethodWithMap.addLine("return convertToDomain(%1$s, %2$s, DomainObjectFactory::create%3$s, (%4$s, %5$s) -> getInstance().set%3$sValues(%4$s, %5$s)"
                 , getLowerFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
                 , DTO_PARAMETER, DOMAIN_PARAMETER);
-        convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
+        convertMethodWithMap.addTabbedLine(", (%1$s, %2$s) -> getInstance().set%3$sSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
                 , DTO_PARAMETER, DOMAIN_PARAMETER, getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT
                 , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant, l -> l) ? "includeChildren, " : "");
-        convertMethodWithMap.addLine(", (%1$s, %2$s) -> {", 2, DTO_PARAMETER, DOMAIN_PARAMETER);
+        convertMethodWithMap.addTabbedLine(", (%1$s, %2$s) -> {", 2, DTO_PARAMETER, DOMAIN_PARAMETER);
         convertMethodWithMap.addLine("});");
 
         addConvertMethodDescription(convertMethodWithMap, entity, DTO_POSTFIX, DOMAIN_POSTFIX);
@@ -304,10 +304,10 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         convertMethodWithMap.addLine("return convertToDto(%1$s, %2$s, DtoObjectFactory::create%3$sDto, (%4$s, %5$s) -> getInstance().set%3$sDtoValues(%4$s, %5$s)"
                 , getLowerFirst(getSourceEntityBaseName(entity, DOMAIN_POSTFIX)), MAPPED_OBJECTS_PARAMETER_TEXT, getUpperFirst(entity.getBaseName())
                 , DOMAIN_PARAMETER, DTO_PARAMETER);
-        convertMethodWithMap.addLine(", (%1$s, %2$s) -> getInstance().set%3$sDtoSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
+        convertMethodWithMap.addTabbedLine(", (%1$s, %2$s) -> getInstance().set%3$sDtoSingleReferences(%1$s, %2$s, %5$s%4$s)", 2
                 , DOMAIN_PARAMETER, DTO_PARAMETER, getUpperFirst(entity.getBaseName()), MAPPED_OBJECTS_PARAMETER_TEXT
                 , hasSingleRefWithChildren(entity, TransportMapperCreator::isEntityRelevant, l -> l) ? "includeChildren, " : "");
-        convertMethodWithMap.addLine(", (%1$s, %2$s) -> {", 2, DOMAIN_PARAMETER, DTO_PARAMETER);
+        convertMethodWithMap.addTabbedLine(", (%1$s, %2$s) -> {", 2, DOMAIN_PARAMETER, DTO_PARAMETER);
         convertMethodWithMap.addLine("});");
 
         addConvertMethodDescription(convertMethodWithMap, entity, DOMAIN_POSTFIX, DTO_POSTFIX);
