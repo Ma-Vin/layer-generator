@@ -15,7 +15,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
-@EqualsAndHashCode(exclude = {"references", "parentRefs", "fields", "indices", "realParent"})
+@EqualsAndHashCode(exclude = {"grouping", "parentRefs", "realParent"})
 @ToString(exclude = {"references", "parentRefs", "fields", "indices", "realParent"})
 public class Entity {
 

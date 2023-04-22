@@ -63,8 +63,6 @@ public class ConfigLoaderTest {
     private Field groupingEntityField;
     @Mock
     private Index index;
-    @Mock
-    private NonOwnerFilterField nonOwnerFilterField;
 
 
     private ConfigLoader cut;
@@ -522,5 +520,21 @@ public class ConfigLoaderTest {
         boolean result = cut.complete();
         assertTrue(result, "The result of completion should be true");
         verify(derivedEntity).setRealDerivedFrom(any());
+    }
+
+    @DisplayName("Load wrong file type")
+    @Test
+    public void testLoadInvalidFileType(){
+        when(configFile.getName()).thenReturn("testFile.txt");
+
+        assertFalse(cut.load(),"A wrong file type should not be loaded");
+    }
+
+    @DisplayName("Load file without file ending")
+    @Test
+    public void testLoadWithoutFileEnding(){
+        when(configFile.getName()).thenReturn("testFile");
+
+        assertFalse(cut.load(),"A file without file ending should not be loaded");
     }
 }

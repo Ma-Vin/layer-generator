@@ -35,6 +35,16 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${fasterxml.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snake-yaml.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.maven</groupId>
                 <artifactId>maven-plugin-api</artifactId>
                 <version>${maven.plugin-api.version}</version>
@@ -83,6 +93,14 @@
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
             <artifactId>layer-generator-annotation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -157,10 +175,29 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/classes/xsd</outputDirectory>
+                            <outputDirectory>${project.build.outputDirectory}/xsd</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/target/generated-resources/xsd</directory>
+                                    <directory>${project.build.directory}/generated-resources/xsd</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>*.xsd</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-test-resources</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.testOutputDirectory}/xsd</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-resources/xsd</directory>
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>*.xsd</include>

@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.ma_vin.util.layer.generator.config.elements.*;
 import lombok.Data;
 
@@ -11,18 +12,25 @@ import jakarta.xml.bind.Unmarshaller;
 import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.maven.plugin.logging.Log;
 import org.xml.sax.SAXException;
+import org.yaml.snakeyaml.LoaderOptions;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 @Data
 public class ConfigLoader {
+
+    public static final String XML_FILE_ENDING = ".xml";
+    public static final String YAML_FILE_ENDING = ".yaml";
+    public static final String YML_FILE_ENDING = ".yml";
+    public static final String JSON_FILE_ENDING = ".json";
+
     private File configFile;
     private File schemaFile = null;
     private Config config;
@@ -38,7 +46,67 @@ public class ConfigLoader {
         this.schemaFile = schemaFile;
     }
 
+    /**
+     * Loads the configuration from {@code configFile} with formats {@link ConfigLoader#XML_FILE_ENDING}
+     * , {@link ConfigLoader#YAML_FILE_ENDING}, {@link ConfigLoader#YML_FILE_ENDING} or {@link ConfigLoader#JSON_FILE_ENDING}
+     *
+     * @return {@code true} the file could be parsed to {@link Config}, validated and completed. Otherwise {@code false}
+     */
     public boolean load() {
+        if (!configFile.getName().contains(".")) {
+            logger.error(String.format("Could not identify file ending of config file \"%s\"", configFile.getName()));
+            return false;
+        }
+
+        String fileEnding = configFile.getName().substring(configFile.getName().lastIndexOf("."));
+
+        boolean loaded = switch (fileEnding) {
+            case JSON_FILE_ENDING -> loadJson();
+            case XML_FILE_ENDING -> loadXml();
+            case YAML_FILE_ENDING, YML_FILE_ENDING -> loadYaml();
+            default -> handleUnknownConfigFileFormat(fileEnding);
+        };
+
+        return loaded && validate() && complete();
+    }
+
+    /**
+     * Parse the config file with a yaml format to {@link Config} property {@code configFile}
+     *
+     * @return {@code true} if parsing was successful. {@code false} at any failure
+     */
+    private boolean loadYaml() {
+        LoaderOptions loaderOptions = new LoaderOptions();
+        Yaml yaml = new Yaml(new Constructor(Config.class, loaderOptions));
+        try {
+            config = yaml.load(new FileInputStream(configFile));
+            return true;
+        } catch (FileNotFoundException e) {
+            return handleConfigReadException(e);
+        }
+    }
+
+    /**
+     * Parse the config file with a json format to {@link Config} property {@code configFile}
+     *
+     * @return {@code true} if parsing was successful. {@code false} at any failure
+     */
+    private boolean loadJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            config = objectMapper.readValue(configFile, Config.class);
+            return true;
+        } catch (IOException e) {
+            return handleConfigReadException(e);
+        }
+    }
+
+    /**
+     * Parse the config file with a xml format to the {@link Config} property {@code configFile}
+     *
+     * @return {@code true} if parsing was successful. {@code false} at any failure
+     */
+    private boolean loadXml() {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Config.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -51,12 +119,34 @@ public class ConfigLoader {
 
             FileReader reader = new FileReader(configFile);
             config = (Config) unmarshaller.unmarshal(reader);
-            return validate() && complete();
+            return true;
         } catch (JAXBException | FileNotFoundException | SAXException e) {
-            logger.error("Could not load config file:");
-            logger.error(e);
-            return false;
+            return handleConfigReadException(e);
         }
+    }
+
+    /**
+     * Handles an unknown file
+     *
+     * @param fileEnding the unknown file ending
+     * @return {@code false}
+     */
+    private boolean handleUnknownConfigFileFormat(String fileEnding) {
+        logger.error(String.format("Not supported file format \"%s\". Only \"%s\", \"%s\", \"%s\" and \"%s\" are provided"
+                , fileEnding, XML_FILE_ENDING, YAML_FILE_ENDING, YML_FILE_ENDING, JSON_FILE_ENDING));
+        return false;
+    }
+
+    /**
+     * Handles an exception while reading a config file
+     *
+     * @param exception the exception which was thrown
+     * @return {@code false}
+     */
+    private boolean handleConfigReadException(Exception exception) {
+        logger.error("Could not load config file:");
+        logger.error(exception);
+        return false;
     }
 
     private boolean validate() {
@@ -250,7 +340,7 @@ public class ConfigLoader {
      *
      * @param field            field where to set the properties
      * @param derivedFromField field where to get from properties
-     * @return {@code true} if the field names equals. Otherwise {@ode false}
+     * @return {@code true} if the field names equals. Otherwise {@code false}
      */
     private boolean checkAndDerive(Field field, Field derivedFromField) {
         if (!field.getFieldName().equals(derivedFromField.getFieldName())) {
