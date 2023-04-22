@@ -38,10 +38,13 @@ Following configuration properties are provided and set by default
 
 ### Model formats
 
-It is possible to define the model with a **xml** or a **yaml** file. At the following the xml variant is used to
+It is possible to define the model with a **xml**, **yaml/yml** or **json** file. At the following the xml variant is used to
 describe the configuration elements.
-There exists two test resources, [exampleModel.xml](src/test/resources/references/config/exampleModel.xml)
-and [exampleModel.yaml](src/test/resources/references/config/exampleModel.yaml), which define an equal model.
+There exists four test resources which define an equal model:
+- [exampleModel.xml](src/test/resources/references/config/exampleModel.xml)
+- [exampleModel.yaml](src/test/resources/references/config/exampleModel.yaml)
+- [exampleModel.yml](src/test/resources/references/config/exampleModel.yml)
+- [exampleModel.json](src/test/resources/references/config/exampleModel.json)
 
 ### Model definition
 

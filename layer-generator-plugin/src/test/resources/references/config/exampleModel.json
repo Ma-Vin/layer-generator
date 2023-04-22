@@ -1,0 +1,700 @@
+{
+  "basePackage": "de.ma_vin.util.test.content",
+  "dtoPackage": "dto",
+  "domainPackage": "domain",
+  "daoPackage": "dao",
+  "idGeneratorPackage": "de.ma_vin.ape.utils.generators",
+  "idGeneratorClass": "IdGenerator",
+  "entities": [
+    {
+      "baseName": "Root",
+      "models": "DOMAIN_DAO_DTO",
+      "identificationPrefix": "R",
+      "fields": [
+        {
+          "fieldName": "rootName",
+          "type": "String"
+        },
+        {
+          "fieldName": "description",
+          "type": "String"
+        }
+      ],
+      "references": [
+        {
+          "referenceName": "singleRef",
+          "targetEntity": "SingleRefOneParent",
+          "isOwner": true
+        },
+        {
+          "referenceName": "anotherSingleRef",
+          "targetEntity": "SingleRefTwoParents",
+          "isOwner": true
+        },
+        {
+          "referenceName": "multiRef",
+          "targetEntity": "MultiRefOneParent",
+          "isOwner": true,
+          "isList": true
+        },
+        {
+          "referenceName": "anotherMultiRef",
+          "targetEntity": "MultiRefTwoParents",
+          "isOwner": true,
+          "isList": true
+        },
+        {
+          "referenceName": "singleRefIndirectParent",
+          "targetEntity": "SingleRefIndirectParent",
+          "isOwner": true
+        },
+        {
+          "referenceName": "singleRefIndirectOtherParent",
+          "targetEntity": "SingleRefOtherIndirectParent",
+          "isOwner": true
+        },
+        {
+          "referenceName": "multiRefIndirectParent",
+          "targetEntity": "MultiRefIndirectParent",
+          "isOwner": true,
+          "isList": true
+        },
+        {
+          "referenceName": "multiRefIndirectOtherParent",
+          "targetEntity": "MultiRefOtherIndirectParent",
+          "isOwner": true,
+          "isList": true
+        },
+        {
+          "referenceName": "multiRefIndirectSelfReference",
+          "targetEntity": "MultiRefIndirectSelfReference",
+          "isOwner": true,
+          "isList": true
+        },
+        {
+          "referenceName": "extending",
+          "targetEntity": "ExtendingClass",
+          "isOwner": true,
+          "isList": true
+        },
+        {
+          "referenceName": "filtering",
+          "targetEntity": "SomeFilteringOwner",
+          "isOwner": true
+        },
+        {
+          "referenceName": "nonOwnerFiltering",
+          "targetEntity": "SomeDifferentFilteringNotOwner",
+          "isOwner": true
+        },
+        {
+          "referenceName": "ext",
+          "targetEntity": "RootExt",
+          "isOwner": true
+        }
+      ]
+    },
+    {
+      "baseName": "RootExt",
+      "tableName": "RootExtension",
+      "models": "DOMAIN_DAO_DTO",
+      "identificationPrefix": "RE",
+      "fields": [
+        {
+          "fieldName": "ExtendedInfo",
+          "type": "String"
+        },
+        {
+          "fieldName": "someEnum",
+          "type": "AnyEnumType",
+          "typePackage": "de.ma_vin.util.sample.given",
+          "isTypeEnum": true
+        },
+        {
+          "fieldName": "someInteger",
+          "type": "Integer"
+        },
+        {
+          "fieldName": "someCustom",
+          "type": "CustomType",
+          "typePackage": "de.ma_vin.util.sample.given"
+        },
+        {
+          "fieldName": "onlyDao",
+          "models": "DAO",
+          "type": "String"
+        },
+        {
+          "fieldName": "onlyDomain",
+          "models": "DOMAIN",
+          "type": "String"
+        },
+        {
+          "fieldName": "onlyDto",
+          "models": "DTO",
+          "type": "String"
+        },
+        {
+          "fieldName": "DaoAndDomain",
+          "models": "DOMAIN_DAO",
+          "type": "String"
+        },
+        {
+          "fieldName": "DtoAndDomain",
+          "models": "DOMAIN_DTO",
+          "type": "String"
+        },
+        {
+          "fieldName": "textWithDaoInfo",
+          "type": "String",
+          "daoInfo": {
+            "nullable": false,
+            "length": 128
+          }
+        },
+        {
+          "fieldName": "numberWithDaoInfo",
+          "type": "double",
+          "daoInfo": {
+            "precision": 7,
+            "scale": 3
+          }
+        },
+        {
+          "fieldName": "daoEnum",
+          "typePackage": "de.ma_vin.util.sample.given",
+          "type": "AnyEnumType",
+          "isTypeEnum": true,
+          "daoInfo": {
+            "useEnumText": false
+          }
+        },
+        {
+          "fieldName": "daoEnumWithText",
+          "typePackage": "de.ma_vin.util.sample.given",
+          "type": "AnyEnumType",
+          "isTypeEnum": true,
+          "daoInfo": {
+            "useEnumText": true
+          }
+        },
+        {
+          "fieldName": "someName",
+          "type": "String",
+          "daoInfo": {
+            "columnName": "anyOtherName"
+          }
+        },
+        {
+          "fieldName": "document",
+          "type": "String",
+          "shortDescription": "short text",
+          "description": "long text",
+          "daoInfo": {
+            "columnDefinition": "BLOB",
+            "isLobType": true
+          }
+        }
+      ],
+      "indices": [
+        {
+          "indexName": "SomeIndex",
+          "fieldList": "someInteger ASC, someName DESC"
+        }
+      ]
+    }
+  ],
+  "groupings": [
+    {
+      "groupingPackage": "single",
+      "entities": [
+        {
+          "baseName": "SingleRefOneParent",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "S1",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ],
+          "references": [
+            {
+              "referenceName": "singleRef",
+              "targetEntity": "SingleRefTwoParents",
+              "isOwner": true,
+              "shortDescription": "Instance with two parents"
+            }
+          ]
+        },
+        {
+          "baseName": "SingleRefTwoParents",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "S2",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "multi",
+      "entities": [
+        {
+          "baseName": "MultiRefOneParent",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "M1",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ],
+          "references": [
+            {
+              "referenceName": "multiRef",
+              "targetEntity": "MultiRefTwoParents",
+              "isOwner": true,
+              "isList": true,
+              "shortDescription": "Instances with two parents"
+            }
+          ]
+        },
+        {
+          "baseName": "MultiRefTwoParents",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "M2",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "single.indirect",
+      "entities": [
+        {
+          "baseName": "SingleRefOtherIndirectParent",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "SI1",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ],
+          "references": [
+            {
+              "referenceName": "singleIndirectRef",
+              "targetEntity": "SingleRefIndirectParent",
+              "isOwner": false
+            }
+          ]
+        },
+        {
+          "baseName": "SingleRefIndirectParent",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "SI2",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "multi.indirect",
+      "entities": [
+        {
+          "baseName": "MultiRefOtherIndirectParent",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "MI1",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ],
+          "references": [
+            {
+              "referenceName": "multiIndirectRef",
+              "targetEntity": "MultiRefIndirectParent",
+              "isOwner": false,
+              "isList": true
+            }
+          ]
+        },
+        {
+          "baseName": "MultiRefIndirectParent",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "MI2",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "baseName": "MultiRefIndirectSelfReference",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "MI2",
+          "references": [
+            {
+              "referenceName": "selfRefs",
+              "targetEntity": "MultiRefIndirectSelfReference",
+              "isList": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "domain.dao",
+      "entities": [
+        {
+          "baseName": "DomainAndDao",
+          "models": "DOMAIN_DAO",
+          "identificationPrefix": "DD1",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "domain.dto",
+      "entities": [
+        {
+          "baseName": "DomainAndDto",
+          "models": "DOMAIN_DTO",
+          "identificationPrefix": "DD2",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "dao",
+      "entities": [
+        {
+          "baseName": "OnlyDao",
+          "models": "DAO",
+          "identificationPrefix": "D1",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "domain",
+      "entities": [
+        {
+          "baseName": "OnlyDomain",
+          "models": "DOMAIN",
+          "identificationPrefix": "D2",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "baseName": "DerivedFromDomain",
+          "identificationPrefix": "D3",
+          "derivedFrom": "SingleRefOneParent",
+          "description": "Derived from SingleRefOneParent",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ],
+          "references": [
+            {
+              "referenceName": "singleRef",
+              "targetEntity": "SingleRefTwoParents",
+              "isOwner": true,
+              "shortDescription": "Instance with two parents"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "dto",
+      "entities": [
+        {
+          "baseName": "OnlyDto",
+          "models": "DTO",
+          "identificationPrefix": "D3",
+          "genIdIfDto": false,
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "parent",
+      "entities": [
+        {
+          "baseName": "SuperClass",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "SC1",
+          "isAbstract": true,
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "baseName": "ExtendingClass",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "SC2",
+          "parent": "SuperClass",
+          "fields": [
+            {
+              "fieldName": "additionalDescription",
+              "type": "String"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "groupingPackage": "filtering",
+      "entities": [
+        {
+          "baseName": "SomeFilteringOwner",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "F1",
+          "references": [
+            {
+              "referenceName": "filterA",
+              "targetEntity": "Filtered",
+              "isOwner": true,
+              "isList": true,
+              "filterField": "someEnum",
+              "filterFieldValue": "ENUM_VALUE_A"
+            },
+            {
+              "referenceName": "filterB",
+              "targetEntity": "Filtered",
+              "isOwner": true,
+              "isList": true,
+              "filterField": "someEnum",
+              "filterFieldValue": "ENUM_VALUE_B"
+            },
+            {
+              "referenceName": "filterC",
+              "targetEntity": "Filtered",
+              "isOwner": true,
+              "isList": true,
+              "filterField": "someEnum",
+              "filterFieldValue": "ENUM_VALUE_C"
+            },
+            {
+              "referenceName": "filterDaoA",
+              "targetEntity": "FilteredOnlyDaoField",
+              "isOwner": true,
+              "isList": true,
+              "filterField": "someEnumOnlyDaoField",
+              "filterFieldValue": "ENUM_VALUE_A"
+            },
+            {
+              "referenceName": "filterDaoB",
+              "targetEntity": "FilteredOnlyDaoField",
+              "isOwner": true,
+              "isList": true,
+              "filterField": "someEnumOnlyDaoField",
+              "filterFieldValue": "ENUM_VALUE_B"
+            },
+            {
+              "referenceName": "filterDaoC",
+              "targetEntity": "FilteredOnlyDaoField",
+              "isOwner": true,
+              "isList": true,
+              "filterField": "someEnumOnlyDaoField",
+              "filterFieldValue": "ENUM_VALUE_C"
+            },
+            {
+              "referenceName": "filterNotOwnerA",
+              "targetEntity": "FilteredNotOwner",
+              "isList": true,
+              "filterField": "someEnumNotOwner",
+              "filterFieldValue": "ENUM_VALUE_A"
+            },
+            {
+              "referenceName": "filterNotOwnerB",
+              "targetEntity": "FilteredNotOwner",
+              "isList": true,
+              "filterField": "someEnumNotOwner",
+              "filterFieldValue": "ENUM_VALUE_B"
+            },
+            {
+              "referenceName": "filterNotOwnerC",
+              "targetEntity": "FilteredNotOwner",
+              "isList": true,
+              "filterField": "someEnumNotOwner",
+              "filterFieldValue": "ENUM_VALUE_C"
+            },
+            {
+              "referenceName": "filterDaoNotOwnerA",
+              "targetEntity": "FilteredOnlyDaoFieldNotOwner",
+              "isList": true,
+              "filterField": "someEnumOnlyDaoFieldNotOwner",
+              "filterFieldValue": "ENUM_VALUE_A"
+            },
+            {
+              "referenceName": "filterDaoNotOwnerB",
+              "targetEntity": "FilteredOnlyDaoFieldNotOwner",
+              "isList": true,
+              "filterField": "someEnumOnlyDaoFieldNotOwner",
+              "filterFieldValue": "ENUM_VALUE_B"
+            },
+            {
+              "referenceName": "filterDaoNotOwnerC",
+              "targetEntity": "FilteredOnlyDaoFieldNotOwner",
+              "isList": true,
+              "filterField": "someEnumOnlyDaoFieldNotOwner",
+              "filterFieldValue": "ENUM_VALUE_C"
+            }
+          ]
+        },
+        {
+          "baseName": "Filtered",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "F2",
+          "fields": [
+            {
+              "fieldName": "description",
+              "type": "String"
+            },
+            {
+              "fieldName": "someEnum",
+              "type": "AnyEnumType",
+              "typePackage": "de.ma_vin.util.sample.given",
+              "isTypeEnum": true
+            }
+          ]
+        },
+        {
+          "baseName": "FilteredNotOwner",
+          "models": "DOMAIN_DAO",
+          "identificationPrefix": "F3",
+          "fields": [
+            {
+              "fieldName": "descriptionNotOwner",
+              "type": "String"
+            },
+            {
+              "fieldName": "someEnumNotOwner",
+              "type": "AnyEnumType",
+              "typePackage": "de.ma_vin.util.sample.given",
+              "isTypeEnum": true
+            }
+          ]
+        },
+        {
+          "baseName": "FilteredOnlyDaoField",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "F4",
+          "fields": [
+            {
+              "fieldName": "descriptionOnlyDaoField",
+              "type": "String"
+            },
+            {
+              "fieldName": "someEnumOnlyDaoField",
+              "type": "AnyEnumType",
+              "typePackage": "de.ma_vin.util.sample.given",
+              "isTypeEnum": true,
+              "models": "DAO"
+            }
+          ]
+        },
+        {
+          "baseName": "FilteredOnlyDaoFieldNotOwner",
+          "models": "DOMAIN_DAO",
+          "identificationPrefix": "F5",
+          "fields": [
+            {
+              "fieldName": "descriptionOnlyDaoFieldNotOwner",
+              "type": "String"
+            },
+            {
+              "fieldName": "someEnumOnlyDaoFieldNotOwner",
+              "type": "AnyEnumType",
+              "typePackage": "de.ma_vin.util.sample.given",
+              "isTypeEnum": true,
+              "models": "DAO"
+            }
+          ]
+        },
+        {
+          "baseName": "SomeDifferentFilteringNotOwner",
+          "models": "DOMAIN_DAO_DTO",
+          "identificationPrefix": "F6",
+          "references": [
+            {
+              "referenceName": "filterA",
+              "targetEntity": "Filtered",
+              "isList": true,
+              "nonOwnerFilterField": {
+                "filterFieldPackage": "de.ma_vin.util.sample.given",
+                "filterFieldType": "AnyEnumType",
+                "filterFieldValue": "ENUM_VALUE_A"
+              }
+            },
+            {
+              "referenceName": "filterB",
+              "targetEntity": "Filtered",
+              "isList": true,
+              "nonOwnerFilterField": {
+                "filterFieldPackage": "de.ma_vin.util.sample.given",
+                "filterFieldType": "AnyEnumType",
+                "filterFieldValue": "ENUM_VALUE_B"
+              }
+            },
+            {
+              "referenceName": "filterC",
+              "targetEntity": "Filtered",
+              "isList": true,
+              "nonOwnerFilterField": {
+                "filterFieldPackage": "de.ma_vin.util.sample.given",
+                "filterFieldType": "AnyEnumType",
+                "filterFieldValue": "ENUM_VALUE_C"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

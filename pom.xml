@@ -55,6 +55,7 @@
         <maven.plugin-source.version>3.2.1</maven.plugin-source.version>
         <maven.plugin-jar.version>3.3.0</maven.plugin-jar.version>
         <maven.surefire.failsafe.version>3.0.0-M7</maven.surefire.failsafe.version>
+        <fasterxml.jackson.version>2.14.2</fasterxml.jackson.version>
         <jacoco.plugin.version>0.8.8</jacoco.plugin.version>
         <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
         <junit.version>5.9.1</junit.version>

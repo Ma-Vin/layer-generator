@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.log.LogImpl;
 import org.apache.maven.plugin.logging.Log;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,6 +62,11 @@ public class ConfigLoaderIT {
         assertEquals(11, configLoader.getConfig().getGroupings().size(), "Wrong number of groupings");
     }
 
+    private void checkNotLoaded(ConfigLoader configLoader){
+        assertFalse(configLoader.load(), "result should be false");
+        assertNull(configLoader.getConfig(), "The config should be empty");
+    }
+
     @DisplayName("load invalid xml config file with respect to program validation")
     @Test()
     public void testLoadXmlProgramInvalid() {
@@ -70,7 +74,16 @@ public class ConfigLoaderIT {
         ConfigLoader configLoader = new ConfigLoader(exampleModelFile, logger);
 
         assertFalse(configLoader.load(), "result should be false");
-        Assertions.assertNotNull(configLoader.getConfig(), "The config should be not empty");
+        assertNotNull(configLoader.getConfig(), "The config should be not empty");
+    }
+
+    @DisplayName("load not existing xml config file")
+    @Test()
+    public void testLoadXmlNotExisting() {
+        File exampleModelFile = getNonExistingConfigFile("exampleModelNotExisting.xml");
+        ConfigLoader configLoader = new ConfigLoader(exampleModelFile, logger);
+
+        checkNotLoaded(configLoader);
     }
 
     @DisplayName("load invalid xml config file with respect to schema validation")
@@ -80,8 +93,7 @@ public class ConfigLoaderIT {
         File schemaFile = getFileFromResource("xsd/config.xsd");
         ConfigLoader configLoader = new ConfigLoader(exampleModelFile, logger, schemaFile);
 
-        assertFalse(configLoader.load(), "result should be false");
-        Assertions.assertNull(configLoader.getConfig(), "The config should be empty");
+        checkNotLoaded(configLoader);
     }
 
     @DisplayName("load valid yaml config file")
@@ -113,9 +125,54 @@ public class ConfigLoaderIT {
         assertEquals(xmlConfigLoader.getConfig(), ymlConfigLoader.getConfig(), "xml and yml should be equal");
     }
 
+    @DisplayName("load not existing yaml config file")
+    @Test()
+    public void testLoadYamlNotExisting() {
+        File exampleModelFile = getNonExistingConfigFile("exampleModelNotExisting.yaml");
+        ConfigLoader configLoader = new ConfigLoader(exampleModelFile, logger);
+
+        checkNotLoaded(configLoader);
+    }
+
+    @DisplayName("load valid json config file")
+    @Test()
+    public void testLoadJsonValid() {
+        File exampleModelFile = getConfigFile("exampleModel.json");
+        ConfigLoader configLoader = new ConfigLoader(exampleModelFile, logger);
+
+        checkValidModel(configLoader);
+    }
+
+    @DisplayName("xml and json valid models are equal")
+    @Test
+    public void testCompareJsonXmlAndJsonModel() {
+        File xmlModelFile = getConfigFile("exampleModel.xml");
+        ConfigLoader xmlConfigLoader = new ConfigLoader(xmlModelFile, logger);
+
+        File jsonModelFile = getConfigFile("exampleModel.json");
+        ConfigLoader jsonConfigLoader = new ConfigLoader(jsonModelFile, logger);
+
+        assertTrue(xmlConfigLoader.load(), "xml load should be true");
+        assertTrue(jsonConfigLoader.load(), "json load should be true");
+
+        assertEquals(xmlConfigLoader.getConfig(), jsonConfigLoader.getConfig(), "xml and yml should be equal");
+    }
+
+    @DisplayName("load not existing json config file")
+    @Test()
+    public void testLoadJsonNotExisting() {
+        File exampleModelFile = getNonExistingConfigFile("exampleModelNotExisting.json");
+        ConfigLoader configLoader = new ConfigLoader(exampleModelFile, logger);
+
+        checkNotLoaded(configLoader);
+    }
 
     private File getConfigFile(String fileName) {
         return getFileFromResource(String.format(resourcesDirectoryTemplate, fileName));
+    }
+
+    private File getNonExistingConfigFile(String fileName) {
+        return new File(getFileFromResource("references/config/"), fileName);
     }
 
     private File getFileFromResource(String resourceName) {

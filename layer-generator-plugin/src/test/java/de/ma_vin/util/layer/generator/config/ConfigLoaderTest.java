@@ -529,4 +529,12 @@ public class ConfigLoaderTest {
 
         assertFalse(cut.load(),"A wrong file type should not be loaded");
     }
+
+    @DisplayName("Load file without file ending")
+    @Test
+    public void testLoadWithoutFileEnding(){
+        when(configFile.getName()).thenReturn("testFile");
+
+        assertFalse(cut.load(),"A file without file ending should not be loaded");
+    }
 }
