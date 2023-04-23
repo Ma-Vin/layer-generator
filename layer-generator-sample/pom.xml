@@ -19,7 +19,6 @@
             <plugin>
                 <groupId>de.ma_vin.util.layer.generator</groupId>
                 <artifactId>layer-generator-plugin</artifactId>
-                <version>${project.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -42,7 +41,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven.plugin-dependency.version}</version>
                 <executions>
                     <execution>
                         <id>unpack</id>
@@ -104,21 +102,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>de.ma_vin.util.layer.generator</groupId>
-                <artifactId>layer-generator-annotation</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.persistence</groupId>
-                <artifactId>jakarta.persistence-api</artifactId>
-                <version>${jakarta-persistence.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>

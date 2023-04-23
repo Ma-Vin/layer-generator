@@ -8,6 +8,7 @@ import de.ma_vin.util.layer.generator.log.LogImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -952,15 +953,15 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiRefOwnerAndNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
-        Reference fromTargetReference = mock(Reference.class);
+        Reference fromTargetReference = Mockito.mock(Reference.class);
         setMockReturnsReference(fromTargetReference, "TargetRef", "Dummy", null, null, Boolean.TRUE, Boolean.TRUE);
         setMockReturnsReference(fromTargetReference, targetEntity, entity, null);
 
-        Reference anotherTargetReference = mock(Reference.class);
+        Reference anotherTargetReference = Mockito.mock(Reference.class);
         setMockReturnsReference(anotherTargetReference, "TargetRef", "Target", null, null, Boolean.TRUE, Boolean.FALSE);
         setMockReturnsReference(anotherTargetReference, subEntity, targetEntity, null);
 
-        Reference fromAnotherTargetReference = mock(Reference.class);
+        Reference fromAnotherTargetReference = Mockito.mock(Reference.class);
         setMockReturnsReference(fromAnotherTargetReference, "TargetRef", "Child", null, null, Boolean.TRUE, Boolean.FALSE);
         setMockReturnsReference(fromAnotherTargetReference, targetEntity, subEntity, null);
 
@@ -4410,7 +4411,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperAggregateRef() {
         setMockReturnsReference(targetReference, entity, targetEntity, field);
         setMockReturnsReference(targetReference, "TargetRef", "Target", "anyField", "ENUM_VALUE_A", Boolean.TRUE, Boolean.TRUE);
-        Reference sameTargetReference = mock(Reference.class);
+        Reference sameTargetReference = Mockito.mock(Reference.class);
         setMockReturnsReference(sameTargetReference, entity, targetEntity, field);
         setMockReturnsReference(sameTargetReference, "AnotherTargetRef", "Target", "anyField", "ENUM_VALUE_B", Boolean.TRUE, Boolean.TRUE);
 
@@ -4598,7 +4599,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperAggregateRefFilterIsNotDomain() {
         setMockReturnsReference(targetReference, entity, targetEntity, field);
         setMockReturnsReference(targetReference, "TargetRef", "Target", "anyField", "ENUM_VALUE_A", Boolean.TRUE, Boolean.TRUE);
-        Reference sameTargetReference = mock(Reference.class);
+        Reference sameTargetReference = Mockito.mock(Reference.class);
         setMockReturnsReference(sameTargetReference, entity, targetEntity, field);
         setMockReturnsReference(sameTargetReference, "AnotherTargetRef", "Target", "anyField", "ENUM_VALUE_B", Boolean.TRUE, Boolean.TRUE);
 
@@ -5416,7 +5417,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperAggregateRefNotOwner() {
         setMockReturnsReference(targetReference, entity, targetEntity, field);
         setMockReturnsReference(targetReference, "TargetRef", "Target", "anyField", "ENUM_VALUE_A", Boolean.TRUE, Boolean.FALSE);
-        Reference sameTargetReference = mock(Reference.class);
+        Reference sameTargetReference = Mockito.mock(Reference.class);
         setMockReturnsReference(sameTargetReference, entity, targetEntity, field);
         setMockReturnsReference(sameTargetReference, "AnotherTargetRef", "Target", "anyField", "ENUM_VALUE_B", Boolean.TRUE, Boolean.FALSE);
 
@@ -5848,13 +5849,13 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperAggregateRefNotOwnerFilter() {
-        NonOwnerFilterField nonOwnerFilterField = mock(NonOwnerFilterField.class);
+        NonOwnerFilterField nonOwnerFilterField = Mockito.mock(NonOwnerFilterField.class);
         when(nonOwnerFilterField.getFilterFieldPackage()).thenReturn("de.test.package.enums");
         when(nonOwnerFilterField.getFilterFieldType()).thenReturn("SomeEnum");
         when(nonOwnerFilterField.getFilterFieldName()).thenReturn("anyField");
         when(nonOwnerFilterField.getFilterFieldValue()).thenReturn("ENUM_VALUE_A");
 
-        NonOwnerFilterField otherNonOwnerFilterField = mock(NonOwnerFilterField.class);
+        NonOwnerFilterField otherNonOwnerFilterField = Mockito.mock(NonOwnerFilterField.class);
         when(otherNonOwnerFilterField.getFilterFieldPackage()).thenReturn("de.test.package.enums");
         when(otherNonOwnerFilterField.getFilterFieldType()).thenReturn("SomeEnum");
         when(otherNonOwnerFilterField.getFilterFieldName()).thenReturn("anyField");
@@ -5864,7 +5865,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         setMockReturnsReference(targetReference, "TargetRef", "Target", null, null, Boolean.TRUE, Boolean.FALSE);
         when(targetReference.getNonOwnerFilterField()).thenReturn(nonOwnerFilterField);
         when(targetReference.isConnectionFiltering()).thenReturn(Boolean.TRUE);
-        Reference sameTargetReference = mock(Reference.class);
+        Reference sameTargetReference = Mockito.mock(Reference.class);
         setMockReturnsReference(sameTargetReference, entity, targetEntity, null);
         setMockReturnsReference(sameTargetReference, "AnotherTargetRef", "Target", null, null, Boolean.TRUE, Boolean.FALSE);
         when(sameTargetReference.getNonOwnerFilterField()).thenReturn(otherNonOwnerFilterField);
@@ -6051,13 +6052,13 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperParentAggregateRefNotOwnerFilter() {
-        NonOwnerFilterField nonOwnerFilterField = mock(NonOwnerFilterField.class);
+        NonOwnerFilterField nonOwnerFilterField = Mockito.mock(NonOwnerFilterField.class);
         when(nonOwnerFilterField.getFilterFieldPackage()).thenReturn("de.test.package.enums");
         when(nonOwnerFilterField.getFilterFieldType()).thenReturn("SomeEnum");
         when(nonOwnerFilterField.getFilterFieldName()).thenReturn("anyField");
         when(nonOwnerFilterField.getFilterFieldValue()).thenReturn("ENUM_VALUE_A");
 
-        NonOwnerFilterField otherNonOwnerFilterField = mock(NonOwnerFilterField.class);
+        NonOwnerFilterField otherNonOwnerFilterField = Mockito.mock(NonOwnerFilterField.class);
         when(otherNonOwnerFilterField.getFilterFieldPackage()).thenReturn("de.test.package.enums");
         when(otherNonOwnerFilterField.getFilterFieldType()).thenReturn("SomeEnum");
         when(otherNonOwnerFilterField.getFilterFieldName()).thenReturn("anyField");

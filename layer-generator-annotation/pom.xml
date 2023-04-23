@@ -57,12 +57,10 @@
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
             <artifactId>layer-generator-sources</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
             <artifactId>layer-generator-sources</artifactId>
-            <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>

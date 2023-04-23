@@ -1,6 +1,5 @@
 package de.ma_vin.util.layer.generator.config;
 
-import de.ma_vin.util.layer.generator.config.elements.Field;
 import de.ma_vin.util.layer.generator.config.elements.Grouping;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
