@@ -50,6 +50,12 @@ jobs:
         package-name: de.ma_vin.util.layer.generator.generator-plugin
         ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
+    - name: delete old versions of base-layer-generator
+      uses: actions/delete-package-versions@v2
+      with:
+        package-name: de.ma_vin.util.layer.generator.base-layer-generator
+        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
+        token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: delete old versions of extension-annotation
       uses: actions/delete-package-versions@v2
       with:
