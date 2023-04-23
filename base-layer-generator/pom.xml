@@ -9,9 +9,9 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>layer-generator-codegen</artifactId>
+    <artifactId>base-layer-generator</artifactId>
 
-    <name>Util Layer Code Generator</name>
+    <name>Util Layer Generator Base</name>
     <description>Code Generator to create domain model, data transport and/or data access objects</description>
 
     <dependencies>

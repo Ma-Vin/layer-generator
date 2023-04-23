@@ -38,7 +38,7 @@ Following configuration properties are provided and set by default
 
 ### Model definition
 
-See [Code Generator](../layer-generator-codegen/README.md) description
+See [Code Generator](../base-layer-generator/README.md) description
 
 ## Example
 

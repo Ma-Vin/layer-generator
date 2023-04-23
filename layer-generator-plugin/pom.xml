@@ -18,11 +18,11 @@
     <dependencies>
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
-            <artifactId>layer-generator-codegen</artifactId>
+            <artifactId>base-layer-generator</artifactId>
         </dependency>
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
-            <artifactId>layer-generator-codegen</artifactId>
+            <artifactId>base-layer-generator</artifactId>
             <classifier>tests</classifier>
         </dependency>
         <dependency>
@@ -55,7 +55,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>de.ma_vin.util.layer.generator</groupId>
-                                    <artifactId>layer-generator-codegen</artifactId>
+                                    <artifactId>base-layer-generator</artifactId>
                                     <version>${project.version}</version>
                                     <outputDirectory>${project.build.outputDirectory}</outputDirectory>
                                     <includes>**\/*.xsd</includes>

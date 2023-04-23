@@ -9,7 +9,7 @@
     <modules>
         <module>sourcecode-generator</module>
         <module>extension-annotation</module>
-        <module>layer-generator-codegen</module>
+        <module>base-layer-generator</module>
         <module>layer-generator-plugin</module>
         <module>layer-generator-sample</module>
     </modules>
@@ -130,12 +130,12 @@
             </dependency>
             <dependency>
                 <groupId>de.ma_vin.util.layer.generator</groupId>
-                <artifactId>layer-generator-codegen</artifactId>
+                <artifactId>base-layer-generator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>de.ma_vin.util.layer.generator</groupId>
-                <artifactId>layer-generator-codegen</artifactId>
+                <artifactId>base-layer-generator</artifactId>
                 <version>${project.version}</version>
                 <classifier>tests</classifier>
                 <scope>test</scope>
