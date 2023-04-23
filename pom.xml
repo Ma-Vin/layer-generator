@@ -8,7 +8,7 @@
 
     <modules>
         <module>layer-generator-sources</module>
-        <module>layer-generator-annotation</module>
+        <module>extension-annotation</module>
         <module>layer-generator-codegen</module>
         <module>layer-generator-plugin</module>
         <module>layer-generator-sample</module>
@@ -125,7 +125,7 @@
             </dependency>
             <dependency>
                 <groupId>de.ma_vin.util.layer.generator</groupId>
-                <artifactId>layer-generator-annotation</artifactId>
+                <artifactId>extension-annotation</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
-            <artifactId>layer-generator-annotation</artifactId>
+            <artifactId>extension-annotation</artifactId>
         </dependency>
 
         <!-- maven plugin -->
