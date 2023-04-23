@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
-import de.ma_vin.util.layer.generator.log.LogImpl;
+import de.ma_vin.util.layer.generator.logging.LogImpl;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;

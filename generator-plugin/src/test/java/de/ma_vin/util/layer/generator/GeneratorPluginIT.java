@@ -1,6 +1,6 @@
 package de.ma_vin.util.layer.generator;
 
-import de.ma_vin.util.layer.generator.log.LogImpl;
+import de.ma_vin.util.layer.generator.logging.LogImpl;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.BeforeEach;

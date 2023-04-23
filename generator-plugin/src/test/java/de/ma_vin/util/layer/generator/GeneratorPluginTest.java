@@ -7,7 +7,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import de.ma_vin.util.layer.generator.config.ConfigLoader;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.generator.ModelGenerator;
-import de.ma_vin.util.layer.generator.log.LogImpl;
+import de.ma_vin.util.layer.generator.logging.LogImpl;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.AfterEach;

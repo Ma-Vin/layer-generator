@@ -18,6 +18,11 @@
     <dependencies>
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
+            <artifactId>utility</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.ma_vin.util.layer.generator</groupId>
             <artifactId>base-layer-generator</artifactId>
         </dependency>
         <dependency>

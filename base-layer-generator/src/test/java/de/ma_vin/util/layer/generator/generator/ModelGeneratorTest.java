@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Grouping;
-import de.ma_vin.util.layer.generator.log.LogImpl;
+import de.ma_vin.util.layer.generator.logging.LogImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -3,7 +3,7 @@ package de.ma_vin.util.layer.generator.config;
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.log.LogImpl;
+import de.ma_vin.util.layer.generator.logging.LogImpl;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
