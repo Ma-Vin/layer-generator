@@ -18,11 +18,11 @@
         <!-- project -->
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
-            <artifactId>layer-generator-sources</artifactId>
+            <artifactId>sourcecode-generator</artifactId>
         </dependency>
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
-            <artifactId>layer-generator-sources</artifactId>
+            <artifactId>sourcecode-generator</artifactId>
             <classifier>tests</classifier>
         </dependency>
         <dependency>

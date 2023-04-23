@@ -10,9 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 
-    <artifactId>layer-generator-sources</artifactId>
+    <artifactId>sourcecode-generator</artifactId>
 
-    <name>Util Layer Generator Sources</name>
+    <name>Util Layer Generator Sourcecode</name>
     <description>Util classes to generate java sources</description>
 
     <build>
