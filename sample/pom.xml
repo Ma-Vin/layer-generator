@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>layer-generator-sample</artifactId>
+    <artifactId>sample</artifactId>
 
     <name>Util Layer Generator Sample</name>
     <description>An example of usage of plugin and annotation</description>

@@ -21,4 +21,4 @@ The implementation of the annotations to extend generated classes by custom code
 ### Maven plugin
 The implementation of the maven plugin is located at [generator-plugin](/generator-plugin)
 ### Example
-An example of usage is shown at [layer-generator-sample](/layer-generator-sample)
+An example of usage is shown at [sample](/sample)

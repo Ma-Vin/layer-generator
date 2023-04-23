@@ -11,7 +11,7 @@
         <module>extension-annotation</module>
         <module>base-layer-generator</module>
         <module>generator-plugin</module>
-        <module>layer-generator-sample</module>
+        <module>sample</module>
     </modules>
 
     <name>Util Layer Generator</name>
@@ -147,7 +147,7 @@
             </dependency>
             <dependency>
                 <groupId>de.ma_vin.util.layer.generator</groupId>
-                <artifactId>layer-generator-sample</artifactId>
+                <artifactId>sample</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

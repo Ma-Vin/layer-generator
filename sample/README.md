@@ -1,6 +1,6 @@
 ![Maven Workflow Action](https://github.com/Ma-Vin/de.ma_vin.util.layerGenerator/actions/workflows/maven.yml/badge.svg)
 
-# Util Sample Layer Generator
+# Util Layer Generator Sample
 An example of using the maven plugin and annotations of the ***Util Layer Generator***
 It is the forth ant last module at ***Util Layer Generator***
 

@@ -62,10 +62,10 @@ jobs:
         package-name: de.ma_vin.util.layer.generator.sourcecode-generator
         ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
-    - name: delete old versions of layer-generator-sample
+    - name: delete old versions of sample
       uses: actions/delete-package-versions@v2
       with:
-        package-name: de.ma_vin.util.layer.generator.layer-generator-sample
+        package-name: de.ma_vin.util.layer.generator.sample
         ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
     - name: Deploy layer generator

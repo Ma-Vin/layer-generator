@@ -42,4 +42,4 @@ See [Code Generator](../base-layer-generator/README.md) description
 
 ## Example
 
-An example of usage is shown at [Sample](../layer-generator-sample/README.md)
+An example of usage is shown at [Sample](../sample/README.md)
