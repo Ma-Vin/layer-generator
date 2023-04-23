@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <packaging>maven-plugin</packaging>
-    <artifactId>layer-generator-plugin</artifactId>
+    <artifactId>generator-plugin</artifactId>
 
     <name>Util Layer Generator Plugin</name>
     <description>Generator maven plugin to create domain model, data transport and/or data access objects</description>

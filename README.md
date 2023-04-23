@@ -14,11 +14,11 @@ A maven plugin generator and annotations to create domain model, data transport 
 
 ## Usage
 For usage the artifact ***de.ma_vin.util.layer.generator:extension-annotation*** is needed as dependency 
-and ***de.ma_vin.util.layer.generator:layer-generator-plugin*** should be included as maven plugin. See details at their readme markdowns.
+and ***de.ma_vin.util.layer.generator:generator-plugin*** should be included as maven plugin. See details at their readme markdowns.
 
 ### Annotation for Extension
 The implementation of the annotations to extend generated classes by custom code is located at [extension-annotation](/extension-annotation)
 ### Maven plugin
-The implementation of the maven plugin is located at [layer-generator-plugin](/layer-generator-plugin)
+The implementation of the maven plugin is located at [generator-plugin](/generator-plugin)
 ### Example
 An example of usage is shown at [layer-generator-sample](/layer-generator-sample)

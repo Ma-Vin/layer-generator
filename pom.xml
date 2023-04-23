@@ -10,7 +10,7 @@
         <module>sourcecode-generator</module>
         <module>extension-annotation</module>
         <module>base-layer-generator</module>
-        <module>layer-generator-plugin</module>
+        <module>generator-plugin</module>
         <module>layer-generator-sample</module>
     </modules>
 
@@ -142,7 +142,7 @@
             </dependency>
             <dependency>
                 <groupId>de.ma_vin.util.layer.generator</groupId>
-                <artifactId>layer-generator-plugin</artifactId>
+                <artifactId>generator-plugin</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -268,7 +268,7 @@
                 <!-- project -->
                 <plugin>
                     <groupId>de.ma_vin.util.layer.generator</groupId>
-                    <artifactId>layer-generator-plugin</artifactId>
+                    <artifactId>generator-plugin</artifactId>
                     <version>${project.version}</version>
                 </plugin>
 
