@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
-import de.ma_vin.util.layer.generator.logging.LogImpl;
+import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     public void setUp() {
         super.setUp();
 
-        cut = new DaoCreator(config, new LogImpl()) {
+        cut = new DaoCreator(config, new Log4jLogImpl()) {
             @Override
             protected BufferedWriter createBufferedWriter(File classFile) {
                 List<String> fileContent = new ArrayList<>();

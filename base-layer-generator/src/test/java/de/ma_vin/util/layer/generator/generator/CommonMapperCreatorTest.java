@@ -6,7 +6,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.*;
 
 import de.ma_vin.util.layer.generator.config.elements.Config;
-import de.ma_vin.util.layer.generator.logging.LogImpl;
+import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.AfterEach;
@@ -44,7 +44,7 @@ public class CommonMapperCreatorTest {
     public void setUp() {
         openMocks = openMocks(this);
         writtenFileContents.clear();
-        cut = new CommonMapperCreator(config, new LogImpl()) {
+        cut = new CommonMapperCreator(config, new Log4jLogImpl()) {
             @Override
             protected BufferedWriter createBufferedWriter(File classFile) {
                 List<String> fileContent = new ArrayList<>();

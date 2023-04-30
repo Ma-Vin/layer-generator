@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Grouping;
-import de.ma_vin.util.layer.generator.logging.LogImpl;
+import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,7 +53,7 @@ public class ModelGeneratorTest {
     @BeforeEach
     public void setUp() {
         openMocks = openMocks(this);
-        cut = new ModelGenerator(config, new LogImpl(), targetDir, true, true, true) {
+        cut = new ModelGenerator(config, new Log4jLogImpl(), targetDir, true, true, true) {
 
             @Override
             protected DaoCreator createDaoCreator() {

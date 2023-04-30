@@ -7,7 +7,7 @@ import org.apache.maven.plugin.logging.Log;
  * Implementation of maven plugin logging which delegates logging statements to log4j
  */
 @Log4j2
-public class LogImpl implements Log {
+public class Log4jLogImpl implements Log {
 
     @Override
     public boolean isDebugEnabled() {

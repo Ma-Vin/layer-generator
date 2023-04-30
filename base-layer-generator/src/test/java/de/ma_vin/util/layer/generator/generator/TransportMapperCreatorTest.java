@@ -3,7 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
-import de.ma_vin.util.layer.generator.logging.LogImpl;
+import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -50,7 +50,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        cut = new TransportMapperCreator(config, new LogImpl()) {
+        cut = new TransportMapperCreator(config, new Log4jLogImpl()) {
             @Override
             protected BufferedWriter createBufferedWriter(File classFile) {
                 List<String> fileContent = new ArrayList<>();

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
-import de.ma_vin.util.layer.generator.logging.LogImpl;
+import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,7 +74,7 @@ public class ConfigLoaderTest {
     @BeforeEach
     public void setUp() {
         openMocks = openMocks(this);
-        cut = new ConfigLoader(configFile, new LogImpl());
+        cut = new ConfigLoader(configFile, new Log4jLogImpl());
         initDefaultNonMocks();
         initDefaultMocks();
     }

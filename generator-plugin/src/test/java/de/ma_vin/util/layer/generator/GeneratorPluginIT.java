@@ -1,6 +1,6 @@
 package de.ma_vin.util.layer.generator;
 
-import de.ma_vin.util.layer.generator.logging.LogImpl;
+import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ public class GeneratorPluginIT {
         cut.setModelDefinitionFilename("exampleModel.xml");
         cut.setCleanTargetDirectory(true);
         cut.setCleanBasePackage(false);
-        cut.setLog(new LogImpl());
+        cut.setLog(new Log4jLogImpl());
 
         project = new MavenProject();
         project.setFile(new File(System.getProperty("user.dir"), "dummyPom.xml"));

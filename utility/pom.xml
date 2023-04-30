@@ -14,10 +14,6 @@
     <name>Util Layer Generator Utility</name>
     <description>Utility Classes</description>
 
-    <properties>
-        <sonar.skip>true</sonar.skip>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
