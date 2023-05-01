@@ -98,7 +98,7 @@ public abstract class AbstractCreator {
         return createBufferedWriter(new FileWriter(classFile));
     }
 
-    protected BufferedWriter createBufferedWriter(Writer writer) throws IOException {
+    protected BufferedWriter createBufferedWriter(Writer writer) {
         return new BufferedWriter(writer);
     }
 

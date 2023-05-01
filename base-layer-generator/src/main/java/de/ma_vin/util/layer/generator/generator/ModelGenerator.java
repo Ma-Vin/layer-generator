@@ -24,8 +24,6 @@ public class ModelGenerator {
     private boolean generateJavaFileObject;
 
 
-    private Optional<ProcessingEnvironment> processingEnv;
-
     private Optional<File> targetDir = Optional.empty();
     private Optional<File> dtoPackageDir = Optional.empty();
     private Optional<File> domainPackageDir = Optional.empty();
@@ -109,7 +107,6 @@ public class ModelGenerator {
     }
 
     public void setProcessingEnv(Optional<ProcessingEnvironment> processingEnv) {
-        this.processingEnv = processingEnv;
         daoCreator.setProcessingEnv(processingEnv);
         domainCreator.setProcessingEnv(processingEnv);
         dtoCreator.setProcessingEnv(processingEnv);
@@ -164,7 +161,7 @@ public class ModelGenerator {
         if (targetDir.isEmpty() && generateJavaFileObject) {
             logger.debug("No target directory defined, skip creating package directories");
             return true;
-        } else if (targetDir.isEmpty() && !generateJavaFileObject) {
+        } else if (targetDir.isEmpty()) {
             logger.error("No target directory defined, but needed for package creation");
             return false;
         }
