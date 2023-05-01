@@ -12,6 +12,7 @@ import org.apache.maven.plugin.logging.Log;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class TransportMapperCreator extends AbstractMapperCreator {
 
@@ -35,7 +36,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      * @return {@code true} if generation was successful
      */
-    public boolean createAbstractTransportMapper(String mapperPackageName, File mapperPackageDir, String dtoPackageName, String domainPackageName) {
+    public boolean createAbstractTransportMapper(String mapperPackageName, Optional<File> mapperPackageDir, String dtoPackageName, String domainPackageName) {
         Clazz mapperClass = new Clazz(mapperPackageName, ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME);
         logger.debug("Create abstract access mapper " + mapperClass.getClassName());
         mapperClass.setAbstract(true);
@@ -64,7 +65,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
     public boolean createTransportMapper(List<Entity> entities, String groupingName, String mapperPackageName, String dtoPackageName
-            , String domainPackageName, File mapperPackageDir) {
+            , String domainPackageName, Optional<File> mapperPackageDir) {
 
         if (entities.stream().noneMatch(e -> isEntityRelevant(e) && !e.getIsAbstract())) {
             logger.debug("No access mapper need for " + mapperPackageName);

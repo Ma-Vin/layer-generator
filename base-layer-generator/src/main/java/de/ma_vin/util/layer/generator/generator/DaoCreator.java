@@ -35,7 +35,7 @@ public class DaoCreator extends AbstractObjectCreator {
     }
 
 
-    public boolean createDataAccessObjectInterface(String basePackageName, File basePackageDir) {
+    public boolean createDataAccessObjectInterface(String basePackageName, Optional<File> basePackageDir) {
         Interface daoInterface = new Interface(basePackageName, DAO_INTERFACE);
 
         daoInterface.addMethodDeclarationWithDescription("Long", "getId", "@return the id of the dao");
@@ -58,7 +58,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param packageDir  directory where to write at
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
-    public boolean createDataAccessObject(Entity entity, String packageName, File packageDir) {
+    public boolean createDataAccessObject(Entity entity, String packageName, Optional<File> packageDir) {
         if (!entity.getModels().isDao()) {
             logger.debug(String.format("Entity %s is not relevant for dao", entity.getBaseName()));
             return true;
@@ -225,7 +225,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param packageName base package name where other referenced class are found
      * @param packageDir  base package directory where other referenced class sources are found
      */
-    private void addReferences(Entity entity, Clazz daoClazz, String packageName, File packageDir) {
+    private void addReferences(Entity entity, Clazz daoClazz, String packageName, Optional<File> packageDir) {
 
         List<String> attributes = new ArrayList<>();
 
@@ -399,7 +399,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param attributeNames list of attributes which are used as reference property at class
      * @param packageDir     base package directory where other referenced class sources are found
      */
-    private void addChildRef(Clazz daoClazz, String packageName, Reference reference, List<String> attributeNames, File packageDir) {
+    private void addChildRef(Clazz daoClazz, String packageName, Reference reference, List<String> attributeNames, Optional<File> packageDir) {
         if (reference.isOwner()) {
             addDirectChildRef(daoClazz, packageName, reference, attributeNames);
         } else {
@@ -452,7 +452,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param packageDir     base package directory where other referenced class sources are found.
      *                       Is used to generate a connection table
      */
-    private void addIndirectChildRef(Clazz daoClazz, String packageName, Reference reference, List<String> attributeNames, File packageDir) {
+    private void addIndirectChildRef(Clazz daoClazz, String packageName, Reference reference, List<String> attributeNames, Optional<File> packageDir) {
         String childClassName;
         String propertyBaseName = getLowerFirst(reference.getReferenceName());
         Attribute child;
@@ -503,7 +503,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param reference       reference which should be presented by the connection table
      * @param packageDir      directory of the package sources
      */
-    private Clazz createConnectionTable(String packageName, String basePackageName, Reference reference, File packageDir) {
+    private Clazz createConnectionTable(String packageName, String basePackageName, Reference reference, Optional<File> packageDir) {
         String clazzName = getConnectionTableName(reference);
         String baseClassName = clazzName.substring(0, clazzName.length() - 3);
         String sourcePropertyName = getLowerFirst(reference.getParent().getBaseName());

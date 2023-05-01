@@ -134,6 +134,11 @@ public class Interface extends AbstractGenerateLines implements IFileRepresentat
         return interfaceName + ".java";
     }
 
+    @Override
+    public String getObjectName() {
+        return interfaceName;
+    }
+
     @Data
     public static class MethodDeclaration implements Comparable<MethodDeclaration> {
         private JavaDoc javaDoc = null;

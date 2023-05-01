@@ -213,4 +213,9 @@ public class Clazz extends AbstractGenerateLines implements IFileRepresentation,
     public String getFilename() {
         return className + ".java";
     }
+
+    @Override
+    public String getObjectName() {
+        return className;
+    }
 }

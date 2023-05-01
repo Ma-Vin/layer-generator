@@ -9,15 +9,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
@@ -37,15 +38,12 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         cut = new DtoCreator(config, new Log4jLogImpl()) {
             @Override
             protected BufferedWriter createBufferedWriter(File classFile) {
-                List<String> fileContent = new ArrayList<>();
-                writtenFileContents.put(classFile.getName(), fileContent);
-                try {
-                    // Assumption: after write is als a newLine statement
-                    doAnswer(a -> fileContent.add(a.getArgument(0))).when(bufferedWriter).write(anyString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return bufferedWriter;
+                return mockBufferedWriter(classFile.getName());
+            }
+
+            @Override
+            protected BufferedWriter createBufferedWriter(JavaFileObject javaFileObject) {
+                return mockBufferedWriter(javaFileObject.getName());
             }
 
             @Override
@@ -59,9 +57,36 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         };
     }
 
+    @DisplayName("create data transport object with common file")
     @Test
-    public void testCreateDataTransportObjectDefault() {
+    public void testCreateDataTransportObjectCommonFile() {
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
+
+        checkSingleFile("DummyDto.java", expected);
+
+        verify(processingEnv, never()).getFiler();
+    }
+
+    @DisplayName("create data transport object with java file object")
+    @Test
+    public void testCreateDataTransportObjectJavaFileObject() throws IOException {
+        List<String> expected = getDefaultExpected();
+        cut.setGenerateJavaFileObject(true);
+        cut.setProcessingEnv(Optional.of(processingEnv));
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.empty()));
+
+        checkSingleFile(String.format("%s.dto.group.DummyDto", BASE_PACKAGE), expected);
+
+        verify(processingEnv).getFiler();
+        verify(filer).createSourceFile(eq(String.format("%s.dto.group.DummyDto", BASE_PACKAGE)));
+    }
+
+    private List<String> getDefaultExpected() {
         List<String> expected = new ArrayList<>();
+
         expected.add("package de.test.package.dto.group;");
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
@@ -87,9 +112,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
-
-        checkSingleFile("DummyDto.java", expected);
+        return expected;
     }
 
 
@@ -97,7 +120,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
     public void testCreateDataTransportObjectNoDto() {
         when(entity.getModels()).thenReturn(Models.DAO);
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         assertEquals(0, writtenFileContents.size(), "Wrong number of files");
     }
@@ -133,7 +156,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -165,7 +188,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -199,7 +222,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -242,7 +265,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -282,7 +305,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -319,7 +342,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -358,7 +381,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -395,7 +418,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -437,7 +460,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("}");
 
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -472,7 +495,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -505,7 +528,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         basicExpected.add("");
         basicExpected.add("}");
 
-        assertTrue(cut.createDataTransportObjectInterface(BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObjectInterface(BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         assertEquals(2, writtenFileContents.size(), "Wrong number of files");
         assertTrue(writtenFileContents.containsKey(DtoCreator.DTO_INTERFACE + ".java"));
@@ -548,7 +571,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         basicExpected.add("");
         basicExpected.add("}");
 
-        assertTrue(cut.createDataTransportObjectInterface(BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObjectInterface(BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         assertEquals(2, writtenFileContents.size(), "Wrong number of files");
         assertTrue(writtenFileContents.containsKey(DtoCreator.DTO_INTERFACE + ".java"));
@@ -592,7 +615,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
         assertTrue(directoriesWhereRequestedToWrite.contains(String.format("group%ssubgroup", File.separator)), "Dot should be replaced by backslash");
@@ -628,7 +651,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -671,7 +694,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }
@@ -718,7 +741,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", basePackageDir));
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
     }

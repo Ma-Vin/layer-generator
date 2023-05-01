@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -38,16 +39,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         cut = new DaoCreator(config, new Log4jLogImpl()) {
             @Override
             protected BufferedWriter createBufferedWriter(File classFile) {
-                List<String> fileContent = new ArrayList<>();
-                writtenFileContents.put(classFile.getName(), fileContent);
-                try {
-                    // Assumption: after write is als a newLine statement
-                    doAnswer(a -> fileContent.add(a.getArgument(0))).when(bufferedWriter).write(anyString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return bufferedWriter;
+                return mockBufferedWriter(classFile.getName());
             }
+
+            @Override
+            protected BufferedWriter createBufferedWriter(JavaFileObject javaFileObject) {
+                return mockBufferedWriter(javaFileObject.getName());
+            }
+
 
             @Override
             protected File createFile(File dir, String fileName) {
@@ -80,9 +79,36 @@ public class DaoCreatorTest extends AbstractCreatorTest {
                 .when(parentReference).setReferenceName(anyString());
     }
 
+    @DisplayName("create data access object with common file")
     @Test
-    public void testCreateDataAccessObjectDefault() {
+    public void testCreateDataAccessObjectCommonFile() {
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
+
+        checkSingleFile("DummyDao.java", expected);
+
+        verify(processingEnv, never()).getFiler();
+    }
+
+    @DisplayName("create data access object with java file object")
+    @Test
+    public void testCreateDataAccessObjectJavaFileObject() throws IOException {
+        List<String> expected = getDefaultExpected();
+        cut.setGenerateJavaFileObject(true);
+        cut.setProcessingEnv(Optional.of(processingEnv));
+
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.empty()));
+
+        checkSingleFile(String.format("%s.dao.group.DummyDao", BASE_PACKAGE), expected);
+
+        verify(processingEnv).getFiler();
+        verify(filer).createSourceFile(eq(String.format("%s.dao.group.DummyDao", BASE_PACKAGE)));
+    }
+
+    private List<String> getDefaultExpected() {
         List<String> expected = new ArrayList<>();
+
         expected.add("package de.test.package.dao.group;");
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDao;");
@@ -108,16 +134,14 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
-
-        checkSingleFile("DummyDao.java", expected);
+        return expected;
     }
 
     @Test
     public void testCreateDataAccessObjectNoDao() {
         when(entity.getModels()).thenReturn(Models.DOMAIN);
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         assertEquals(0, writtenFileContents.size(), "Wrong number of files");
     }
@@ -151,7 +175,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -195,7 +219,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -235,7 +259,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -279,7 +303,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -318,7 +342,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -364,7 +388,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -404,7 +428,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -450,7 +474,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -488,7 +512,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -554,7 +578,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -601,7 +625,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -690,7 +714,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expectedConnection.add("");
         expectedConnection.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         assertEquals(2, writtenFileContents.size(), "Wrong number of files");
         assertTrue(writtenFileContents.containsKey("DummyDao.java"));
@@ -791,7 +815,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expectedConnection.add("");
         expectedConnection.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         assertEquals(2, writtenFileContents.size(), "Wrong number of files");
         assertTrue(writtenFileContents.containsKey("DummyDao.java"));
@@ -838,7 +862,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -875,7 +899,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -913,7 +937,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -967,7 +991,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1016,7 +1040,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1059,7 +1083,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1108,7 +1132,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1162,7 +1186,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1211,7 +1235,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1236,7 +1260,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObjectInterface(BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObjectInterface(BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile(DaoCreator.DAO_INTERFACE + ".java", expected);
     }
@@ -1272,7 +1296,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObjectInterface(BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObjectInterface(BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile(DaoCreator.DAO_INTERFACE + ".java", expected);
     }
@@ -1307,7 +1331,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
         assertTrue(directoriesWhereRequestedToWrite.contains(String.format("group%ssubgroup", File.separator)), "Dot should be replaced by backslash");
@@ -1342,7 +1366,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1385,7 +1409,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1434,7 +1458,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1487,7 +1511,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1535,7 +1559,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1585,7 +1609,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1638,7 +1662,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1684,7 +1708,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1729,7 +1753,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1783,7 +1807,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1831,7 +1855,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }
@@ -1879,7 +1903,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", basePackageDir));
+        assertTrue(cut.createDataAccessObject(entity, BASE_PACKAGE + ".dao", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDao.java", expected);
     }

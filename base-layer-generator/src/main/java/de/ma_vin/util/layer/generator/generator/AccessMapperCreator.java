@@ -41,7 +41,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      * @return {@code true} if generation was successful
      */
-    public boolean createAbstractAccessMapper(String mapperPackageName, File mapperPackageDir, String daoPackageName, String domainPackageName) {
+    public boolean createAbstractAccessMapper(String mapperPackageName, Optional<File> mapperPackageDir, String daoPackageName, String domainPackageName) {
         Clazz mapperClass = new Clazz(mapperPackageName, ABSTRACT_ACCESS_MAPPER_CLASS_NAME);
         logger.debug("Create abstract access mapper " + mapperClass.getClassName());
         mapperClass.setAbstract(true);
@@ -70,7 +70,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
     public boolean createAccessMapper(List<Entity> entities, String groupingName, String mapperPackageName, String daoPackageName
-            , String domainPackageName, File mapperPackageDir) {
+            , String domainPackageName, Optional<File> mapperPackageDir) {
 
         if (entities.stream().noneMatch(e -> isEntityRelevant(e) && !e.getIsAbstract())) {
             logger.debug("No access mapper need for " + mapperPackageName);

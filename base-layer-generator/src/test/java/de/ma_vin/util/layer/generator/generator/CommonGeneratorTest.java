@@ -3,13 +3,13 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.config.ConfigLoader;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -54,8 +54,13 @@ public class CommonGeneratorTest {
     private ConfigLoader configLoader;
     @Mock
     private Config config;
+    @Mock
+    protected ProcessingEnvironment processingEnv;
 
     private CommonGenerator cut;
+
+    private boolean isProcessingEnvModelGenerator;
+    private boolean isTargetDirModelGenerator;
 
     @BeforeEach
     public void setUp() throws IOException {
@@ -68,7 +73,14 @@ public class CommonGeneratorTest {
             }
 
             @Override
-            protected ModelGenerator createModelGenerator() {
+            protected ModelGenerator createProcessingEnvModelGenerator() {
+                isProcessingEnvModelGenerator = true;
+                return modelGenerator;
+            }
+
+            @Override
+            protected ModelGenerator createTargetDirModelGenerator() {
+                isTargetDirModelGenerator = true;
                 return modelGenerator;
             }
 
@@ -122,6 +134,9 @@ public class CommonGeneratorTest {
         when(config.getBasePackage()).thenReturn("de.ma_vin.test");
 
         when(modelGenerator.generate()).thenReturn(Boolean.TRUE);
+
+        isProcessingEnvModelGenerator = false;
+        isTargetDirModelGenerator = false;
     }
 
     private void mockDeletion(File fileToDelete, Path path) {
@@ -577,6 +592,20 @@ public class CommonGeneratorTest {
         cut.setConfig(config);
 
         assertTrue(cut.generate(), "Generation should be successful");
+        assertTrue(isTargetDirModelGenerator, "A model generator with target dir is expected");
+        assertFalse(isProcessingEnvModelGenerator, "A model generator with processing env is not expected");
+
+        verify(modelGenerator).generate();
+    }
+
+    @DisplayName("generation successful with processing env")
+    @Test
+    public void testGenerateWithProcessingEnv() {
+        cut.setConfig(config);
+
+        assertTrue(cut.generate(processingEnv), "Generation should be successful");
+        assertFalse(isTargetDirModelGenerator, "A model generator with target dir is not expected");
+        assertTrue(isProcessingEnvModelGenerator, "A model generator with processing env is expected");
 
         verify(modelGenerator).generate();
     }

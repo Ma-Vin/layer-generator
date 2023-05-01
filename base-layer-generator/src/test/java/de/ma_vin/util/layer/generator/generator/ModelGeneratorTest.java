@@ -13,10 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class ModelGeneratorTest {
     private AutoCloseable openMocks;
@@ -27,6 +29,8 @@ public class ModelGeneratorTest {
     private File targetDir;
     @Mock
     private File packageDir;
+    @Mock
+    private ProcessingEnvironment processingEnv;
     @Mock
     private DaoCreator daoCreator;
     @Mock
@@ -134,15 +138,95 @@ public class ModelGeneratorTest {
 
         verify(daoCreator).createDataAccessObjectInterface(any(), any());
         verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
+        verify(daoCreator).setProcessingEnv(eq(Optional.empty()));
+        verify(daoCreator).setGenerateJavaFileObject(eq(Boolean.FALSE));
         verify(dtoCreator).createDataTransportObjectInterface(any(), any());
         verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(dtoCreator).setProcessingEnv(eq(Optional.empty()));
+        verify(dtoCreator).setGenerateJavaFileObject(eq(Boolean.FALSE));
         verify(domainCreator).createDomainObjectInterface(any(), any());
         verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(domainCreator).setProcessingEnv(eq(Optional.empty()));
+        verify(domainCreator).setGenerateJavaFileObject(eq(Boolean.FALSE));
         verify(commonMapperCreator).createAbstractMapper(anyString(), any());
+        verify(commonMapperCreator).setProcessingEnv(eq(Optional.empty()));
+        verify(commonMapperCreator).setGenerateJavaFileObject(eq(Boolean.FALSE));
         verify(accessMapperCreator).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
         verify(accessMapperCreator, times(2)).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(accessMapperCreator).setProcessingEnv(eq(Optional.empty()));
+        verify(accessMapperCreator).setGenerateJavaFileObject(eq(Boolean.FALSE));
         verify(transportMapperCreator).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
         verify(transportMapperCreator, times(2)).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator).setProcessingEnv(eq(Optional.empty()));
+        verify(transportMapperCreator).setGenerateJavaFileObject(eq(Boolean.FALSE));
+    }
+
+    @Test
+    public void testGenerateWithProcessingEnv() {
+        cut = new ModelGenerator(config, new Log4jLogImpl(), processingEnv, true, true, true) {
+
+            @Override
+            protected DaoCreator createDaoCreator() {
+                return daoCreator;
+            }
+
+            @Override
+            protected DtoCreator createDtoCreator() {
+                return dtoCreator;
+            }
+
+            @Override
+            protected DomainCreator createDomainCreator() {
+                return domainCreator;
+            }
+
+            @Override
+            protected CommonMapperCreator createCommonMapperCreator() {
+                return commonMapperCreator;
+            }
+
+            @Override
+            protected TransportMapperCreator createTransportMapperCreator() {
+                return transportMapperCreator;
+            }
+
+            @Override
+            protected AccessMapperCreator createAccessMapperCreator() {
+                return accessMapperCreator;
+            }
+
+            @Override
+            protected File createFile(File dir, String fileName) {
+                fail("Should never be invoked");
+                return null;
+            }
+        };
+
+        assertTrue(cut.generate(), "The generation should be successful");
+
+        verify(daoCreator).createDataAccessObjectInterface(any(), any());
+        verify(daoCreator, times(2)).createDataAccessObject(any(), any(), any());
+        verify(daoCreator).setProcessingEnv(eq(Optional.of(processingEnv)));
+        verify(daoCreator).setGenerateJavaFileObject(eq(Boolean.TRUE));
+        verify(dtoCreator).createDataTransportObjectInterface(any(), any());
+        verify(dtoCreator, times(2)).createDataTransportObject(any(), any(), any());
+        verify(dtoCreator).setProcessingEnv(eq(Optional.of(processingEnv)));
+        verify(dtoCreator).setGenerateJavaFileObject(eq(Boolean.TRUE));
+        verify(domainCreator).createDomainObjectInterface(any(), any());
+        verify(domainCreator, times(2)).createDomainObject(any(), any(), any());
+        verify(domainCreator).setProcessingEnv(eq(Optional.of(processingEnv)));
+        verify(domainCreator).setGenerateJavaFileObject(eq(Boolean.TRUE));
+        verify(commonMapperCreator).createAbstractMapper(anyString(), any());
+        verify(commonMapperCreator).setProcessingEnv(eq(Optional.of(processingEnv)));
+        verify(commonMapperCreator).setGenerateJavaFileObject(eq(Boolean.TRUE));
+        verify(accessMapperCreator).createAbstractAccessMapper(anyString(), any(), anyString(), anyString());
+        verify(accessMapperCreator, times(2)).createAccessMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(accessMapperCreator).setProcessingEnv(eq(Optional.of(processingEnv)));
+        verify(accessMapperCreator).setGenerateJavaFileObject(eq(Boolean.TRUE));
+        verify(transportMapperCreator).createAbstractTransportMapper(anyString(), any(), anyString(), anyString());
+        verify(transportMapperCreator, times(2)).createTransportMapper(anyList(), any(), anyString(), anyString(), anyString(), any());
+        verify(transportMapperCreator).setProcessingEnv(eq(Optional.of(processingEnv)));
+        verify(transportMapperCreator).setGenerateJavaFileObject(eq(Boolean.TRUE));
     }
 
     @Test

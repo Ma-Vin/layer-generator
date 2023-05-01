@@ -8,12 +8,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -34,16 +36,14 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         cut = new DomainCreator(config, new Log4jLogImpl()) {
             @Override
             protected BufferedWriter createBufferedWriter(File classFile) {
-                List<String> fileContent = new ArrayList<>();
-                writtenFileContents.put(classFile.getName(), fileContent);
-                try {
-                    // Assumption: after write is als a newLine statement
-                    doAnswer(a -> fileContent.add(a.getArgument(0))).when(bufferedWriter).write(anyString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return bufferedWriter;
+                return mockBufferedWriter(classFile.getName());
             }
+
+            @Override
+            protected BufferedWriter createBufferedWriter(JavaFileObject javaFileObject) {
+                return mockBufferedWriter(javaFileObject.getName());
+            }
+
 
             @Override
             protected File createFile(File dir, String fileName) {
@@ -56,9 +56,36 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         };
     }
 
+    @DisplayName("create domain object with common file")
     @Test
-    public void testCreateDomainObjectDefault() {
+    public void testCreateDomainObjectCommonFile() {
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
+
+        checkSingleFile("Dummy.java", expected);
+
+        verify(processingEnv, never()).getFiler();
+    }
+
+    @DisplayName("create domain object with java file object")
+    @Test
+    public void testCreateDomainObjectJavaFileObject() throws IOException {
+        List<String> expected = getDefaultExpected();
+        cut.setGenerateJavaFileObject(true);
+        cut.setProcessingEnv(Optional.of(processingEnv));
+
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.empty()));
+
+        checkSingleFile(String.format("%s.domain.group.Dummy", BASE_PACKAGE), expected);
+
+        verify(processingEnv).getFiler();
+        verify(filer).createSourceFile(eq(String.format("%s.domain.group.Dummy", BASE_PACKAGE)));
+    }
+
+    private List<String> getDefaultExpected() {
         List<String> expected = new ArrayList<>();
+
         expected.add("package de.test.package.domain.group;");
         expected.add("");
         expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;");
@@ -84,9 +111,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
-
-        checkSingleFile("Dummy.java", expected);
+        return expected;
     }
 
 
@@ -94,7 +119,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
     public void testCreateDomainObjectNoDomain() {
         when(entity.getModels()).thenReturn(Models.DAO);
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         assertEquals(0, writtenFileContents.size(), "Wrong number of files");
     }
@@ -128,7 +153,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -171,7 +196,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -211,7 +236,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -276,7 +301,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -315,7 +340,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -352,7 +377,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -394,7 +419,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("}");
 
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -431,7 +456,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -456,7 +481,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObjectInterface(BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObjectInterface(BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile(DomainCreator.DOMAIN_INTERFACE + ".java", expected);
     }
@@ -482,7 +507,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObjectInterface(BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObjectInterface(BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile(DomainCreator.DOMAIN_INTERFACE + ".java", expected);
     }
@@ -517,7 +542,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         assertFalse(directoriesWhereRequestedToWrite.contains("group.subgroup"), "Not any directories with dots should be used");
         assertTrue(directoriesWhereRequestedToWrite.contains(String.format("group%ssubgroup", File.separator)), "Dot should be replaced by backslash");
@@ -553,7 +578,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -596,7 +621,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -643,7 +668,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }
@@ -712,7 +737,7 @@ public class DomainCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", basePackageDir));
+        assertTrue(cut.createDomainObject(entity, BASE_PACKAGE + ".domain", Optional.of(basePackageDir)));
 
         checkSingleFile("Dummy.java", expected);
     }

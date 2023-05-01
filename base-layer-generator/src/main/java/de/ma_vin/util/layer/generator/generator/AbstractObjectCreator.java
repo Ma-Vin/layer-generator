@@ -11,6 +11,7 @@ import org.apache.maven.plugin.logging.Log;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -172,13 +173,16 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
      * @param basePackageDir package which is definitely used for package dir
      * @return package directory
      */
-    protected File getPackageDir(Entity entity, File basePackageDir) {
+    protected Optional<File> getPackageDir(Entity entity, Optional<File> basePackageDir) {
+        if (generateJavaFileObject || basePackageDir.isEmpty()) {
+            return Optional.empty();
+        }
         if (entity.getGrouping() != null) {
             String dir = entity.getGrouping().getGroupingPackage();
             if (dir.contains(".")) {
                 dir = dir.replace(".", File.separator);
             }
-            return createFile(basePackageDir, dir);
+            return Optional.of(createFile(basePackageDir.get(), dir));
         }
         return basePackageDir;
     }

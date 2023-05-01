@@ -6,22 +6,28 @@ import lombok.extern.log4j.Log4j2;
 import org.mockito.Mock;
 import org.opentest4j.AssertionFailedError;
 
+import javax.annotation.processing.Filer;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @Log4j2
 public class AbstractCreatorTest {
     public static final String BASE_PACKAGE = "de.test.package";
     public static final String ENTITY_NAME = "Dummy";
+
+    protected AutoCloseable openMocks;
 
     @Mock
     protected Config config;
@@ -39,11 +45,17 @@ public class AbstractCreatorTest {
     protected Grouping grouping;
     @Mock
     protected BufferedWriter bufferedWriter;
+    @Mock
+    protected ProcessingEnvironment processingEnv;
+    @Mock
+    protected Filer filer;
+    @Mock
+    protected JavaFileObject javaFileObject;
 
     protected Map<String, List<String>> writtenFileContents = new HashMap<>();
 
     public void setUp() {
-        initMocks(this);
+        openMocks = openMocks(this);
         initDefaultMock();
         writtenFileContents.clear();
     }
@@ -85,6 +97,28 @@ public class AbstractCreatorTest {
 
         when(basePackageDir.getName()).thenReturn("basePackageDir");
         when(basePackageDir.getParentFile()).thenReturn(null);
+
+        when(processingEnv.getFiler()).thenReturn(filer);
+        try {
+            when(filer.createSourceFile(any())).then(a -> {
+                when(javaFileObject.getName()).thenReturn(a.getArgument(0));
+                return javaFileObject;
+            });
+        } catch (IOException e) {
+            fail(e);
+        }
+    }
+
+    protected BufferedWriter mockBufferedWriter(String fileKey) {
+        List<String> fileContent = new ArrayList<>();
+        writtenFileContents.put(fileKey, fileContent);
+        try {
+            // Assumption: after write is als a newLine statement
+            doAnswer(a -> fileContent.add(a.getArgument(0))).when(bufferedWriter).write(anyString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bufferedWriter;
     }
 
     protected void checkSingleFile(String fileName, List<String> expectedLines) {

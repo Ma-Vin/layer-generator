@@ -6,21 +6,18 @@ import de.ma_vin.util.layer.generator.config.elements.NonOwnerFilterField;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
@@ -60,15 +57,12 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         cut = new AccessMapperCreator(config, new Log4jLogImpl()) {
             @Override
             protected BufferedWriter createBufferedWriter(File classFile) {
-                List<String> fileContent = new ArrayList<>();
-                writtenFileContents.put(classFile.getName(), fileContent);
-                try {
-                    // Assumption: after write is als a newLine statement
-                    doAnswer(a -> fileContent.add(a.getArgument(0))).when(bufferedWriter).write(anyString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return bufferedWriter;
+                return mockBufferedWriter(classFile.getName());
+            }
+
+            @Override
+            protected BufferedWriter createBufferedWriter(JavaFileObject javaFileObject) {
+                return mockBufferedWriter(javaFileObject.getName());
             }
 
             @Override
@@ -135,13 +129,31 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(fromSubReference.isReverse()).thenReturn(Boolean.TRUE);
     }
 
+    @DisplayName("create access mapper with common file")
     @Test
     public void testCreateAccessMapper() {
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+
+        verify(processingEnv, never()).getFiler();
+    }
+
+    @DisplayName("create access mapper with java file object")
+    @Test
+    public void testCreateAccessMapperJavaFileObject() throws IOException {
+        List<String> expected = getDefaultExpected();
+        cut.setGenerateJavaFileObject(true);
+        cut.setProcessingEnv(Optional.of(processingEnv));
+
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.empty()));
+
+        checkSingleFile(String.format("%s.%sAccessMapper", MAPPER_PACKAGE_NAME, AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+
+        verify(processingEnv).getFiler();
+        verify(filer).createSourceFile(eq(String.format("%s.%sAccessMapper", MAPPER_PACKAGE_NAME, AbstractCreator.getUpperFirst(GROUPING_NAME))));
     }
 
     private List<String> getDefaultExpected() {
@@ -448,7 +460,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -607,7 +619,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -767,7 +779,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -945,7 +957,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -1506,7 +1518,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -1685,7 +1697,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -1907,7 +1919,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("}");
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2190,7 +2202,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("}");
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2440,7 +2452,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2688,7 +2700,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2969,7 +2981,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -3255,7 +3267,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -3429,7 +3441,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -3605,7 +3617,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -3786,7 +3798,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -3969,7 +3981,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -4126,7 +4138,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, "group.subgroup", MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, "group.subgroup", MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", "GroupSubgroup"), expected);
     }
@@ -4134,15 +4146,15 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperNothingToMap() {
         when(entity.getModels()).thenReturn(Models.DTO);
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
 
         when(entity.getModels()).thenReturn(Models.DOMAIN);
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only domain");
 
         when(entity.getModels()).thenReturn(Models.DAO);
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dao");
     }
 
@@ -4155,7 +4167,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -4167,7 +4179,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -4180,7 +4192,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -4193,7 +4205,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -4207,7 +4219,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -4216,7 +4228,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperAbstract() {
         when(entity.getIsAbstract()).thenReturn(Boolean.TRUE);
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
     }
 
@@ -4402,7 +4414,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -4590,7 +4602,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -4780,7 +4792,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -5024,7 +5036,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -5274,7 +5286,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -5341,7 +5353,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAbstractAccessMapper(MAPPER_PACKAGE_NAME, mapperPackageDir, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
+        assertTrue(cut.createAbstractAccessMapper(MAPPER_PACKAGE_NAME, Optional.of(mapperPackageDir), DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
         checkSingleFile(String.format("%s.java", AccessMapperCreator.ABSTRACT_ACCESS_MAPPER_CLASS_NAME), expected);
     }
 
@@ -5409,7 +5421,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAbstractAccessMapper(MAPPER_PACKAGE_NAME, mapperPackageDir, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
+        assertTrue(cut.createAbstractAccessMapper(MAPPER_PACKAGE_NAME, Optional.of(mapperPackageDir), DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
         checkSingleFile(String.format("%s.java", AccessMapperCreator.ABSTRACT_ACCESS_MAPPER_CLASS_NAME), expected);
     }
 
@@ -5596,7 +5608,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -5842,7 +5854,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -6045,7 +6057,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -6316,7 +6328,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createAccessMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DAO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sAccessMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }

@@ -12,10 +12,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.maven.plugin.logging.Log;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.tools.JavaFileObject;
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +26,15 @@ public abstract class AbstractCreator {
 
     protected Config config;
     protected Log logger;
+    protected boolean generateJavaFileObject;
+    private Optional<ProcessingEnvironment> processingEnv;
+
+    protected AbstractCreator(Config config, Log logger) {
+        this.config = config;
+        this.logger = logger;
+        generateJavaFileObject = false;
+        processingEnv = Optional.empty();
+    }
 
     /**
      * Generates and write the content to a file
@@ -35,11 +43,10 @@ public abstract class AbstractCreator {
      * @param toGenerate object where to call the generate method and getting file content from
      * @return {@code true} if writing was successful. Otherwise {@code false}
      */
-    protected boolean writeClassFile(File packageDir, IFileRepresentation toGenerate) {
-        File classFile = createFile(packageDir, toGenerate.getFilename());
+    protected boolean writeClassFile(Optional<File> packageDir, IFileRepresentation toGenerate) {
         List<String> linesToWrite = toGenerate.generate();
         logger.debug(String.format("Start writing %s with %d lines", toGenerate.getFilename(), linesToWrite.size()));
-        try (BufferedWriter bw = createBufferedWriter(classFile)) {
+        try (BufferedWriter bw = createBufferedWriter(packageDir, toGenerate)) {
             for (String line : linesToWrite) {
                 bw.write(line);
                 bw.newLine();
@@ -66,11 +73,33 @@ public abstract class AbstractCreator {
     /**
      * Creator Method to be make mocking easier at unit test
      *
-     * @param classFile file to write at
+     * @param packageDir directory where to create the file
+     * @param toGenerate object where to call the generate method and getting file content from
      * @return created buffered writer
      */
+    private BufferedWriter createBufferedWriter(Optional<File> packageDir, IFileRepresentation toGenerate) throws IOException {
+        if (generateJavaFileObject && processingEnv.isPresent()) {
+            JavaFileObject javaFileObject = processingEnv.get().getFiler().createSourceFile(toGenerate.getPackageName() + "." + toGenerate.getObjectName());
+            return createBufferedWriter(javaFileObject);
+        }
+        if (!generateJavaFileObject && packageDir.isPresent()) {
+            File classFile = createFile(packageDir.get(), toGenerate.getFilename());
+            return createBufferedWriter(classFile);
+        }
+        throw new IOException(String.format("Ambiguous definition of buffered writer. generateJavaFileObject=%b , packageDir.isPresent()=%b, processingEnv.isPresent()=%b"
+                , generateJavaFileObject, packageDir.isPresent(), processingEnv.isPresent()));
+    }
+
+    protected BufferedWriter createBufferedWriter(JavaFileObject javaFileObject) throws IOException {
+        return createBufferedWriter(javaFileObject.openWriter());
+    }
+
     protected BufferedWriter createBufferedWriter(File classFile) throws IOException {
-        return new BufferedWriter(new FileWriter(classFile));
+        return createBufferedWriter(new FileWriter(classFile));
+    }
+
+    protected BufferedWriter createBufferedWriter(Writer writer) throws IOException {
+        return new BufferedWriter(writer);
     }
 
     /**

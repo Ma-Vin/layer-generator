@@ -5,13 +5,14 @@ import de.ma_vin.util.layer.generator.config.elements.Config;
 import lombok.Data;
 import org.apache.maven.plugin.logging.Log;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
 @Data
 public class CommonGenerator {
-    
+
     private Log log;
 
     private String generateTargetDirectory;
@@ -26,6 +27,8 @@ public class CommonGenerator {
     private File targetDir;
     private File modelFile;
     private Config config;
+
+    private ProcessingEnvironment processingEnv;
 
     /**
      * Checks whether the parameter are valid
@@ -118,6 +121,17 @@ public class CommonGenerator {
         return true;
     }
 
+    /**
+     * Generates the model java sources based on the existing configuration
+     *
+     * @param processingEnv Processing environment provided by the tool framework. It will be used for source file creation
+     * @return {@code true} if generating was successful. Otherwise {@code false}
+     */
+    public boolean generate(ProcessingEnvironment processingEnv) {
+        setProcessingEnv(processingEnv);
+        return generate();
+    }
+
     public boolean cleanDirectories() {
         if (cleanTargetDirectory) {
             log.debug("Start cleaning target directory");
@@ -196,9 +210,31 @@ public class CommonGenerator {
      *
      * @return Model creator to use
      */
-    protected ModelGenerator createModelGenerator() {
+    private ModelGenerator createModelGenerator() {
+        if (processingEnv != null) {
+            return createProcessingEnvModelGenerator();
+        }
+        return createTargetDirModelGenerator();
+    }
+
+    /**
+     * Creator Method to be make mocking easier at unit test
+     *
+     * @return Model creator to use
+     */
+    protected ModelGenerator createProcessingEnvModelGenerator() {
+        return new ModelGenerator(config, log, processingEnv, generateDto, generateDomain, generateDao);
+    }
+
+    /**
+     * Creator Method to be make mocking easier at unit test
+     *
+     * @return Model creator to use
+     */
+    protected ModelGenerator createTargetDirModelGenerator() {
         return new ModelGenerator(config, log, targetDir, generateDto, generateDomain, generateDao);
     }
+
 
     /**
      * Creator Method to be make mocking easier at unit test

@@ -1,61 +1,47 @@
 package de.ma_vin.util.layer.generator.generator;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.*;
 
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
-import de.ma_vin.util.layer.generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.opentest4j.AssertionFailedError;
 
+import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Log4j2
-public class CommonMapperCreatorTest {
-    private AutoCloseable openMocks;
+public class CommonMapperCreatorTest extends AbstractCreatorTest {
 
     @Mock
     private Config config;
     @Mock
     private File mapperPackageDir;
-    @Mock
-    private BufferedWriter bufferedWriter;
 
     private CommonMapperCreator cut;
-
-    private Map<String, List<String>> writtenFileContents = new HashMap<>();
 
     public static final String MAPPER_PACKAGE_NAME = "de.test.package.mapper";
 
     @BeforeEach
     public void setUp() {
-        openMocks = openMocks(this);
-        writtenFileContents.clear();
+        super.setUp();
         cut = new CommonMapperCreator(config, new Log4jLogImpl()) {
             @Override
             protected BufferedWriter createBufferedWriter(File classFile) {
-                List<String> fileContent = new ArrayList<>();
-                writtenFileContents.put(classFile.getName(), fileContent);
-                try {
-                    // Assumption: after write is als a newLine statement
-                    doAnswer(a -> fileContent.add(a.getArgument(0))).when(bufferedWriter).write(anyString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return bufferedWriter;
+                return mockBufferedWriter(classFile.getName());
+            }
+
+            @Override
+            protected BufferedWriter createBufferedWriter(JavaFileObject javaFileObject) {
+                return mockBufferedWriter(javaFileObject.getName());
             }
 
             @Override
@@ -76,8 +62,35 @@ public class CommonMapperCreatorTest {
         openMocks.close();
     }
 
+    @DisplayName("create abstract mapper with common file")
     @Test
-    public void testCreateAbstractMapper() {
+    public void testCreateAbstractMapperCommonFile() {
+        List<String> expected = getDefaultExpected();
+
+        assertTrue(cut.createAbstractMapper(MAPPER_PACKAGE_NAME, Optional.of(mapperPackageDir)));
+
+        checkSingleFile(CommonMapperCreator.ABSTRACT_MAPPER_CLASS_NAME + ".java", expected);
+
+        verify(processingEnv, never()).getFiler();
+    }
+
+    @DisplayName("create abstract mapper with java file object")
+    @Test
+    public void testCreateAbstractMapperJavaFileObject() throws IOException {
+        List<String> expected = getDefaultExpected();
+        cut.setGenerateJavaFileObject(true);
+        cut.setProcessingEnv(Optional.of(processingEnv));
+
+        assertTrue(cut.createAbstractMapper(MAPPER_PACKAGE_NAME, Optional.empty()));
+
+        checkSingleFile(String.format("%s.%s", MAPPER_PACKAGE_NAME, CommonMapperCreator.ABSTRACT_MAPPER_CLASS_NAME), expected);
+
+        verify(processingEnv).getFiler();
+        verify(filer).createSourceFile(eq(String.format("%s.%s", MAPPER_PACKAGE_NAME, CommonMapperCreator.ABSTRACT_MAPPER_CLASS_NAME)));
+    }
+
+
+    private List<String> getDefaultExpected() {
         List<String> expected = new ArrayList<>();
 
         expected.add("package de.test.package.mapper;");
@@ -196,43 +209,32 @@ public class CommonMapperCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAbstractMapper(MAPPER_PACKAGE_NAME, mapperPackageDir));
-
-        checkSingleFile(CommonMapperCreator.ABSTRACT_MAPPER_CLASS_NAME + ".java", expected);
+        return expected;
     }
 
 
-    protected void checkSingleFile(String fileName, List<String> expectedLines) {
-        assertEquals(1, writtenFileContents.size(), "Wrong number of files");
-        assertTrue(writtenFileContents.containsKey(fileName));
+    @DisplayName("create abstract mapper with common file, but inconsistent")
+    @Test
+    public void testCreateAbstractMapperCommonFileInconsistent() {
+        assertFalse(cut.createAbstractMapper(MAPPER_PACKAGE_NAME, Optional.empty()), "abstract mapper should be unsuccessful");
 
-        if (expectedLines.size() != writtenFileContents.get(fileName).size()) {
-            for (int i = 0; i < expectedLines.size() && i < writtenFileContents.get(fileName).size(); i++) {
-                if (!expectedLines.get(i).equals(writtenFileContents.get(fileName).get(i))) {
-                    log.error("First Diff Value at line " + i);
-                    log.error("Expected: " + expectedLines.get(i));
-                    log.error("Actual:   " + writtenFileContents.get(fileName).get(i));
-                    log.error("-------------");
-                    break;
-                }
-            }
-        }
-        try {
-            TestUtil.checkList(expectedLines, writtenFileContents.get(fileName));
-        } catch (AssertionFailedError e) {
-            logFileContents();
-            throw e;
-        }
+        assertEquals(0, writtenFileContents.size(), "Wrong number of written files");
+
+        verify(processingEnv, never()).getFiler();
     }
 
-    protected void logFileContents() {
-        writtenFileContents.entrySet().forEach(entry -> {
-            log.error("File {} was written:", entry.getKey());
-            log.error("");
-            for (int i = 0; i < entry.getValue().size(); i++) {
-                log.error("{}\t{}", i, entry.getValue().get(i));
-            }
-            log.error("-------------");
-        });
+    @DisplayName("create abstract mapper with java file object, but inconsistent")
+    @Test
+    public void testCreateAbstractMapperJavaFileObjectInconsistent() throws IOException {
+        cut.setGenerateJavaFileObject(true);
+        cut.setProcessingEnv(Optional.empty());
+
+        assertFalse(cut.createAbstractMapper(MAPPER_PACKAGE_NAME, Optional.empty()));
+
+        assertEquals(0, writtenFileContents.size(), "Wrong number of written files");
+
+        verify(processingEnv, never()).getFiler();
+        verify(filer, never()).createSourceFile(eq(String.format("%s.%s", MAPPER_PACKAGE_NAME, CommonMapperCreator.ABSTRACT_MAPPER_CLASS_NAME)));
     }
+
 }

@@ -6,6 +6,7 @@ import de.ma_vin.util.layer.generator.config.elements.Grouping;
 import lombok.Data;
 import org.apache.maven.plugin.logging.Log;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import java.io.File;
 import java.util.Optional;
 
@@ -17,11 +18,15 @@ public class ModelGenerator {
 
     private Config config;
     private Log logger;
-    private File targetDir;
     private boolean genDto;
     private boolean genDao;
     private boolean genDomain;
+    private boolean generateJavaFileObject;
 
+
+    private Optional<ProcessingEnvironment> processingEnv;
+
+    private Optional<File> targetDir = Optional.empty();
     private Optional<File> dtoPackageDir = Optional.empty();
     private Optional<File> domainPackageDir = Optional.empty();
     private Optional<File> daoPackageDir = Optional.empty();
@@ -46,9 +51,40 @@ public class ModelGenerator {
      * @param genDao    {@code true} if data access objects should be generated
      */
     public ModelGenerator(Config config, Log logger, File targetDir, boolean genDto, boolean genDomain, boolean genDao) {
+        this(config, logger, genDto, genDomain, genDao);
+        this.targetDir = Optional.of(targetDir);
+        setProcessingEnv(Optional.empty());
+        setGenerateJavaFileObject(false);
+    }
+
+    /**
+     * Constructor of the generator
+     *
+     * @param config        Configuration to use
+     * @param logger        Logger to use
+     * @param processingEnv Processing environment provided by the tool framework. It will be used for source file creation
+     * @param genDto        {@code true} if data transport objects should be generated
+     * @param genDomain     {@code true} if domain objects should be generated
+     * @param genDao        {@code true} if data access objects should be generated
+     */
+    public ModelGenerator(Config config, Log logger, ProcessingEnvironment processingEnv, boolean genDto, boolean genDomain, boolean genDao) {
+        this(config, logger, genDto, genDomain, genDao);
+        setProcessingEnv(Optional.of(processingEnv));
+        setGenerateJavaFileObject(true);
+    }
+
+    /**
+     * Constructor of the generator
+     *
+     * @param config    Configuration to use
+     * @param logger    Logger to use
+     * @param genDto    {@code true} if data transport objects should be generated
+     * @param genDomain {@code true} if domain objects should be generated
+     * @param genDao    {@code true} if data access objects should be generated
+     */
+    public ModelGenerator(Config config, Log logger, boolean genDto, boolean genDomain, boolean genDao) {
         this.config = config;
         this.logger = logger;
-        this.targetDir = targetDir;
         this.genDto = genDto;
         this.genDomain = genDomain;
         this.genDao = genDao;
@@ -60,6 +96,26 @@ public class ModelGenerator {
         commonMapperCreator = createCommonMapperCreator();
         accessMapperCreator = createAccessMapperCreator();
         transportMapperCreator = createTransportMapperCreator();
+    }
+
+    public void setGenerateJavaFileObject(boolean generateJavaFileObject) {
+        this.generateJavaFileObject = generateJavaFileObject;
+        daoCreator.setGenerateJavaFileObject(generateJavaFileObject);
+        domainCreator.setGenerateJavaFileObject(generateJavaFileObject);
+        dtoCreator.setGenerateJavaFileObject(generateJavaFileObject);
+        commonMapperCreator.setGenerateJavaFileObject(generateJavaFileObject);
+        accessMapperCreator.setGenerateJavaFileObject(generateJavaFileObject);
+        transportMapperCreator.setGenerateJavaFileObject(generateJavaFileObject);
+    }
+
+    public void setProcessingEnv(Optional<ProcessingEnvironment> processingEnv) {
+        this.processingEnv = processingEnv;
+        daoCreator.setProcessingEnv(processingEnv);
+        domainCreator.setProcessingEnv(processingEnv);
+        dtoCreator.setProcessingEnv(processingEnv);
+        commonMapperCreator.setProcessingEnv(processingEnv);
+        accessMapperCreator.setProcessingEnv(processingEnv);
+        transportMapperCreator.setProcessingEnv(processingEnv);
     }
 
     /**
@@ -105,7 +161,14 @@ public class ModelGenerator {
      * @return {@code true} if the generation was successful. Otherwise {@code false}
      */
     private boolean createPackages() {
-        Optional<File> basePackageDir = createDirForPackage(targetDir, config.getBasePackage().replace(".", File.separator), "base");
+        if (targetDir.isEmpty() && generateJavaFileObject) {
+            logger.debug("No target directory defined, skip creating package directories");
+            return true;
+        } else if (targetDir.isEmpty() && !generateJavaFileObject) {
+            logger.error("No target directory defined, but needed for package creation");
+            return false;
+        }
+        Optional<File> basePackageDir = createDirForPackage(targetDir.get(), config.getBasePackage().replace(".", File.separator), "base");
         if (basePackageDir.isEmpty()) {
             return false;
         }
@@ -173,15 +236,15 @@ public class ModelGenerator {
             return true;
         }
         String packageName = config.getBasePackage() + "." + config.getDaoPackage();
-        if (daoPackageDir.isEmpty()) {
+        if (daoPackageDir.isEmpty() && !generateJavaFileObject) {
             logger.error("Empty daoPackageDir");
             return false;
         }
-        if (!daoCreator.createDataAccessObjectInterface(packageName, daoPackageDir.get())) {
+        if (!daoCreator.createDataAccessObjectInterface(packageName, daoPackageDir)) {
             logger.error("Dao interface could not be created");
             return false;
         }
-        return createEntitiesObjects(e -> createDataAccessObject(e, packageName, daoPackageDir.get()), daoPackageDir.get());
+        return createEntitiesObjects(e -> createDataAccessObject(e, packageName, daoPackageDir), daoPackageDir);
     }
 
     /**
@@ -192,7 +255,7 @@ public class ModelGenerator {
      * @param packageDir  directory where to write at
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
-    private boolean createDataAccessObject(Entity entity, String packageName, File packageDir) {
+    private boolean createDataAccessObject(Entity entity, String packageName, Optional<File> packageDir) {
         return daoCreator.createDataAccessObject(entity, packageName, packageDir);
     }
 
@@ -207,15 +270,15 @@ public class ModelGenerator {
             return true;
         }
         String packageName = config.getBasePackage() + "." + config.getDtoPackage();
-        if (dtoPackageDir.isEmpty()) {
+        if (dtoPackageDir.isEmpty() && !generateJavaFileObject) {
             logger.error("Empty dtoPackageDir");
             return false;
         }
-        if (!dtoCreator.createDataTransportObjectInterface(packageName, dtoPackageDir.get())) {
+        if (!dtoCreator.createDataTransportObjectInterface(packageName, dtoPackageDir)) {
             logger.error("Dto interface could not be created");
             return false;
         }
-        return createEntitiesObjects(e -> createDataTransportObject(e, packageName, dtoPackageDir.get()), dtoPackageDir.get());
+        return createEntitiesObjects(e -> createDataTransportObject(e, packageName, dtoPackageDir), dtoPackageDir);
     }
 
     /**
@@ -226,7 +289,7 @@ public class ModelGenerator {
      * @param packageDir  directory where to write at
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
-    private boolean createDataTransportObject(Entity entity, String packageName, File packageDir) {
+    private boolean createDataTransportObject(Entity entity, String packageName, Optional<File> packageDir) {
         return dtoCreator.createDataTransportObject(entity, packageName, packageDir);
     }
 
@@ -241,15 +304,15 @@ public class ModelGenerator {
             return true;
         }
         String packageName = config.getBasePackage() + "." + config.getDomainPackage();
-        if (domainPackageDir.isEmpty()) {
+        if (domainPackageDir.isEmpty() && !generateJavaFileObject) {
             logger.error("Empty domainPackageDir");
             return false;
         }
-        if (!domainCreator.createDomainObjectInterface(packageName, domainPackageDir.get())) {
+        if (!domainCreator.createDomainObjectInterface(packageName, domainPackageDir)) {
             logger.error("Domain interface could not be created");
             return false;
         }
-        return createEntitiesObjects(e -> createDomainObject(e, packageName, domainPackageDir.get()), domainPackageDir.get());
+        return createEntitiesObjects(e -> createDomainObject(e, packageName, domainPackageDir), domainPackageDir);
     }
 
     /**
@@ -260,7 +323,7 @@ public class ModelGenerator {
      * @param packageDir  directory where to write at
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
-    private boolean createDomainObject(Entity entity, String packageName, File packageDir) {
+    private boolean createDomainObject(Entity entity, String packageName, Optional<File> packageDir) {
         return domainCreator.createDomainObject(entity, packageName, packageDir);
     }
 
@@ -271,7 +334,7 @@ public class ModelGenerator {
      * @param packageDir         the actual directory of the package where to write at
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
-    private boolean createEntitiesObjects(CreateEntityCaller createEntityCaller, File packageDir) {
+    private boolean createEntitiesObjects(CreateEntityCaller createEntityCaller, Optional<File> packageDir) {
         boolean result = true;
 
         logger.debug(String.format("%d entities are to generate", config.getEntities().size()));
@@ -283,12 +346,14 @@ public class ModelGenerator {
 
         logger.debug(String.format("%d groupings are to generate", config.getGroupings().size()));
         for (Grouping g : config.getGroupings()) {
-            Optional<File> groupingDir = createDirForPackage(packageDir, g.getGroupingPackage()
-                    , "dao " + g.getGroupingPackage());
-            if (groupingDir.isEmpty()) {
-                logger.debug("skip entities of grouping " + g.getGroupingPackage());
-                result = false;
-                continue;
+            if (!generateJavaFileObject && packageDir.isPresent()) {
+                Optional<File> groupingDir = createDirForPackage(packageDir.get(), g.getGroupingPackage()
+                        , "dao " + g.getGroupingPackage());
+                if (groupingDir.isEmpty()) {
+                    logger.debug("skip entities of grouping " + g.getGroupingPackage());
+                    result = false;
+                    continue;
+                }
             }
             logger.debug(String.format("%d entities are to generate at grouping %s", config.getEntities().size(), g.getGroupingPackage()));
             for (Entity e : g.getEntities()) {
@@ -310,7 +375,7 @@ public class ModelGenerator {
             logger.debug("skip access mapper generation");
             return true;
         }
-        if (mapperPackageDir.isEmpty()) {
+        if (mapperPackageDir.isEmpty() && !generateJavaFileObject) {
             logger.error(MAPPER_DIRECTORY_NEEDED);
             return false;
         }
@@ -320,18 +385,18 @@ public class ModelGenerator {
         String domainPackageName = config.getBasePackage() + "." + config.getDomainPackage();
 
         logger.debug("create abstract access mapper");
-        boolean result = accessMapperCreator.createAbstractAccessMapper(mapperPackageName, mapperPackageDir.get(), daoPackageName, domainPackageName);
+        boolean result = accessMapperCreator.createAbstractAccessMapper(mapperPackageName, mapperPackageDir, daoPackageName, domainPackageName);
 
         logger.debug(String.format("%d entities are put at common access mapper", config.getEntities().size()));
         result = accessMapperCreator.createAccessMapper(config.getEntities(), null, mapperPackageName
-                , daoPackageName, domainPackageName, mapperPackageDir.get())
+                , daoPackageName, domainPackageName, mapperPackageDir)
                 && result;
 
         logger.debug(String.format("%d groupings getting their own access mapper", config.getGroupings().size()));
         for (Grouping g : config.getGroupings()) {
             logger.debug(String.format("%d entities are put at %s groupings access mapper", config.getEntities().size(), g.getGroupingPackage()));
             if (!accessMapperCreator.createAccessMapper(g.getEntities(), g.getGroupingPackage(), mapperPackageName
-                    , daoPackageName, domainPackageName, mapperPackageDir.get())) {
+                    , daoPackageName, domainPackageName, mapperPackageDir)) {
                 result = false;
             }
         }
@@ -348,7 +413,7 @@ public class ModelGenerator {
             logger.debug("skip transport mapper generation");
             return true;
         }
-        if (mapperPackageDir.isEmpty()) {
+        if (mapperPackageDir.isEmpty() && !generateJavaFileObject) {
             logger.error(MAPPER_DIRECTORY_NEEDED);
             return false;
         }
@@ -358,18 +423,18 @@ public class ModelGenerator {
         String domainPackageName = config.getBasePackage() + "." + config.getDomainPackage();
 
         logger.debug("create abstract transport mapper");
-        boolean result = transportMapperCreator.createAbstractTransportMapper(mapperPackageName, mapperPackageDir.get(), dtoPackageName, domainPackageName);
+        boolean result = transportMapperCreator.createAbstractTransportMapper(mapperPackageName, mapperPackageDir, dtoPackageName, domainPackageName);
 
         logger.debug(String.format("%d entities are put at common transport mapper", config.getEntities().size()));
         result = transportMapperCreator.createTransportMapper(config.getEntities(), null, mapperPackageName
-                , dtoPackageName, domainPackageName, mapperPackageDir.get())
+                , dtoPackageName, domainPackageName, mapperPackageDir)
                 && result;
 
         logger.debug(String.format("%d groupings getting their own transport mapper", config.getGroupings().size()));
         for (Grouping g : config.getGroupings()) {
             logger.debug(String.format("%d entities are put at %s groupings transport mapper", config.getEntities().size(), g.getGroupingPackage()));
             if (!transportMapperCreator.createTransportMapper(g.getEntities(), g.getGroupingPackage(), mapperPackageName
-                    , dtoPackageName, domainPackageName, mapperPackageDir.get())) {
+                    , dtoPackageName, domainPackageName, mapperPackageDir)) {
                 result = false;
             }
         }
@@ -386,7 +451,7 @@ public class ModelGenerator {
             logger.debug("skip abstract mapper generation");
             return true;
         }
-        if (mapperPackageDir.isEmpty()) {
+        if (mapperPackageDir.isEmpty() && !generateJavaFileObject) {
             logger.error(MAPPER_DIRECTORY_NEEDED);
             return false;
         }
@@ -394,7 +459,7 @@ public class ModelGenerator {
         String mapperPackageName = config.getBasePackage() + MAPPER_SUB_PACKAGE;
 
         logger.debug("create abstract transport mapper");
-        return commonMapperCreator.createAbstractMapper(mapperPackageName, mapperPackageDir.get());
+        return commonMapperCreator.createAbstractMapper(mapperPackageName, mapperPackageDir);
     }
 
     @FunctionalInterface

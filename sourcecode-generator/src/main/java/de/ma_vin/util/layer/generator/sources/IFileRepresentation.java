@@ -13,6 +13,11 @@ public interface IFileRepresentation {
     String getFilename();
 
     /**
+     * @return the name of this object
+     */
+    String getObjectName();
+
+    /**
      * @return the name of the package for this object
      */
     String getPackageName();

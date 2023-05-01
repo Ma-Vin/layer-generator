@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class to create sources of domain objects
@@ -27,7 +28,7 @@ public class DomainCreator extends AbstractObjectCreator {
         super(config, logger);
     }
 
-    public boolean createDomainObjectInterface(String basePackageName, File basePackageDir) {
+    public boolean createDomainObjectInterface(String basePackageName, Optional<File> basePackageDir) {
         Interface daoInterface = new Interface(basePackageName, DOMAIN_INTERFACE);
 
         if (config.isUseIdGenerator()) {
@@ -51,7 +52,7 @@ public class DomainCreator extends AbstractObjectCreator {
      * @param packageDir  directory where to write at
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
-    public boolean createDomainObject(Entity entity, String packageName, File packageDir) {
+    public boolean createDomainObject(Entity entity, String packageName, Optional<File> packageDir) {
         if (!entity.getModels().isDomain()) {
             logger.debug(String.format("Entity %s is not relevant for domain", entity.getBaseName()));
             return true;

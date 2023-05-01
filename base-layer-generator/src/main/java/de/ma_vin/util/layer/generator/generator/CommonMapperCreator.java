@@ -8,6 +8,7 @@ import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Creator for common mapper objects
@@ -53,7 +54,7 @@ public class CommonMapperCreator extends AbstractCreator {
      * @param mapperPackageDir  directory of the package
      * @return {@code true} if generation was successful
      */
-    public boolean createAbstractMapper(String mapperPackageName, File mapperPackageDir) {
+    public boolean createAbstractMapper(String mapperPackageName, Optional<File> mapperPackageDir) {
         Clazz mapperClass = new Clazz(mapperPackageName, ABSTRACT_MAPPER_CLASS_NAME);
         logger.debug("Create abstract mapper " + mapperClass.getClassName());
         mapperClass.setAbstract(true);

@@ -13,6 +13,7 @@ import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class to create sources of data transport objects
@@ -29,7 +30,7 @@ public class DtoCreator extends AbstractObjectCreator {
         super(config, logger);
     }
 
-    public boolean createDataTransportObjectInterface(String basePackageName, File basePackageDir) {
+    public boolean createDataTransportObjectInterface(String basePackageName, Optional<File> basePackageDir) {
         Interface dtoInterfaceBasic = new Interface(basePackageName, DTO_BASIC_INTERFACE);
 
         Interface dtoInterface = new Interface(basePackageName, DTO_INTERFACE);
@@ -57,7 +58,7 @@ public class DtoCreator extends AbstractObjectCreator {
      * @param packageDir  directory where to write at
      * @return {@code true} if creating was successful. Otherwise {@code false}
      */
-    public boolean createDataTransportObject(Entity entity, String packageName, File packageDir) {
+    public boolean createDataTransportObject(Entity entity, String packageName, Optional<File> packageDir) {
         if (!entity.getModels().isDto()) {
             logger.debug(String.format("Entity %s is not relevant for dto", entity.getBaseName()));
             return true;

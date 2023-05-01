@@ -5,19 +5,21 @@ import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class TransportMapperCreatorTest extends AbstractCreatorTest {
@@ -53,15 +55,12 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         cut = new TransportMapperCreator(config, new Log4jLogImpl()) {
             @Override
             protected BufferedWriter createBufferedWriter(File classFile) {
-                List<String> fileContent = new ArrayList<>();
-                writtenFileContents.put(classFile.getName(), fileContent);
-                try {
-                    // Assumption: after write is als a newLine statement
-                    doAnswer(a -> fileContent.add(a.getArgument(0))).when(bufferedWriter).write(anyString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return bufferedWriter;
+                return mockBufferedWriter(classFile.getName());
+            }
+
+            @Override
+            protected BufferedWriter createBufferedWriter(JavaFileObject javaFileObject) {
+                return mockBufferedWriter(javaFileObject.getName());
             }
 
             @Override
@@ -124,13 +123,31 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(subReference.isOwner()).thenReturn(Boolean.TRUE);
     }
 
+    @DisplayName("create transport mapper with common file")
     @Test
-    public void testCreateTransportMapper() {
+    public void testCreateTransportMapperCommonFile() {
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+
+        verify(processingEnv, never()).getFiler();
+    }
+
+    @DisplayName("create transport mapper with java file object")
+    @Test
+    public void testCreateTransportMapperJavaFileObject() throws IOException {
+        List<String> expected = getDefaultExpected();
+        cut.setGenerateJavaFileObject(true);
+        cut.setProcessingEnv(Optional.of(processingEnv));
+
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.empty()));
+
+        checkSingleFile(String.format("%s.%sTransportMapper", MAPPER_PACKAGE_NAME, AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
+
+        verify(processingEnv).getFiler();
+        verify(filer).createSourceFile(eq(String.format("%s.%sTransportMapper", MAPPER_PACKAGE_NAME, AbstractCreator.getUpperFirst(GROUPING_NAME))));
     }
 
     private List<String> getDefaultExpected() {
@@ -398,7 +415,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("}");
 
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -537,7 +554,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -677,7 +694,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -815,7 +832,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -954,7 +971,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -1152,7 +1169,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("}");
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -1406,7 +1423,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	}");
         expected.add("");
         expected.add("}");
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -1545,7 +1562,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -1686,7 +1703,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -1829,7 +1846,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -1969,7 +1986,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2110,7 +2127,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2118,15 +2135,15 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateTransportMapperNothingToMap() {
         when(entity.getModels()).thenReturn(Models.DTO);
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
 
         when(entity.getModels()).thenReturn(Models.DOMAIN);
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only domain");
 
         when(entity.getModels()).thenReturn(Models.DAO);
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dao");
     }
 
@@ -2139,7 +2156,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2151,7 +2168,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2164,7 +2181,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2177,7 +2194,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2191,7 +2208,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
 
         List<String> expected = getDefaultExpected();
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2200,7 +2217,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperAbstract() {
         when(entity.getIsAbstract()).thenReturn(Boolean.TRUE);
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
         assertEquals(0, writtenFileContents.size(), "No Mapper should be generated for only dto");
     }
 
@@ -2345,7 +2362,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2412,7 +2429,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAbstractTransportMapper(MAPPER_PACKAGE_NAME, mapperPackageDir, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
+        assertTrue(cut.createAbstractTransportMapper(MAPPER_PACKAGE_NAME, Optional.of(mapperPackageDir), DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
         checkSingleFile(String.format("%s.java", TransportMapperCreator.ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME), expected);
     }
 
@@ -2480,7 +2497,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createAbstractTransportMapper(MAPPER_PACKAGE_NAME, mapperPackageDir, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
+        assertTrue(cut.createAbstractTransportMapper(MAPPER_PACKAGE_NAME, Optional.of(mapperPackageDir), DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME));
         checkSingleFile(String.format("%s.java", TransportMapperCreator.ABSTRACT_TRANSPORT_MAPPER_CLASS_NAME), expected);
     }
 
@@ -2582,7 +2599,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("}");
 
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
@@ -2684,7 +2701,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("");
         expected.add("}");
 
-        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, basePackageDir));
+        assertTrue(cut.createTransportMapper(entities, GROUPING_NAME, MAPPER_PACKAGE_NAME, DTO_PACKAGE_NAME, DOMAIN_PACKAGE_NAME, Optional.of(basePackageDir)));
 
         checkSingleFile(String.format("%sTransportMapper.java", AbstractCreator.getUpperFirst(GROUPING_NAME)), expected);
     }
