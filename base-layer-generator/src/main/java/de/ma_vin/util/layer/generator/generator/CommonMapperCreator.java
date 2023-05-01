@@ -62,7 +62,7 @@ public class CommonMapperCreator extends AbstractCreator {
         createAndAddConvertToMethod(mapperClass);
         createAndAddFunctionalInterfaces(mapperClass);
 
-        return writeClassFile(mapperPackageDir, mapperClass.getClassName(), mapperClass);
+        return writeClassFile(mapperPackageDir, mapperClass);
     }
 
     /**

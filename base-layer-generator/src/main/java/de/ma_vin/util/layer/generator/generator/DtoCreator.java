@@ -45,8 +45,8 @@ public class DtoCreator extends AbstractObjectCreator {
             dtoInterface.addMethodDeclarationWithDescription("void", "setId", "@param id the id of the dto", "Long", "id");
         }
 
-        return writeClassFile(basePackageDir, dtoInterfaceBasic.getInterfaceName(), dtoInterfaceBasic)
-                & writeClassFile(basePackageDir, dtoInterface.getInterfaceName(), dtoInterface);
+        return writeClassFile(basePackageDir, dtoInterfaceBasic)
+                & writeClassFile(basePackageDir, dtoInterface);
     }
 
     /**
@@ -96,7 +96,7 @@ public class DtoCreator extends AbstractObjectCreator {
         addAttributes(entity, dtoClazz, Models.DTO);
         addReferences(entity, dtoClazz, packageName, Models::isDto);
 
-        return writeClassFile(getPackageDir(entity, packageDir), dtoClazz.getClassName(), dtoClazz);
+        return writeClassFile(getPackageDir(entity, packageDir), dtoClazz);
     }
 
     /**

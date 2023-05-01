@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
+public class Clazz extends AbstractGenerateLines implements IFileRepresentation, Comparable<Clazz> {
     private String packageName;
     private String className;
 
@@ -207,5 +207,10 @@ public class Clazz extends AbstractGenerateLines implements Comparable<Clazz> {
 
     public void setDescription(String description, Object... args) {
         setDescription(new JavaDoc(String.format(description, args)));
+    }
+
+    @Override
+    public String getFilename() {
+        return className + ".java";
     }
 }

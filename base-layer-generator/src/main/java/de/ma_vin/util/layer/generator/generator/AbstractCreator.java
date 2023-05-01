@@ -1,11 +1,11 @@
 package de.ma_vin.util.layer.generator.generator;
 
-import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
 import de.ma_vin.util.layer.generator.sources.Annotation;
 import de.ma_vin.util.layer.generator.sources.Attribute;
+import de.ma_vin.util.layer.generator.sources.IFileRepresentation;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,24 +32,23 @@ public abstract class AbstractCreator {
      * Generates and write the content to a file
      *
      * @param packageDir directory where to create the file
-     * @param className  name of the class. If suffix is not equal to {@code .java}, it will be append
      * @param toGenerate object where to call the generate method and getting file content from
      * @return {@code true} if writing was successful. Otherwise {@code false}
      */
-    protected boolean writeClassFile(File packageDir, String className, AbstractGenerateLines toGenerate) {
-        File classFile = createFile(packageDir, className.endsWith(".java") ? className : className + ".java");
+    protected boolean writeClassFile(File packageDir, IFileRepresentation toGenerate) {
+        File classFile = createFile(packageDir, toGenerate.getFilename());
         List<String> linesToWrite = toGenerate.generate();
-        logger.debug(String.format("Start writing class %s with %d lines", className, linesToWrite.size()));
+        logger.debug(String.format("Start writing %s with %d lines", toGenerate.getFilename(), linesToWrite.size()));
         try (BufferedWriter bw = createBufferedWriter(classFile)) {
             for (String line : linesToWrite) {
                 bw.write(line);
                 bw.newLine();
             }
             bw.flush();
-            logger.debug(String.format("Finish writing class %s with %d lines", className, linesToWrite.size()));
+            logger.debug(String.format("Finish writing %s with %d lines", toGenerate.getFilename(), linesToWrite.size()));
             return true;
         } catch (IOException e) {
-            logger.error("Exception while writing class " + className);
+            logger.error("Exception while writing " + toGenerate.getFilename());
             logger.error(e);
             return false;
         }

@@ -49,7 +49,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DTO_NAME, DomainCreator.DOMAIN_INTERFACE, DtoCreator.DTO_INTERFACE);
         createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DOMAIN_NAME, DtoCreator.DTO_INTERFACE, DomainCreator.DOMAIN_INTERFACE);
 
-        return writeClassFile(mapperPackageDir, mapperClass.getClassName(), mapperClass);
+        return writeClassFile(mapperPackageDir, mapperClass);
     }
 
     /**
@@ -91,7 +91,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
             createConvertToDomainMethods(mapperClass, e, dtoPackageName, domainPackageName);
         });
 
-        return writeClassFile(mapperPackageDir, mapperClass.getClassName() + ".java", mapperClass);
+        return writeClassFile(mapperPackageDir, mapperClass);
     }
 
     @Override

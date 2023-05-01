@@ -47,7 +47,7 @@ public class DaoCreator extends AbstractObjectCreator {
                     , "@param identification the identification where to determine the id from", String.class.getSimpleName(), "identification");
         }
 
-        return writeClassFile(basePackageDir, daoInterface.getInterfaceName(), daoInterface);
+        return writeClassFile(basePackageDir, daoInterface);
     }
 
     /**
@@ -98,7 +98,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
         addDaoIdentificationMethods(daoClazz, entity);
 
-        return writeClassFile(getPackageDir(entity, packageDir), daoClazz.getClassName(), daoClazz);
+        return writeClassFile(getPackageDir(entity, packageDir), daoClazz);
     }
 
     /**
@@ -233,10 +233,10 @@ public class DaoCreator extends AbstractObjectCreator {
         boolean isSingle = treatedParentReferences.stream().filter(Reference::isOwner).count() == 1;
         treatedParentReferences.stream()
                 .filter(Reference::isOwner)
-                .filter(ref-> ref.getRealTargetEntity().getModels().isDao())
+                .filter(ref -> ref.getRealTargetEntity().getModels().isDao())
                 .forEach(ref -> addParentRef(daoClazz, packageName, ref, isSingle, attributes));
         getTreatedReferences(entity.getReferences()).stream()
-                .filter(ref-> ref.getRealTargetEntity().getModels().isDao())
+                .filter(ref -> ref.getRealTargetEntity().getModels().isDao())
                 .forEach(ref -> addChildRef(daoClazz, packageName, ref, attributes, packageDir));
 
         addExcludeAttributes(daoClazz, attributes);
@@ -555,7 +555,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
         connectionClazz.addInnerClazz(getInnerIdClass(baseClassName + "Id", sourcePropertyName, targetPropertyName));
 
-        writeClassFile(packageDir, clazzName, connectionClazz);
+        writeClassFile(packageDir, connectionClazz);
 
         return connectionClazz;
     }

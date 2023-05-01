@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Interface extends AbstractGenerateLines implements Comparable<Interface> {
+public class Interface extends AbstractGenerateLines implements IFileRepresentation, Comparable<Interface> {
 
     private String packageName;
     private String interfaceName;
@@ -127,6 +127,11 @@ public class Interface extends AbstractGenerateLines implements Comparable<Inter
     @SuppressWarnings("java:S1210")
     public int compareTo(Interface o) {
         return interfaceName.compareTo(o.interfaceName);
+    }
+
+    @Override
+    public String getFilename() {
+        return interfaceName + ".java";
     }
 
     @Data

@@ -55,7 +55,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DAO_NAME, DomainCreator.DOMAIN_INTERFACE, DaoCreator.DAO_INTERFACE);
         createAndAddConvertToGenericMethod(mapperClass, CONVERT_TO_DOMAIN_NAME, DaoCreator.DAO_INTERFACE, DomainCreator.DOMAIN_INTERFACE);
 
-        return writeClassFile(mapperPackageDir, mapperClass.getClassName(), mapperClass);
+        return writeClassFile(mapperPackageDir, mapperClass);
     }
 
     /**
@@ -97,7 +97,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             createConvertToDomainMethods(mapperClass, e, daoPackageName, domainPackageName);
         });
 
-        return writeClassFile(mapperPackageDir, mapperClass.getClassName() + ".java", mapperClass);
+        return writeClassFile(mapperPackageDir, mapperClass);
     }
 
     /**

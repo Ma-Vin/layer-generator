@@ -40,7 +40,7 @@ public class DomainCreator extends AbstractObjectCreator {
             daoInterface.addMethodDeclarationWithDescription("void", "setId", "@param id the id of the domain object", "Long", "id");
         }
 
-        return writeClassFile(basePackageDir, daoInterface.getInterfaceName(), daoInterface);
+        return writeClassFile(basePackageDir, daoInterface);
     }
 
     /**
@@ -90,7 +90,7 @@ public class DomainCreator extends AbstractObjectCreator {
         addAttributes(entity, domainClazz, Models.DOMAIN);
         addReferences(entity, domainClazz, packageName, Models::isDomain);
 
-        return writeClassFile(getPackageDir(entity, packageDir), domainClazz.getClassName(), domainClazz);
+        return writeClassFile(getPackageDir(entity, packageDir), domainClazz);
     }
 
     /**
