@@ -27,10 +27,6 @@
         </dependency>
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
-            <artifactId>generator-annotation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.ma_vin.util.layer.generator</groupId>
             <artifactId>base-layer-generator</artifactId>
             <classifier>tests</classifier>
         </dependency>
