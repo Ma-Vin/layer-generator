@@ -2,115 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>layer-generator</artifactId>
         <groupId>de.ma_vin.util.layer.generator</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <packaging>pom</packaging>
     <artifactId>sample</artifactId>
 
     <name>Util Layer Generator Sample</name>
-    <description>An example of usage of plugin and annotation</description>
+    <description>Two examples of usage of plugin and annotations</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>de.ma_vin.util.layer.generator</groupId>
-                <artifactId>generator-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate-model</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!-- src is used only for demonstration. Some target or like src-gen folder should be preferred -->
-                    <generateTargetDirectory>src/main/java/</generateTargetDirectory>
-                    <generateDto>true</generateDto>
-                    <generateDomain>true</generateDomain>
-                    <generateDao>true</generateDao>
-                    <modelDefinitionDirectory>src/main/resources/</modelDefinitionDirectory>
-                    <modelDefinitionFilename>exampleModel.xml</modelDefinitionFilename>
-                    <cleanTargetDirectory>false</cleanTargetDirectory>
-                    <cleanBasePackage>true</cleanBasePackage>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>de.ma_vin.util.layer.generator</groupId>
-                                    <artifactId>generator-plugin</artifactId>
-                                    <version>${project.version}</version>
-                                    <outputDirectory>${project.build.directory}</outputDirectory>
-                                    <includes>**\/*.xsd</includes>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/xsd</directory>
-                                    <filtering>true</filtering>
-                                    <includes>
-                                        <include>*.xsd</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-compile</id>
-                        <configuration>
-                            <!-- src is used only for demonstration. A value like default at target should be preferred -->
-                            <generatedSourcesDirectory>${project.basedir}/src/main/java</generatedSourcesDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>de.ma_vin.util.layer.generator</groupId>
-            <artifactId>extension-annotation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>plugin-sample</module>
+    </modules>
 </project>
