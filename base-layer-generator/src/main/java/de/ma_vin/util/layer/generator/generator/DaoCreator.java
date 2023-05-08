@@ -4,13 +4,13 @@ import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Index;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.exceptions.NotSupportedMethodException;
 
 import jakarta.persistence.*;
 
 import lombok.*;
-import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.io.Serializable;
@@ -30,7 +30,7 @@ public class DaoCreator extends AbstractObjectCreator {
     public static final String DAO_INTERFACE = "IIdentifiableDao";
     public static final String DAO_POSTFIX = "Dao";
 
-    public DaoCreator(Config config, Log logger) {
+    public DaoCreator(Config config, ILogWrapper logger) {
         super(config, logger);
     }
 

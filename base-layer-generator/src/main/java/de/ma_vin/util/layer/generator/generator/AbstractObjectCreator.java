@@ -1,12 +1,12 @@
 package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.Annotation;
 import de.ma_vin.util.layer.generator.sources.Attribute;
 import de.ma_vin.util.layer.generator.sources.Clazz;
 import de.ma_vin.util.layer.generator.sources.JavaDoc;
 import lombok.*;
-import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("java:S2160")
 public abstract class AbstractObjectCreator extends AbstractCreator {
 
-    AbstractObjectCreator(Config config, Log logger) {
+    AbstractObjectCreator(Config config, ILogWrapper logger) {
         super(config, logger);
     }
 

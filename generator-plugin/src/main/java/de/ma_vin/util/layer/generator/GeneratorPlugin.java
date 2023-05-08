@@ -1,6 +1,7 @@
 package de.ma_vin.util.layer.generator;
 
 import de.ma_vin.util.layer.generator.generator.CommonGenerator;
+import de.ma_vin.util.layer.generator.logging.MavenLogImpl;
 import lombok.Data;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -53,7 +54,7 @@ public class GeneratorPlugin extends AbstractMojo {
             getLog().info("Skip generating");
             return;
         }
-        commonGenerator.setLog(getLog());
+        commonGenerator.setLog(new MavenLogImpl(getLog()));
 
         getLog().info("Start to generating model objects");
 

@@ -7,7 +7,7 @@ import org.apache.maven.plugin.logging.Log;
  * Implementation of maven plugin logging which delegates logging statements to log4j
  */
 @Log4j2
-public class Log4jLogImpl implements Log {
+public class Log4jLogImpl implements ILogWrapper {
 
     @Override
     public boolean isDebugEnabled() {
@@ -15,13 +15,13 @@ public class Log4jLogImpl implements Log {
     }
 
     @Override
-    public void debug(CharSequence content) {
-        log.debug("" + content);
+    public void debug(String msg) {
+        log.debug(msg);
     }
 
     @Override
-    public void debug(CharSequence content, Throwable error) {
-        log.debug("" + content, error);
+    public void debug(String msg, Throwable error) {
+        log.debug(msg, error);
     }
 
     @Override
@@ -35,13 +35,13 @@ public class Log4jLogImpl implements Log {
     }
 
     @Override
-    public void info(CharSequence content) {
-        log.info("" + content);
+    public void info(String msg) {
+        log.info(msg);
     }
 
     @Override
-    public void info(CharSequence content, Throwable error) {
-        log.info("" + content, error);
+    public void info(String msg, Throwable error) {
+        log.info(msg, error);
     }
 
     @Override
@@ -55,13 +55,13 @@ public class Log4jLogImpl implements Log {
     }
 
     @Override
-    public void warn(CharSequence content) {
-        log.warn("" + content);
+    public void warn(String msg) {
+        log.warn(msg);
     }
 
     @Override
-    public void warn(CharSequence content, Throwable error) {
-        log.warn("" + content, error);
+    public void warn(String msg, Throwable error) {
+        log.warn(msg, error);
     }
 
     @Override
@@ -75,13 +75,13 @@ public class Log4jLogImpl implements Log {
     }
 
     @Override
-    public void error(CharSequence content) {
-        log.error("" + content);
+    public void error(String msg) {
+        log.error(msg);
     }
 
     @Override
-    public void error(CharSequence content, Throwable error) {
-        log.error("" + content, error);
+    public void error(String msg, Throwable error) {
+        log.error(msg, error);
     }
 
     @Override

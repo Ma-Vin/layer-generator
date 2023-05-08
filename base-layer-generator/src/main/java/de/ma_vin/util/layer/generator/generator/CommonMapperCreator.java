@@ -3,8 +3,8 @@ package de.ma_vin.util.layer.generator.generator;
 import static de.ma_vin.util.layer.generator.generator.AbstractMapperCreator.MAPPED_OBJECTS_PARAMETER_TEXT;
 
 import de.ma_vin.util.layer.generator.config.elements.Config;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
-import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class CommonMapperCreator extends AbstractCreator {
     public static final String SOURCE_GENERIC_DESCRIPTION = "the type of the source object";
     public static final String TARGET_GENERIC_DESCRIPTION = "the type of the target object";
 
-    public CommonMapperCreator(Config config, Log logger) {
+    public CommonMapperCreator(Config config, ILogWrapper logger) {
         super(config, logger);
     }
 

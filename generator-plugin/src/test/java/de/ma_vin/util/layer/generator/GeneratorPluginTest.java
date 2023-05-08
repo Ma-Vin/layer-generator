@@ -37,7 +37,7 @@ public class GeneratorPluginTest {
     public void setUp() {
         openMocks = openMocks(this);
 
-        cut.setLog(new Log4jLogImpl());
+        cut.setLog(new MavenLog4jLogImpl());
         cut.setGenerateTargetDirectory("target/temp/generated");
         cut.setGenerateDto(true);
         cut.setGenerateDomain(true);

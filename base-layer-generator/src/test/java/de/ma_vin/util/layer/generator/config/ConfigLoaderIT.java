@@ -3,8 +3,8 @@ package de.ma_vin.util.layer.generator.config;
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.ma_vin.util.layer.generator.config.elements.Entity;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
-import org.apache.maven.plugin.logging.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class ConfigLoaderIT {
     private String resourcesDirectoryTemplate;
-    private Log logger;
+    private ILogWrapper logger;
 
 
     @BeforeEach

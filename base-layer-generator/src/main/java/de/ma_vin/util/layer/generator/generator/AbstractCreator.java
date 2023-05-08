@@ -3,6 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.Annotation;
 import de.ma_vin.util.layer.generator.sources.Attribute;
 import de.ma_vin.util.layer.generator.sources.IFileRepresentation;
@@ -10,7 +11,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.maven.plugin.logging.Log;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.JavaFileObject;
@@ -25,11 +25,11 @@ public abstract class AbstractCreator {
     public static final String PACKAGE_AND_CLASS_NAME_FORMAT = "%s.%s";
 
     protected Config config;
-    protected Log logger;
+    protected ILogWrapper logger;
     protected boolean generateJavaFileObject;
     private Optional<ProcessingEnvironment> processingEnv;
 
-    protected AbstractCreator(Config config, Log logger) {
+    protected AbstractCreator(Config config, ILogWrapper logger) {
         this.config = config;
         this.logger = logger;
         generateJavaFileObject = false;

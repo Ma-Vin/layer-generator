@@ -19,7 +19,6 @@
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
             <artifactId>utility</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
@@ -33,20 +32,6 @@
         <dependency>
             <groupId>de.ma_vin.util.layer.generator</groupId>
             <artifactId>extension-annotation</artifactId>
-        </dependency>
-
-        <!-- maven plugin -->
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-plugin-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugin-tools</groupId>
-            <artifactId>maven-plugin-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-core</artifactId>
         </dependency>
 
         <!-- file formats -->

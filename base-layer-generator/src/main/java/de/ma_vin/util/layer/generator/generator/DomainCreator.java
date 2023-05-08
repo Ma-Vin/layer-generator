@@ -2,12 +2,12 @@ package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;
 import de.ma_vin.util.layer.generator.config.elements.Models;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
 import lombok.*;
-import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.Collection;
@@ -24,7 +24,7 @@ public class DomainCreator extends AbstractObjectCreator {
 
     public static final String DOMAIN_INTERFACE = "IIdentifiable";
 
-    public DomainCreator(Config config, Log logger) {
+    public DomainCreator(Config config, ILogWrapper logger) {
         super(config, logger);
     }
 

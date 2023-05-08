@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import javax.annotation.processing.Messager;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.Diagnostic.Kind;
 
 import java.util.Arrays;
@@ -21,7 +22,8 @@ import static org.mockito.MockitoAnnotations.openMocks;
  * {@link MessagerLogImpl} is the class under test
  */
 public class MessagerLogImplTest {
-    public static final String THROWABLE_MESSAGE = "DummyMessage";
+    public static final String THROWABLE_MESSAGE = "DummyThrowableMessage";
+    public static final String MESSAGE = "DummyMessage";
 
     private AutoCloseable openMocks;
 
@@ -29,17 +31,19 @@ public class MessagerLogImplTest {
     private MessagerLogImpl cut;
 
     @Mock
-    private Messager messager;
+    private ProcessingEnvironment processingEnv;
     @Mock
-    private CharSequence charSequence;
+    private Messager messager;
     @Mock
     private Throwable throwable;
 
     @BeforeEach
     public void setUp() {
         openMocks = openMocks(this);
-
+        cut.setMessager(messager);
+        when(processingEnv.getMessager()).thenReturn(messager);
         when(throwable.getMessage()).thenReturn(THROWABLE_MESSAGE);
+
     }
 
     @AfterEach
@@ -124,34 +128,34 @@ public class MessagerLogImplTest {
 
 
     @Test
-    public void testDebugCharSequenceActive() {
+    public void testDebugStringActive() {
         cut.setLogLevel(Kind.OTHER);
 
-        cut.debug(charSequence);
-        checkMessageCharSequence(Kind.OTHER);
+        cut.debug(MESSAGE);
+        checkMessageString(Kind.OTHER);
     }
 
     @Test
-    public void testDebugCharSequenceInactive() {
+    public void testDebugStringInactive() {
         cut.setLogLevel(Kind.MANDATORY_WARNING);
 
-        cut.debug(charSequence);
+        cut.debug(MESSAGE);
         checkNoMessage();
     }
 
     @Test
-    public void testDebugCharSequenceAndThrowableActive() {
+    public void testDebugStringAndThrowableActive() {
         cut.setLogLevel(Kind.OTHER);
 
-        cut.debug(charSequence, throwable);
-        checkMessageCharSequenceAndThrowable(Kind.OTHER);
+        cut.debug(MESSAGE, throwable);
+        checkMessageStringAndThrowable(Kind.OTHER);
     }
 
     @Test
-    public void testDebugCharSequenceAndThrowableInactive() {
+    public void testDebugStringAndThrowableInactive() {
         cut.setLogLevel(Kind.MANDATORY_WARNING);
 
-        cut.debug(charSequence, throwable);
+        cut.debug(MESSAGE, throwable);
         checkNoMessage();
     }
 
@@ -173,34 +177,34 @@ public class MessagerLogImplTest {
 
 
     @Test
-    public void testInfoCharSequenceActive() {
+    public void testInfoStringActive() {
         cut.setLogLevel(Kind.NOTE);
 
-        cut.info(charSequence);
-        checkMessageCharSequence(Kind.NOTE);
+        cut.info(MESSAGE);
+        checkMessageString(Kind.NOTE);
     }
 
     @Test
-    public void testInfoCharSequenceInactive() {
+    public void testInfoStringInactive() {
         cut.setLogLevel(Kind.MANDATORY_WARNING);
 
-        cut.info(charSequence);
+        cut.info(MESSAGE);
         checkNoMessage();
     }
 
     @Test
-    public void testInfoCharSequenceAndThrowableActive() {
+    public void testInfoStringAndThrowableActive() {
         cut.setLogLevel(Kind.NOTE);
 
-        cut.info(charSequence, throwable);
-        checkMessageCharSequenceAndThrowable(Kind.NOTE);
+        cut.info(MESSAGE, throwable);
+        checkMessageStringAndThrowable(Kind.NOTE);
     }
 
     @Test
-    public void testInfoCharSequenceAndThrowableInactive() {
+    public void testInfoStringAndThrowableInactive() {
         cut.setLogLevel(Kind.MANDATORY_WARNING);
 
-        cut.info(charSequence, throwable);
+        cut.info(MESSAGE, throwable);
         checkNoMessage();
     }
 
@@ -222,34 +226,34 @@ public class MessagerLogImplTest {
 
 
     @Test
-    public void testWarnCharSequenceActive() {
+    public void testWarnStringActive() {
         cut.setLogLevel(Kind.WARNING);
 
-        cut.warn(charSequence);
-        checkMessageCharSequence(Kind.WARNING);
+        cut.warn(MESSAGE);
+        checkMessageString(Kind.WARNING);
     }
 
     @Test
-    public void testWarnCharSequenceInactive() {
+    public void testWarnStringInactive() {
         cut.setLogLevel(Kind.MANDATORY_WARNING);
 
-        cut.warn(charSequence);
+        cut.warn(MESSAGE);
         checkNoMessage();
     }
 
     @Test
-    public void testWarnCharSequenceAndThrowableActive() {
+    public void testWarnStringAndThrowableActive() {
         cut.setLogLevel(Kind.WARNING);
 
-        cut.warn(charSequence, throwable);
-        checkMessageCharSequenceAndThrowable(Kind.WARNING);
+        cut.warn(MESSAGE, throwable);
+        checkMessageStringAndThrowable(Kind.WARNING);
     }
 
     @Test
-    public void testWarnCharSequenceAndThrowableInactive() {
+    public void testWarnStringAndThrowableInactive() {
         cut.setLogLevel(Kind.MANDATORY_WARNING);
 
-        cut.warn(charSequence, throwable);
+        cut.warn(MESSAGE, throwable);
         checkNoMessage();
     }
 
@@ -271,34 +275,34 @@ public class MessagerLogImplTest {
 
 
     @Test
-    public void testErrorCharSequenceActive() {
+    public void testErrorStringActive() {
         cut.setLogLevel(Kind.ERROR);
 
-        cut.error(charSequence);
-        checkMessageCharSequence(Kind.ERROR);
+        cut.error(MESSAGE);
+        checkMessageString(Kind.ERROR);
     }
 
     @Test
-    public void testErrorCharSequenceInactive() {
+    public void testErrorStringInactive() {
         cut.setLogLevel(Kind.MANDATORY_WARNING);
 
-        cut.error(charSequence);
+        cut.error(MESSAGE);
         checkNoMessage();
     }
 
     @Test
-    public void testErrorCharSequenceAndThrowableActive() {
+    public void testErrorStringAndThrowableActive() {
         cut.setLogLevel(Kind.ERROR);
 
-        cut.error(charSequence, throwable);
-        checkMessageCharSequenceAndThrowable(Kind.ERROR);
+        cut.error(MESSAGE, throwable);
+        checkMessageStringAndThrowable(Kind.ERROR);
     }
 
     @Test
-    public void testErrorCharSequenceAndThrowableInactive() {
+    public void testErrorStringAndThrowableInactive() {
         cut.setLogLevel(Kind.MANDATORY_WARNING);
 
-        cut.error(charSequence, throwable);
+        cut.error(MESSAGE, throwable);
         checkNoMessage();
     }
 
@@ -319,18 +323,18 @@ public class MessagerLogImplTest {
     }
 
 
-    private void checkMessageCharSequence(Kind kind) {
-        verify(messager).printMessage(eq(kind), eq(charSequence));
+    private void checkMessageString(Kind kind) {
+        verify(messager).printMessage(eq(kind), eq(MESSAGE));
         verify(messager, never()).printMessage(eq(kind), eq(THROWABLE_MESSAGE));
     }
 
-    private void checkMessageCharSequenceAndThrowable(Kind kind) {
-        verify(messager).printMessage(eq(kind), eq(charSequence));
+    private void checkMessageStringAndThrowable(Kind kind) {
+        verify(messager).printMessage(eq(kind), eq(MESSAGE));
         verify(messager).printMessage(eq(kind), eq(THROWABLE_MESSAGE));
     }
 
     private void checkMessageThrowable(Kind kind) {
-        verify(messager, never()).printMessage(eq(kind), eq(charSequence));
+        verify(messager, never()).printMessage(eq(kind), eq(MESSAGE));
         verify(messager).printMessage(eq(kind), eq(THROWABLE_MESSAGE));
     }
 

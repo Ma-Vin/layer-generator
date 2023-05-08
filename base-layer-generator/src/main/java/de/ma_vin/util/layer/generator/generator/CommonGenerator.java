@@ -2,8 +2,8 @@ package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.ConfigLoader;
 import de.ma_vin.util.layer.generator.config.elements.Config;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import lombok.Data;
-import org.apache.maven.plugin.logging.Log;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.nio.file.Files;
 @Data
 public class CommonGenerator {
 
-    private Log log;
+    private ILogWrapper log;
 
     private String generateTargetDirectory;
     private boolean generateDto;

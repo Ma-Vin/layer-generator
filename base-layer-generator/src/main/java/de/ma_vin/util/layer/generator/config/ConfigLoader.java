@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.ma_vin.util.layer.generator.config.elements.*;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import lombok.Data;
 
 import jakarta.persistence.Id;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.maven.plugin.logging.Log;
 import org.xml.sax.SAXException;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -34,14 +34,14 @@ public class ConfigLoader {
     private File configFile;
     private File schemaFile = null;
     private Config config;
-    private Log logger;
+    private ILogWrapper logger;
 
-    public ConfigLoader(File configFile, Log logger) {
+    public ConfigLoader(File configFile, ILogWrapper logger) {
         this.logger = logger;
         this.configFile = configFile;
     }
 
-    public ConfigLoader(File configFile, Log logger, File schemaFile) {
+    public ConfigLoader(File configFile, ILogWrapper logger, File schemaFile) {
         this(configFile, logger);
         this.schemaFile = schemaFile;
     }

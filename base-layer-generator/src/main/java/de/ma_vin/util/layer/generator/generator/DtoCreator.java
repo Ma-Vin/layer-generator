@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.annotations.model.BaseDto;
 import de.ma_vin.util.layer.generator.config.elements.Models;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
@@ -9,7 +10,6 @@ import de.ma_vin.util.layer.generator.config.elements.Reference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.List;
@@ -26,7 +26,7 @@ public class DtoCreator extends AbstractObjectCreator {
     public static final String DTO_INTERFACE = "ITransportable";
     public static final String DTO_POSTFIX = "Dto";
 
-    public DtoCreator(Config config, Log logger) {
+    public DtoCreator(Config config, ILogWrapper logger) {
         super(config, logger);
     }
 

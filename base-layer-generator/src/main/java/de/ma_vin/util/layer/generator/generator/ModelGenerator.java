@@ -3,8 +3,8 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Grouping;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import lombok.Data;
-import org.apache.maven.plugin.logging.Log;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import java.io.File;
@@ -17,7 +17,7 @@ public class ModelGenerator {
     public static final String MAPPER_SUB_PACKAGE = ".mapper";
 
     private Config config;
-    private Log logger;
+    private ILogWrapper logger;
     private boolean genDto;
     private boolean genDao;
     private boolean genDomain;
@@ -48,11 +48,12 @@ public class ModelGenerator {
      * @param genDomain {@code true} if domain objects should be generated
      * @param genDao    {@code true} if data access objects should be generated
      */
-    public ModelGenerator(Config config, Log logger, File targetDir, boolean genDto, boolean genDomain, boolean genDao) {
+    public ModelGenerator(Config config, ILogWrapper logger, File targetDir, boolean genDto, boolean genDomain, boolean genDao) {
         this(config, logger, genDto, genDomain, genDao);
         this.targetDir = Optional.of(targetDir);
         setProcessingEnv(Optional.empty());
         setGenerateJavaFileObject(false);
+        logger.debug("Create ModelGenerator with targetDir");
     }
 
     /**
@@ -65,10 +66,11 @@ public class ModelGenerator {
      * @param genDomain     {@code true} if domain objects should be generated
      * @param genDao        {@code true} if data access objects should be generated
      */
-    public ModelGenerator(Config config, Log logger, ProcessingEnvironment processingEnv, boolean genDto, boolean genDomain, boolean genDao) {
+    public ModelGenerator(Config config, ILogWrapper logger, ProcessingEnvironment processingEnv, boolean genDto, boolean genDomain, boolean genDao) {
         this(config, logger, genDto, genDomain, genDao);
         setProcessingEnv(Optional.of(processingEnv));
         setGenerateJavaFileObject(true);
+        logger.debug("Create ModelGenerator with processingEnv");
     }
 
     /**
@@ -80,7 +82,7 @@ public class ModelGenerator {
      * @param genDomain {@code true} if domain objects should be generated
      * @param genDao    {@code true} if data access objects should be generated
      */
-    public ModelGenerator(Config config, Log logger, boolean genDto, boolean genDomain, boolean genDao) {
+    public ModelGenerator(Config config, ILogWrapper logger, boolean genDto, boolean genDomain, boolean genDao) {
         this.config = config;
         this.logger = logger;
         this.genDto = genDto;

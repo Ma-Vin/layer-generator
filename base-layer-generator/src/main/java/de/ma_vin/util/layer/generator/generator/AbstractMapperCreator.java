@@ -3,6 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import static de.ma_vin.util.layer.generator.generator.CommonMapperCreator.*;
 
 import de.ma_vin.util.layer.generator.builder.MapperType;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
@@ -12,7 +13,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.maven.plugin.logging.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     public static final String DOMAIN_POSTFIX = "";
     public static final String DAO_POSTFIX = "Dao";
 
-    AbstractMapperCreator(Config config, Log logger) {
+    AbstractMapperCreator(Config config, ILogWrapper logger) {
         super(config, logger);
     }
 

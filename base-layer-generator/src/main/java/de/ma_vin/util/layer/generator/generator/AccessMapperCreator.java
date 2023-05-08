@@ -3,13 +3,13 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;
 import de.ma_vin.util.layer.generator.builder.MapperType;
 import de.ma_vin.util.layer.generator.builder.ModelType;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Field;
 import de.ma_vin.util.layer.generator.config.elements.Reference;
 import lombok.extern.log4j.Log4j2;
-import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.*;
@@ -28,7 +28,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
     public static final String FILTER_PARAM_JAVA_DOC = "value to map between domain multiple {@link java.util.Collection}s and dao aggregated {@link java.util.Collection}";
 
-    public AccessMapperCreator(Config config, Log logger) {
+    public AccessMapperCreator(Config config, ILogWrapper logger) {
         super(config, logger);
     }
 

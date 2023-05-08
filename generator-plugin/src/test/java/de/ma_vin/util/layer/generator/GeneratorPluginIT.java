@@ -28,7 +28,7 @@ public class GeneratorPluginIT {
         cut.setModelDefinitionFilename("exampleModel.xml");
         cut.setCleanTargetDirectory(true);
         cut.setCleanBasePackage(false);
-        cut.setLog(new Log4jLogImpl());
+        cut.setLog(new MavenLog4jLogImpl());
 
         project = new MavenProject();
         project.setFile(new File(System.getProperty("user.dir"), "dummyPom.xml"));

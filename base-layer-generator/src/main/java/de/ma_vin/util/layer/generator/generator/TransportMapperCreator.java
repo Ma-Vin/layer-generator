@@ -4,10 +4,10 @@ import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
 import de.ma_vin.util.layer.generator.builder.MapperType;
 import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.config.elements.*;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
 import de.ma_vin.util.layer.generator.sources.Clazz;
 import de.ma_vin.util.layer.generator.sources.Method;
-import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.List;
@@ -23,7 +23,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
     public static final String DTO_PARAMETER = "dto";
     public static final String DOMAIN_PARAMETER = "domain";
 
-    public TransportMapperCreator(Config config, Log logger) {
+    public TransportMapperCreator(Config config, ILogWrapper logger) {
         super(config, logger);
     }
 
