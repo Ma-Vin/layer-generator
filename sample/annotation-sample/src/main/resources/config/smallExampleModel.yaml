@@ -1,0 +1,28 @@
+basePackage: de.ma_vin.util.sample.content
+dtoPackage: dto
+domainPackage: domain
+daoPackage: dao
+idGeneratorPackage: de.ma_vin.util.sample.given
+idGeneratorClass: IdGenerator
+entities:
+  - baseName: RootEntity
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: R
+    fields:
+      - fieldName: rootName
+        type: String
+      - fieldName: description
+        type: String
+    references:
+      - referenceName: subEntities
+        targetEntity: SubEntity
+        isOwner: true
+        isList: true
+  - baseName: SubEntity
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: S
+    fields: 
+      - fieldName: subName
+        type: String
+      - fieldName: description
+        type: String
