@@ -17,5 +17,6 @@
 
     <modules>
         <module>plugin-sample</module>
+        <module>annotation-sample</module>
     </modules>
 </project>

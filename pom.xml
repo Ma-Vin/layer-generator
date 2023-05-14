@@ -11,6 +11,7 @@
         <module>sourcecode-generator</module>
         <module>extension-annotation</module>
         <module>base-layer-generator</module>
+        <module>generator-annotation</module>
         <module>generator-plugin</module>
         <module>sample</module>
     </modules>
@@ -52,6 +53,7 @@
         <maven.plugin.version>3.11.0</maven.plugin.version>
         <maven.plugin-annotations.version>3.8.1</maven.plugin-annotations.version>
         <maven.plugin-api.version>3.9.1</maven.plugin-api.version>
+        <maven.plugin-clean.version>3.2.0</maven.plugin-clean.version>
         <maven.plugin-dependency.version>3.5.0</maven.plugin-dependency.version>
         <maven.plugin-plugin.version>3.8.1</maven.plugin-plugin.version>
         <maven.plugin-resource.version>3.3.1</maven.plugin-resource.version>
@@ -145,6 +147,11 @@
                 <version>${project.version}</version>
                 <classifier>tests</classifier>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.ma_vin.util.layer.generator</groupId>
+                <artifactId>generator-annotation</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>de.ma_vin.util.layer.generator</groupId>
@@ -320,6 +327,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>${maven.plugin-dependency.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven.plugin-clean.version}</version>
                 </plugin>
 
                 <!-- maven plugin -->
