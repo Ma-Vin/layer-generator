@@ -28,7 +28,7 @@
                 </executions>
                 <configuration>
                     <!-- src is used only for demonstration. Some target or like src-gen folder should be preferred -->
-                    <generateTargetDirectory>src/main/java/</generateTargetDirectory>
+                    <generateTargetDirectory>src/main/generated/plugin/java/</generateTargetDirectory>
                     <generateDto>true</generateDto>
                     <generateDomain>true</generateDomain>
                     <generateDao>true</generateDao>
@@ -94,8 +94,28 @@
                     <execution>
                         <id>default-compile</id>
                         <configuration>
-                            <!-- src is used only for demonstration. A value like default at target should be preferred -->
-                            <generatedSourcesDirectory>${project.basedir}/src/main/java</generatedSourcesDirectory>
+                            <generatedSourcesDirectory>${project.basedir}/src/main/generated/annotation/java</generatedSourcesDirectory>
+                            <compileSourceRoots>${project.build.sourceDirectory},${project.basedir}/src/main/generated/plugin/java</compileSourceRoots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean-generated</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/generated/annotation/java</directory>
+                                </fileset>
+                            </filesets>
                         </configuration>
                     </execution>
                 </executions>
