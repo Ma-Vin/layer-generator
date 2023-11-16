@@ -1,6 +1,6 @@
-package de.ma_vin.util.layer.generator.config;
+package de.ma_vin.util.layer.generator.config.elements;
 
-import de.ma_vin.util.layer.generator.config.elements.DaoInfo;
+import de.ma_vin.util.layer.generator.config.elements.Index;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class DaoInfoTest {
-    private DaoInfo cut;
+public class IndexTest {
+    private Index cut;
     private final List<String> messages = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
-        cut = new DaoInfo();
-        cut.setColumnName("ColumnName");
-        cut.setColumnDefinition("BLOB");
+        cut = new Index();
+        cut.setIndexName("IndexName");
+        cut.setIsUnique(true);
+        cut.setFieldList("Field DESC");
     }
 
     @Test
@@ -29,22 +29,21 @@ public class DaoInfoTest {
 
     @Test
     public void testIsValidNulls() {
-        cut.setColumnName(null);
-        cut.setColumnDefinition(null);
+        cut.setIsUnique(null);
         assertTrue(cut.isValid(messages), "Index should be valid");
         assertEquals(0, messages.size(), "Wrong number of messages");
     }
 
     @Test
-    public void testIsValidColumnName() {
-        cut.setColumnName("");
+    public void testIsValidIndexName() {
+        cut.setIndexName(null);
         assertFalse(cut.isValid(messages), "Index should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }
 
     @Test
-    public void testIsValidColumnDefinition() {
-        cut.setColumnDefinition("");
+    public void testIsValidFieldList() {
+        cut.setFieldList(null);
         assertFalse(cut.isValid(messages), "Index should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }

@@ -1,4 +1,4 @@
-package de.ma_vin.util.layer.generator.config;
+package de.ma_vin.util.layer.generator.config.elements;
 
 import static org.junit.jupiter.api.Assertions.*;
 
