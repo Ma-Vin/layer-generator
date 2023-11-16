@@ -79,4 +79,9 @@ public class Field {
     public Models getModels() {
         return models != null ? models : Models.DOMAIN_DAO_DTO;
     }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public String getFieldName() {
+        return fieldName;
+    }
 }

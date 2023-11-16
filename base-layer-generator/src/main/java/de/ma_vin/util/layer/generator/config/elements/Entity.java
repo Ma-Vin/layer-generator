@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import jakarta.xml.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
 @EqualsAndHashCode(exclude = {"grouping", "parentRefs", "realParent"})
-@ToString(exclude = {"references", "parentRefs", "fields", "indices", "realParent"})
+@ToString(exclude = {"references", "parentRefs", "fields", "indices", "realParent", "versions"})
 public class Entity {
 
     /**
@@ -95,6 +96,13 @@ public class Entity {
     @XmlElement(name = "reference")
     private List<Reference> references;
 
+    /**
+     * Versions of data transport objects for this entity
+     */
+    @XmlElementWrapper
+    @XmlElement(name = "version")
+    private List<Version> versions;
+
     @XmlTransient
     private List<Reference> parentRefs;
 
@@ -125,7 +133,8 @@ public class Entity {
                 && (fields == null || fields.stream().allMatch(f -> f.isValid(messages)))
                 && (indices == null || indices.stream().allMatch(i -> i.isValid(messages)))
                 && (references == null || (references.stream().allMatch(r -> r.isValid(messages))
-                && Reference.isFilterFieldValid(baseName, references, messages)));
+                && Reference.isFilterFieldValid(baseName, references, messages)))
+                && (versions == null || versions.stream().allMatch(r -> r.isValid(messages, this)));
     }
 
     public Models getModels() {
@@ -133,5 +142,20 @@ public class Entity {
             return Models.DTO;
         }
         return models != null ? models : Models.DOMAIN_DAO_DTO;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public List<Reference> getReferences() {
+        return references;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public List<Version> getVersions() {
+        return versions;
     }
 }
