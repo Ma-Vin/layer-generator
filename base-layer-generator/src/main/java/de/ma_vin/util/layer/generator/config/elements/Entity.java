@@ -145,6 +145,11 @@ public class Entity {
     }
 
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public String getBaseName() {
+        return baseName;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
     public List<Field> getFields() {
         return fields;
     }

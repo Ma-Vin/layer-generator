@@ -126,6 +126,22 @@ public class Version {
     }
 
     /**
+     * Generates a version name if {@link Version#versionName} is not {@code null}
+     */
+    public void generateVersionName() {
+        if (versionName != null) {
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(parentEntity.getBaseName());
+        sb.append(version.substring(0, 1).toUpperCase());
+        if (version.length() > 1) {
+            sb.append(version.substring(1));
+        }
+        versionName = sb.toString();
+    }
+
+    /**
      * Determines the {@link Field}s which are inherited by the base version if exists, from parent {@link Entity} otherwise
      *
      * @param parentEntity the parent {@link Entity}

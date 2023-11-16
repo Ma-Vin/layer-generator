@@ -24,6 +24,7 @@ public class VersionTest {
 
     public static final String DEFAULT_VERSION = "v2";
     public static final String DEFAULT_BASE_VERSION_NAME = "EntityV1";
+    public static final String DEFAULT_ENTITY_NAME = "Entity";
     public static final String DEFAULT_REMOVED_FIELD_NAME = "field1";
     public static final String DEFAULT_BASE_VERSION_FIELD_NAME = "field2";
     public static final String DEFAULT_ENTITY_FIELD_NAME = "field3";
@@ -69,6 +70,7 @@ public class VersionTest {
         when(parentEntity.getVersions()).thenReturn(Collections.singletonList(baseVersion));
         when(parentEntity.getFields()).thenReturn(Arrays.asList(entityField, removedField));
         when(parentEntity.getReferences()).thenReturn(Arrays.asList(entityReference, removedReference));
+        when(parentEntity.getBaseName()).thenReturn(DEFAULT_ENTITY_NAME);
 
         when(baseVersion.determineFields(eq(parentEntity))).thenReturn(Arrays.asList(entityField, removedField, baseVersionField));
         when(baseVersion.determineReferences(eq(parentEntity))).thenReturn(Arrays.asList(entityReference, removedReference, baseVersionReference));
@@ -212,6 +214,38 @@ public class VersionTest {
         assertTrue(result.contains(baseVersionReference),"baseVersionReference should be contained");
         assertTrue(result.contains(entityReference),"entityReference should be contained");
         assertFalse(result.contains(removedReference),"removedReference should not be contained");
+    }
+
+    @Test
+    public void testGenerateVersionName(){
+        cut.setParentEntity(parentEntity);
+
+        cut.generateVersionName();
+
+        assertNotNull(cut.getVersionName(), "there should be a version name");
+        assertEquals(DEFAULT_ENTITY_NAME + "V2", cut.getVersionName(), "Wrong version name");
+    }
+
+    @Test
+    public void testGenerateVersionNameSingleSign(){
+        cut.setVersion("2");
+        cut.setParentEntity(parentEntity);
+
+        cut.generateVersionName();
+
+        assertNotNull(cut.getVersionName(), "there should be a version name");
+        assertEquals(DEFAULT_ENTITY_NAME + "2", cut.getVersionName(), "Wrong version name");
+    }
+
+    @Test
+    public void testGenerateVersionNameAlreadySet(){
+        cut.setVersionName("abc");
+        cut.setParentEntity(parentEntity);
+
+        cut.generateVersionName();
+
+        assertNotNull(cut.getVersionName(), "there should be a version name");
+        assertEquals("abc", cut.getVersionName(), "Wrong version name");
     }
 
 }
