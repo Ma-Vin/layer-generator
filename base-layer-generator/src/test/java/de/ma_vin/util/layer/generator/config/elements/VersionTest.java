@@ -22,8 +22,8 @@ import static org.mockito.MockitoAnnotations.openMocks;
  */
 public class VersionTest {
 
-    public static final String DEFAULT_VERSION = "v2";
-    public static final String DEFAULT_BASE_VERSION_NAME = "EntityV1";
+    public static final String DEFAULT_VERSION_ID = "v2";
+    public static final String DEFAULT_BASE_VERSION_ID = "v11";
     public static final String DEFAULT_ENTITY_NAME = "Entity";
     public static final String DEFAULT_REMOVED_FIELD_NAME = "field1";
     public static final String DEFAULT_BASE_VERSION_FIELD_NAME = "field2";
@@ -74,15 +74,15 @@ public class VersionTest {
 
         when(baseVersion.determineFields(eq(parentEntity))).thenReturn(Arrays.asList(entityField, removedField, baseVersionField));
         when(baseVersion.determineReferences(eq(parentEntity))).thenReturn(Arrays.asList(entityReference, removedReference, baseVersionReference));
-        doCallRealMethod().when(baseVersion).setVersionName(anyString());
-        baseVersion.setVersionName(DEFAULT_BASE_VERSION_NAME);
+        doCallRealMethod().when(baseVersion).setVersionId(anyString());
+        baseVersion.setVersionId(DEFAULT_BASE_VERSION_ID);
 
         cut.setAddedFields(Collections.singletonList(addedField));
         cut.setAddedReferences(Collections.singletonList(addedReference));
         cut.setRemovedFieldNames(Collections.singletonList(DEFAULT_REMOVED_FIELD_NAME));
         cut.setRemovedReferenceNames(Collections.singletonList(DEFAULT_REMOVED_REFERENCE_NAME));
-        cut.setVersion(DEFAULT_VERSION);
-        cut.setBaseVersionName(DEFAULT_BASE_VERSION_NAME);
+        cut.setVersionId(DEFAULT_VERSION_ID);
+        cut.setBaseVersionId(DEFAULT_BASE_VERSION_ID);
 
         when(addedField.getFieldName()).thenReturn(DEFAULT_ADDED_FIELD_NAME);
         when(addedField.isValid(anyList())).thenReturn(Boolean.TRUE);
@@ -102,7 +102,7 @@ public class VersionTest {
         when(removedReference.getReferenceName()).thenReturn(DEFAULT_REMOVED_REFERENCE_NAME);
         when(removedReference.isValid(anyList())).thenReturn(Boolean.TRUE);
 
-        when(baseVersion.getBaseVersionName()).thenReturn(DEFAULT_BASE_VERSION_NAME);
+        when(baseVersion.getBaseVersionId()).thenReturn(DEFAULT_BASE_VERSION_ID);
 
         messages.clear();
     }
@@ -122,7 +122,7 @@ public class VersionTest {
     public void testIsValidNulls() {
         cut.setAddedFields(null);
         cut.setAddedReferences(null);
-        cut.setBaseVersionName(null);
+        cut.setBaseVersionId(null);
 
         assertTrue(cut.isValid(messages, parentEntity), "Entity should be valid");
         assertEquals(0, messages.size(), "Wrong number of messages");
@@ -130,7 +130,7 @@ public class VersionTest {
 
     @Test
     public void testIsValidMissingVersion() {
-        cut.setVersion(null);
+        cut.setVersionId(null);
 
         assertFalse(cut.isValid(messages, parentEntity), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
@@ -186,7 +186,7 @@ public class VersionTest {
 
     @Test
     public void testIsValidMissingBaseVersionName() {
-        cut.setBaseVersionName(DEFAULT_BASE_VERSION_NAME + "1");
+        cut.setBaseVersionId(DEFAULT_BASE_VERSION_ID + "1");
 
         assertFalse(cut.isValid(messages, parentEntity), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
@@ -205,6 +205,21 @@ public class VersionTest {
     }
 
     @Test
+    public void testDetermineFieldsNullLists() {
+        cut.setAddedFields(null);
+        cut.setRemovedFieldNames(null);
+
+        List<Field> result = cut.determineFields(parentEntity);
+
+        assertNotNull(result, "There should be a result");
+        assertEquals(3, result.size(), "Wrong number of results");
+        assertFalse(result.contains(addedField),"addedField should not be contained");
+        assertTrue(result.contains(baseVersionField),"baseVersionField should be contained");
+        assertTrue(result.contains(entityField),"entityField should be contained");
+        assertTrue(result.contains(removedField),"removedField should be contained");
+    }
+
+    @Test
     public void testDetermineReferences() {
         List<Reference> result = cut.determineReferences(parentEntity);
 
@@ -214,6 +229,21 @@ public class VersionTest {
         assertTrue(result.contains(baseVersionReference),"baseVersionReference should be contained");
         assertTrue(result.contains(entityReference),"entityReference should be contained");
         assertFalse(result.contains(removedReference),"removedReference should not be contained");
+    }
+
+    @Test
+    public void testDetermineReferencesNullLists() {
+        cut.setAddedReferences(null);
+        cut.setRemovedReferenceNames(null);
+
+        List<Reference> result = cut.determineReferences(parentEntity);
+
+        assertNotNull(result, "There should be a result");
+        assertEquals(3, result.size(), "Wrong number of results");
+        assertFalse(result.contains(addedReference),"addedReference should not be contained");
+        assertTrue(result.contains(baseVersionReference),"baseVersionReference should be contained");
+        assertTrue(result.contains(entityReference),"entityReference should be contained");
+        assertTrue(result.contains(removedReference),"removedReference should be contained");
     }
 
     @Test
@@ -228,7 +258,7 @@ public class VersionTest {
 
     @Test
     public void testGenerateVersionNameSingleSign(){
-        cut.setVersion("2");
+        cut.setVersionId("2");
         cut.setParentEntity(parentEntity);
 
         cut.generateVersionName();

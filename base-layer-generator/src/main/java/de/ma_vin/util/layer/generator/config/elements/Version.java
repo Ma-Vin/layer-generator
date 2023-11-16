@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 public class Version {
 
     /**
-     * (Optional) name of the versioned entity. If not set, it will be generated from {@link Entity#baseName} and {@link Version#version}
+     * (Optional) name of the versioned entity. If not set, it will be generated from {@link Entity#baseName} and {@link Version#versionId}
      */
     private String versionName;
 
@@ -36,13 +37,13 @@ public class Version {
      * identification of the version
      */
     @XmlAttribute(required = true)
-    private String version;
+    private String versionId;
 
     /**
      * (Optional) name of the version which is to use as reference to derive difference from. If not set, the owner entity will be used.
      */
-
-    private String baseVersionName;
+    @XmlAttribute
+    private String baseVersionId;
 
     /**
      * (Optional) version which is to use as reference to derive difference from. If not set, the owner entity will be used.
@@ -100,7 +101,7 @@ public class Version {
      * Otherwise {@code false}
      */
     public boolean isValid(List<String> messages, Entity parentEntity) {
-        return validateRequired(version, messages, "version")
+        return validateRequired(versionId, messages, "versionId")
                 && checkBaseVersion(messages, parentEntity.getVersions())
                 && validateNonRequired(versionName, messages, "versionName")
                 && validateNamesCompareToElementList(removedFieldNames, messages, "removedFieldNames", determineParentFields(parentEntity), Field::getFieldName)
@@ -118,8 +119,8 @@ public class Version {
      * Otherwise {@code false}
      */
     private boolean checkBaseVersion(List<String> messages, List<Version> otherEntityVersions) {
-        if (baseVersionName != null && otherEntityVersions.stream().noneMatch(v -> baseVersionName.equals(v.versionName))) {
-            messages.add(String.format("There does not exists an other version %s which is referenced as baseVersionName at %s", baseVersionName, versionName));
+        if (baseVersionId != null && otherEntityVersions.stream().noneMatch(v -> baseVersionId.equals(v.versionId))) {
+            messages.add(String.format("There does not exists an other version %s which is referenced as baseVersionId at %s", baseVersionId, versionId));
             return false;
         }
         return true;
@@ -134,9 +135,9 @@ public class Version {
         }
         StringBuilder sb = new StringBuilder();
         sb.append(parentEntity.getBaseName());
-        sb.append(version.substring(0, 1).toUpperCase());
-        if (version.length() > 1) {
-            sb.append(version.substring(1));
+        sb.append(versionId.substring(0, 1).toUpperCase());
+        if (versionId.length() > 1) {
+            sb.append(versionId.substring(1));
         }
         versionName = sb.toString();
     }
@@ -159,7 +160,7 @@ public class Version {
      * @return An optional of the parent version. if there is none {@link Optional#empty()} will be returned.
      */
     public Optional<Version> determineBaseVersion(Entity parentEntity) {
-        return baseVersionName == null ? Optional.empty() : parentEntity.getVersions().stream().filter(v -> baseVersionName.equals(v.versionName)).findFirst();
+        return baseVersionId == null ? Optional.empty() : parentEntity.getVersions().stream().filter(v -> baseVersionId.equals(v.versionId)).findFirst();
     }
 
     /**
@@ -170,9 +171,10 @@ public class Version {
      * They are reduced  by {@link Version#removedFieldNames} and completed  by {@link Version#addedFields}
      */
     public List<Field> determineFields(Entity parentEntity) {
-        List<Field> result = new ArrayList<>(addedFields);
+        List<Field> result = new ArrayList<>(addedFields == null ? Collections.emptyList() : addedFields);
+
         determineParentFields(parentEntity).stream()
-                .filter(f -> !removedFieldNames.contains(f.getFieldName()))
+                .filter(f -> removedFieldNames == null || !removedFieldNames.contains(f.getFieldName()))
                 .forEach(result::add);
         return result;
     }
@@ -196,10 +198,12 @@ public class Version {
      * They are reduced  by {@link Version#removedReferenceNames} and completed  by {@link Version#addedReferences}
      */
     public List<Reference> determineReferences(Entity parentEntity) {
-        List<Reference> result = new ArrayList<>(addedReferences);
+        List<Reference> result = new ArrayList<>(addedReferences == null ? Collections.emptyList() : addedReferences);
+
         determineParentReferences(parentEntity).stream()
-                .filter(r -> !removedReferenceNames.contains(r.getReferenceName()))
+                .filter(r -> removedReferenceNames == null || !removedReferenceNames.contains(r.getReferenceName()))
                 .forEach(result::add);
+
         return result;
     }
 }
