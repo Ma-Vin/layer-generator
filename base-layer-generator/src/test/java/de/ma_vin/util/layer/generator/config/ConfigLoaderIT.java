@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.config;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
@@ -37,32 +38,40 @@ public class ConfigLoaderIT {
 
         assertNotNull(configLoader.getConfig(), "There should be some config");
 
-        assertNotNull(configLoader.getConfig().getBasePackage(), "There should be some base package");
-        assertEquals("de.ma_vin.util.test.content", configLoader.getConfig().getBasePackage(), "Wrong base package");
-        assertNotNull(configLoader.getConfig().getDtoPackage(), "There should be some dto package");
-        assertEquals("dto", configLoader.getConfig().getDtoPackage(), "Wrong dto package");
-        assertNotNull(configLoader.getConfig().getDomainPackage(), "There should be some dto package");
-        assertEquals("domain", configLoader.getConfig().getDomainPackage(), "Wrong dto package");
-        assertNotNull(configLoader.getConfig().getDaoPackage(), "There should be some dao package");
-        assertEquals("dao", configLoader.getConfig().getDaoPackage(), "Wrong dao package");
+        Config config = configLoader.getConfig();
 
-        assertTrue(configLoader.getConfig().isUseIdGenerator(), "the id generator should be used");
+        assertNotNull(config.getBasePackage(), "There should be some base package");
+        assertEquals("de.ma_vin.util.test.content", config.getBasePackage(), "Wrong base package");
+        assertNotNull(config.getDtoPackage(), "There should be some dto package");
+        assertEquals("dto", config.getDtoPackage(), "Wrong dto package");
+        assertNotNull(config.getDomainPackage(), "There should be some dto package");
+        assertEquals("domain", config.getDomainPackage(), "Wrong dto package");
+        assertNotNull(config.getDaoPackage(), "There should be some dao package");
+        assertEquals("dao", config.getDaoPackage(), "Wrong dao package");
 
-        assertNotNull(configLoader.getConfig().getEntities(), "There should be some entities");
-        assertEquals(2, configLoader.getConfig().getEntities().size(), "Wrong number of entities");
-        Optional<Entity> root = configLoader.getConfig().getEntities().stream().filter(e -> e.getBaseName().equals("Root")).findFirst();
-        Optional<Entity> rootExt = configLoader.getConfig().getEntities().stream().filter(e -> e.getBaseName().equals("RootExt")).findFirst();
+        assertTrue(config.isUseIdGenerator(), "the id generator should be used");
+
+        assertNotNull(config.getEntities(), "There should be some entities");
+        assertEquals(2, config.getEntities().size(), "Wrong number of entities");
+        Optional<Entity> root = config.getEntities().stream().filter(e -> e.getBaseName().equals("Root")).findFirst();
+        Optional<Entity> rootExt = config.getEntities().stream().filter(e -> e.getBaseName().equals("RootExt")).findFirst();
         assertTrue(root.isPresent(), "Root should be an entity without grouping");
         assertTrue(rootExt.isPresent(), "RootExt should be an entity without grouping");
 
         assertEquals(13, root.get().getReferences().size(), "Wrong number of references at root");
         assertEquals(15, rootExt.get().getFields().size(), "Wrong number of fields at rootExt");
 
-        assertNotNull(configLoader.getConfig().getGroupings(), "There should be some groupings");
-        assertEquals(11, configLoader.getConfig().getGroupings().size(), "Wrong number of groupings");
+        assertNotNull(config.getGroupings(), "There should be some groupings");
+        assertEquals(11, config.getGroupings().size(), "Wrong number of groupings");
+
+        assertEquals(2, root.get().getVersions().size(), "Wrong number of entity versions");
+        assertEquals(2, root.get().getVersions().stream().filter(v -> "v2".equals(v.getVersionId())).mapToLong(v -> v.getFields().size()).sum());
+        assertEquals(1, root.get().getVersions().stream().filter(v -> "v3".equals(v.getVersionId())).mapToLong(v -> v.getFields().size()).sum());
+        assertEquals(13, root.get().getVersions().stream().filter(v -> "v2".equals(v.getVersionId())).mapToLong(v -> v.getReferences().size()).sum());
+        assertEquals(12, root.get().getVersions().stream().filter(v -> "v3".equals(v.getVersionId())).mapToLong(v -> v.getReferences().size()).sum());
     }
 
-    private void checkNotLoaded(ConfigLoader configLoader){
+    private void checkNotLoaded(ConfigLoader configLoader) {
         assertFalse(configLoader.load(), "result should be false");
         assertNull(configLoader.getConfig(), "The config should be empty");
     }

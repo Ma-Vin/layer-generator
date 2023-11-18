@@ -63,6 +63,8 @@ public class ConfigLoaderTest {
     private Field groupingEntityField;
     @Mock
     private Index index;
+    @Mock
+    private Version version;
 
 
     private ConfigLoader cut;
@@ -99,6 +101,7 @@ public class ConfigLoaderTest {
 
         defaultMockEntity(entity, ENTITY_NAME, Collections.singletonList(entityField), Collections.singletonList(index)
                 , Collections.singletonList(reference), entityParentReferences);
+        when(entity.getVersions()).thenReturn(Collections.singletonList(version));
         defaultMockEntity(derivedEntity, DERIVED_ENTITY_NAME, Collections.singletonList(entityField), null
                 , null, new ArrayList<>());
         when(derivedEntity.getDerivedFrom()).thenReturn(ENTITY_NAME);
@@ -195,6 +198,12 @@ public class ConfigLoaderTest {
         assertEquals(entityField, fieldSortings.get(0).getField(), "Wrong field at index");
 
         verify(config).setUseIdGenerator(eq(Boolean.FALSE));
+
+        verify(version).setParentEntity(eq(entity));
+        verify(version).setBaseVersion(any());
+        verify(version).setFields(any());
+        verify(version).setReferences(any());
+        verify(version).generateVersionName();
     }
 
     @Test

@@ -15,6 +15,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -276,6 +277,7 @@ public class ConfigLoader {
             if (e.getTableName() == null) {
                 e.setTableName(e.getBaseName());
             }
+            completeVersions(e);
         }
         return result;
     }
@@ -423,6 +425,38 @@ public class ConfigLoader {
             }
         }
         return result;
+    }
+
+    /**
+     * Completes the versions of an entity
+     *
+     * @param entity entity to complete
+     * @return {@code true} if completion was successful
+     */
+    private void completeVersions(Entity entity) {
+        if (entity.getVersions() == null) {
+            entity.setVersions(Collections.emptyList());
+            return;
+        }
+        for (Version v : entity.getVersions()) {
+            v.setParentEntity(entity);
+            if (v.getAddedFields() == null) {
+                v.setAddedFields(Collections.emptyList());
+            }
+            if (v.getRemovedFieldNames() == null) {
+                v.setRemovedFieldNames(Collections.emptyList());
+            }
+            if (v.getAddedReferences() == null) {
+                v.setAddedReferences(Collections.emptyList());
+            }
+            if (v.getRemovedReferenceNames() == null) {
+                v.setRemovedReferenceNames(Collections.emptyList());
+            }
+            v.setBaseVersion(v.determineBaseVersion(entity));
+            v.setFields(v.determineFields(entity));
+            v.setReferences(v.determineReferences(entity));
+            v.generateVersionName();
+        }
     }
 
     /**
