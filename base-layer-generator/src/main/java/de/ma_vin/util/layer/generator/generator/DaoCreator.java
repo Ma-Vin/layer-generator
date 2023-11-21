@@ -598,7 +598,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
         private static boolean isEqualKey(Reference ref1, Reference ref2) {
             return ref1.getTargetEntity().equals(ref2.getTargetEntity())
-                    && ref1.getIsOwner() == ref2.getIsOwner();
+                    && ref1.getIsOwner().equals(ref2.getIsOwner());
         }
     }
 }

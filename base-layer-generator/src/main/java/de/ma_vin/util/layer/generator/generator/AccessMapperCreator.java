@@ -539,7 +539,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             return;
         }
         List<Reference> references = referenceToParent.getRealTargetEntity().getReferences().stream()
-                .filter(ref -> ref.getRealTargetEntity().equals(referenceToParent.getParent()) && ref.isList() == referenceToParent.isList() && ref.getIsOwner() == referenceToParent.getIsOwner())
+                .filter(ref -> ref.getRealTargetEntity().equals(referenceToParent.getParent()) && ref.isList() == referenceToParent.isList() && ref.getIsOwner().equals(referenceToParent.getIsOwner()))
                 .toList();
 
         if (referenceToParent.isConnectionFiltering()) {
