@@ -92,7 +92,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(parentReference.getRealTargetEntity()).thenReturn(parentEntity);
         when(parentReference.getReferenceName()).thenReturn("dummy");
         when(parentReference.isList()).thenReturn(Boolean.TRUE);
-        when(parentReference.getIsOwner()).thenReturn(Boolean.TRUE);
+        when(parentReference.isOwner()).thenReturn(Boolean.TRUE);
 
         when(anotherParentEntity.getBaseName()).thenReturn("AnotherOwner");
         when(anotherParentEntity.getDescription()).thenReturn("Another owner description");
@@ -106,7 +106,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(anotherParentReference.getRealTargetEntity()).thenReturn(anotherParentEntity);
         when(anotherParentReference.getReferenceName()).thenReturn("anotherDummy");
         when(anotherParentReference.isList()).thenReturn(Boolean.TRUE);
-        when(anotherParentReference.getIsOwner()).thenReturn(Boolean.TRUE);
+        when(anotherParentReference.isOwner()).thenReturn(Boolean.TRUE);
 
         when(subEntity.getBaseName()).thenReturn("Child");
         when(subEntity.getDescription()).thenReturn("child description");
@@ -120,7 +120,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         when(subReference.getRealTargetEntity()).thenReturn(subEntity);
         when(subReference.getReferenceName()).thenReturn("child");
         when(subReference.isList()).thenReturn(Boolean.TRUE);
-        when(subReference.getIsOwner()).thenReturn(Boolean.TRUE);
+        when(subReference.isOwner()).thenReturn(Boolean.TRUE);
     }
 
     @DisplayName("create transport mapper with common file")
@@ -563,7 +563,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateTransportMapperSingleRefNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
-        when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
 
         List<String> expected = new ArrayList<>();
@@ -840,7 +840,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateTransportMapperMultiRefNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
-        when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
 
         List<String> expected = new ArrayList<>();
@@ -1713,7 +1713,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateTransportMapperSingleRefNotOwnerWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
-        when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
         when(targetEntity.getReferences()).thenReturn(Arrays.asList(subReference));
         when(subReference.getParent()).thenReturn(targetEntity);
@@ -1994,7 +1994,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateTransportMapperMultiRefNotOwnerWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
-        when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
         when(targetEntity.getReferences()).thenReturn(Arrays.asList(subReference));
         when(subReference.getParent()).thenReturn(targetEntity);

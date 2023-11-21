@@ -538,6 +538,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         when(anotherParentReference.getTargetEntity()).thenReturn("AnotherOwner");
         when(anotherParentReference.getRealTargetEntity()).thenReturn(anotherParentEntity);
         when(anotherParentReference.isList()).thenReturn(Boolean.TRUE);
+        when(anotherParentReference.isOwner()).thenReturn(Boolean.TRUE);
         when(anotherParentReference.getIsOwner()).thenReturn(Boolean.TRUE);
 
         List<String> expected = new ArrayList<>();
@@ -591,7 +592,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
-        when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
@@ -636,6 +637,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     public void testCreateDataAccessObjectRelationNotOwner() {
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
 
         List<String> expected = new ArrayList<>();
@@ -734,6 +736,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     public void testCreateDataAccessObjectRelationNotOwnerSameTarget() {
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
         when(targetEntity.getBaseName()).thenReturn(ENTITY_NAME);
         when(targetEntity.getTableName()).thenReturn(ENTITY_NAME);
@@ -836,6 +839,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(parentReference.isList()).thenReturn(Boolean.FALSE);
+        when(parentReference.isOwner()).thenReturn(Boolean.FALSE);
         when(parentReference.getIsOwner()).thenReturn(Boolean.FALSE);
 
         List<String> expected = new ArrayList<>();
@@ -873,6 +877,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     public void testCreateDataAccessObjectParentRelationNotOwner() {
         when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
+        when(parentReference.isOwner()).thenReturn(Boolean.FALSE);
         when(parentReference.getIsOwner()).thenReturn(Boolean.FALSE);
 
         List<String> expected = new ArrayList<>();

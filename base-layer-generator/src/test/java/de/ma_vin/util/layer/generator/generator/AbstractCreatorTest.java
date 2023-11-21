@@ -161,6 +161,7 @@ public class AbstractCreatorTest {
         when(referenceMock.getFilterField()).thenReturn(filterField);
         when(referenceMock.getFilterFieldValue()).thenReturn(filterFieldValue);
         when(referenceMock.isList()).thenReturn(isList);
+        when(referenceMock.isOwner()).thenReturn(isOwner);
         when(referenceMock.getIsOwner()).thenReturn(isOwner);
         when(referenceMock.isAggregated()).thenReturn(false);
         when(referenceMock.isReverse()).thenReturn(false);
@@ -172,7 +173,11 @@ public class AbstractCreatorTest {
         doAnswer(a -> when(referenceMock.getFilterField()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterField(anyString());
         doAnswer(a -> when(referenceMock.getFilterFieldValue()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterFieldValue(anyString());
         doAnswer(a -> when(referenceMock.isList()).thenReturn(a.getArgument(0))).when(referenceMock).setIsList(anyBoolean());
-        doAnswer(a -> when(referenceMock.getIsOwner()).thenReturn(a.getArgument(0))).when(referenceMock).setIsOwner(anyBoolean());
+        doAnswer(a -> {
+            when(referenceMock.isOwner()).thenReturn(a.getArgument(0));
+            when(referenceMock.getIsOwner()).thenReturn(a.getArgument(0));
+            return null;
+        }).when(referenceMock).setIsOwner(anyBoolean());
         doAnswer(a -> when(referenceMock.isAggregated()).thenReturn(a.getArgument(0))).when(referenceMock).setAggregated(anyBoolean());
         doAnswer(a -> when(referenceMock.isReverse()).thenReturn(a.getArgument(0))).when(referenceMock).setReverse(anyBoolean());
     }

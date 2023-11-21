@@ -153,8 +153,8 @@ public class Version {
      * @return List of {@link Field}s by iterating through all parent {@link Version}s and the parent {@link Entity}
      */
     private List<Field> determineParentFields(Entity parentEntity) {
-        Optional<Version> baseVersion = determineBaseVersion(parentEntity);
-        return baseVersion.isEmpty() ? parentEntity.getFields() : baseVersion.get().determineFields(parentEntity);
+        Optional<Version> determinedBaseVersion = determineBaseVersion(parentEntity);
+        return determinedBaseVersion.isEmpty() ? parentEntity.getFields() : determinedBaseVersion.get().determineFields(parentEntity);
     }
 
     /**

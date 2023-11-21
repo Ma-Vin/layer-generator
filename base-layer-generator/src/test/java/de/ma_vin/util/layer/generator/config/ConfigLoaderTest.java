@@ -118,7 +118,7 @@ public class ConfigLoaderTest {
         when(reference.getReferenceName()).thenReturn(REFERENCE_NAME);
         when(reference.getTargetEntity()).thenReturn(GROUPING_ENTITY_NAME);
         when(reference.isList()).thenReturn(Boolean.TRUE);
-        when(reference.getIsOwner()).thenReturn(Boolean.TRUE);
+        when(reference.isOwner()).thenReturn(Boolean.TRUE);
         doAnswer(a -> when(reference.getRealTargetEntity()).thenReturn(a.getArgument(0))).when(reference).setRealTargetEntity(any());
         when(reference.copy()).then(a -> {
             Reference result = new Reference();
@@ -127,7 +127,7 @@ public class ConfigLoaderTest {
             result.setTargetEntity(reference.getTargetEntity());
             result.setShortDescription(reference.getShortDescription());
             result.setRealTargetEntity(reference.getRealTargetEntity());
-            result.setIsOwner(reference.getIsOwner());
+            result.setIsOwner(reference.isOwner());
 
             result.setFilterField(reference.getFilterField());
             result.setRealFilterField(reference.getRealFilterField());
@@ -207,7 +207,7 @@ public class ConfigLoaderTest {
         assertEquals(groupingEntity, groupingEntityParentReferences.get(0).getParent(), "Wrong parent at parent reference");
         assertEquals(entity, groupingEntityParentReferences.get(0).getRealTargetEntity(), "Wrong parent at parent reference");
         assertTrue(groupingEntityParentReferences.get(0).isList(), "Wrong list indicator at parent reference");
-        assertTrue(groupingEntityParentReferences.get(0).getIsOwner(), "Wrong owner indicator at parent reference");
+        assertTrue(groupingEntityParentReferences.get(0).isOwner(), "Wrong owner indicator at parent reference");
 
         verify(reference).setParent(eq(entity));
         verify(reference).setRealTargetEntity(eq(groupingEntity));
@@ -410,7 +410,7 @@ public class ConfigLoaderTest {
     @Test
     public void testCompleteFilterFieldNotExistingAndNotPackageButFiltering() {
         when(reference.getFilterField()).thenReturn(GROUPING_FIELD_NAME + "1");
-        when(reference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(reference.isOwner()).thenReturn(Boolean.FALSE);
         when(groupingEntityField.getIsTypeEnum()).thenReturn(Boolean.TRUE);
 
         boolean result = cut.complete();

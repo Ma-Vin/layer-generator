@@ -37,7 +37,7 @@ public class VersionReferenceTest {
         assertEquals(cut.getTargetEntity(), result.getTargetEntity(), "Wrong targetEntity");
         assertEquals(cut.getShortDescription(), result.getShortDescription(), "Wrong shortDescription");
         assertEquals(cut.getRealTargetEntity(), result.getRealTargetEntity(), "Wrong realTargetEntity");
-        assertEquals(cut.getIsOwner(), result.getIsOwner(), "Wrong isOwner");
+        assertEquals(cut.isOwner(), result.isOwner(), "Wrong isOwner");
         assertNull(result.getFilterField(), "filterField should be null");
         assertNull(result.getRealFilterField(), "realFilterField should be null");
         assertNull(result.getFilterFieldValue(), "filterFieldValue should be null");

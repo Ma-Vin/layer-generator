@@ -266,7 +266,7 @@ public class DaoCreator extends AbstractObjectCreator {
     public static List<Reference> getMovedOwnershipReferences(List<Reference> references) {
         Set<Reference> referencesToModify = new HashSet<>();
         references.stream().filter(ref ->
-                references.stream().anyMatch(ref2 -> ref.getIsOwner() && !ref.equals(ref2) && !ref.isList() && ref.getTargetEntity().equals(ref2.getTargetEntity()))
+                references.stream().anyMatch(ref2 -> ref.isOwner() && !ref.equals(ref2) && !ref.isList() && ref.getTargetEntity().equals(ref2.getTargetEntity()))
         ).forEach(referencesToModify::add);
 
         List<Reference> result = references.stream().filter(ref -> !referencesToModify.contains(ref)).collect(Collectors.toList());
@@ -402,7 +402,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param packageDir     base package directory where other referenced class sources are found
      */
     private void addChildRef(Clazz daoClazz, String packageName, Reference reference, List<String> attributeNames, Optional<File> packageDir) {
-        if (reference.getIsOwner()) {
+        if (reference.isOwner()) {
             addDirectChildRef(daoClazz, packageName, reference, attributeNames);
         } else {
             addIndirectChildRef(daoClazz, packageName, reference, attributeNames, packageDir);
@@ -593,12 +593,12 @@ public class DaoCreator extends AbstractObjectCreator {
 
         AggregationKey(Reference reference) {
             targetName = reference.getTargetEntity();
-            isOwner = reference.getIsOwner();
+            isOwner = reference.isOwner();
         }
 
         private static boolean isEqualKey(Reference ref1, Reference ref2) {
             return ref1.getTargetEntity().equals(ref2.getTargetEntity())
-                    && ref1.getIsOwner().equals(ref2.getIsOwner());
+                    && ref1.isOwner() == ref2.isOwner();
         }
     }
 }

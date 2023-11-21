@@ -46,6 +46,11 @@ public abstract class AbstractBasicReference {
     @XmlAttribute
     protected Boolean isOwner = Boolean.FALSE;
 
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+    
     public Boolean getIsOwner() {
         return isOwner;
     }
@@ -78,11 +83,11 @@ public abstract class AbstractBasicReference {
      * @param other the source where to get the values from
      */
     protected void copyValues(AbstractBasicReference other) {
-        referenceName=other.getReferenceName();
-        targetEntity=other.getTargetEntity();
-        shortDescription=other.getShortDescription();
-        realTargetEntity=other.getRealTargetEntity();
-        isOwner=other.getIsOwner();
+        referenceName = other.getReferenceName();
+        targetEntity = other.getTargetEntity();
+        shortDescription = other.getShortDescription();
+        realTargetEntity = other.getRealTargetEntity();
+        isOwner = other.isOwner();
     }
 
 }

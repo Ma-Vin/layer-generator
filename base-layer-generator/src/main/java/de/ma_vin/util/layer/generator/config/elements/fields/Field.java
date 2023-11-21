@@ -35,6 +35,7 @@ public class Field extends AbstractBasicField {
     @XmlTransient
     private Entity parentEntity;
 
+    @Override
     public boolean isValid(List<String> messages) {
         return super.isValid(messages)
                 && (daoInfo == null || daoInfo.isValid(messages));

@@ -628,7 +628,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperSingleRefNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
-        when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
 
         List<String> expected = new ArrayList<>();
@@ -1526,7 +1526,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiRefNotOwner() {
         when(targetReference.getParent()).thenReturn(entity);
-        when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
 
         List<String> expected = new ArrayList<>();
@@ -2996,7 +2996,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(anotherFromParentReference.getRealTargetEntity()).thenReturn(entity);
         when(anotherFromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
 
-        when(anotherToParentReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(anotherToParentReference.isOwner()).thenReturn(Boolean.FALSE);
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
@@ -3451,7 +3451,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     public void testCreateAccessMapperSingleRefNotOwnerWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
-        when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetEntity.getReferences()).thenReturn(Collections.singletonList(toSubReference));
         when(toSubReference.getParent()).thenReturn(targetEntity);
@@ -3807,7 +3807,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiRefNotOwnerWithChildren() {
         when(targetReference.getParent()).thenReturn(entity);
-        when(targetReference.getIsOwner()).thenReturn(Boolean.FALSE);
+        when(targetReference.isOwner()).thenReturn(Boolean.FALSE);
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetEntity.getReferences()).thenReturn(Collections.singletonList(toSubReference));
         when(toSubReference.getParent()).thenReturn(targetEntity);

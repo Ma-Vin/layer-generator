@@ -165,7 +165,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         addConvertMethodDescriptionWithParent(convertMethodWithMap, entity, DOMAIN_POSTFIX, DAO_POSTFIX);
 
         mapperClass.addMethod(convertMethodWithMap);
-        if (referenceToParent.isList() && !referenceToParent.getIsOwner()) {
+        if (referenceToParent.isList() && !referenceToParent.isOwner()) {
             mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, getPackage(referenceToParent.getRealTargetEntity(), daoPackageName)
                     , DaoCreator.getConnectionTableNameParentRef(referenceToParent)));
         }
@@ -180,13 +180,13 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @param referenceToParent Reference to parent
      */
     private void addSettingOfDaoParent(Method convertMethod, Entity entity, Reference referenceToParent) {
-        if (referenceToParent.getIsOwner()) {
+        if (referenceToParent.isOwner()) {
             convertMethod.addLine("%sresult.setParent%s(parent);", AbstractGenerateLines.TAB, referenceToParent.getTargetEntity());
         }
         if (referenceToParent.isList()) {
             String getterMethodName = getUpperFirst(referenceToParent.getReferenceName());
 
-            if (referenceToParent.getIsOwner()) {
+            if (referenceToParent.isOwner()) {
                 convertMethod.addLine("%sparent.get%s().add(result);", AbstractGenerateLines.TAB, getterMethodName);
             } else {
                 convertMethod.addLine("%1$s%2$s connectionTable = %3$s.create%2$s();", AbstractGenerateLines.TAB
@@ -539,7 +539,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             return;
         }
         List<Reference> references = referenceToParent.getRealTargetEntity().getReferences().stream()
-                .filter(ref -> ref.getRealTargetEntity().equals(referenceToParent.getParent()) && ref.isList() == referenceToParent.isList() && ref.getIsOwner().equals(referenceToParent.getIsOwner()))
+                .filter(ref -> ref.getRealTargetEntity().equals(referenceToParent.getParent()) && ref.isList() == referenceToParent.isList() && ref.isOwner() == referenceToParent.isOwner())
                 .toList();
 
         if (referenceToParent.isConnectionFiltering()) {
@@ -725,10 +725,10 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(ArrayList.class.getName());
         convertMethod.addTabbedLine("dao.get%s().forEach(arg ->", 1, getterSubName);
 
-        if (reference.getIsOwner() && hasIncludeChildrenParameter) {
+        if (reference.isOwner() && hasIncludeChildrenParameter) {
             convertMethod.addTabbedLine("%s.%s(arg, true, domain, %s)"
                     , 3, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
-        } else if (reference.getIsOwner() && !hasIncludeChildrenParameter) {
+        } else if (reference.isOwner() && !hasIncludeChildrenParameter) {
             convertMethod.addTabbedLine("%s.%s(arg, domain, %s)"
                     , 3, mapperName, mapperMethodName, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else if (reference.isConnectionFiltering() && hasIncludeChildrenParameter) {

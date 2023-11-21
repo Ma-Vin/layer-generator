@@ -507,13 +507,13 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         String mapperMethodName = getConvertMethodName(reference.getRealTargetEntity(), classParameterPostFix);
         String getterSubName = getUpperFirst(reference.getReferenceName());
 
-        if (reference.getIsOwner() && hasIncludeChildrenParameter) {
+        if (reference.isOwner() && hasIncludeChildrenParameter) {
             convertMethod.addLine("%s.%s(%s.get%s(), includeChildren, %s, %s);"
                     , mapperName, mapperMethodName, sourceParameter, getterSubName, targetParameter, MAPPED_OBJECTS_PARAMETER_TEXT);
-        } else if (!reference.getIsOwner() && hasIncludeChildrenParameter) {
+        } else if (!reference.isOwner() && hasIncludeChildrenParameter) {
             convertMethod.addLine("%s.set%s(%s.%s(%s.get%s(), includeChildren, %s));"
                     , targetParameter, getterSubName, mapperName, mapperMethodName, sourceParameter, getterSubName, MAPPED_OBJECTS_PARAMETER_TEXT);
-        } else if (reference.getIsOwner() && !hasIncludeChildrenParameter) {
+        } else if (reference.isOwner() && !hasIncludeChildrenParameter) {
             convertMethod.addLine("%s.%s(%s.get%s(), %s, %s);"
                     , mapperName, mapperMethodName, sourceParameter, getterSubName, targetParameter, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else {
