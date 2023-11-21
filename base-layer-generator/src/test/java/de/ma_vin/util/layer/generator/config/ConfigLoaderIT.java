@@ -154,7 +154,7 @@ public class ConfigLoaderIT {
 
     @DisplayName("xml and json valid models are equal")
     @Test
-    public void testCompareJsonXmlAndJsonModel() {
+    public void testCompareXmlAndJsonModel() {
         File xmlModelFile = getConfigFile("exampleModel.xml");
         ConfigLoader xmlConfigLoader = new ConfigLoader(xmlModelFile, logger);
 

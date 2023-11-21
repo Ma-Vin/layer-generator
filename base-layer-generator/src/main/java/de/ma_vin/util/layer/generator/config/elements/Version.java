@@ -1,5 +1,9 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.fields.VersionField;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
+import de.ma_vin.util.layer.generator.config.elements.references.VersionReference;
 import jakarta.xml.bind.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -63,7 +67,7 @@ public class Version {
      */
     @XmlElementWrapper
     @XmlElement(name = "addedField")
-    private List<Field> addedFields;
+    private List<VersionField> addedFields;
 
     /**
      * List of all fields which contains parents fields also
@@ -83,7 +87,7 @@ public class Version {
      */
     @XmlElementWrapper
     @XmlElement(name = "addedReference")
-    private List<Reference> addedReferences;
+    private List<VersionReference> addedReferences;
 
     /**
      * List of all references which contains parents references also
@@ -105,9 +109,9 @@ public class Version {
                 && checkBaseVersion(messages, parentEntity.getVersions())
                 && validateNonRequired(versionName, messages, "versionName")
                 && validateNamesCompareToElementList(removedFieldNames, messages, "removedFieldNames", determineParentFields(parentEntity), Field::getFieldName)
-                && validateList(addedFields, messages, Field::isValid)
+                && validateList(addedFields, messages, VersionField::isValid)
                 && validateNamesCompareToElementList(removedReferenceNames, messages, "removedReferenceNames", determineParentReferences(parentEntity), Reference::getReferenceName)
-                && validateList(addedReferences, messages, Reference::isValid);
+                && validateList(addedReferences, messages, VersionReference::isValid);
     }
 
     /**
@@ -171,7 +175,7 @@ public class Version {
      * They are reduced  by {@link Version#removedFieldNames} and completed  by {@link Version#addedFields}
      */
     public List<Field> determineFields(Entity parentEntity) {
-        List<Field> result = new ArrayList<>(addedFields == null ? Collections.emptyList() : addedFields);
+        List<Field> result = new ArrayList<>(addedFields == null ? Collections.emptyList() : addedFields.stream().map(VersionField::getAsField).toList());
 
         determineParentFields(parentEntity).stream()
                 .filter(f -> removedFieldNames == null || !removedFieldNames.contains(f.getFieldName()))
@@ -198,7 +202,7 @@ public class Version {
      * They are reduced  by {@link Version#removedReferenceNames} and completed  by {@link Version#addedReferences}
      */
     public List<Reference> determineReferences(Entity parentEntity) {
-        List<Reference> result = new ArrayList<>(addedReferences == null ? Collections.emptyList() : addedReferences);
+        List<Reference> result = new ArrayList<>(addedReferences == null ? Collections.emptyList() : addedReferences.stream().map(VersionReference::getAsReference).toList());
 
         determineParentReferences(parentEntity).stream()
                 .filter(r -> removedReferenceNames == null || !removedReferenceNames.contains(r.getReferenceName()))

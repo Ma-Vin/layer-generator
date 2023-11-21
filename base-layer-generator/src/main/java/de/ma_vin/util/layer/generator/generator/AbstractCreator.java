@@ -2,7 +2,7 @@ package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.Annotation;
 import de.ma_vin.util.layer.generator.sources.Attribute;

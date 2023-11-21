@@ -1,11 +1,10 @@
-package de.ma_vin.util.layer.generator.config.elements;
+package de.ma_vin.util.layer.generator.config.elements.references;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 import static org.mockito.Mockito.*;
 
-import de.ma_vin.util.layer.generator.config.elements.NonOwnerFilterField;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.fields.NonOwnerFilterField;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

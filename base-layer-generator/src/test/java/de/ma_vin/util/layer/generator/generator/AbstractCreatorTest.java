@@ -1,6 +1,8 @@
 package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
 import org.mockito.Mock;
@@ -12,10 +14,7 @@ import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -162,7 +161,7 @@ public class AbstractCreatorTest {
         when(referenceMock.getFilterField()).thenReturn(filterField);
         when(referenceMock.getFilterFieldValue()).thenReturn(filterFieldValue);
         when(referenceMock.isList()).thenReturn(isList);
-        when(referenceMock.isOwner()).thenReturn(isOwner);
+        when(referenceMock.getIsOwner()).thenReturn(isOwner);
         when(referenceMock.isAggregated()).thenReturn(false);
         when(referenceMock.isReverse()).thenReturn(false);
 
@@ -173,7 +172,7 @@ public class AbstractCreatorTest {
         doAnswer(a -> when(referenceMock.getFilterField()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterField(anyString());
         doAnswer(a -> when(referenceMock.getFilterFieldValue()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterFieldValue(anyString());
         doAnswer(a -> when(referenceMock.isList()).thenReturn(a.getArgument(0))).when(referenceMock).setIsList(anyBoolean());
-        doAnswer(a -> when(referenceMock.isOwner()).thenReturn(a.getArgument(0))).when(referenceMock).setIsOwner(anyBoolean());
+        doAnswer(a -> when(referenceMock.getIsOwner()).thenReturn(a.getArgument(0))).when(referenceMock).setIsOwner(anyBoolean());
         doAnswer(a -> when(referenceMock.isAggregated()).thenReturn(a.getArgument(0))).when(referenceMock).setAggregated(anyBoolean());
         doAnswer(a -> when(referenceMock.isReverse()).thenReturn(a.getArgument(0))).when(referenceMock).setReverse(anyBoolean());
     }

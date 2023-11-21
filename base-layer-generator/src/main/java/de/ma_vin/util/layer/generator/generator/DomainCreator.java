@@ -6,7 +6,7 @@ import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import lombok.*;
 
 import java.io.File;

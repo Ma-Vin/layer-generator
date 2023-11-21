@@ -1,12 +1,16 @@
-package de.ma_vin.util.layer.generator.config.elements;
+package de.ma_vin.util.layer.generator.config.elements.references;
 
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 
+import de.ma_vin.util.layer.generator.config.elements.Entity;
+import de.ma_vin.util.layer.generator.config.elements.fields.NonOwnerFilterField;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import jakarta.xml.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -15,27 +19,9 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
-@EqualsAndHashCode(exclude = {"realFilterField", "realTargetEntity", "parent"})
-@ToString(exclude = {"realFilterField", "realTargetEntity", "parent"})
-public class Reference {
-
-    /**
-     * Name of the reference
-     */
-    @XmlAttribute(required = true)
-    private String referenceName;
-
-    /**
-     * The baseName of the entity where to point at
-     */
-    @XmlAttribute(required = true)
-    private String targetEntity;
-
-    /**
-     * Short description of the reference
-     */
-    @XmlAttribute
-    private String shortDescription;
+@EqualsAndHashCode(exclude = {"realFilterField", "parent"}, callSuper = true)
+@ToString(exclude = {"realFilterField", "parent"}, callSuper = true)
+public class Reference extends AbstractBasicReference {
 
     /**
      * Field of enum type to filter references from one entity to another multiple times
@@ -53,16 +39,7 @@ public class Reference {
     private String filterFieldValue;
 
     @XmlTransient
-    private Entity realTargetEntity;
-
-    @XmlTransient
     private Entity parent;
-
-    /**
-     * {@code true} if the parent should also be the parent at database. Otherwise some connection table will be generated
-     */
-    @XmlAttribute
-    private Boolean isOwner = Boolean.FALSE;
 
     /**
      * Indicator if a one to one relation or an one to many relation exists
@@ -88,9 +65,7 @@ public class Reference {
     private NonOwnerFilterField nonOwnerFilterField;
 
     public boolean isValid(List<String> messages) {
-        return validateRequired(targetEntity, messages, "targetEntity")
-                && validateRequired(referenceName, messages, "referenceName")
-                && validateNonRequired(shortDescription, messages, "shortDescription")
+        return super.isValid(messages)
                 && validateNonRequired(filterField, messages, "filterField")
                 && (filterField == null || validateNonRequired(filterFieldValue, messages, "filterFieldValue"))
                 && (nonOwnerFilterField == null || (Boolean.FALSE.equals(isOwner) && nonOwnerFilterField.isValid(messages)));
@@ -107,7 +82,7 @@ public class Reference {
      */
     public static boolean isFilterFieldValid(String entity, List<Reference> references, List<String> messages) {
         boolean result = references.stream().filter(ref -> ref.isList).noneMatch(ref -> references.stream()
-                .filter(ref2 -> ref2.isList && ref.targetEntity.equals(ref2.targetEntity) && ref2.filterField == null && ref2.getNonOwnerFilterField() == null)
+                .filter(ref2 -> ref2.isList && ref.targetEntity.equals(ref2.targetEntity) && ref2.filterField == null && ref2.nonOwnerFilterField == null)
                 .count() > 1);
         if (!result) {
             messages.add(String.format("There multiple reference from %s to the same target", entity));
@@ -134,61 +109,27 @@ public class Reference {
     public Reference copy() {
         Reference result = new Reference();
 
-        result.referenceName = getReferenceName();
-        result.targetEntity = getTargetEntity();
-        result.shortDescription = getShortDescription();
+        result.copyValues(this);
+
         result.filterField = getFilterField();
         result.realFilterField = getRealFilterField();
         result.filterFieldValue = getFilterFieldValue();
-        result.realTargetEntity = getRealTargetEntity();
         result.parent = getParent();
-        result.isOwner = isOwner();
         result.isList = isList();
         result.isAggregated = isAggregated();
         result.isReverse = isReverse();
-        result.nonOwnerFilterField = getNonOwnerFilterField();
+        result.nonOwnerFilterField =getNonOwnerFilterField();
 
         return result;
     }
 
-    public String getReferenceName() {
-        return referenceName;
-    }
-
-    public String getTargetEntity() {
-        return targetEntity;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public String getFilterField() {
-        return filterField;
-    }
-
-    public Field getRealFilterField() {
-        return realFilterField;
-    }
-
-    public String getFilterFieldValue() {
-        return filterFieldValue;
-    }
-
-    public Entity getRealTargetEntity() {
-        return realTargetEntity;
-    }
-
-    public Entity getParent() {
-        return parent;
-    }
-
-    public boolean isOwner() {
-        return isOwner;
-    }
 
     public boolean isList() {
         return isList;
+    }
+
+    public void setIsList(Boolean isList) {
+        this.isList = isList;
     }
 
     public boolean isAggregated() {
@@ -199,6 +140,27 @@ public class Reference {
         return isReverse;
     }
 
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public String getFilterField() {
+        return filterField;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public Field getRealFilterField() {
+        return realFilterField;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public String getFilterFieldValue() {
+        return filterFieldValue;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public Entity getParent() {
+        return parent;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
     public NonOwnerFilterField getNonOwnerFilterField() {
         return nonOwnerFilterField;
     }

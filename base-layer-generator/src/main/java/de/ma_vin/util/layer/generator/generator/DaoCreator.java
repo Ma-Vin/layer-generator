@@ -4,6 +4,8 @@ import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Index;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.exceptions.NotSupportedMethodException;
@@ -230,9 +232,9 @@ public class DaoCreator extends AbstractObjectCreator {
         List<String> attributes = new ArrayList<>();
 
         List<Reference> treatedParentReferences = getTreatedReferences(entity.getParentRefs());
-        boolean isSingle = treatedParentReferences.stream().filter(Reference::isOwner).count() == 1;
+        boolean isSingle = treatedParentReferences.stream().filter(Reference::getIsOwner).count() == 1;
         treatedParentReferences.stream()
-                .filter(Reference::isOwner)
+                .filter(Reference::getIsOwner)
                 .filter(ref -> ref.getRealTargetEntity().getModels().isDao())
                 .forEach(ref -> addParentRef(daoClazz, packageName, ref, isSingle, attributes));
         getTreatedReferences(entity.getReferences()).stream()
@@ -264,7 +266,7 @@ public class DaoCreator extends AbstractObjectCreator {
     public static List<Reference> getMovedOwnershipReferences(List<Reference> references) {
         Set<Reference> referencesToModify = new HashSet<>();
         references.stream().filter(ref ->
-                references.stream().anyMatch(ref2 -> ref.isOwner() && !ref.equals(ref2) && !ref.isList() && ref.getTargetEntity().equals(ref2.getTargetEntity()))
+                references.stream().anyMatch(ref2 -> ref.getIsOwner() && !ref.equals(ref2) && !ref.isList() && ref.getTargetEntity().equals(ref2.getTargetEntity()))
         ).forEach(referencesToModify::add);
 
         List<Reference> result = references.stream().filter(ref -> !referencesToModify.contains(ref)).collect(Collectors.toList());
@@ -400,7 +402,7 @@ public class DaoCreator extends AbstractObjectCreator {
      * @param packageDir     base package directory where other referenced class sources are found
      */
     private void addChildRef(Clazz daoClazz, String packageName, Reference reference, List<String> attributeNames, Optional<File> packageDir) {
-        if (reference.isOwner()) {
+        if (reference.getIsOwner()) {
             addDirectChildRef(daoClazz, packageName, reference, attributeNames);
         } else {
             addIndirectChildRef(daoClazz, packageName, reference, attributeNames, packageDir);
@@ -591,12 +593,12 @@ public class DaoCreator extends AbstractObjectCreator {
 
         AggregationKey(Reference reference) {
             targetName = reference.getTargetEntity();
-            isOwner = reference.isOwner();
+            isOwner = reference.getIsOwner();
         }
 
         private static boolean isEqualKey(Reference ref1, Reference ref2) {
             return ref1.getTargetEntity().equals(ref2.getTargetEntity())
-                    && ref1.isOwner() == ref2.isOwner();
+                    && ref1.getIsOwner() == ref2.getIsOwner();
         }
     }
 }

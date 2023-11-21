@@ -2,6 +2,8 @@ package de.ma_vin.util.layer.generator.config.elements;
 
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

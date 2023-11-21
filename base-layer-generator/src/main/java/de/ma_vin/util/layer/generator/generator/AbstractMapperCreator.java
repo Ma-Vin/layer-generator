@@ -7,8 +7,8 @@ import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Field;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -507,13 +507,13 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         String mapperMethodName = getConvertMethodName(reference.getRealTargetEntity(), classParameterPostFix);
         String getterSubName = getUpperFirst(reference.getReferenceName());
 
-        if (reference.isOwner() && hasIncludeChildrenParameter) {
+        if (reference.getIsOwner() && hasIncludeChildrenParameter) {
             convertMethod.addLine("%s.%s(%s.get%s(), includeChildren, %s, %s);"
                     , mapperName, mapperMethodName, sourceParameter, getterSubName, targetParameter, MAPPED_OBJECTS_PARAMETER_TEXT);
-        } else if (!reference.isOwner() && hasIncludeChildrenParameter) {
+        } else if (!reference.getIsOwner() && hasIncludeChildrenParameter) {
             convertMethod.addLine("%s.set%s(%s.%s(%s.get%s(), includeChildren, %s));"
                     , targetParameter, getterSubName, mapperName, mapperMethodName, sourceParameter, getterSubName, MAPPED_OBJECTS_PARAMETER_TEXT);
-        } else if (reference.isOwner() && !hasIncludeChildrenParameter) {
+        } else if (reference.getIsOwner() && !hasIncludeChildrenParameter) {
             convertMethod.addLine("%s.%s(%s.get%s(), %s, %s);"
                     , mapperName, mapperMethodName, sourceParameter, getterSubName, targetParameter, MAPPED_OBJECTS_PARAMETER_TEXT);
         } else {

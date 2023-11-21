@@ -1,5 +1,9 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.fields.VersionField;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
+import de.ma_vin.util.layer.generator.config.elements.references.VersionReference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +44,7 @@ public class VersionTest {
     private Version cut;
 
     @Mock
-    private Field addedField;
+    private VersionField addedField;
     @Mock
     private Field baseVersionField;
     @Mock
@@ -48,7 +52,7 @@ public class VersionTest {
     @Mock
     private Field removedField;
     @Mock
-    private Reference addedReference;
+    private VersionReference addedReference;
     @Mock
     private Reference baseVersionReference;
     @Mock
@@ -86,6 +90,7 @@ public class VersionTest {
 
         when(addedField.getFieldName()).thenReturn(DEFAULT_ADDED_FIELD_NAME);
         when(addedField.isValid(anyList())).thenReturn(Boolean.TRUE);
+        doCallRealMethod().when(addedField).getAsField();
         when(baseVersionField.getFieldName()).thenReturn(DEFAULT_BASE_VERSION_FIELD_NAME);
         when(baseVersionField.isValid(anyList())).thenReturn(Boolean.TRUE);
         when(entityField.getFieldName()).thenReturn(DEFAULT_ENTITY_FIELD_NAME);
@@ -95,6 +100,7 @@ public class VersionTest {
 
         when(addedReference.getReferenceName()).thenReturn(DEFAULT_ADDED_REFERENCE_NAME);
         when(addedReference.isValid(anyList())).thenReturn(Boolean.TRUE);
+        doCallRealMethod().when(addedReference).getAsReference();
         when(baseVersionReference.getReferenceName()).thenReturn(DEFAULT_BASE_VERSION_REFERENCE_NAME);
         when(baseVersionReference.isValid(anyList())).thenReturn(Boolean.TRUE);
         when(entityReference.getReferenceName()).thenReturn(DEFAULT_ENTITY_REFERENCE_NAME);
@@ -198,10 +204,10 @@ public class VersionTest {
 
         assertNotNull(result, "There should be a result");
         assertEquals(3, result.size(), "Wrong number of results");
-        assertTrue(result.contains(addedField),"addedField should be contained");
-        assertTrue(result.contains(baseVersionField),"baseVersionField should be contained");
-        assertTrue(result.contains(entityField),"entityField should be contained");
-        assertFalse(result.contains(removedField),"removedField should not be contained");
+        assertTrue(result.stream().anyMatch(f -> DEFAULT_ADDED_FIELD_NAME.equals(f.getFieldName())), "addedField should be contained");
+        assertTrue(result.contains(baseVersionField), "baseVersionField should be contained");
+        assertTrue(result.contains(entityField), "entityField should be contained");
+        assertFalse(result.contains(removedField), "removedField should not be contained");
     }
 
     @Test
@@ -213,10 +219,10 @@ public class VersionTest {
 
         assertNotNull(result, "There should be a result");
         assertEquals(3, result.size(), "Wrong number of results");
-        assertFalse(result.contains(addedField),"addedField should not be contained");
-        assertTrue(result.contains(baseVersionField),"baseVersionField should be contained");
-        assertTrue(result.contains(entityField),"entityField should be contained");
-        assertTrue(result.contains(removedField),"removedField should be contained");
+        assertFalse(result.stream().anyMatch(f -> DEFAULT_ADDED_FIELD_NAME.equals(f.getFieldName())), "addedField should not be contained");
+        assertTrue(result.contains(baseVersionField), "baseVersionField should be contained");
+        assertTrue(result.contains(entityField), "entityField should be contained");
+        assertTrue(result.contains(removedField), "removedField should be contained");
     }
 
     @Test
@@ -225,10 +231,10 @@ public class VersionTest {
 
         assertNotNull(result, "There should be a result");
         assertEquals(3, result.size(), "Wrong number of results");
-        assertTrue(result.contains(addedReference),"addedReference should be contained");
-        assertTrue(result.contains(baseVersionReference),"baseVersionReference should be contained");
-        assertTrue(result.contains(entityReference),"entityReference should be contained");
-        assertFalse(result.contains(removedReference),"removedReference should not be contained");
+        assertTrue(result.stream().anyMatch(r -> DEFAULT_ADDED_REFERENCE_NAME.equals(r.getReferenceName())), "addedReference should be contained");
+        assertTrue(result.contains(baseVersionReference), "baseVersionReference should be contained");
+        assertTrue(result.contains(entityReference), "entityReference should be contained");
+        assertFalse(result.contains(removedReference), "removedReference should not be contained");
     }
 
     @Test
@@ -240,14 +246,14 @@ public class VersionTest {
 
         assertNotNull(result, "There should be a result");
         assertEquals(3, result.size(), "Wrong number of results");
-        assertFalse(result.contains(addedReference),"addedReference should not be contained");
-        assertTrue(result.contains(baseVersionReference),"baseVersionReference should be contained");
-        assertTrue(result.contains(entityReference),"entityReference should be contained");
-        assertTrue(result.contains(removedReference),"removedReference should be contained");
+        assertFalse(result.stream().anyMatch(r -> DEFAULT_ADDED_REFERENCE_NAME.equals(r.getReferenceName())), "addedReference should not be contained");
+        assertTrue(result.contains(baseVersionReference), "baseVersionReference should be contained");
+        assertTrue(result.contains(entityReference), "entityReference should be contained");
+        assertTrue(result.contains(removedReference), "removedReference should be contained");
     }
 
     @Test
-    public void testGenerateVersionName(){
+    public void testGenerateVersionName() {
         cut.setParentEntity(parentEntity);
 
         cut.generateVersionName();
@@ -257,7 +263,7 @@ public class VersionTest {
     }
 
     @Test
-    public void testGenerateVersionNameSingleSign(){
+    public void testGenerateVersionNameSingleSign() {
         cut.setVersionId("2");
         cut.setParentEntity(parentEntity);
 
@@ -268,7 +274,7 @@ public class VersionTest {
     }
 
     @Test
-    public void testGenerateVersionNameAlreadySet(){
+    public void testGenerateVersionNameAlreadySet() {
         cut.setVersionName("abc");
         cut.setParentEntity(parentEntity);
 

@@ -1,6 +1,5 @@
-package de.ma_vin.util.layer.generator.config.elements;
+package de.ma_vin.util.layer.generator.config.elements.fields;
 
-import de.ma_vin.util.layer.generator.config.elements.NonOwnerFilterField;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

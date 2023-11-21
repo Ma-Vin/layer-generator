@@ -1,4 +1,4 @@
-package de.ma_vin.util.layer.generator.config.elements;
+package de.ma_vin.util.layer.generator.config.elements.fields;
 
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.validateRequired;
 
@@ -8,7 +8,7 @@ import jakarta.xml.bind.annotation.*;
 import java.util.List;
 
 /**
- * Describes an filter criteria for non owner reference whose filter enum differs from target entity fields.
+ * Describes a filter criteria for non owner reference whose filter enum differs from target entity fields.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")

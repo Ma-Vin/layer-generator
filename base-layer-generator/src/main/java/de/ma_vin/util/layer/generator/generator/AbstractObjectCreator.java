@@ -1,6 +1,8 @@
 package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.Annotation;
 import de.ma_vin.util.layer.generator.sources.Attribute;

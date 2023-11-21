@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.config.elements;
 
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.validateRequired;
 
+import de.ma_vin.util.layer.generator.config.elements.fields.FieldSorting;
 import lombok.Data;
 
 import jakarta.xml.bind.annotation.*;

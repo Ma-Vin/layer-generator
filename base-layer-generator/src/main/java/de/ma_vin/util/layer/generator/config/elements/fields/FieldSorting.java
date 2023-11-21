@@ -1,6 +1,7 @@
-package de.ma_vin.util.layer.generator.config.elements;
+package de.ma_vin.util.layer.generator.config.elements.fields;
 
 
+import de.ma_vin.util.layer.generator.config.elements.Index;
 import lombok.Data;
 
 import jakarta.xml.bind.annotation.XmlTransient;

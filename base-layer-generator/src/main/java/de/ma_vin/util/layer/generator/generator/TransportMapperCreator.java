@@ -4,6 +4,8 @@ import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
 import de.ma_vin.util.layer.generator.builder.MapperType;
 import de.ma_vin.util.layer.generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.config.elements.*;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
 import de.ma_vin.util.layer.generator.sources.Clazz;
@@ -143,7 +145,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
         entity.getParentRefs().stream()
-                .filter(ref -> ref.isOwner() && !ref.isList())
+                .filter(ref -> ref.getIsOwner() && !ref.isList())
                 .filter(ref -> ref.getRealTargetEntity().getRealDerivedFrom() == null)
                 .forEach(ref ->
                         createConvertToDomainMethodWithParent(mapperClass, entity, ref, domainPackageName)
@@ -241,7 +243,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, dtoPackageName, DtoCreator.DTO_INTERFACE));
 
         entity.getParentRefs().stream()
-                .filter(ref -> ref.isOwner() && !ref.isList())
+                .filter(ref -> ref.getIsOwner() && !ref.isList())
                 .forEach(ref ->
                         createConvertToDtoMethodWithParent(mapperClass, entity, ref, dtoPackageName)
                 );

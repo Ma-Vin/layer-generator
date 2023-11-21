@@ -2,6 +2,9 @@ package de.ma_vin.util.layer.generator.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.ma_vin.util.layer.generator.config.elements.*;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.fields.FieldSorting;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import lombok.Data;
 

@@ -7,6 +7,9 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.fields.FieldSorting;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -115,8 +118,28 @@ public class ConfigLoaderTest {
         when(reference.getReferenceName()).thenReturn(REFERENCE_NAME);
         when(reference.getTargetEntity()).thenReturn(GROUPING_ENTITY_NAME);
         when(reference.isList()).thenReturn(Boolean.TRUE);
-        when(reference.isOwner()).thenReturn(Boolean.TRUE);
+        when(reference.getIsOwner()).thenReturn(Boolean.TRUE);
         doAnswer(a -> when(reference.getRealTargetEntity()).thenReturn(a.getArgument(0))).when(reference).setRealTargetEntity(any());
+        when(reference.copy()).then(a -> {
+            Reference result = new Reference();
+
+            result.setReferenceName(reference.getReferenceName());
+            result.setTargetEntity(reference.getTargetEntity());
+            result.setShortDescription(reference.getShortDescription());
+            result.setRealTargetEntity(reference.getRealTargetEntity());
+            result.setIsOwner(reference.getIsOwner());
+
+            result.setFilterField(reference.getFilterField());
+            result.setRealFilterField(reference.getRealFilterField());
+            result.setFilterFieldValue(reference.getFilterFieldValue());
+            result.setParent(reference.getParent());
+            result.setIsList(reference.isList());
+            result.setAggregated(reference.isAggregated());
+            result.setReverse(reference.isReverse());
+            result.setNonOwnerFilterField(reference.getNonOwnerFilterField());
+
+            return result;
+        });
 
         when(entityField.getFieldName()).thenReturn(FIELD_NAME);
         when(parentEntityField.getFieldName()).thenReturn(OTHER_FIELD_NAME);
@@ -125,8 +148,6 @@ public class ConfigLoaderTest {
 
         when(index.getFieldList()).thenReturn(FIELD_LIST);
         when(index.getFields()).thenReturn(fieldSortings);
-
-        doCallRealMethod().when(reference).copy();
     }
 
     private void defaultMockEntity(Entity entity, String entityName, List<Field> fields, List<Index> indices, List<Reference> references
@@ -186,7 +207,7 @@ public class ConfigLoaderTest {
         assertEquals(groupingEntity, groupingEntityParentReferences.get(0).getParent(), "Wrong parent at parent reference");
         assertEquals(entity, groupingEntityParentReferences.get(0).getRealTargetEntity(), "Wrong parent at parent reference");
         assertTrue(groupingEntityParentReferences.get(0).isList(), "Wrong list indicator at parent reference");
-        assertTrue(groupingEntityParentReferences.get(0).isOwner(), "Wrong owner indicator at parent reference");
+        assertTrue(groupingEntityParentReferences.get(0).getIsOwner(), "Wrong owner indicator at parent reference");
 
         verify(reference).setParent(eq(entity));
         verify(reference).setRealTargetEntity(eq(groupingEntity));
@@ -389,7 +410,7 @@ public class ConfigLoaderTest {
     @Test
     public void testCompleteFilterFieldNotExistingAndNotPackageButFiltering() {
         when(reference.getFilterField()).thenReturn(GROUPING_FIELD_NAME + "1");
-        when(reference.isOwner()).thenReturn(Boolean.FALSE);
+        when(reference.getIsOwner()).thenReturn(Boolean.FALSE);
         when(groupingEntityField.getIsTypeEnum()).thenReturn(Boolean.TRUE);
 
         boolean result = cut.complete();
@@ -533,17 +554,17 @@ public class ConfigLoaderTest {
 
     @DisplayName("Load wrong file type")
     @Test
-    public void testLoadInvalidFileType(){
+    public void testLoadInvalidFileType() {
         when(configFile.getName()).thenReturn("testFile.txt");
 
-        assertFalse(cut.load(),"A wrong file type should not be loaded");
+        assertFalse(cut.load(), "A wrong file type should not be loaded");
     }
 
     @DisplayName("Load file without file ending")
     @Test
-    public void testLoadWithoutFileEnding(){
+    public void testLoadWithoutFileEnding() {
         when(configFile.getName()).thenReturn("testFile");
 
-        assertFalse(cut.load(),"A file without file ending should not be loaded");
+        assertFalse(cut.load(), "A file without file ending should not be loaded");
     }
 }
