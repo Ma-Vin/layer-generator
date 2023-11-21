@@ -190,8 +190,8 @@ public class Version {
      * @return List of {@link Reference}s by iterating through all parent {@link Version}s and the parent {@link Entity}
      */
     private List<Reference> determineParentReferences(Entity parentEntity) {
-        Optional<Version> baseVersion = determineBaseVersion(parentEntity);
-        return baseVersion.isEmpty() ? parentEntity.getReferences() : baseVersion.get().determineReferences(parentEntity);
+        Optional<Version> determinedBaseVersion = determineBaseVersion(parentEntity);
+        return determinedBaseVersion.isEmpty() ? parentEntity.getReferences() : determinedBaseVersion.get().determineReferences(parentEntity);
     }
 
     /**

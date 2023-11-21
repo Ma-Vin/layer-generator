@@ -64,6 +64,7 @@ public class Reference extends AbstractBasicReference {
      */
     private NonOwnerFilterField nonOwnerFilterField;
 
+    @Override
     public boolean isValid(List<String> messages) {
         return super.isValid(messages)
                 && validateNonRequired(filterField, messages, "filterField")
