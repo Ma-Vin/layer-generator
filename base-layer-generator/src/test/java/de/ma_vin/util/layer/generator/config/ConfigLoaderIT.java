@@ -69,6 +69,9 @@ public class ConfigLoaderIT {
         assertEquals(1, root.get().getVersions().stream().filter(v -> "v3".equals(v.getVersionId())).mapToLong(v -> v.getFields().size()).sum());
         assertEquals(13, root.get().getVersions().stream().filter(v -> "v2".equals(v.getVersionId())).mapToLong(v -> v.getReferences().size()).sum());
         assertEquals(12, root.get().getVersions().stream().filter(v -> "v3".equals(v.getVersionId())).mapToLong(v -> v.getReferences().size()).sum());
+
+        assertTrue(root.get().getVersions().stream().flatMap(v -> v.getReferences().stream()).allMatch(r -> r.getRealTargetEntity() != null)
+                , "All references of a version have to point to a real target");
     }
 
     private void checkNotLoaded(ConfigLoader configLoader) {

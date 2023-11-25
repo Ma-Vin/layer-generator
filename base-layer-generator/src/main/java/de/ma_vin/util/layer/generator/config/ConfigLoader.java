@@ -280,7 +280,7 @@ public class ConfigLoader {
             if (e.getTableName() == null) {
                 e.setTableName(e.getBaseName());
             }
-            completeVersions(e);
+            result = result && completeVersions(e);
         }
         return result;
     }
@@ -435,11 +435,12 @@ public class ConfigLoader {
      *
      * @param entity entity to complete
      */
-    private void completeVersions(Entity entity) {
+    private boolean completeVersions(Entity entity) {
         if (entity.getVersions() == null) {
             entity.setVersions(Collections.emptyList());
-            return;
+            return true;
         }
+        boolean result = true;
         for (Version v : entity.getVersions()) {
             v.setParentEntity(entity);
             if (v.getAddedFields() == null) {
@@ -458,7 +459,26 @@ public class ConfigLoader {
             v.setFields(v.determineFields(entity));
             v.setReferences(v.determineReferences(entity));
             v.generateVersionName();
+
+            result = completeVersionReferences(v) && result;
         }
+        return result;
+    }
+
+    private boolean completeVersionReferences(Version version) {
+        return version.getReferences().stream()
+                .filter(r -> r.getRealTargetEntity() == null)
+                .allMatch(r -> {
+                            Optional<Entity> targetEntity = getEntity(r.getTargetEntity());
+                            if (targetEntity.isEmpty()) {
+                                logger.error(String.format("could not find target entity %s of version reference %s at version %s"
+                                        , r.getTargetEntity(), r.getReferenceName(), version.getVersionName()));
+                                return false;
+                            }
+                            r.setRealTargetEntity(targetEntity.get());
+                            return true;
+                        }
+                );
     }
 
     /**
