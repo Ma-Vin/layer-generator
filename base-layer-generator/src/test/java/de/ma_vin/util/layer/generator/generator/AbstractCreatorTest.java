@@ -60,15 +60,7 @@ public class AbstractCreatorTest {
     }
 
     protected void initDefaultMock() {
-        when(entity.getBaseName()).thenReturn(ENTITY_NAME);
-        when(entity.getTableName()).thenReturn(ENTITY_NAME);
-        when(entity.getDescription()).thenReturn("Dummy description");
-        when(entity.getIdentificationPrefix()).thenReturn("DU");
-        when(entity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
-        when(entity.getGrouping()).thenReturn(grouping);
-        when(entity.hasParent()).thenReturn(Boolean.FALSE);
-        when(entity.hasNoParent()).thenReturn(Boolean.TRUE);
-        when(entity.getGenIdIfDto()).thenReturn(Boolean.TRUE);
+        mockEntityDefault(entity);
 
         when(field.getFieldName()).thenReturn("anyField");
         when(field.getType()).thenReturn("String");
@@ -106,6 +98,18 @@ public class AbstractCreatorTest {
         } catch (IOException e) {
             fail(e);
         }
+    }
+
+    protected void mockEntityDefault(Entity entityMock) {
+        when(entityMock.getBaseName()).thenReturn(ENTITY_NAME);
+        when(entityMock.getTableName()).thenReturn(ENTITY_NAME);
+        when(entityMock.getDescription()).thenReturn("Dummy description");
+        when(entityMock.getIdentificationPrefix()).thenReturn("DU");
+        when(entityMock.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(entityMock.getGrouping()).thenReturn(grouping);
+        when(entityMock.hasParent()).thenReturn(Boolean.FALSE);
+        when(entityMock.hasNoParent()).thenReturn(Boolean.TRUE);
+        when(entityMock.getGenIdIfDto()).thenReturn(Boolean.TRUE);
     }
 
     protected BufferedWriter mockBufferedWriter(String fileKey) {

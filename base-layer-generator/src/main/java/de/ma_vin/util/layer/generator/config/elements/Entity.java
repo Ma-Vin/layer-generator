@@ -10,6 +10,7 @@ import lombok.ToString;
 
 import jakarta.xml.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -142,6 +143,36 @@ public class Entity {
                 && (versions == null || versions.stream().allMatch(r -> r.isValid(messages, this)));
     }
 
+    /**
+     * Creates a copy of this object and considers the modifications by a given version
+     *
+     * @param version a version which modifies the entity
+     * @return a new modified instance of the actual object
+     */
+    public Entity copyForVersion(Version version) {
+        Entity result = new Entity();
+
+        result.baseName = version.getVersionName();
+        result.tableName = getTableName();
+        result.models = getModels();
+        result.description = getDescription();
+        result.identificationPrefix = getIdentificationPrefix();
+        result.parent = null;
+        result.isAbstract = Boolean.FALSE;
+        result.derivedFrom = null;
+        result.genIdIfDto = getGenIdIfDto();
+        result.fields = version.getFields();
+        result.indices = Collections.emptyList();
+        result.references = version.getReferences();
+        result.versions = Collections.emptyList();
+        result.parentRefs = Collections.emptyList();
+        result.realParent = null;
+        result.realDerivedFrom = null;
+        result.grouping = getGrouping();
+
+        return result;
+    }
+
     public Models getModels() {
         if (derivedFrom != null) {
             return Models.DTO;
@@ -152,6 +183,26 @@ public class Entity {
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
     public String getBaseName() {
         return baseName;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public String getTableName() {
+        return tableName;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public String getDescription() {
+        return description;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public String getIdentificationPrefix() {
+        return identificationPrefix;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public Boolean getGenIdIfDto() {
+        return genIdIfDto;
     }
 
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
@@ -167,5 +218,10 @@ public class Entity {
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
     public List<Version> getVersions() {
         return versions;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public Grouping getGrouping() {
+        return grouping;
     }
 }

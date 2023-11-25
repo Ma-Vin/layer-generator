@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Models;
+import de.ma_vin.util.layer.generator.config.elements.Version;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,10 +14,7 @@ import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -26,6 +24,10 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
     @Mock
     private Entity parentEntity;
+    @Mock
+    private Entity copyEntity;
+    @Mock
+    private Version version;
 
     private DtoCreator cut;
 
@@ -229,7 +231,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataTransportObjectUniqueRelation() {
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
 
@@ -274,7 +276,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
     @DisplayName("Create a data transport object with an one to one relation, but the target does not support the transport model")
     @Test
     public void testCreateDataTransportObjectUniqueRelationButNonDto() {
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
@@ -313,7 +315,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataTransportObjectRelation() {
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
 
         List<String> expected = new ArrayList<>();
@@ -351,7 +353,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
     @DisplayName("Create a data transport object with an one to many relation, but the target does not support the transport model")
     @Test
     public void testCreateDataTransportObjectRelationButNotDto() {
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
         when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO);
 
@@ -388,7 +390,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataTransportObjectField() {
-        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
@@ -425,7 +427,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataTransportObjectFieldEnum() {
-        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
         when(field.getIsTypeEnum()).thenReturn(Boolean.TRUE);
         when(field.getType()).thenReturn("AnyEnum");
         when(field.getTypePackage()).thenReturn("the.enum.package");
@@ -660,7 +662,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
     public void testCreateDataTransportObjectHasSuperClass() {
         when(entity.getParent()).thenReturn("AnotherDummy");
         when(entity.getRealParent()).thenReturn(parentEntity);
-        when(entity.getFields()).thenReturn(Arrays.asList(field));
+        when(entity.getFields()).thenReturn(Collections.singletonList(field));
         when(entity.hasParent()).thenReturn(Boolean.TRUE);
         when(entity.hasNoParent()).thenReturn(Boolean.FALSE);
         when(parentEntity.getBaseName()).thenReturn("AnotherDummy");
@@ -701,7 +703,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataTransportObjectUniqueRelationShortDescription() {
-        when(entity.getReferences()).thenReturn(Arrays.asList(targetReference));
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(targetReference.getParent()).thenReturn(entity);
         when(targetReference.isList()).thenReturn(Boolean.FALSE);
         when(targetReference.getShortDescription()).thenReturn("Some description");
@@ -744,5 +746,56 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
         checkSingleFile("DummyDto.java", expected);
+    }
+
+    @Test
+    public void testCreateDataTransportObjectWithVersion() {
+        List<String> expected = getDefaultExpected();
+
+        List<String> basicExpected = new ArrayList<>();
+
+        basicExpected.add("package de.test.package.dto.group;");
+        basicExpected.add("");
+        basicExpected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        basicExpected.add("import de.test.package.dto.ITransportable;");
+        basicExpected.add("import lombok.Data;");
+        basicExpected.add("import lombok.NoArgsConstructor;");
+        basicExpected.add("");
+        basicExpected.add("/**");
+        basicExpected.add(" * Generated dto class of DummyV1");
+        basicExpected.add(" * <br>");
+        basicExpected.add(" * Dummy description");
+        basicExpected.add(" */");
+        basicExpected.add("@BaseDto(\"de.test.package.dto\")");
+        basicExpected.add("@Data");
+        basicExpected.add("@NoArgsConstructor");
+        basicExpected.add("@SuppressWarnings(\"java:S1068\")");
+        basicExpected.add("public class DummyV1Dto implements ITransportable {");
+        basicExpected.add("");
+        basicExpected.add("	/**");
+        basicExpected.add("	 * Id of DummyV1");
+        basicExpected.add("	 */");
+        basicExpected.add("	private Long id;");
+        basicExpected.add("");
+        basicExpected.add("}");
+
+        when(entity.getVersions()).thenReturn(Collections.singletonList(version));
+        when(entity.copyForVersion(eq(version))).thenReturn(copyEntity);
+        mockEntityDefault(copyEntity);
+        when(copyEntity.getBaseName()).thenReturn(ENTITY_NAME + "V1");
+        when(version.getParentEntity()).thenReturn(entity);
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
+
+        assertEquals(2, writtenFileContents.size(), "Wrong number of files");
+        assertTrue(writtenFileContents.containsKey("DummyDto.java"));
+        assertTrue(writtenFileContents.containsKey("DummyV1Dto.java"));
+
+        if (expected.size() != writtenFileContents.get("DummyDto.java").size()
+                || basicExpected.size() != writtenFileContents.get("DummyV1Dto.java").size()) {
+            logFileContents();
+        }
+        TestUtil.checkList(expected, writtenFileContents.get("DummyDto.java"));
+        TestUtil.checkList(basicExpected, writtenFileContents.get("DummyV1Dto.java"));
     }
 }

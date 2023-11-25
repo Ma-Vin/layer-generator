@@ -210,4 +210,19 @@ public class Version {
 
         return result;
     }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public String getVersionName() {
+        return versionName;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public List<Reference> getReferences() {
+        return references;
+    }
 }

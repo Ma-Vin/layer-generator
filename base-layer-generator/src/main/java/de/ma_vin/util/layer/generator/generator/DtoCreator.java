@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.annotations.model.BaseDto;
 import de.ma_vin.util.layer.generator.config.elements.Models;
+import de.ma_vin.util.layer.generator.config.elements.Version;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
@@ -97,7 +98,8 @@ public class DtoCreator extends AbstractObjectCreator {
         addAttributes(entity, dtoClazz, Models.DTO);
         addReferences(entity, dtoClazz, packageName, Models::isDto);
 
-        return writeClassFile(getPackageDir(entity, packageDir), dtoClazz);
+        return writeClassFile(getPackageDir(entity, packageDir), dtoClazz)
+                && entity.getVersions().stream().allMatch(v -> createVersionOfDataTransportObject(v, packageName, packageDir));
     }
 
     /**
@@ -150,5 +152,18 @@ public class DtoCreator extends AbstractObjectCreator {
 
     private boolean isBasicTransportable(Entity entity) {
         return Boolean.FALSE.equals(entity.getGenIdIfDto()) && Models.DTO.equals(entity.getModels());
+    }
+
+    /**
+     * Creates a version of a data transport objects
+     *
+     * @param version     Version to generate
+     * @param packageName name of the package to use
+     * @param packageDir  directory where to write at
+     * @return {@code true} if creating was successful. Otherwise {@code false}
+     */
+    private boolean createVersionOfDataTransportObject(Version version, String packageName, Optional<File> packageDir) {
+        Entity versionEntity = version.getParentEntity().copyForVersion(version);
+        return createDataTransportObject(versionEntity, packageName, packageDir);
     }
 }

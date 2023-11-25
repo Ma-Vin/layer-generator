@@ -6,6 +6,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,10 @@ public class EntityTest {
 
     @Mock
     private Version version;
+    @Mock
+    private Reference reference;
+    @Mock
+    private Field field;
 
     @BeforeEach
     public void setUp() {
@@ -177,5 +183,36 @@ public class EntityTest {
 
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testCopyForVersion() {
+        cut.setVersions(Collections.singletonList(version));
+        when(version.getFields()).thenReturn(Collections.singletonList(field));
+        when(version.getReferences()).thenReturn(Collections.singletonList(reference));
+        when(version.getVersionName()).thenReturn("baseNameV1");
+
+        Entity result = cut.copyForVersion(version);
+        assertNotNull(result, "There should be a result");
+        assertEquals("baseNameV1", result.getBaseName(), "wrong base name");
+        assertEquals(cut.getTableName(), result.getTableName(),"Wrong table name");
+        assertEquals(cut.getModels(),result.getModels(), "Wrong model");
+        assertEquals(cut.getDescription(), result.getDescription(),"Wrong description");
+        assertEquals(cut.getIdentificationPrefix(), result.getIdentificationPrefix(), "Wrong id prefix");
+        assertEquals(cut.getIsAbstract(), result.getIsAbstract(), "Wrong is abstract");
+        assertEquals(cut.getGenIdIfDto(), result.getGenIdIfDto(), "Wrong gen id info");
+        assertEquals(cut.getGrouping(), result.getGrouping(), "Wrong grouping");
+        assertNull(result.getParent(), "Parent should be null");
+        assertNull(result.getRealParent(), "realParent should be null");
+        assertNull(result.getDerivedFrom(), "derivedFrom should be null");
+        assertNull(result.getRealDerivedFrom(), "realDerivedFrom should be null");
+        assertTrue(result.getIndices().isEmpty(), "indices should be empty");
+        assertTrue(result.getVersions().isEmpty(), "versions should be empty");
+        assertTrue(result.getParentRefs().isEmpty(), "parentRefs should be empty");
+
+        assertEquals(1, result.getFields().size(), "Wrong number of fields");
+        assertTrue(result.getFields().contains(field), "the field should be contained");
+        assertEquals(1, result.getReferences().size(), "Wrong number of references");
+        assertTrue(result.getReferences().contains(reference), "the reference should be contained");
     }
 }
