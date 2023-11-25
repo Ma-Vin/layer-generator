@@ -1,33 +1,55 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-import de.ma_vin.util.layer.generator.config.elements.Entity;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class EntityTest {
+
+    private AutoCloseable openMocks;
+
+    @InjectMocks
     private Entity cut;
     private final List<String> messages = new ArrayList<>();
 
+    @Mock
+    private Version version;
+
     @BeforeEach
     public void setUp() {
-        cut = new Entity();
+        openMocks = openMocks(this);
+
         cut.setBaseName("baseName");
         cut.setTableName("tableName");
         cut.setDescription("description");
         cut.setIdentificationPrefix("identificationPrefix");
         cut.setParent("parent");
         cut.setDerivedFrom("derivedFrom");
-        cut.setFields(Collections.EMPTY_LIST);
-        cut.setIndices(Collections.EMPTY_LIST);
-        cut.setReferences(Collections.EMPTY_LIST);
+        cut.setFields(Collections.emptyList());
+        cut.setIndices(Collections.emptyList());
+        cut.setReferences(Collections.emptyList());
+        cut.setVersions(Collections.emptyList());
 
         messages.clear();
+
+        when(version.isValid(anyList(), eq(cut))).thenReturn(Boolean.TRUE);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test
@@ -65,48 +87,94 @@ public class EntityTest {
         cut.setFields(null);
         cut.setIndices(null);
         cut.setReferences(null);
+        cut.setVersions(null);
         assertTrue(cut.isValid(messages), "Entity should be valid");
         assertEquals(0, messages.size(), "Wrong number of messages");
     }
 
     @Test
-    public void testIsValidBaseName() {
+    public void testIsValidBaseNameNull() {
         cut.setBaseName(null);
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }
 
     @Test
-    public void testIsValidTableName() {
+    public void testIsValidTableNameEmptyString() {
         cut.setTableName("");
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }
 
     @Test
-    public void testIsValidDescription() {
+    public void testIsValidDescriptionEmptyString() {
         cut.setDescription("");
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }
 
     @Test
-    public void testIsValidIdentificationPrefix() {
+    public void testIsValidIdentificationPrefixEmptyString() {
         cut.setIdentificationPrefix("");
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }
 
     @Test
-    public void testIsValidParent() {
+    public void testIsValidParentEmptyString() {
         cut.setParent("");
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }
 
     @Test
-    public void testIsValidDerivedFrom() {
+    public void testIsValidDerivedFromEmptyString() {
         cut.setDerivedFrom("");
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidVersion() {
+        cut.setDerivedFrom(null);
+        cut.setVersions(Collections.singletonList(version));
+
+        assertTrue(cut.isValid(messages), "Entity should not be valid");
+    }
+
+    @Test
+    public void testIsValidVersionInvalid() {
+        when(version.isValid(anyList(), eq(cut))).thenReturn(Boolean.FALSE);
+        cut.setVersions(Collections.singletonList(version));
+
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidVersionAndDerivedFrom() {
+        cut.setVersions(Collections.singletonList(version));
+
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidVersionAndIsAbstract() {
+        cut.setVersions(Collections.singletonList(version));
+        cut.setDerivedFrom(null);
+        cut.setIsAbstract(Boolean.TRUE);
+
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
+    }
+
+    @Test
+    public void testIsValidVersionAndButNotDtoModel() {
+        cut.setVersions(Collections.singletonList(version));
+        cut.setDerivedFrom(null);
+        cut.setModels(Models.DOMAIN_DAO);
+
         assertFalse(cut.isValid(messages), "Entity should not be valid");
         assertEquals(1, messages.size(), "Wrong number of messages");
     }

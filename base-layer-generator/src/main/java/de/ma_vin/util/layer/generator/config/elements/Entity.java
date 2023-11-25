@@ -136,6 +136,9 @@ public class Entity {
                 && (indices == null || indices.stream().allMatch(i -> i.isValid(messages)))
                 && (references == null || (references.stream().allMatch(r -> r.isValid(messages))
                 && Reference.isFilterFieldValid(baseName, references, messages)))
+                && (derivedFrom == null || checkNullOrEmpty(versions, messages, "versions", "derivedFrom property is set"))
+                && (!isAbstract || checkNullOrEmpty(versions, messages, "versions", "isAbstract is true"))
+                && (getModels().isDto() || checkNullOrEmpty(versions, messages, "versions", "its not a data transport model"))
                 && (versions == null || versions.stream().allMatch(r -> r.isValid(messages, this)));
     }
 

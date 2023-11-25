@@ -108,6 +108,25 @@ public class ConfigElementsUtil {
     }
 
     /**
+     * Checks if a given list is {@code null} or empty and adds a message to hint list
+     *
+     * @param listToCheck  list to check
+     * @param messages     hint list where to a new messages at
+     * @param propertyName name of list property which is checked
+     * @param reason       reason why this property has to be {@code null} or zero size
+     * @param <T>          type of the config element at list
+     * @return {@code true} if the list of elements is {@code null} or empty.
+     * Otherwise {@code false}
+     */
+    public static <T> boolean checkNullOrEmpty(List<T> listToCheck, List<String> messages, String propertyName, String reason) {
+        if (listToCheck == null || listToCheck.isEmpty()) {
+            return true;
+        }
+        messages.add(String.format("There are entries at %s which is not allowed because of %s", propertyName, reason));
+        return false;
+    }
+
+    /**
      * Functional interface to validate an element from a list
      *
      * @param <T> type of the config element
