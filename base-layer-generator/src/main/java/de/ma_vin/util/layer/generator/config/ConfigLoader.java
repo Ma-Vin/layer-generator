@@ -434,7 +434,6 @@ public class ConfigLoader {
      * Completes the versions of an entity
      *
      * @param entity entity to complete
-     * @return {@code true} if completion was successful
      */
     private void completeVersions(Entity entity) {
         if (entity.getVersions() == null) {
