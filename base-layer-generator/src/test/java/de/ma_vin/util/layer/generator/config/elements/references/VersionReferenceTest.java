@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -17,6 +20,8 @@ public class VersionReferenceTest {
     @Mock
     private Entity entity;
 
+    private final List<String> messages = new ArrayList<>();
+
     @BeforeEach
     public void setUp() {
         cut = new VersionReference();
@@ -26,6 +31,8 @@ public class VersionReferenceTest {
         cut.setShortDescription("ShortDescription");
         cut.setRealTargetEntity(entity);
         cut.setIsOwner(Boolean.TRUE);
+
+        messages.clear();
     }
 
     @Test
@@ -46,5 +53,12 @@ public class VersionReferenceTest {
         assertEquals(Boolean.FALSE, result.getIsList(), "Wrong isList");
         assertFalse(result.isAggregated(), "Wrong isAggregated");
         assertFalse( result.isReverse(), "Wrong isReverse");
+    }
+
+    @Test
+    public void testIsValidEmptyDivergentTargetVersion(){
+        cut.setDivergentTargetVersion("");
+        assertFalse(cut.isValid(messages), "Entity should not be valid");
+        assertEquals(1, messages.size(), "Wrong number of messages");
     }
 }

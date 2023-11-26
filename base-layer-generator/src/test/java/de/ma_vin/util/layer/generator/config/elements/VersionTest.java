@@ -10,10 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -62,7 +59,11 @@ public class VersionTest {
     @Mock
     private Version baseVersion;
     @Mock
+    private Version referenceTargetVersion;
+    @Mock
     private Entity parentEntity;
+    @Mock
+    private Entity referenceTargetEntity;
 
     private final List<String> messages = new ArrayList<>();
 
@@ -71,15 +72,10 @@ public class VersionTest {
     public void setUp() {
         openMocks = openMocks(this);
 
-        when(parentEntity.getVersions()).thenReturn(Collections.singletonList(baseVersion));
-        when(parentEntity.getFields()).thenReturn(Arrays.asList(entityField, removedField));
-        when(parentEntity.getReferences()).thenReturn(Arrays.asList(entityReference, removedReference));
-        when(parentEntity.getBaseName()).thenReturn(DEFAULT_ENTITY_NAME);
-
-        when(baseVersion.determineFields(eq(parentEntity))).thenReturn(Arrays.asList(entityField, removedField, baseVersionField));
-        when(baseVersion.determineReferences(eq(parentEntity))).thenReturn(Arrays.asList(entityReference, removedReference, baseVersionReference));
-        doCallRealMethod().when(baseVersion).setVersionId(anyString());
-        baseVersion.setVersionId(DEFAULT_BASE_VERSION_ID);
+        mockEntityMocks();
+        mockReferenceMocks();
+        mockFieldMocks();
+        mockVersionMocks();
 
         cut.setAddedFields(Collections.singletonList(addedField));
         cut.setAddedReferences(Collections.singletonList(addedReference));
@@ -88,29 +84,66 @@ public class VersionTest {
         cut.setVersionId(DEFAULT_VERSION_ID);
         cut.setBaseVersionId(DEFAULT_BASE_VERSION_ID);
 
-        when(addedField.getFieldName()).thenReturn(DEFAULT_ADDED_FIELD_NAME);
-        when(addedField.isValid(anyList())).thenReturn(Boolean.TRUE);
-        doCallRealMethod().when(addedField).getAsField();
-        when(baseVersionField.getFieldName()).thenReturn(DEFAULT_BASE_VERSION_FIELD_NAME);
-        when(baseVersionField.isValid(anyList())).thenReturn(Boolean.TRUE);
-        when(entityField.getFieldName()).thenReturn(DEFAULT_ENTITY_FIELD_NAME);
-        when(entityField.isValid(anyList())).thenReturn(Boolean.TRUE);
-        when(removedField.getFieldName()).thenReturn(DEFAULT_REMOVED_FIELD_NAME);
-        when(removedField.isValid(anyList())).thenReturn(Boolean.TRUE);
+        messages.clear();
+    }
 
+    private void mockEntityMocks() {
+        when(parentEntity.getVersions()).thenReturn(Collections.singletonList(baseVersion));
+        when(parentEntity.getFields()).thenReturn(Arrays.asList(entityField, removedField));
+        when(parentEntity.getReferences()).thenReturn(Arrays.asList(entityReference, removedReference));
+        when(parentEntity.getBaseName()).thenReturn(DEFAULT_ENTITY_NAME);
+
+        when(referenceTargetEntity.getVersions()).thenReturn(Collections.singletonList(referenceTargetVersion));
+        when(referenceTargetEntity.getFields()).thenReturn(Collections.emptyList());
+        when(referenceTargetEntity.getReferences()).thenReturn(Collections.emptyList());
+        when(referenceTargetEntity.getBaseName()).thenReturn(DEFAULT_ENTITY_NAME + "2");
+    }
+
+    private void mockReferenceMocks() {
         when(addedReference.getReferenceName()).thenReturn(DEFAULT_ADDED_REFERENCE_NAME);
         when(addedReference.isValid(anyList())).thenReturn(Boolean.TRUE);
         doCallRealMethod().when(addedReference).getAsReference();
+
         when(baseVersionReference.getReferenceName()).thenReturn(DEFAULT_BASE_VERSION_REFERENCE_NAME);
         when(baseVersionReference.isValid(anyList())).thenReturn(Boolean.TRUE);
+
         when(entityReference.getReferenceName()).thenReturn(DEFAULT_ENTITY_REFERENCE_NAME);
         when(entityReference.isValid(anyList())).thenReturn(Boolean.TRUE);
+        when(entityReference.getRealTargetEntity()).thenReturn(referenceTargetEntity);
+
         when(removedReference.getReferenceName()).thenReturn(DEFAULT_REMOVED_REFERENCE_NAME);
         when(removedReference.isValid(anyList())).thenReturn(Boolean.TRUE);
+    }
 
-        when(baseVersion.getBaseVersionId()).thenReturn(DEFAULT_BASE_VERSION_ID);
+    private void mockFieldMocks() {
+        when(addedField.getFieldName()).thenReturn(DEFAULT_ADDED_FIELD_NAME);
+        when(addedField.isValid(anyList())).thenReturn(Boolean.TRUE);
+        doCallRealMethod().when(addedField).getAsField();
 
-        messages.clear();
+        when(baseVersionField.getFieldName()).thenReturn(DEFAULT_BASE_VERSION_FIELD_NAME);
+        when(baseVersionField.isValid(anyList())).thenReturn(Boolean.TRUE);
+
+        when(entityField.getFieldName()).thenReturn(DEFAULT_ENTITY_FIELD_NAME);
+        when(entityField.isValid(anyList())).thenReturn(Boolean.TRUE);
+
+        when(removedField.getFieldName()).thenReturn(DEFAULT_REMOVED_FIELD_NAME);
+        when(removedField.isValid(anyList())).thenReturn(Boolean.TRUE);
+    }
+
+    private void mockVersionMocks() {
+        when(baseVersion.determineFields(eq(parentEntity))).thenReturn(Arrays.asList(entityField, removedField, baseVersionField));
+        when(baseVersion.determineReferences(eq(parentEntity))).thenReturn(Arrays.asList(entityReference, removedReference, baseVersionReference));
+        doCallRealMethod().when(baseVersion).setVersionId(anyString());
+        doCallRealMethod().when(baseVersion).getVersionId();
+
+        baseVersion.setVersionId(DEFAULT_BASE_VERSION_ID);
+
+        when(referenceTargetVersion.determineFields(any())).thenReturn(Collections.emptyList());
+        when(referenceTargetVersion.determineReferences(any())).thenReturn(Collections.emptyList());
+        doCallRealMethod().when(referenceTargetVersion).setVersionId(anyString());
+        doCallRealMethod().when(referenceTargetVersion).getVersionId();
+
+        referenceTargetVersion.setVersionId(DEFAULT_VERSION_ID);
     }
 
     @AfterEach
@@ -284,4 +317,37 @@ public class VersionTest {
         assertEquals("abc", cut.getVersionName(), "Wrong version name");
     }
 
+    @Test
+    public void testDetermineReferenceTargetVersionEqualVersionId() {
+        Optional<Version> result = cut.determineReferenceTargetVersion(entityReference);
+
+        assertNotNull(result, "There should be a result");
+        assertTrue(result.isPresent(), "the result should be present");
+        assertEquals(referenceTargetVersion, result.get(), "Wrong version");
+    }
+
+    @Test
+    public void testDetermineReferenceTargetVersionDifferentVersionId() {
+        when(entityReference.getReferenceName()).thenReturn(DEFAULT_ADDED_REFERENCE_NAME);
+        when(addedReference.getDivergentTargetVersion()).thenReturn(DEFAULT_BASE_VERSION_ID);
+        referenceTargetVersion.setVersionId(DEFAULT_BASE_VERSION_ID);
+
+        Optional<Version> result = cut.determineReferenceTargetVersion(entityReference);
+
+        assertNotNull(result, "There should be a result");
+        assertTrue(result.isPresent(), "the result should be present");
+        assertEquals(referenceTargetVersion, result.get(), "Wrong version");
+
+    }
+
+    @Test
+    public void testDetermineReferenceTargetVersionNon() {
+        referenceTargetVersion.setVersionId(DEFAULT_BASE_VERSION_ID);
+
+        Optional<Version> result = cut.determineReferenceTargetVersion(entityReference);
+
+        assertNotNull(result, "There should be a result");
+        assertTrue(result.isEmpty(), "the result should be empty");
+
+    }
 }

@@ -211,9 +211,32 @@ public class Version {
         return result;
     }
 
+    /**
+     * Determines the version of the target for a given reference
+     *
+     * @param reference the references whose target version is asked for
+     * @return an optional of the determined version. {@link Optional#empty()} if there is non
+     */
+    public Optional<Version> determineReferenceTargetVersion(Reference reference) {
+        String targetVersionId = addedReferences.stream()
+                .filter(r -> r.getReferenceName().equals(reference.getReferenceName()) && r.getDivergentTargetVersion() != null)
+                .map(VersionReference::getDivergentTargetVersion)
+                .findFirst()
+                .orElse(getVersionId());
+
+        return reference.getRealTargetEntity().getVersions().stream()
+                .filter(v -> v.getVersionId().equals(targetVersionId))
+                .findFirst();
+    }
+
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
     public String getVersionName() {
         return versionName;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public String getVersionId() {
+        return versionId;
     }
 
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
