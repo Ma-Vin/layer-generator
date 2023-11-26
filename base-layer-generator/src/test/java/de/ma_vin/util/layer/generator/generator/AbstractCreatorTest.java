@@ -25,6 +25,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 public class AbstractCreatorTest {
     public static final String BASE_PACKAGE = "de.test.package";
     public static final String ENTITY_NAME = "Dummy";
+    public static final String TARGET_ENTITY_NAME = "Target";
 
     protected AutoCloseable openMocks;
 
@@ -69,11 +70,11 @@ public class AbstractCreatorTest {
 
         when(grouping.getGroupingPackage()).thenReturn("group");
 
-        setMockReturnsReference(targetReference, "TargetRef", "Target", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(targetReference, "TargetRef", TARGET_ENTITY_NAME, null, null, Boolean.TRUE, Boolean.TRUE);
         setMockReturnsReference(targetReference, null, targetEntity, null);
 
-        when(targetEntity.getBaseName()).thenReturn("Target");
-        when(targetEntity.getTableName()).thenReturn("Target");
+        when(targetEntity.getBaseName()).thenReturn(TARGET_ENTITY_NAME);
+        when(targetEntity.getTableName()).thenReturn(TARGET_ENTITY_NAME);
         when(targetEntity.getDescription()).thenReturn("Target description");
         when(targetEntity.getIdentificationPrefix()).thenReturn("TA");
         when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);

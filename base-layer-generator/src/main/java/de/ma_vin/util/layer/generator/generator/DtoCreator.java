@@ -164,6 +164,14 @@ public class DtoCreator extends AbstractObjectCreator {
      */
     private boolean createVersionOfDataTransportObject(Version version, String packageName, Optional<File> packageDir) {
         Entity versionEntity = version.getParentEntity().copyForVersion(version);
+        for (int i = 0; i < versionEntity.getReferences().size(); i++) {
+            Optional<Version> targetVersion = version.determineReferenceTargetVersion(versionEntity.getReferences().get(i));
+            if (targetVersion.isPresent()) {
+                Reference versionReference = versionEntity.getReferences().get(i).copy();
+                versionReference.setTargetEntity(targetVersion.get().getVersionName());
+                versionEntity.getReferences().set(i, versionReference);
+            }
+        }
         return createDataTransportObject(versionEntity, packageName, packageDir);
     }
 }

@@ -3,6 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.config.elements.Version;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +29,12 @@ public class DtoCreatorTest extends AbstractCreatorTest {
     private Entity copyEntity;
     @Mock
     private Version version;
+    @Mock
+    private Version targetVersion;
 
     private DtoCreator cut;
 
-    private List<String> directoriesWhereRequestedToWrite = new ArrayList<>();
+    private final List<String> directoriesWhereRequestedToWrite = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
@@ -783,7 +786,221 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         when(entity.copyForVersion(eq(version))).thenReturn(copyEntity);
         mockEntityDefault(copyEntity);
         when(copyEntity.getBaseName()).thenReturn(ENTITY_NAME + "V1");
+        when(version.getVersionName()).thenReturn(ENTITY_NAME + "V1");
         when(version.getParentEntity()).thenReturn(entity);
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
+
+        assertEquals(2, writtenFileContents.size(), "Wrong number of files");
+        assertTrue(writtenFileContents.containsKey("DummyDto.java"));
+        assertTrue(writtenFileContents.containsKey("DummyV1Dto.java"));
+
+        if (expected.size() != writtenFileContents.get("DummyDto.java").size()
+                || basicExpected.size() != writtenFileContents.get("DummyV1Dto.java").size()) {
+            logFileContents();
+        }
+        TestUtil.checkList(expected, writtenFileContents.get("DummyDto.java"));
+        TestUtil.checkList(basicExpected, writtenFileContents.get("DummyV1Dto.java"));
+    }
+
+    @Test
+    public void testCreateDataTransportObjectWithVersionAndTargetWithVersion() {
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
+        expected.add("@Data");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("@ToString(exclude = {\"targetRef\"})");
+        expected.add("public class DummyDto implements ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Some description");
+        expected.add("	 */");
+        expected.add("	private TargetDto targetRef;");
+        expected.add("");
+        expected.add("}");
+
+        List<String> basicExpected = new ArrayList<>();
+        basicExpected.add("package de.test.package.dto.group;");
+        basicExpected.add("");
+        basicExpected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        basicExpected.add("import de.test.package.dto.ITransportable;");
+        basicExpected.add("import lombok.Data;");
+        basicExpected.add("import lombok.EqualsAndHashCode;");
+        basicExpected.add("import lombok.NoArgsConstructor;");
+        basicExpected.add("import lombok.ToString;");
+        basicExpected.add("");
+        basicExpected.add("/**");
+        basicExpected.add(" * Generated dto class of DummyV1");
+        basicExpected.add(" * <br>");
+        basicExpected.add(" * Dummy description");
+        basicExpected.add(" */");
+        basicExpected.add("@BaseDto(\"de.test.package.dto\")");
+        basicExpected.add("@Data");
+        basicExpected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
+        basicExpected.add("@NoArgsConstructor");
+        basicExpected.add("@SuppressWarnings(\"java:S1068\")");
+        basicExpected.add("@ToString(exclude = {\"targetRef\"})");
+        basicExpected.add("public class DummyV1Dto implements ITransportable {");
+        basicExpected.add("");
+        basicExpected.add("	/**");
+        basicExpected.add("	 * Id of DummyV1");
+        basicExpected.add("	 */");
+        basicExpected.add("	private Long id;");
+        basicExpected.add("");
+        basicExpected.add("	/**");
+        basicExpected.add("	 * Some description");
+        basicExpected.add("	 */");
+        basicExpected.add("	private TargetV2Dto targetRef;");
+        basicExpected.add("");
+        basicExpected.add("}");
+
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(targetReference.getShortDescription()).thenReturn("Some description");
+
+        when(entity.getVersions()).thenReturn(Collections.singletonList(version));
+        when(entity.copyForVersion(eq(version))).thenReturn(copyEntity);
+
+
+        mockEntityDefault(copyEntity);
+        when(copyEntity.getBaseName()).thenReturn(ENTITY_NAME + "V1");
+        List<Reference> modifiableList = new ArrayList<>(Collections.singletonList(targetReference));
+        when(copyEntity.getReferences()).thenReturn(modifiableList);
+
+        when(version.getVersionName()).thenReturn(ENTITY_NAME + "V1");
+        when(version.getParentEntity()).thenReturn(entity);
+        when(version.determineReferenceTargetVersion(eq(targetReference))).thenReturn(Optional.of(targetVersion));
+
+        when(targetVersion.getVersionName()).thenReturn(TARGET_ENTITY_NAME + "V2");
+        when(targetEntity.getVersions()).thenReturn(Collections.singletonList(targetVersion));
+
+
+        assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
+
+        assertEquals(2, writtenFileContents.size(), "Wrong number of files");
+        assertTrue(writtenFileContents.containsKey("DummyDto.java"));
+        assertTrue(writtenFileContents.containsKey("DummyV1Dto.java"));
+
+        if (expected.size() != writtenFileContents.get("DummyDto.java").size()
+                || basicExpected.size() != writtenFileContents.get("DummyV1Dto.java").size()) {
+            logFileContents();
+        }
+        TestUtil.checkList(expected, writtenFileContents.get("DummyDto.java"));
+        TestUtil.checkList(basicExpected, writtenFileContents.get("DummyV1Dto.java"));
+    }
+
+    @Test
+    public void testCreateDataTransportObjectWithVersionAndEqualTargetVersion() {
+        List<String> expected = new ArrayList<>();
+        expected.add("package de.test.package.dto.group;");
+        expected.add("");
+        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import de.test.package.dto.ITransportable;");
+        expected.add("import lombok.Data;");
+        expected.add("import lombok.EqualsAndHashCode;");
+        expected.add("import lombok.NoArgsConstructor;");
+        expected.add("import lombok.ToString;");
+        expected.add("");
+        expected.add("/**");
+        expected.add(" * Generated dto class of Dummy");
+        expected.add(" * <br>");
+        expected.add(" * Dummy description");
+        expected.add(" */");
+        expected.add("@BaseDto(\"de.test.package.dto\")");
+        expected.add("@Data");
+        expected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
+        expected.add("@NoArgsConstructor");
+        expected.add("@SuppressWarnings(\"java:S1068\")");
+        expected.add("@ToString(exclude = {\"targetRef\"})");
+        expected.add("public class DummyDto implements ITransportable {");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Id of Dummy");
+        expected.add("	 */");
+        expected.add("	private Long id;");
+        expected.add("");
+        expected.add("	/**");
+        expected.add("	 * Some description");
+        expected.add("	 */");
+        expected.add("	private TargetDto targetRef;");
+        expected.add("");
+        expected.add("}");
+
+        List<String> basicExpected = new ArrayList<>();
+        basicExpected.add("package de.test.package.dto.group;");
+        basicExpected.add("");
+        basicExpected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        basicExpected.add("import de.test.package.dto.ITransportable;");
+        basicExpected.add("import lombok.Data;");
+        basicExpected.add("import lombok.EqualsAndHashCode;");
+        basicExpected.add("import lombok.NoArgsConstructor;");
+        basicExpected.add("import lombok.ToString;");
+        basicExpected.add("");
+        basicExpected.add("/**");
+        basicExpected.add(" * Generated dto class of DummyV1");
+        basicExpected.add(" * <br>");
+        basicExpected.add(" * Dummy description");
+        basicExpected.add(" */");
+        basicExpected.add("@BaseDto(\"de.test.package.dto\")");
+        basicExpected.add("@Data");
+        basicExpected.add("@EqualsAndHashCode(exclude = {\"targetRef\"})");
+        basicExpected.add("@NoArgsConstructor");
+        basicExpected.add("@SuppressWarnings(\"java:S1068\")");
+        basicExpected.add("@ToString(exclude = {\"targetRef\"})");
+        basicExpected.add("public class DummyV1Dto implements ITransportable {");
+        basicExpected.add("");
+        basicExpected.add("	/**");
+        basicExpected.add("	 * Id of DummyV1");
+        basicExpected.add("	 */");
+        basicExpected.add("	private Long id;");
+        basicExpected.add("");
+        basicExpected.add("	/**");
+        basicExpected.add("	 * Some description");
+        basicExpected.add("	 */");
+        basicExpected.add("	private TargetDto targetRef;");
+        basicExpected.add("");
+        basicExpected.add("}");
+
+        when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
+        when(targetReference.getParent()).thenReturn(entity);
+        when(targetReference.isList()).thenReturn(Boolean.FALSE);
+        when(targetReference.getShortDescription()).thenReturn("Some description");
+
+        when(entity.getVersions()).thenReturn(Collections.singletonList(version));
+        when(entity.copyForVersion(eq(version))).thenReturn(copyEntity);
+
+
+        mockEntityDefault(copyEntity);
+        when(copyEntity.getBaseName()).thenReturn(ENTITY_NAME + "V1");
+        List<Reference> modifiableList = new ArrayList<>(Collections.singletonList(targetReference));
+        when(copyEntity.getReferences()).thenReturn(modifiableList);
+
+        when(version.getVersionName()).thenReturn(ENTITY_NAME + "V1");
+        when(version.getParentEntity()).thenReturn(entity);
+        when(version.determineReferenceTargetVersion(eq(targetReference))).thenReturn(Optional.empty());
+
 
         assertTrue(cut.createDataTransportObject(entity, BASE_PACKAGE + ".dto", Optional.of(basePackageDir)));
 
