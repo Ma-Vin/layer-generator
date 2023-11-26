@@ -3,6 +3,7 @@ package de.ma_vin.util.layer.generator.config.elements.references;
 import de.ma_vin.util.layer.generator.config.elements.Version;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +24,7 @@ public class VersionReference extends AbstractBasicReference {
      * Possibility to references another version than the owner {@link Version#getVersionId()} (if some target entity exists with a version with the same id)
      * or the non version entity (if not any target entity exists with a version)
      */
+    @XmlAttribute
     private String divergentTargetVersion;
 
     public Reference getAsReference() {
