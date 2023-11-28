@@ -179,6 +179,7 @@ public class Version {
 
         determineParentFields(parentEntity).stream()
                 .filter(f -> removedFieldNames == null || !removedFieldNames.contains(f.getFieldName()))
+                .filter(f -> result.stream().noneMatch(f2 -> f2.getFieldName().equals(f.getFieldName())))
                 .forEach(result::add);
         return result;
     }
@@ -206,6 +207,7 @@ public class Version {
 
         determineBaseReferences(parentEntity).stream()
                 .filter(r -> removedReferenceNames == null || !removedReferenceNames.contains(r.getReferenceName()))
+                .filter(r -> result.stream().noneMatch(r2 -> r2.getReferenceName().equals(r.getReferenceName())))
                 .forEach(result::add);
 
         return result;

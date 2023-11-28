@@ -259,6 +259,21 @@ public class VersionTest {
     }
 
     @Test
+    public void testDetermineFieldsOverrideExisting() {
+        when(addedField.getFieldName()).thenReturn(DEFAULT_ENTITY_FIELD_NAME);
+
+        List<Field> result = cut.determineFields(parentEntity);
+
+        assertNotNull(result, "There should be a result");
+        assertEquals(2, result.size(), "Wrong number of results");
+        assertTrue(result.stream().anyMatch(f -> DEFAULT_ENTITY_FIELD_NAME.equals(f.getFieldName())), "field name should be contained");
+        assertFalse(result.stream().anyMatch(f -> DEFAULT_ADDED_FIELD_NAME.equals(f.getFieldName())), "addedField name should not be contained");
+        assertTrue(result.contains(baseVersionField), "baseVersionField should be contained");
+        assertFalse(result.contains(entityField), "entityField should not be contained");
+        assertFalse(result.contains(removedField), "removedField should not be contained");
+    }
+
+    @Test
     public void testDetermineReferences() {
         List<Reference> result = cut.determineReferences(parentEntity);
 
@@ -284,6 +299,22 @@ public class VersionTest {
         assertTrue(result.contains(entityReference), "entityReference should be contained");
         assertTrue(result.contains(removedReference), "removedReference should be contained");
     }
+
+    @Test
+    public void testDetermineReferencesOverrideExisting() {
+        when(addedReference.getReferenceName()).thenReturn(DEFAULT_ENTITY_REFERENCE_NAME);
+
+        List<Reference> result = cut.determineReferences(parentEntity);
+
+        assertNotNull(result, "There should be a result");
+        assertEquals(2, result.size(), "Wrong number of results");
+        assertTrue(result.stream().anyMatch(r -> DEFAULT_ENTITY_REFERENCE_NAME.equals(r.getReferenceName())), "reference name should be contained");
+        assertFalse(result.stream().anyMatch(r -> DEFAULT_ADDED_REFERENCE_NAME.equals(r.getReferenceName())), "addedReference name should not be contained");
+        assertTrue(result.contains(baseVersionReference), "baseVersionReference should be contained");
+        assertFalse(result.contains(entityReference), "entityReference should not be contained");
+        assertFalse(result.contains(removedReference), "removedReference should not be contained");
+    }
+
 
     @Test
     public void testGenerateVersionName() {
