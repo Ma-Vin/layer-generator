@@ -107,6 +107,9 @@ public class Entity {
     private List<Version> versions;
 
     @XmlTransient
+    private Version actualVersion;
+
+    @XmlTransient
     private List<Reference> parentRefs;
 
     @XmlTransient
@@ -152,7 +155,8 @@ public class Entity {
     public Entity copyForVersion(Version version) {
         Entity result = new Entity();
 
-        result.baseName = version.getVersionName();
+        result.actualVersion = version;
+        result.baseName = getBaseName();
         result.tableName = getTableName();
         result.models = getModels();
         result.description = getDescription();
@@ -180,9 +184,11 @@ public class Entity {
         return models != null ? models : Models.DOMAIN_DAO_DTO;
     }
 
-    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    /**
+     * @return the name of the actual version of this entity if there exists any. the basename otherwise
+     */
     public String getBaseName() {
-        return baseName;
+        return actualVersion == null ? baseName : actualVersion.getVersionName();
     }
 
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
