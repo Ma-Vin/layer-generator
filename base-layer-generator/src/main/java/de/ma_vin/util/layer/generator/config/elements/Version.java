@@ -110,7 +110,7 @@ public class Version {
                 && validateNonRequired(versionName, messages, "versionName")
                 && validateNamesCompareToElementList(removedFieldNames, messages, "removedFieldNames", determineParentFields(parentEntity), Field::getFieldName)
                 && validateList(addedFields, messages, VersionField::isValid)
-                && validateNamesCompareToElementList(removedReferenceNames, messages, "removedReferenceNames", determineParentReferences(parentEntity), Reference::getReferenceName)
+                && validateNamesCompareToElementList(removedReferenceNames, messages, "removedReferenceNames", determineBaseReferences(parentEntity), Reference::getReferenceName)
                 && validateList(addedReferences, messages, VersionReference::isValid);
     }
 
@@ -189,7 +189,7 @@ public class Version {
      * @param parentEntity the parent {@link Entity}
      * @return List of {@link Reference}s by iterating through all parent {@link Version}s and the parent {@link Entity}
      */
-    private List<Reference> determineParentReferences(Entity parentEntity) {
+    private List<Reference> determineBaseReferences(Entity parentEntity) {
         Optional<Version> determinedBaseVersion = determineBaseVersion(parentEntity);
         return determinedBaseVersion.isEmpty() ? parentEntity.getReferences() : determinedBaseVersion.get().determineReferences(parentEntity);
     }
@@ -204,7 +204,7 @@ public class Version {
     public List<Reference> determineReferences(Entity parentEntity) {
         List<Reference> result = new ArrayList<>(addedReferences == null ? Collections.emptyList() : addedReferences.stream().map(VersionReference::getAsReference).toList());
 
-        determineParentReferences(parentEntity).stream()
+        determineBaseReferences(parentEntity).stream()
                 .filter(r -> removedReferenceNames == null || !removedReferenceNames.contains(r.getReferenceName()))
                 .forEach(result::add);
 
