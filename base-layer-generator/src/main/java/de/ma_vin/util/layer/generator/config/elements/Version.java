@@ -38,6 +38,12 @@ public class Version {
     private Entity parentEntity;
 
     /**
+     * The derived Entity from this version.
+     */
+    @XmlTransient
+    private Entity versionEntity;
+
+    /**
      * identification of the version
      */
     @XmlAttribute(required = true)

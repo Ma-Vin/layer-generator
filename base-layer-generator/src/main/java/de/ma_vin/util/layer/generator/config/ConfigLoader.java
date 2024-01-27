@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.xml.sax.SAXException;
 import org.yaml.snakeyaml.LoaderOptions;
@@ -178,6 +179,10 @@ public class ConfigLoader {
             logger.error("Completion of filter fields at references could not be completed");
             return false;
         }
+        if (!completeVersions()) {
+            logger.error("Completion of versions could not be completed");
+            return false;
+        }
         config.setUseIdGenerator(config.getIdGeneratorPackage() != null && config.getIdGeneratorClass() != null);
         return true;
     }
@@ -280,7 +285,6 @@ public class ConfigLoader {
             if (e.getTableName() == null) {
                 e.setTableName(e.getBaseName());
             }
-            result = result && completeVersions(e);
         }
         return result;
     }
@@ -431,9 +435,33 @@ public class ConfigLoader {
     }
 
     /**
+     * Completes all versions and transforms them to an entity with an actual version (whose references considering version entities also)
+     *
+     * @return {@code true} if completion was successful
+     */
+    private boolean completeVersions() {
+        if (!completeEntityIterator(this::completeVersions)) {
+            return false;
+        }
+        transformVersionsToEntities();
+        return true;
+    }
+
+    /**
+     * Completes the versions of an entity list
+     *
+     * @param entities list of entities to complete
+     * @return {@code true} if completion was successful
+     */
+    private boolean completeVersions(List<Entity> entities) {
+        return entities.stream().allMatch(this::completeVersions);
+    }
+
+    /**
      * Completes the versions of an entity
      *
      * @param entity entity to complete
+     * @return {@code true} if completion was successful
      */
     private boolean completeVersions(Entity entity) {
         if (entity.getVersions() == null) {
@@ -479,6 +507,64 @@ public class ConfigLoader {
                             return true;
                         }
                 );
+    }
+
+    /**
+     * Transform the existing versions at base entities to an entity with an actual version.
+     * All references and parent references will be created in a way that they point to a version entity (The references at {@link Version} do not so)
+     */
+    private void transformVersionsToEntities() {
+        List<Entity> versionEntities = new ArrayList<>();
+        completeEntityIterator(entities -> {
+            entities.forEach(e ->
+                    e.getVersions().forEach(v -> {
+                        Entity versionEntity = e.copyForVersion(v);
+                        versionEntities.add(versionEntity);
+                        v.setVersionEntity(versionEntity);
+                    })
+            );
+            return true;
+        });
+
+        versionEntities.forEach(this::transformVersionReferences);
+    }
+
+    /**
+     * Transforms the given references (which are pointing to non version entities) of a version entity to a new reference which points to a version entity also.
+     *
+     * @param entity the version entity whose references should be replaced
+     */
+    private void transformVersionReferences(Entity entity) {
+        List<Reference> references = entity.getReferences().stream()
+                .map(r -> {
+                    Reference updatedReference = r.copy();
+                    r.setParent(entity);
+                    entity.getActualVersion()
+                            .determineReferenceTargetVersion(r)
+                            .ifPresent(version -> r.setRealTargetEntity(version.getVersionEntity()));
+                    return updatedReference;
+                }).toList();
+
+        entity.setReferences(references);
+
+        List<Reference> parentReferences = entity.getParentRefs().stream()
+                .map(r -> {
+                    Reference updatedReference = r.copy();
+                    updatedReference.setParent(entity);
+                    r.getRealTargetEntity().getReferences().stream()
+                            .filter(r2 -> r2.getReferenceName().equals(r.getReferenceName()))
+                            .findFirst()
+                            .flatMap(r2 -> r.getRealTargetEntity().getVersions().stream()
+                                    .filter(v -> v.determineReferenceTargetVersion(r2)
+                                            .filter(v2 -> v2.getVersionEntity().equals(entity))
+                                            .isPresent())
+                                    .findFirst())
+                            .ifPresent(v -> updatedReference.setRealTargetEntity(v.getVersionEntity()));
+
+                    return updatedReference;
+                }).toList();
+
+        entity.setParentRefs(parentReferences);
     }
 
     /**

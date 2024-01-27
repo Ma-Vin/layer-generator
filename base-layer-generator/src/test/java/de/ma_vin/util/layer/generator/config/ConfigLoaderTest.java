@@ -174,6 +174,7 @@ public class ConfigLoaderTest {
         doAnswer(a -> when(entity.getRealDerivedFrom()).thenReturn(a.getArgument(0)))
                 .when(entity).setRealDerivedFrom(any());
         doAnswer(a -> when(entity.getRealParent()).thenReturn(a.getArgument(0))).when(entity).setRealParent(any());
+        doCallRealMethod().when(entity).copyForVersion(any());
     }
 
     @Test
