@@ -1,6 +1,6 @@
 package de.ma_vin.util.layer.generator.generator;
 
-import de.ma_vin.util.layer.generator.config.ConfigLoader;
+import de.ma_vin.util.layer.generator.config.loader.ConfigLoader;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.AfterEach;

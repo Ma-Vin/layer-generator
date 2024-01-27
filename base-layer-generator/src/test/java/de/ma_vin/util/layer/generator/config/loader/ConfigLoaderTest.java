@@ -1,4 +1,4 @@
-package de.ma_vin.util.layer.generator.config;
+package de.ma_vin.util.layer.generator.config.loader;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,6 +10,7 @@ import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.fields.FieldSorting;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
+import de.ma_vin.util.layer.generator.config.loader.ConfigLoader;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

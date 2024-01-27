@@ -1,4 +1,4 @@
-package de.ma_vin.util.layer.generator.config;
+package de.ma_vin.util.layer.generator.config.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.ma_vin.util.layer.generator.config.elements.*;
