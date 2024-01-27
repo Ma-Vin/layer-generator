@@ -39,7 +39,7 @@ public class ConfigLoaderTest {
     private static final String GROUPING_FIELD_NAME = "GroupingFieldName";
     private static final String FIELD_LIST = FIELD_NAME;
 
-    AutoCloseable openMocks;
+    private AutoCloseable openMocks;
 
     @Mock
     private File configFile;
@@ -554,19 +554,4 @@ public class ConfigLoaderTest {
         verify(derivedEntity).setRealDerivedFrom(any());
     }
 
-    @DisplayName("Load wrong file type")
-    @Test
-    public void testLoadInvalidFileType() {
-        when(configFile.getName()).thenReturn("testFile.txt");
-
-        assertFalse(cut.load(), "A wrong file type should not be loaded");
-    }
-
-    @DisplayName("Load file without file ending")
-    @Test
-    public void testLoadWithoutFileEnding() {
-        when(configFile.getName()).thenReturn("testFile");
-
-        assertFalse(cut.load(), "A file without file ending should not be loaded");
-    }
 }
