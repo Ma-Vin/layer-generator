@@ -30,11 +30,9 @@ public class ListCompleterTest extends AbstractCompleterTest {
     private void mockEntityDefault() {
         doAnswer(a -> when(config.getEntities()).thenReturn(a.getArgument(0))).when(config).setEntities(anyList());
 
-        when(entity.getReferences()).thenReturn(Collections.emptyList());
         when(entity.getFields()).thenReturn(Collections.emptyList());
         when(entity.getIndices()).thenReturn(Collections.emptyList());
 
-        when(groupingEntity.getReferences()).thenReturn(Collections.emptyList());
         when(groupingEntity.getFields()).thenReturn(Collections.emptyList());
         when(groupingEntity.getIndices()).thenReturn(Collections.emptyList());
     }

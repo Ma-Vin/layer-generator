@@ -1,22 +1,22 @@
 package de.ma_vin.util.layer.generator.config.loader;
 
-import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Completes list properties of a {@link Config} by removing {@code null} lists
+ * Completes list properties of a {@link de.ma_vin.util.layer.generator.config.elements.Config} by removing {@code null} lists
  */
 public class ListCompleter extends AbstractCompleter {
 
-    public ListCompleter(){
-        super("null list removing", 1);
+    public ListCompleter(ILogWrapper logger) {
+        super("null list removing", 1, logger);
     }
 
     @Override
-    public boolean complete(Config config) {
+    protected boolean complete() {
         if (config.getEntities() == null) {
             config.setEntities(new ArrayList<>());
         }
@@ -29,7 +29,7 @@ public class ListCompleter extends AbstractCompleter {
                     .forEach(g -> g.setEntities(new ArrayList<>()));
         }
 
-        return completeEntityIterator(this::removeNullList, config);
+        return completeEntityIterator(this::removeNullList);
     }
 
     /**

@@ -230,22 +230,6 @@ public class ConfigLoaderTest {
     }
 
     @Test
-    public void testCompleteInvalidRefTarget() {
-        when(reference.getTargetEntity()).thenReturn(GROUPING_ENTITY_NAME + "1");
-
-        boolean result = cut.complete();
-        assertFalse(result, "The result of completion should be false");
-
-        assertEquals(0, entityParentReferences.size(), "Wrong number of set parent references at entity");
-
-        assertEquals(0, groupingEntityParentReferences.size(), "Wrong number of set parent references at grouping entity");
-
-        verify(reference, never()).setParent(eq(entity));
-        verify(reference, never()).setRealTargetEntity(eq(groupingEntity));
-        verify(reference, never()).setRealFilterField(any());
-    }
-
-    @Test
     public void testCompleteSuperClass() {
         Entity parentEntity = mock(Entity.class);
         defaultMockEntity(parentEntity, "ParentEntity", null, null, null, new ArrayList<>());

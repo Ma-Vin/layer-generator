@@ -2,28 +2,35 @@ package de.ma_vin.util.layer.generator.config.loader;
 
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import lombok.AllArgsConstructor;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Interface which describes a completer of a {@link de.ma_vin.util.layer.generator.config.elements.Config}
  */
 @Data
-@AllArgsConstructor
 public abstract class AbstractCompleter {
 
     private final String failMessageTextPart;
     private final int executionPriority;
+    protected final ILogWrapper logger;
+
+    protected Config config;
 
     /**
      * Completes a given configuration for a concrete aspect
      *
-     * @param config the configuration to complete
      * @return {@code true} if completion was successful. {@code false} otherwise
      */
-    public abstract boolean complete(Config config);
+    protected abstract boolean complete();
+
+    public boolean complete(Config config) {
+        this.config = config;
+        return complete();
+    }
 
     /**
      * @return a fail message text
@@ -32,9 +39,29 @@ public abstract class AbstractCompleter {
         return String.format("Completion of %s could not be finalized successfully", failMessageTextPart);
     }
 
-    protected boolean completeEntityIterator(ICompleterIterator<Entity> entitiesCompleter, Config config) {
+    protected boolean completeEntityIterator(ICompleterIterator<Entity> entitiesCompleter) {
         return entitiesCompleter.complete(config.getEntities())
                 && config.getGroupings().stream().allMatch(g -> entitiesCompleter.complete(g.getEntities()));
+    }
+
+    /**
+     * Determines an {@link Entity} by its name from the config
+     *
+     * @param entityName the name of the entity
+     * @return {@link Optional} of the entity.
+     * {@link Optional#empty()} if there does not exist an entity with the given name
+     */
+    protected Optional<Entity> getEntity(String entityName) {
+        Optional<Entity> result = config.getEntities().stream()
+                .filter(e -> e.getBaseName().equals(entityName))
+                .findFirst();
+        if (result.isEmpty()) {
+            result = config.getGroupings().stream()
+                    .flatMap(g -> g.getEntities().stream())
+                    .filter(e -> e.getBaseName().equals(entityName))
+                    .findFirst();
+        }
+        return result;
     }
 
     /**

@@ -34,8 +34,9 @@ public class ConfigLoader {
         this.logger = logger;
         this.fileLoader = configLoader;
 
-        completer.add(new ListCompleter());
-        completer.add(new FieldCompleter());
+        completer.add(new ListCompleter(logger));
+        completer.add(new FieldCompleter(logger));
+        completer.add(new ReferenceCompleter(logger));
     }
 
     /**
@@ -74,10 +75,6 @@ public class ConfigLoader {
                 return false;
             }
         }
-        if (!completeReferences()) {
-            logger.error("Completion of references could not be completed");
-            return false;
-        }
         if (!completeEntities()) {
             logger.error("Completion of parents could not be completed");
             return false;
@@ -92,44 +89,6 @@ public class ConfigLoader {
         }
         config.setUseIdGenerator(config.getIdGeneratorPackage() != null && config.getIdGeneratorClass() != null);
         return true;
-    }
-
-    private boolean completeReferences() {
-        return completeEntityIterator(this::completeReferencesOfEntities);
-    }
-
-    private boolean completeReferencesOfEntities(List<Entity> entityList) {
-        for (Entity e : entityList) {
-            for (Reference r : e.getReferences()) {
-                if (!completeReferences(r.getTargetEntity(), e, r)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean completeReferences(String targetEntityName, Entity actualEntity, Reference actualReference) {
-        Optional<Entity> entity = getEntity(targetEntityName);
-        if (entity.isPresent()) {
-            addParentReferenceAndTarget(actualEntity, actualReference, entity.get());
-            return true;
-        }
-        logger.error(String.format("The target of reference %s could not be found", actualReference.getTargetEntity()));
-        return false;
-    }
-
-    private void addParentReferenceAndTarget(Entity actualEntity, Reference actualReference, Entity targetEntity) {
-        Reference parentRef = actualReference.copy();
-        parentRef.setTargetEntity(actualEntity.getBaseName());
-        parentRef.setRealTargetEntity(actualEntity);
-        parentRef.setParent(targetEntity);
-        parentRef.setReverse(true);
-        targetEntity.getParentRefs().add(parentRef);
-
-
-        actualReference.setParent(actualEntity);
-        actualReference.setRealTargetEntity(targetEntity);
     }
 
     private boolean completeEntities() {
@@ -283,23 +242,6 @@ public class ConfigLoader {
     }
 
     /**
-     * Completes the indices of an entity
-     *
-     * @param entity entity to complete
-     * @return {@code true} if completion was successful
-     */
-    private boolean completeIndices(Entity entity) {
-        boolean result = true;
-        for (Index i : entity.getIndices()) {
-            i.setFields(new ArrayList<>());
-            for (String s : i.getFieldList().split(",")) {
-                result = addFieldAtIndex(s, entity, i) && result;
-            }
-        }
-        return result;
-    }
-
-    /**
      * Completes all versions and transforms them to an entity with an actual version (whose references considering version entities also)
      *
      * @return {@code true} if completion was successful
@@ -430,46 +372,6 @@ public class ConfigLoader {
                 }).toList();
 
         entity.setParentRefs(parentReferences);
-    }
-
-    /**
-     * Adds a field to an index
-     *
-     * @param fieldListPart field from the field list
-     * @param entity        owner of the index and the referenced fields
-     * @param index         owner of the field list
-     * @return {@code true} if completion was successful
-     */
-    private boolean addFieldAtIndex(String fieldListPart, Entity entity, Index index) {
-        FieldSorting fieldSorting = new FieldSorting();
-        fieldSorting.setField(null);
-        String fieldName = fieldListPart.trim();
-        if (fieldName.endsWith(" ASC")) {
-            fieldName = fieldName.substring(0, fieldName.length() - 3).trim();
-        }
-        if (fieldName.endsWith(" DESC")) {
-            fieldSorting.setAscending(false);
-            fieldName = fieldName.substring(0, fieldName.length() - 4).trim();
-        }
-        if (fieldName.equalsIgnoreCase(Id.class.getSimpleName())) {
-            fieldSorting.setField(new Field());
-            fieldSorting.getField().setFieldName(Id.class.getSimpleName());
-            fieldSorting.getField().setType(Long.class.getSimpleName());
-        } else {
-            for (Field f : entity.getFields()) {
-                if (f.getFieldName().equalsIgnoreCase(fieldName)) {
-                    fieldSorting.setField(f);
-                    break;
-                }
-            }
-        }
-        if (fieldSorting.getField() == null) {
-            logger.error(String.format("The field %s at index %s could not be found at entity %s."
-                    , fieldName, index.getIndexName(), entity.getBaseName()));
-            return false;
-        }
-        index.getFields().add(fieldSorting);
-        return true;
     }
 
     private boolean completeEntityIterator(EntitiesCompleter entitiesCompleter) {
