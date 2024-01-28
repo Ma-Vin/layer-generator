@@ -227,35 +227,4 @@ public class ConfigLoaderTest {
         verify(version).generateVersionName();
     }
 
-
-    @Test
-    public void testCompleteIdGenerator() {
-        when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.test");
-        when(config.getIdGeneratorClass()).thenReturn("IdGenerator");
-
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-
-        verify(config).setUseIdGenerator(eq(Boolean.TRUE));
-    }
-
-    @Test
-    public void testCompleteInvalidIdGenerator() {
-        when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.test");
-
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-
-        verify(config).setUseIdGenerator(eq(Boolean.FALSE));
-
-        clearInvocations(config);
-        when(config.getIdGeneratorPackage()).thenReturn(null);
-        when(config.getIdGeneratorClass()).thenReturn("IdGenerator");
-
-        result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-
-        verify(config).setUseIdGenerator(eq(Boolean.FALSE));
-    }
-
 }

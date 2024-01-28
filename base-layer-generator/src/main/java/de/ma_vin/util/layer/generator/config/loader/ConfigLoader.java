@@ -1,7 +1,6 @@
 package de.ma_vin.util.layer.generator.config.loader;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
-import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import lombok.Data;
@@ -33,6 +32,7 @@ public class ConfigLoader {
         this.fileLoader = configLoader;
 
         completer.add(new ListCompleter(logger));
+        completer.add(new IdGeneratorCompleter(logger));
         completer.add(new FieldCompleter(logger));
         completer.add(new ReferenceCompleter(logger));
         completer.add(new EntityCompleter(logger));
@@ -79,7 +79,6 @@ public class ConfigLoader {
             logger.error("Completion of versions could not be completed");
             return false;
         }
-        config.setUseIdGenerator(config.getIdGeneratorPackage() != null && config.getIdGeneratorClass() != null);
         return true;
     }
 
