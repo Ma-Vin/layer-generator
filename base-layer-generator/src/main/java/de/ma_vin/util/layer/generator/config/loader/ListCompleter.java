@@ -10,6 +10,11 @@ import java.util.List;
  * Completes list properties of a {@link Config} by removing {@code null} lists
  */
 public class ListCompleter extends AbstractCompleter {
+
+    public ListCompleter(){
+        super("null list removing", 1);
+    }
+
     @Override
     public boolean complete(Config config) {
         if (config.getEntities() == null) {

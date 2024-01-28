@@ -10,10 +10,7 @@ import lombok.Data;
 import jakarta.persistence.Id;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Data
 public class ConfigLoader {
@@ -21,7 +18,7 @@ public class ConfigLoader {
     private ILogWrapper logger;
     private ConfigFileLoader fileLoader;
 
-    private ListCompleter listCompleter = new ListCompleter();
+    private SortedSet<AbstractCompleter> completer = new TreeSet<>(Comparator.comparingInt(AbstractCompleter::getExecutionPriority));
 
     private Config config;
 
@@ -36,6 +33,9 @@ public class ConfigLoader {
     public ConfigLoader(ConfigFileLoader configLoader, ILogWrapper logger) {
         this.logger = logger;
         this.fileLoader = configLoader;
+
+        completer.add(new ListCompleter());
+        completer.add(new FieldCompleter());
     }
 
     /**
@@ -68,8 +68,12 @@ public class ConfigLoader {
     }
 
     public boolean complete() {
-        listCompleter.complete(config);
-        completeOwner();
+        for (AbstractCompleter c : completer) {
+            if (!c.complete(config)) {
+                logger.error(c.getFailMessage());
+                return false;
+            }
+        }
         if (!completeReferences()) {
             logger.error("Completion of references could not be completed");
             return false;
@@ -87,16 +91,6 @@ public class ConfigLoader {
             return false;
         }
         config.setUseIdGenerator(config.getIdGeneratorPackage() != null && config.getIdGeneratorClass() != null);
-        return true;
-    }
-
-    private void completeOwner() {
-        config.getGroupings().forEach(g -> g.getEntities().forEach(e -> e.setGrouping(g)));
-        completeEntityIterator(this::completeFieldOwner);
-    }
-
-    private boolean completeFieldOwner(List<Entity> entityList) {
-        entityList.forEach(e -> e.getFields().forEach(f -> f.setParentEntity(e)));
         return true;
     }
 
@@ -139,6 +133,7 @@ public class ConfigLoader {
     }
 
     private boolean completeEntities() {
+        config.getGroupings().forEach(g -> g.getEntities().forEach(e -> e.setGrouping(g)));
         return completeEntityIterator(this::completeEntities);
     }
 
