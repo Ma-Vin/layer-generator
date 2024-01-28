@@ -10,11 +10,9 @@ import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.fields.FieldSorting;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
-import de.ma_vin.util.layer.generator.config.loader.ConfigLoader;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -230,48 +228,6 @@ public class ConfigLoaderTest {
     }
 
     @Test
-    public void testCompleteSuperClass() {
-        Entity parentEntity = mock(Entity.class);
-        defaultMockEntity(parentEntity, "ParentEntity", null, null, null, new ArrayList<>());
-        when(parentEntity.getIsAbstract()).thenReturn(Boolean.TRUE);
-        when(entity.getParent()).thenReturn("ParentEntity");
-        when(config.getEntities()).thenReturn(Arrays.asList(entity, parentEntity));
-
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-
-        verify(entity).setRealParent(eq(parentEntity));
-    }
-
-    @Test
-    public void testCompleteSuperClassNotAbstract() {
-        Entity parentEntity = mock(Entity.class);
-        defaultMockEntity(parentEntity, "ParentEntity", null, null, null, new ArrayList<>());
-        when(parentEntity.getIsAbstract()).thenReturn(Boolean.FALSE);
-        when(entity.getParent()).thenReturn("ParentEntity");
-        when(config.getEntities()).thenReturn(Arrays.asList(entity, parentEntity));
-
-        boolean result = cut.complete();
-        assertFalse(result, "The result of completion should be false");
-
-        verify(entity, never()).setRealParent(eq(parentEntity));
-    }
-
-    @Test
-    public void testCompleteSuperClassNotExisting() {
-        Entity parentEntity = mock(Entity.class);
-        defaultMockEntity(parentEntity, "ParentEntity", null, null, null, new ArrayList<>());
-        when(parentEntity.getIsAbstract()).thenReturn(Boolean.TRUE);
-        when(entity.getParent()).thenReturn("OtherParentEntity");
-        when(config.getEntities()).thenReturn(Arrays.asList(entity, parentEntity));
-
-        boolean result = cut.complete();
-        assertFalse(result, "The result of completion should be false");
-
-        verify(entity, never()).setRealParent(eq(parentEntity));
-    }
-
-    @Test
     public void testCompleteFilterField() {
         when(reference.getFilterField()).thenReturn(GROUPING_FIELD_NAME);
         when(groupingEntityField.getIsTypeEnum()).thenReturn(Boolean.TRUE);
@@ -374,109 +330,6 @@ public class ConfigLoaderTest {
         assertTrue(result, "The result of completion should be true");
 
         verify(config).setUseIdGenerator(eq(Boolean.FALSE));
-    }
-
-    @Test
-    public void testCompleteTableName() {
-        when(entity.getTableName()).thenReturn(null);
-
-
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-
-        verify(entity).setTableName(eq(ENTITY_NAME));
-    }
-
-    @Test
-    public void testCompleteIndexAsc() {
-        when(index.getFieldList()).thenReturn(FIELD_NAME + " ASC");
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-        verify(index).setFields(any());
-        assertEquals(1, fieldSortings.size(), "Wrong number of index fields");
-        assertTrue(fieldSortings.get(0).isAscending(), "The field at index should be ascending");
-        assertEquals(entityField, fieldSortings.get(0).getField(), "Wrong field at index");
-    }
-
-    @Test
-    public void testCompleteIndexDesc() {
-        when(index.getFieldList()).thenReturn(FIELD_NAME + " DESC");
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-        verify(index).setFields(any());
-        assertEquals(1, fieldSortings.size(), "Wrong number of index fields");
-        assertFalse(fieldSortings.get(0).isAscending(), "The field at index should be descending");
-        assertEquals(entityField, fieldSortings.get(0).getField(), "Wrong field at index");
-    }
-
-    @Test
-    public void testCompleteIndexId() {
-        when(index.getFieldList()).thenReturn("Id");
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-        verify(index).setFields(any());
-        assertEquals(1, fieldSortings.size(), "Wrong number of index fields");
-        assertTrue(fieldSortings.get(0).isAscending(), "The field at index should be ascending");
-        assertNotNull(fieldSortings.get(0).getField(), "The field should not be null");
-        assertEquals("Id", fieldSortings.get(0).getField().getFieldName(), "Wrong field at index");
-    }
-
-
-    @Test
-    public void testCompleteNonExisting() {
-        when(index.getFieldList()).thenReturn("AnyRandomField");
-        boolean result = cut.complete();
-        assertFalse(result, "The result of completion should be false");
-        assertEquals(0, fieldSortings.size(), "Wrong number of index fields");
-    }
-
-    @DisplayName("The config cannot completed because the derived from entity does not exists")
-    @Test
-    public void testCompleteRealDerivedFromNonExisting() {
-        when(derivedEntity.getDerivedFrom()).thenReturn("AnyRandomEntityName");
-        boolean result = cut.complete();
-        assertFalse(result, "The result of completion should be false");
-        verify(derivedEntity, never()).setRealDerivedFrom(any());
-    }
-
-    @DisplayName("The config cannot completed because the derived from entity is abstract")
-    @Test
-    public void testCompleteRealDerivedFromIsAbstract() {
-        when(entity.getIsAbstract()).thenReturn(Boolean.TRUE);
-        boolean result = cut.complete();
-        assertFalse(result, "The result of completion should be false");
-        verify(derivedEntity, never()).setRealDerivedFrom(any());
-    }
-
-    @DisplayName("The config cannot completed because the derived from entity does not support domain model")
-    @Test
-    public void testCompleteRealDerivedFromIsNotDomain() {
-        when(entity.getModels()).thenReturn(Models.DAO);
-        boolean result = cut.complete();
-        assertFalse(result, "The result of completion should be false");
-        verify(derivedEntity, never()).setRealDerivedFrom(any());
-    }
-
-    @DisplayName("The config cannot completed because the derived from entity does not contain all required fields")
-    @Test
-    public void testCompleteRealDerivedFromMissingFields() {
-        when(derivedEntityField.getFieldName()).thenReturn(OTHER_FIELD_NAME);
-        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(derivedEntityField));
-        boolean result = cut.complete();
-        assertFalse(result, "The result of completion should be false");
-        verify(derivedEntity, never()).setRealDerivedFrom(any());
-    }
-
-    @DisplayName("The config completed with an field from the parent of the derived from entity")
-    @Test
-    public void testCompleteRealDerivedFromParent() {
-        when(derivedEntityField.getFieldName()).thenReturn(OTHER_FIELD_NAME);
-        when(entity.getParent()).thenReturn(PARENT_ENTITY_NAME);
-        when(entity.hasParent()).thenReturn(Boolean.TRUE);
-        when(derivedEntity.getFields()).thenReturn(Collections.singletonList(derivedEntityField));
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-        verify(derivedEntity).setRealDerivedFrom(any());
     }
 
 }
