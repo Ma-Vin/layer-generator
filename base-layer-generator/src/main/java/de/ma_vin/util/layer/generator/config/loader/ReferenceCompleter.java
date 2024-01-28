@@ -13,7 +13,7 @@ import java.util.Optional;
 public class ReferenceCompleter extends AbstractCompleter {
 
     public ReferenceCompleter(ILogWrapper logger) {
-        super("references", 3, logger);
+        super("references", 2, logger);
     }
 
     @Override

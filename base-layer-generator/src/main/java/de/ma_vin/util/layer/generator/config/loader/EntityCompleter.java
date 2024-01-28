@@ -12,7 +12,7 @@ import java.util.Optional;
 public class EntityCompleter extends AbstractCompleter {
 
     public EntityCompleter(ILogWrapper logger) {
-        super("entities", 4, logger);
+        super("entities", 3, logger);
     }
 
     @Override
