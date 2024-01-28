@@ -230,65 +230,6 @@ public class ConfigLoaderTest {
     }
 
     @Test
-    public void testCompleteNoEntities() {
-        when(config.getEntities()).thenReturn(null);
-        doAnswer(a -> when(config.getEntities()).thenReturn(a.getArgument(0)))
-                .when(config).setEntities(any());
-
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-
-        verify(entity, never()).setGrouping(any());
-        verify(entity, never()).setFields(any());
-        verify(entity, never()).setParentRefs(any());
-        verify(entity, never()).setReferences(any());
-        verify(entity, never()).setRealParent(any());
-        assertEquals(0, entityParentReferences.size(), "Wrong number of set parent references at entity");
-
-        verify(groupingEntity).setGrouping(eq(grouping));
-        verify(groupingEntity, never()).setFields(any());
-        verify(groupingEntity).setParentRefs(any());
-        verify(groupingEntity).setReferences(any());
-        verify(groupingEntity, never()).setRealParent(any());
-        assertEquals(0, groupingEntityParentReferences.size(), "Wrong number of set parent references at grouping entity");
-
-        verify(reference, never()).setParent(eq(entity));
-        verify(reference, never()).setRealTargetEntity(eq(groupingEntity));
-        verify(reference, never()).setRealFilterField(any());
-    }
-
-    @Test
-    public void testCompleteNoGroupings() {
-        when(config.getGroupings()).thenReturn(null);
-        doAnswer(a -> when(config.getGroupings()).thenReturn(a.getArgument(0)))
-                .when(config).setGroupings(any());
-        when(entity.getReferences()).thenReturn(null);
-        doAnswer(a -> when(entity.getReferences()).thenReturn(a.getArgument(0)))
-                .when(entity).setReferences(any());
-
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-
-        verify(config).setGroupings(any());
-    }
-
-    @Test
-    public void testCompleteNoGroupingEntities() {
-        when(grouping.getEntities()).thenReturn(null);
-        doAnswer(a -> when(grouping.getEntities()).thenReturn(a.getArgument(0)))
-                .when(grouping).setEntities(any());
-        when(entity.getReferences()).thenReturn(null);
-        doAnswer(a -> when(entity.getReferences()).thenReturn(a.getArgument(0)))
-                .when(entity).setReferences(any());
-
-        boolean result = cut.complete();
-        assertTrue(result, "The result of completion should be true");
-
-        verify(grouping).setEntities(any());
-    }
-
-
-    @Test
     public void testCompleteInvalidRefTarget() {
         when(reference.getTargetEntity()).thenReturn(GROUPING_ENTITY_NAME + "1");
 

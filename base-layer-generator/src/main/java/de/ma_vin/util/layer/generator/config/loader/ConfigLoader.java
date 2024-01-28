@@ -21,6 +21,8 @@ public class ConfigLoader {
     private ILogWrapper logger;
     private ConfigFileLoader fileLoader;
 
+    private ListCompleter listCompleter = new ListCompleter();
+
     private Config config;
 
     public ConfigLoader(File configFile, ILogWrapper logger) {
@@ -66,7 +68,7 @@ public class ConfigLoader {
     }
 
     public boolean complete() {
-        removeNullLists();
+        listCompleter.complete(config);
         completeOwner();
         if (!completeReferences()) {
             logger.error("Completion of references could not be completed");
@@ -86,39 +88,6 @@ public class ConfigLoader {
         }
         config.setUseIdGenerator(config.getIdGeneratorPackage() != null && config.getIdGeneratorClass() != null);
         return true;
-    }
-
-    private void removeNullLists() {
-        if (config.getEntities() == null) {
-            config.setEntities(new ArrayList<>());
-        } else {
-            removeNullList(config.getEntities());
-        }
-        if (config.getGroupings() == null) {
-            config.setGroupings(new ArrayList<>());
-            return;
-        }
-        config.getGroupings().forEach(g -> {
-            if (g.getEntities() == null) {
-                g.setEntities(new ArrayList<>());
-            }
-            removeNullList(g.getEntities());
-        });
-    }
-
-    private void removeNullList(List<Entity> entities) {
-        entities.forEach(e -> {
-            if (e.getReferences() == null) {
-                e.setReferences(new ArrayList<>());
-            }
-            if (e.getFields() == null) {
-                e.setFields(new ArrayList<>());
-            }
-            if (e.getIndices() == null) {
-                e.setIndices(new ArrayList<>());
-            }
-            e.setParentRefs(new ArrayList<>());
-        });
     }
 
     private void completeOwner() {
