@@ -1,9 +1,11 @@
 package de.ma_vin.util.layer.generator.config.loader;
 
+import de.ma_vin.util.layer.generator.config.elements.Version;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import java.util.Collections;
 
@@ -17,6 +19,9 @@ public class ListCompleterTest extends AbstractCompleterTest {
 
     @InjectMocks
     private ListCompleter cut;
+
+    @Mock
+    private Version version;
 
     @BeforeEach
     @Override
@@ -53,11 +58,13 @@ public class ListCompleterTest extends AbstractCompleterTest {
         verify(entity, never()).setReferences(any());
         verify(entity, never()).setFields(any());
         verify(entity, never()).setIndices(any());
+        verify(entity, never()).setVersions(any());
         verify(entity).setParentRefs(any());
 
         verify(groupingEntity, never()).setReferences(any());
         verify(groupingEntity, never()).setFields(any());
         verify(groupingEntity, never()).setIndices(any());
+        verify(groupingEntity, never()).setVersions(any());
         verify(groupingEntity).setParentRefs(any());
 
         verify(grouping, never()).setEntities(any());
@@ -94,6 +101,7 @@ public class ListCompleterTest extends AbstractCompleterTest {
         when(entity.getReferences()).thenReturn(null);
         when(entity.getFields()).thenReturn(null);
         when(entity.getIndices()).thenReturn(null);
+        when(entity.getVersions()).thenReturn(null);
 
         assertTrue(cut.complete(config), "The result should be true");
 
@@ -103,22 +111,25 @@ public class ListCompleterTest extends AbstractCompleterTest {
         verify(entity).setReferences(any());
         verify(entity).setFields(any());
         verify(entity).setIndices(any());
+        verify(entity).setVersions(any());
         verify(entity).setParentRefs(any());
 
         verify(groupingEntity, never()).setReferences(any());
         verify(groupingEntity, never()).setFields(any());
         verify(groupingEntity, never()).setIndices(any());
+        verify(groupingEntity, never()).setVersions(any());
         verify(groupingEntity).setParentRefs(any());
 
         verify(grouping, never()).setEntities(any());
     }
 
-    @DisplayName("Complete entity without properties")
+    @DisplayName("Complete grouping entity without properties")
     @Test
     public void testCompleteNullPropertyListsAtGroupingEntity() {
         when(groupingEntity.getReferences()).thenReturn(null);
         when(groupingEntity.getFields()).thenReturn(null);
         when(groupingEntity.getIndices()).thenReturn(null);
+        when(groupingEntity.getVersions()).thenReturn(null);
 
         assertTrue(cut.complete(config), "The result should be true");
 
@@ -128,13 +139,51 @@ public class ListCompleterTest extends AbstractCompleterTest {
         verify(entity, never()).setReferences(any());
         verify(entity, never()).setFields(any());
         verify(entity, never()).setIndices(any());
+        verify(entity, never()).setVersions(any());
         verify(entity).setParentRefs(any());
 
         verify(groupingEntity).setReferences(any());
         verify(groupingEntity).setFields(any());
         verify(groupingEntity).setIndices(any());
+        verify(groupingEntity).setVersions(any());
         verify(groupingEntity).setParentRefs(any());
 
         verify(grouping, never()).setEntities(any());
+    }
+
+    @DisplayName("Complete version at entity without properties")
+    @Test
+    public void testCompleteWithVersionNullPropertyLists() {
+        when(version.getAddedFields()).thenReturn(null);
+        when(version.getRemovedFieldNames()).thenReturn(null);
+        when(version.getAddedReferences()).thenReturn(null);
+        when(version.getRemovedReferenceNames()).thenReturn(null);
+
+        when(entity.getVersions()).thenReturn(Collections.singletonList(version));
+
+        assertTrue(cut.complete(config), "The result should be true");
+
+        verify(version).setAddedFields(any());
+        verify(version).setRemovedFieldNames(any());
+        verify(version).setAddedReferences(any());
+        verify(version).setRemovedReferenceNames(any());
+    }
+
+    @DisplayName("Complete version at entity with properties")
+    @Test
+    public void testCompleteWithVersionWithPropertyLists() {
+        when(version.getAddedFields()).thenReturn(Collections.emptyList());
+        when(version.getRemovedFieldNames()).thenReturn(Collections.emptyList());
+        when(version.getAddedReferences()).thenReturn(Collections.emptyList());
+        when(version.getRemovedReferenceNames()).thenReturn(Collections.emptyList());
+
+        when(entity.getVersions()).thenReturn(Collections.singletonList(version));
+
+        assertTrue(cut.complete(config), "The result should be true");
+
+        verify(version, never()).setAddedFields(any());
+        verify(version, never()).setRemovedFieldNames(any());
+        verify(version, never()).setAddedReferences(any());
+        verify(version, never()).setRemovedReferenceNames(any());
     }
 }

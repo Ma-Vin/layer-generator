@@ -4,6 +4,7 @@ import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,6 +49,24 @@ public class ListCompleter extends AbstractCompleter {
             }
             if (e.getIndices() == null) {
                 e.setIndices(new ArrayList<>());
+            }
+            if (e.getVersions() == null) {
+                e.setVersions(Collections.emptyList());
+            } else {
+                e.getVersions().forEach(v -> {
+                    if (v.getAddedFields() == null) {
+                        v.setAddedFields(Collections.emptyList());
+                    }
+                    if (v.getRemovedFieldNames() == null) {
+                        v.setRemovedFieldNames(Collections.emptyList());
+                    }
+                    if (v.getAddedReferences() == null) {
+                        v.setAddedReferences(Collections.emptyList());
+                    }
+                    if (v.getRemovedReferenceNames() == null) {
+                        v.setRemovedReferenceNames(Collections.emptyList());
+                    }
+                });
             }
             e.setParentRefs(new ArrayList<>());
         });
