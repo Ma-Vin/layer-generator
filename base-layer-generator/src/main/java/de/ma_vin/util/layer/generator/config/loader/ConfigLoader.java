@@ -68,7 +68,7 @@ public class ConfigLoader {
         return false;
     }
 
-    public boolean complete() {
+    private boolean complete() {
         for (AbstractCompleter c : completer) {
             if (!c.complete(config)) {
                 logger.error(c.getFailMessage());
