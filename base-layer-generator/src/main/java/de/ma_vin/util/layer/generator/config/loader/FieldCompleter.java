@@ -14,7 +14,7 @@ import java.util.Optional;
 public class FieldCompleter extends AbstractCompleter {
 
     public FieldCompleter(ILogWrapper logger) {
-        super("field owner and filter", 4, logger);
+        super("field owner and filter", 5, logger);
     }
 
     @Override

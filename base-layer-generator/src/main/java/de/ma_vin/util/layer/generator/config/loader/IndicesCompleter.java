@@ -16,7 +16,7 @@ import java.util.List;
 public class IndicesCompleter extends AbstractCompleter {
 
     public IndicesCompleter(ILogWrapper logger) {
-        super("indices", 5, logger);
+        super("indices", 6, logger);
     }
 
     @Override

@@ -8,7 +8,7 @@ import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 public class IdGeneratorCompleter extends AbstractCompleter {
 
     public IdGeneratorCompleter(ILogWrapper logger) {
-        super("id generator", 1, logger);
+        super("id generator", 2, logger);
     }
 
     @Override
