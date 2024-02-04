@@ -57,6 +57,12 @@ public class VersionCompleter extends AbstractCompleter {
         return result;
     }
 
+    /**
+     * Completes the references of a given version
+     *
+     * @param version the version whose references should be completed
+     * @return {@code true} if completion was successful. {@code false} at any failure.
+     */
     private boolean completeVersionReferences(Version version) {
         return version.getReferences().stream()
                 .filter(r -> r.getRealTargetEntity() == null)
@@ -91,6 +97,7 @@ public class VersionCompleter extends AbstractCompleter {
         });
 
         versionEntities.forEach(this::transformVersionReferences);
+        versionEntities.forEach(this::determineVersionParentReferences);
     }
 
     /**
@@ -102,7 +109,7 @@ public class VersionCompleter extends AbstractCompleter {
         List<Reference> references = entity.getReferences().stream()
                 .map(r -> {
                     Reference updatedReference = r.copy();
-                    r.setParent(entity);
+                    updatedReference.setParent(entity);
                     entity.getActualVersion()
                             .determineReferenceTargetVersion(r)
                             .ifPresent(version -> updatedReference.setRealTargetEntity(version.getVersionEntity()));
@@ -110,27 +117,49 @@ public class VersionCompleter extends AbstractCompleter {
                 }).toList();
 
         entity.setReferences(references);
+    }
 
-        // TODO: We need the parent references from version. The added are missing and removed are to much.
-        List<Reference> parentReferences = entity.getActualVersion().getParentEntity().getParentRefs().stream()
+    /**
+     * Determines and set the parent references of a versioned entity
+     *
+     * @param entity the version entity whose parent references should be determined
+     */
+    private void determineVersionParentReferences(Entity entity) {
+        List<Reference> parentReferences = determineReferenceToVersionEntity(entity).stream()
                 .map(r -> {
-                    Reference updatedReference = r.copy();
-                    updatedReference.setParent(entity);
-                    r.getRealTargetEntity().getReferences().stream()
-                            .filter(r2 -> r2.getReferenceName().equals(r.getReferenceName()))
-                            .findFirst()
-                            .flatMap(r2 -> r.getRealTargetEntity().getVersions().stream()
-                                    .filter(v -> v.determineReferenceTargetVersion(r2)
-                                            .filter(v2 -> v2.getVersionEntity().equals(entity))
-                                            .isPresent())
-                                    .findFirst())
-                            .ifPresent(v -> updatedReference.setRealTargetEntity(v.getVersionEntity()));
+                    Reference parentReference = r.copy();
 
-                    return updatedReference;
+                    parentReference.setTargetEntity(r.getParent().getBaseName());
+                    parentReference.setRealTargetEntity(r.getParent());
+                    parentReference.setParent(entity);
+                    parentReference.setReverse(true);
+
+                    return parentReference;
                 })
-                .filter(r -> r.getRealTargetEntity() != null)
                 .toList();
 
         entity.setParentRefs(parentReferences);
+    }
+
+    /**
+     * Determines all references pointing to a versioned entity
+     *
+     * @param entity the target of the references
+     * @return A list containing all references which pointing to {@code entity}
+     */
+    private List<Reference> determineReferenceToVersionEntity(Entity entity) {
+        List<Reference> relevantReverences = new ArrayList<>();
+        completeEntityIterator(entities -> {
+                    entities.forEach(e -> e.getVersions().forEach(
+                            v -> v.getVersionEntity().getReferences().stream()
+                                    .filter(r -> r.getTargetEntity().equals(entity.getBaseName()))
+                                    .filter(r -> r.getRealTargetEntity().getActualVersion() != null)
+                                    .filter(r -> r.getRealTargetEntity().getActualVersion().getVersionId().equals(entity.getActualVersion().getVersionId()))
+                                    .forEach(relevantReverences::add)
+                    ));
+                    return true;
+                }
+        );
+        return relevantReverences;
     }
 }
