@@ -231,7 +231,7 @@ public class DaoCreator extends AbstractObjectCreator {
 
         List<String> attributes = new ArrayList<>();
 
-        List<Reference> treatedParentReferences = getTreatedReferences(entity.getParentRefs());
+        List<Reference> treatedParentReferences = getTreatedReferences(entity.getNonVersionedParentRefs());
         boolean isSingle = treatedParentReferences.stream().filter(Reference::getIsOwner).count() == 1;
         treatedParentReferences.stream()
                 .filter(Reference::getIsOwner)

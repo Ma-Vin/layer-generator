@@ -3,6 +3,7 @@ package de.ma_vin.util.layer.generator.config.elements;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -195,9 +197,9 @@ public class EntityTest {
         Entity result = cut.copyForVersion(version);
         assertNotNull(result, "There should be a result");
         assertEquals("baseNameV1", result.getBaseName(), "wrong base name");
-        assertEquals(cut.getTableName(), result.getTableName(),"Wrong table name");
-        assertEquals(cut.getModels(),result.getModels(), "Wrong model");
-        assertEquals(cut.getDescription(), result.getDescription(),"Wrong description");
+        assertEquals(cut.getTableName(), result.getTableName(), "Wrong table name");
+        assertEquals(cut.getModels(), result.getModels(), "Wrong model");
+        assertEquals(cut.getDescription(), result.getDescription(), "Wrong description");
         assertEquals(cut.getIdentificationPrefix(), result.getIdentificationPrefix(), "Wrong id prefix");
         assertEquals(cut.getIsAbstract(), result.getIsAbstract(), "Wrong is abstract");
         assertEquals(cut.getGenIdIfDto(), result.getGenIdIfDto(), "Wrong gen id info");
@@ -214,5 +216,26 @@ public class EntityTest {
         assertTrue(result.getFields().contains(field), "the field should be contained");
         assertEquals(1, result.getReferences().size(), "Wrong number of references");
         assertTrue(result.getReferences().contains(reference), "the reference should be contained");
+    }
+
+    @Test
+    public void testGetNonVersionedParentRefs() {
+        Entity parent = mock(Entity.class);
+        Entity secondParent = mock(Entity.class);
+        Reference secondReference = mock(Reference.class);
+
+        when(reference.getRealTargetEntity()).thenReturn(parent);
+        when(reference.getParent()).thenReturn(cut);
+        when(secondReference.getRealTargetEntity()).thenReturn(secondParent);
+        when(secondReference.getParent()).thenReturn(cut);
+
+        when(parent.getActualVersion()).thenReturn(version);
+
+        cut.setParentRefs(Arrays.asList(reference, secondReference));
+
+        List<Reference> result = cut.getNonVersionedParentRefs();
+        assertNotNull(result, "There should be any result");
+        assertEquals(1, result.size(), "Wrong number of references");
+        assertEquals(secondReference, result.get(0), "Wrong first reference");
     }
 }

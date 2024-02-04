@@ -117,7 +117,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, DaoCreator.DAO_INTERFACE));
 
-        DaoCreator.getAggregatedReferences(entity.getParentRefs()).forEach(ref ->
+        DaoCreator.getAggregatedReferences(entity.getNonVersionedParentRefs()).forEach(ref ->
                 createConvertToDaoMethodWithParent(mapperClass, entity, ref, daoPackageName)
         );
         createConvertToDaoMethod(mapperClass, entity, daoPackageName);
@@ -471,7 +471,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
-        DaoCreator.getAggregatedReferences(entity.getParentRefs()).forEach(ref ->
+        DaoCreator.getAggregatedReferences(entity.getNonVersionedParentRefs()).forEach(ref ->
                 createConvertToDomainMethodWithParent(mapperClass, entity, ref, domainPackageName)
         );
         createConvertToDomainMethod(mapperClass, entity);
@@ -625,7 +625,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @return Set of Fields which are used as filter
      */
     private Set<Field> getFilterNonDomainAttributes(Entity entity) {
-        return entity.getParentRefs().stream()
+        return entity.getNonVersionedParentRefs().stream()
                 .map(Reference::getRealTargetEntity)
                 .flatMap(e -> DaoCreator.getTreatedReferences(e.getReferences()).stream())
                 .filter(ref -> ref.isAggregated() && ref.getTargetEntity().equals(entity.getBaseName()) && !ref.isConnectionFiltering() && !ref.getRealFilterField().getModels().isDomain())

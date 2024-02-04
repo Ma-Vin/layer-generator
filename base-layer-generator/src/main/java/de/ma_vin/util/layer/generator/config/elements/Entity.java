@@ -121,6 +121,15 @@ public class Entity {
     @XmlTransient
     private Grouping grouping;
 
+    /**
+     * Filters the parent references and removes versioned parents
+     *
+     * @return the filtered list
+     */
+    public List<Reference> getNonVersionedParentRefs() {
+        return parentRefs.stream().filter(r -> r.getRealTargetEntity().getActualVersion() == null).toList();
+    }
+
     public boolean hasParent() {
         return parent != null && !parent.trim().isEmpty();
     }
@@ -229,5 +238,10 @@ public class Entity {
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
     public Grouping getGrouping() {
         return grouping;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public Version getActualVersion() {
+        return actualVersion;
     }
 }

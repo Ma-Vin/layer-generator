@@ -112,11 +112,34 @@ public class VersionCompleter extends AbstractCompleter {
                     updatedReference.setParent(entity);
                     entity.getActualVersion()
                             .determineReferenceTargetVersion(r)
-                            .ifPresent(version -> updatedReference.setRealTargetEntity(version.getVersionEntity()));
+                            .ifPresentOrElse(
+                                    version -> updatedReference.setRealTargetEntity(version.getVersionEntity())
+                                    , () -> addParentReferenceToNonVersionedEntity(updatedReference)
+                            );
                     return updatedReference;
                 }).toList();
 
         entity.setReferences(references);
+    }
+
+    /**
+     * Adds a parent reference to a non versioned target of a versioned reference
+     *
+     * @param versionedReference reference whose source is a versioned entity, but not its target
+     */
+    private void addParentReferenceToNonVersionedEntity(Reference versionedReference) {
+        if (versionedReference.getParent().getActualVersion() == null || versionedReference.getRealTargetEntity().getActualVersion() != null) {
+            return;
+        }
+
+        Reference parentReference = versionedReference.copy();
+
+        parentReference.setTargetEntity(versionedReference.getParent().getBaseName());
+        parentReference.setRealTargetEntity(versionedReference.getParent());
+        parentReference.setParent(versionedReference.getRealTargetEntity());
+        parentReference.setReverse(true);
+
+        versionedReference.getRealTargetEntity().getParentRefs().add(parentReference);
     }
 
     /**

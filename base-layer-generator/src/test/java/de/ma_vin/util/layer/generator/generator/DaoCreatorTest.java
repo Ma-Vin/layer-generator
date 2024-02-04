@@ -351,7 +351,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectUniqueParentRelation() {
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(parentReference.isList()).thenReturn(Boolean.FALSE);
 
@@ -399,7 +399,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     @DisplayName("Create a data object with an one to one relation from parent, but the parent does not support the dao model")
     @Test
     public void testCreateDataAccessObjectUniqueParentRelationButNonDao() {
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(parentReference.isList()).thenReturn(Boolean.FALSE);
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
@@ -438,7 +438,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectParentRelation() {
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
 
         List<String> expected = new ArrayList<>();
@@ -484,7 +484,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
     @DisplayName("Create a data object with an many to one relation from parent, but the parent does not support the dao model")
     @Test
     public void testCreateDataAccessObjectParentRelationButNonDao() {
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
 
@@ -525,7 +525,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         Reference anotherParentReference = mock(Reference.class);
         Entity anotherParentEntity = mock(Entity.class);
 
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(parentReference, anotherParentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(anotherParentReference.getParent()).thenReturn(entity);
 
@@ -836,7 +836,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectUniqueParentRelationNotOwner() {
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(parentReference.isList()).thenReturn(Boolean.FALSE);
         when(parentReference.isOwner()).thenReturn(Boolean.FALSE);
@@ -875,7 +875,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateDataAccessObjectParentRelationNotOwner() {
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(parentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(parentReference));
         when(parentReference.getParent()).thenReturn(entity);
         when(parentReference.isOwner()).thenReturn(Boolean.FALSE);
         when(parentReference.getIsOwner()).thenReturn(Boolean.FALSE);
@@ -1529,7 +1529,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         setMockReturnsReference(sameParentReference, "AnotherReferenceToParent", "Owner", null, null, Boolean.TRUE, Boolean.TRUE);
         setMockReturnsReference(sameParentReference, entity, parentEntity, null);
 
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, sameParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(parentReference, sameParentReference));
 
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dao.group;");
@@ -1578,7 +1578,7 @@ public class DaoCreatorTest extends AbstractCreatorTest {
         setMockReturnsReference(sameParentReference, "AnotherReferenceToParent", "Owner", null, null, Boolean.FALSE, Boolean.FALSE);
         setMockReturnsReference(sameParentReference, entity, parentEntity, null);
 
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(parentReference, sameParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(parentReference, sameParentReference));
         when(parentReference.getParent()).thenReturn(entity);
 
         List<String> expected = new ArrayList<>();

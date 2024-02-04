@@ -149,6 +149,8 @@ public class VersionCompleterTest extends AbstractCompleterTest {
         when(version.determineReferenceTargetVersion(eq(reference))).thenReturn(Optional.empty());
 
         assertTrue(cut.complete(config), "The result should be true");
+        assertEquals(1, parentGroupingReferences.size(), "parent reference should be added");
+        assertEquals(secondCopyReference, parentGroupingReferences.get(0), "Wrong added parent reference");
 
         verify(entity).copyForVersion(version);
         verify(versionEntity).setReferences(eq(Collections.singletonList(firstCopyReference)));
@@ -157,7 +159,7 @@ public class VersionCompleterTest extends AbstractCompleterTest {
         verify(reference).copy();
         verify(reference, never()).setRealTargetEntity(any());
         verify(firstCopyReference, never()).setRealTargetEntity(any());
-        verify(firstCopyReference, never()).copy();
+        verify(firstCopyReference).copy();
 
         verify(version).setParentEntity(eq(entity));
         verify(version).setBaseVersion(eq(Optional.empty()));
@@ -175,6 +177,8 @@ public class VersionCompleterTest extends AbstractCompleterTest {
         when(version.determineReferenceTargetVersion(eq(reference))).thenReturn(Optional.empty());
 
         assertTrue(cut.complete(config), "The result should be true");
+        assertEquals(1, parentGroupingReferences.size(), "parent reference should be added");
+        assertEquals(secondCopyReference, parentGroupingReferences.get(0), "Wrong added parent reference");
 
         verify(entity).copyForVersion(version);
         verify(versionEntity).setReferences(eq(Collections.singletonList(firstCopyReference)));
@@ -183,7 +187,7 @@ public class VersionCompleterTest extends AbstractCompleterTest {
         verify(reference).copy();
         verify(reference).setRealTargetEntity(eq(groupingEntity));
         verify(firstCopyReference, never()).setRealTargetEntity(any());
-        verify(firstCopyReference, never()).copy();
+        verify(firstCopyReference).copy();
 
         verify(version).setParentEntity(eq(entity));
         verify(version).setBaseVersion(eq(Optional.empty()));
@@ -201,6 +205,7 @@ public class VersionCompleterTest extends AbstractCompleterTest {
 
         assertFalse(cut.complete(config), "The result should be false");
         assertEquals(0, versionEntityReferences.size(), "There should not be any versioned reference");
+        assertEquals(0, parentGroupingReferences.size(), "parent reference should not be added");
 
         verify(entity, never()).copyForVersion(version);
         verify(reference, never()).copy();
@@ -212,6 +217,7 @@ public class VersionCompleterTest extends AbstractCompleterTest {
     public void testCompleteReferenceWithVersion() {
         assertTrue(cut.complete(config), "The result should be true");
         assertEquals(1, versionEntityReferences.size(), "There should not be any versioned reference");
+        assertEquals(0, parentGroupingReferences.size(), "parent reference should not be added");
 
         verify(firstCopyReference).setRealTargetEntity(eq(versionGroupingEntity));
         verify(secondCopyReference).setRealTargetEntity(eq(versionEntity));
@@ -229,6 +235,7 @@ public class VersionCompleterTest extends AbstractCompleterTest {
 
         assertTrue(cut.complete(config), "The result should be true");
         assertEquals(0, versionEntityReferences.size(), "There should not be any versioned reference");
+        assertEquals(0, parentGroupingReferences.size(), "parent reference should not be added");
 
         verify(reference, never()).copy();
         verify(secondCopyReference, never()).setRealTargetEntity(any());
