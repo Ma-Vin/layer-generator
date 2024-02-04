@@ -15,7 +15,7 @@ import java.util.Optional;
 public class VersionCompleter extends AbstractCompleter {
 
     public VersionCompleter(ILogWrapper logger) {
-        super("", 7, logger);
+        super("versions", 7, logger);
     }
 
     @Override
