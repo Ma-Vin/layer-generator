@@ -147,7 +147,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         addFilterValueParameter(mapperClass, referenceToParent, convertMethod, convertMethodWithMap);
 
-        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DAO_POSTFIX);
+        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DOMAIN_POSTFIX, DAO_POSTFIX);
 
         convertMethodWithMap.addLine("%sDao result = %s(%s,%s%s %s);"
                 , entity.getBaseName()
@@ -234,7 +234,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         Method setValueMethod = createSetValueMethod(mapperClass, entity, AccessMapperCreator::isFieldRelevant, DOMAIN_POSTFIX, DAO_POSTFIX, DOMAIN_PARAMETER, DAO_PARAMETER);
         String filterParameter = appendAndGetFilterParameterToSetValue(mapperClass, entity, setValueMethod);
 
-        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DAO_POSTFIX);
+        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DOMAIN_POSTFIX, DAO_POSTFIX);
 
         boolean hasIncludeChildrenParameter = !getMultiReferences(entity, AccessMapperCreator::isEntityRelevant, l -> l).isEmpty();
 
@@ -503,7 +503,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             addFilterValueParameter(mapperClass, referenceToParent, convertMethod, convertMethodWithMap);
         }
 
-        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DOMAIN_POSTFIX);
+        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DAO_POSTFIX, DOMAIN_POSTFIX);
 
         convertMethodWithMap.addLine("%s result = %s(%s,%s %s);"
                 , entity.getBaseName()
@@ -645,7 +645,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         createConvertMethodWithoutMap(mapperClass, createMethodParams);
 
         Method convertMethodWithMap = createConvertMethodBase(createMethodParams);
-        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DOMAIN_POSTFIX);
+        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DAO_POSTFIX, DOMAIN_POSTFIX);
 
         boolean hasIncludeChildrenParameter = !getMultiReferences(entity, AccessMapperCreator::isEntityRelevant, DaoCreator::getAggregatedReferences).isEmpty();
 

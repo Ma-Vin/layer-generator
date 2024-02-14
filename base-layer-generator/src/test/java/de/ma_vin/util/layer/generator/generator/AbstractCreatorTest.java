@@ -26,6 +26,9 @@ public class AbstractCreatorTest {
     public static final String BASE_PACKAGE = "de.test.package";
     public static final String ENTITY_NAME = "Dummy";
     public static final String TARGET_ENTITY_NAME = "Target";
+    public static final String TARGET_REFERENCE_NAME = "TargetRef";
+    public static final String FIELD_NAME = "anyField";
+    public static final String FIELD_TYPE = "String";
 
     protected AutoCloseable openMocks;
 
@@ -63,24 +66,17 @@ public class AbstractCreatorTest {
     protected void initDefaultMock() {
         mockEntityDefault(entity);
 
-        when(field.getFieldName()).thenReturn("anyField");
-        when(field.getType()).thenReturn("String");
+        when(field.getFieldName()).thenReturn(FIELD_NAME);
+        when(field.getType()).thenReturn(FIELD_TYPE);
         when(field.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(field.getParentEntity()).thenReturn(entity);
 
         when(grouping.getGroupingPackage()).thenReturn("group");
 
-        setMockReturnsReference(targetReference, "TargetRef", TARGET_ENTITY_NAME, null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(targetReference, TARGET_REFERENCE_NAME, TARGET_ENTITY_NAME, null, null, Boolean.TRUE, Boolean.TRUE);
         setMockReturnsReference(targetReference, null, targetEntity, null);
 
-        when(targetEntity.getBaseName()).thenReturn(TARGET_ENTITY_NAME);
-        when(targetEntity.getTableName()).thenReturn(TARGET_ENTITY_NAME);
-        when(targetEntity.getDescription()).thenReturn("Target description");
-        when(targetEntity.getIdentificationPrefix()).thenReturn("TA");
-        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
-        when(targetEntity.getGrouping()).thenReturn(grouping);
-        when(targetEntity.hasParent()).thenReturn(Boolean.FALSE);
-        when(targetEntity.hasNoParent()).thenReturn(Boolean.TRUE);
+        mockTargetEntityDefault(targetEntity);
 
         when(config.getBasePackage()).thenReturn(BASE_PACKAGE);
         when(config.getDaoPackage()).thenReturn("dao");
@@ -112,6 +108,18 @@ public class AbstractCreatorTest {
         when(entityMock.hasNoParent()).thenReturn(Boolean.TRUE);
         when(entityMock.getGenIdIfDto()).thenReturn(Boolean.TRUE);
     }
+
+    protected void mockTargetEntityDefault(Entity targetEntity) {
+        when(targetEntity.getBaseName()).thenReturn(TARGET_ENTITY_NAME);
+        when(targetEntity.getTableName()).thenReturn(TARGET_ENTITY_NAME);
+        when(targetEntity.getDescription()).thenReturn("Target description");
+        when(targetEntity.getIdentificationPrefix()).thenReturn("TA");
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(targetEntity.getGrouping()).thenReturn(grouping);
+        when(targetEntity.hasParent()).thenReturn(Boolean.FALSE);
+        when(targetEntity.hasNoParent()).thenReturn(Boolean.TRUE);
+    }
+
 
     protected BufferedWriter mockBufferedWriter(String fileKey) {
         List<String> fileContent = new ArrayList<>();
