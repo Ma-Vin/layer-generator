@@ -1,0 +1,69 @@
+basePackage: de.ma_vin.util.sample.content
+dtoPackage: dto
+domainPackage: domain
+daoPackage: dao
+idGeneratorPackage: de.ma_vin.util.sample.given
+idGeneratorClass: IdGenerator
+entities:
+  - baseName: Root
+    models: DOMAIN_DTO
+    identificationPrefix: R
+    fields:
+      - fieldName: rootName
+        type: String
+      - fieldName: description
+        type: String
+    references:
+      - referenceName: singleRef
+        targetEntity: SingleRefOne
+        isOwner: true
+      - referenceName: anotherSingleRef
+        targetEntity: SingleRefTwo
+        isOwner: true
+      - referenceName: ext
+        targetEntity: RootExt
+        isOwner: true
+    versions:
+      - versionId: v1
+        removedFieldNames:
+          - description
+        addedFields:
+          - fieldName: addedField
+            type: String
+        removedReferenceNames:
+          - singleRef
+          - ext
+        addedReferences:
+          - referenceName: extNew
+            targetEntity: RootExt
+            isOwner: true
+      - versionId: v2
+        baseVersionId: v1
+        removedFieldNames:
+          - addedField
+        removedReferenceNames:
+          - extNew
+        addedReferences:
+          - referenceName: extNew
+            targetEntity: RootExt
+            isOwner: true
+            divergentTargetVersion: v1
+  - baseName: RootExt
+    tableName: RootExtension
+    models: DOMAIN_DTO
+    identificationPrefix: RE
+    fields:
+      - fieldName: ExtendedInfo
+        type: String
+      - fieldName: someInteger
+        type: Integer
+    versions:
+      - versionId: v1
+        removedFieldNames:
+          - someInteger
+  - baseName: SingleRefOne
+    models: DOMAIN_DTO
+    identificationPrefix: SR1
+  - baseName: SingleRefTwo
+    models: DOMAIN_DTO
+    identificationPrefix: SR2

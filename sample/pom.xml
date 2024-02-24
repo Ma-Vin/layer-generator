@@ -19,6 +19,7 @@
         <module>util-sample</module>
         <module>plugin-sample</module>
         <module>annotation-sample</module>
+        <module>version-sample</module>
     </modules>
 
     <properties>
