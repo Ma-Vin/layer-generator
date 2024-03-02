@@ -449,7 +449,7 @@ public class ConfigElementsUtil {
      * @param action        the logging action to execute
      * @return the boolean result of {@code action} or {@code false} at any {@link IllegalAccessException}
      */
-    @SuppressWarnings("java:S3011")
+    @SuppressWarnings({"java:S3011", "java:S108"})
     private static boolean logConfigExecuteAccessible(Object configElement, Field field, ILogWrapper logger, int indent, LogConfigFieldBooleanAction action) {
         boolean result = false;
         boolean accessible = field.canAccess(configElement);
