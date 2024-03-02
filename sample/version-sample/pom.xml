@@ -16,6 +16,8 @@
 
     <properties>
         <model.generate.dao>false</model.generate.dao>
+        <!-- these classes are generated and analysed by module plugin-sample -->
+        <sonar.cpd.exclusions>**/AbstractMapper.java,**/AbstractTransportMapper.java</sonar.cpd.exclusions>
     </properties>
 
     <build>
