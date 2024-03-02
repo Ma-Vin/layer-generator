@@ -399,6 +399,7 @@ public class ConfigElementsUtil {
     /**
      * @return a simple name to represent this class at config log
      */
+    @SuppressWarnings("java:S3011")
     public static String getSimpleLogName(Object configElement) {
         return determinePrimitiveFieldsToPrint(configElement.getClass()).stream()
                 .filter(f -> f.getName().endsWith("Name") && f.getType().getTypeName().equals(String.class.getTypeName()))
@@ -426,6 +427,7 @@ public class ConfigElementsUtil {
      * @param indent        number of {@link ConfigElementsUtil#INDENT} to use as prefix
      * @param action        the logging action to execute
      */
+    @SuppressWarnings("java:S3011")
     private static void logConfigExecuteAccessible(Object configElement, Field field, ILogWrapper logger, int indent, LogConfigFieldAction action) {
         boolean accessible = field.canAccess(configElement);
         field.setAccessible(true);
@@ -447,6 +449,7 @@ public class ConfigElementsUtil {
      * @param action        the logging action to execute
      * @return the boolean result of {@code action} or {@code false} at any {@link IllegalAccessException}
      */
+    @SuppressWarnings("java:S3011")
     private static boolean logConfigExecuteAccessible(Object configElement, Field field, ILogWrapper logger, int indent, LogConfigFieldBooleanAction action) {
         boolean result = false;
         boolean accessible = field.canAccess(configElement);
