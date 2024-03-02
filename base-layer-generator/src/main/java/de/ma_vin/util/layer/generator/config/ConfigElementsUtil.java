@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class ConfigElementsUtil {
 
     public static final String INDENT = "  ";
-    public static final List<String> CLASS_TYPE_NAMES_TO_LOG = Arrays.asList(String.class.getTypeName(), Boolean.class.getTypeName()
+    public static final List<String> CLASS_TYPE_NAMES_TO_LOG = List.of(String.class.getTypeName(), Boolean.class.getTypeName()
             , Byte.class.getTypeName(), Character.class.getTypeName(), Short.class.getTypeName(), Integer.class.getTypeName()
             , Double.class.getTypeName(), Long.class.getTypeName(), Float.class.getTypeName(), BigDecimal.class.getTypeName());
 
