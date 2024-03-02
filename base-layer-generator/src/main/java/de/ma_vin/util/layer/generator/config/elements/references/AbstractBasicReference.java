@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.config.elements.references;
 
+import de.ma_vin.util.layer.generator.config.IConfigLog;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import jakarta.xml.bind.annotation.*;
 import lombok.*;
@@ -16,7 +17,7 @@ import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.validateR
 @Setter
 @EqualsAndHashCode(exclude = {"realTargetEntity"})
 @ToString(exclude = {"realTargetEntity"})
-public abstract class AbstractBasicReference {
+public abstract class AbstractBasicReference implements IConfigLog {
 
     /**
      * Name of the reference

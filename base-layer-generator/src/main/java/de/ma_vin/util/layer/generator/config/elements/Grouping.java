@@ -2,10 +2,14 @@ package de.ma_vin.util.layer.generator.config.elements;
 
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 
+import de.ma_vin.util.layer.generator.config.ConfigElementsUtil;
+import de.ma_vin.util.layer.generator.config.IConfigLog;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import lombok.Data;
 import lombok.ToString;
 
 import jakarta.xml.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -15,7 +19,7 @@ import java.util.List;
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
 @ToString(exclude = {"entities"})
-public class Grouping {
+public class Grouping implements IConfigLog {
 
     /**
      * Extension of the grouping package
@@ -33,5 +37,10 @@ public class Grouping {
     public boolean isValid(List<String> messages) {
         return validateRequired(groupingPackage, messages, "groupingPackage")
                 && (entities == null || entities.stream().allMatch(e -> e.isValid(messages)));
+    }
+
+    @Override
+    public String getSimpleLogName() {
+        return groupingPackage;
     }
 }

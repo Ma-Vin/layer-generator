@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.config.elements;
 
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 
+import de.ma_vin.util.layer.generator.config.IConfigLog;
 import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import lombok.Data;
@@ -21,7 +22,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(exclude = {"grouping", "parentRefs", "realParent", "versions"})
 @ToString(exclude = {"references", "parentRefs", "fields", "indices", "realParent", "versions"})
-public class Entity {
+public class Entity implements IConfigLog {
 
     /**
      * Base name of the objects, which will be extended by some postfix for dto or dao
@@ -184,6 +185,11 @@ public class Entity {
         result.grouping = getGrouping();
 
         return result;
+    }
+
+    @Override
+    public String getSimpleLogName() {
+        return getBaseName();
     }
 
     public Models getModels() {

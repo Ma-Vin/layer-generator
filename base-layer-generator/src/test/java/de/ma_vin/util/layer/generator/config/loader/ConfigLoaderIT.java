@@ -1,10 +1,11 @@
 package de.ma_vin.util.layer.generator.config.loader;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.loader.ConfigLoader;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,17 @@ public class ConfigLoaderIT {
     @DisplayName("load valid xml config file")
     @Test()
     public void testLoadXmlValid() {
+        File exampleModelFile = getConfigFile("exampleModel.xml");
+        ConfigLoader configLoader = new ConfigLoader(exampleModelFile, logger);
+
+        checkValidModel(configLoader);
+    }
+
+    @DisplayName("load valid xml config file with config log")
+    @Test()
+    public void testLoadXmlValidWithConfigLog() {
+        logger = mock(ILogWrapper.class);
+        when(logger.isDebugEnabled()).thenReturn(Boolean.TRUE);
         File exampleModelFile = getConfigFile("exampleModel.xml");
         ConfigLoader configLoader = new ConfigLoader(exampleModelFile, logger);
 

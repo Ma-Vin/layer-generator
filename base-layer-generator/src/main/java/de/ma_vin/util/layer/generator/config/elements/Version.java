@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.config.elements;
 
+import de.ma_vin.util.layer.generator.config.IConfigLog;
 import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.fields.VersionField;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
@@ -23,8 +24,8 @@ import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
 @EqualsAndHashCode(exclude = {"parentEntity", "baseVersion", "fields", "references"})
-@ToString(exclude = {"parentEntity", "baseVersion", "addedFields", "addedReferences", "fields", "references"})
-public class Version {
+@ToString(exclude = {"parentEntity", "baseVersion", "addedFields", "addedReferences", "fields", "references", "versionEntity"})
+public class Version implements IConfigLog {
 
     /**
      * (Optional) name of the versioned entity. If not set, it will be generated from {@link Entity#baseName} and {@link Version#versionId}
@@ -235,6 +236,11 @@ public class Version {
         return reference.getRealTargetEntity().getVersions().stream()
                 .filter(v -> v.getVersionId().equals(targetVersionId))
                 .findFirst();
+    }
+
+    @Override
+    public List<String> getFieldNamesToLogComplete() {
+        return Collections.singletonList("versionEntity");
     }
 
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok

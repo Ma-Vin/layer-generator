@@ -1,11 +1,12 @@
 package de.ma_vin.util.layer.generator.config.elements.fields;
 
-import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.validateRequired;
-
+import de.ma_vin.util.layer.generator.config.IConfigLog;
 import lombok.Data;
 
 import jakarta.xml.bind.annotation.*;
 import java.util.List;
+
+import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 
 /**
  * Describes a filter criteria for non owner reference whose filter enum differs from target entity fields.
@@ -13,7 +14,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
-public class NonOwnerFilterField {
+public class NonOwnerFilterField implements IConfigLog {
     /**
      * Package of the filtering enum. Only in case of filtered reference, non ownership. Will be used at connection table.
      */

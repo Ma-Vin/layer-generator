@@ -1,5 +1,6 @@
 package de.ma_vin.util.layer.generator.config.elements.fields;
 
+import de.ma_vin.util.layer.generator.config.IConfigLog;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
@@ -21,7 +22,7 @@ import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.validateR
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public abstract class AbstractBasicField {
+public abstract class AbstractBasicField implements IConfigLog {
     /**
      * Name of the attribute
      */

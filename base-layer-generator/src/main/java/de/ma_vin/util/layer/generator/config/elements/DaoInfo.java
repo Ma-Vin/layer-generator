@@ -2,6 +2,7 @@ package de.ma_vin.util.layer.generator.config.elements;
 
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 
+import de.ma_vin.util.layer.generator.config.IConfigLog;
 import lombok.Data;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -16,7 +17,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
-public class DaoInfo {
+public class DaoInfo implements IConfigLog {
 
     /**
      * different column name compared to fieldName

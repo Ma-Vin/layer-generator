@@ -55,6 +55,7 @@ public class ConfigLoader {
             return false;
         }
         config = loadedConfig.get();
+        logConfig("file loading");
         return true;
     }
 
@@ -62,9 +63,11 @@ public class ConfigLoader {
         List<String> messages = new ArrayList<>();
         if (config.isValid(messages)) {
             messages.forEach(logger::warn);
+            logConfig("validation");
             return true;
         }
         messages.forEach(logger::error);
+        logConfig("validation");
         return false;
     }
 
@@ -72,9 +75,16 @@ public class ConfigLoader {
         for (AbstractCompleter c : completer) {
             if (!c.complete(config)) {
                 logger.error(c.getFailMessage());
+                logConfig("completion");
                 return false;
             }
         }
+        logConfig("completion");
         return true;
+    }
+
+    private void logConfig(String phase){
+        logger.debug("Config after " + phase);
+        config.logConfig(logger);
     }
 }
