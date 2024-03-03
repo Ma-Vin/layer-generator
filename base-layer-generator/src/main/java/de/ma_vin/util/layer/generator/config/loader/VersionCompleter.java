@@ -8,6 +8,7 @@ import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Completes all versions and transforms them to an entity with an actual version (whose references considering version entities also)
@@ -149,19 +150,20 @@ public class VersionCompleter extends AbstractCompleter {
      */
     private void determineVersionParentReferences(Entity entity) {
         List<Reference> parentReferences = determineReferenceToVersionEntity(entity).stream()
-                .map(r -> {
-                    Reference parentReference = r.copy();
-
-                    parentReference.setTargetEntity(r.getParent().getBaseName());
-                    parentReference.setRealTargetEntity(r.getParent());
-                    parentReference.setParent(entity);
-                    parentReference.setReverse(true);
-
-                    return parentReference;
-                })
-                .toList();
+                .map(this::createParentReference).collect(Collectors.toList());
 
         entity.setParentRefs(parentReferences);
+    }
+
+    private Reference createParentReference(Reference referenceToInvert) {
+        Reference parentReference = referenceToInvert.copy();
+
+        parentReference.setTargetEntity(referenceToInvert.getParent().getBaseName());
+        parentReference.setRealTargetEntity(referenceToInvert.getParent());
+        parentReference.setParent(referenceToInvert.getRealTargetEntity());
+        parentReference.setReverse(true);
+
+        return parentReference;
     }
 
     /**
@@ -175,9 +177,11 @@ public class VersionCompleter extends AbstractCompleter {
         completeEntityIterator(entities -> {
                     entities.forEach(e -> e.getVersions().forEach(
                             v -> v.getVersionEntity().getReferences().stream()
-                                    .filter(r -> r.getTargetEntity().equals(entity.getBaseName()))
+                                    .filter(r -> r.getRealTargetEntity().getBaseName().equals(entity.getBaseName()))
                                     .filter(r -> r.getRealTargetEntity().getActualVersion() != null)
-                                    .filter(r -> r.getRealTargetEntity().getActualVersion().getVersionId().equals(entity.getActualVersion().getVersionId()))
+                                    .filter(r -> v.determineReferenceTargetVersion(r).stream()
+                                            .anyMatch(v2 -> v2.getVersionId().equals(entity.getActualVersion().getVersionId()))
+                                    )
                                     .forEach(relevantReverences::add)
                     ));
                     return true;
