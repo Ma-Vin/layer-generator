@@ -190,7 +190,7 @@ public class TransportMapperCreator extends AbstractMapperCreator {
      * @param domainPackageName name of base domain package
      */
     private void createConvertToDomainMethodWithParent(Clazz mapperClass, Entity entity, Reference referenceToParent, String domainPackageName) {
-        if (!isEntityRelevant(referenceToParent.getRealTargetEntity())) {
+        if (!isEntityRelevant(referenceToParent.getRealTargetEntity()) || !isParentRefRelevant(referenceToParent)) {
             logger.debug(String.format("No connection is to generate to parent %s from entity %s"
                     , referenceToParent.getTargetEntity(), entity.getBaseName()));
             return;
@@ -312,10 +312,11 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         Method convertMethodWithMap = createConvertMethodWithParentBase(mapperClass, createMethodParams, referenceToParent, dtoPackageName);
         addMappedObjectsParam(convertMethodWithMap, entity, DtoCreator.DTO_INTERFACE, DOMAIN_POSTFIX, DTO_POSTFIX);
 
+        Entity versionParentEntity = getNonVersionParentEntity(entity, DOMAIN_POSTFIX);
         convertMethodWithMap.addLine("%sDto result = %s(%s,%s %s);"
                 , entity.getBaseName()
                 , getConvertMethodNameDto(entity)
-                , getLowerFirst(entity.getBaseName())
+                , getLowerFirst(versionParentEntity.getBaseName())
                 , hasIncludeChildrenParameter(entity, TransportMapperCreator::isEntityRelevant) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , MAPPED_OBJECTS_PARAMETER_TEXT
         );
@@ -372,6 +373,12 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         return entity.getModels().isDto() && (
                 entity.getModels().isDomain() || (entity.getRealDerivedFrom() != null && entity.getRealDerivedFrom().getModels().isDomain())
         );
+    }
+
+    private static boolean isParentRefRelevant(Reference referenceToParent) {
+        return referenceToParent.getRealTargetEntity().getActualVersion() == null
+                || referenceToParent.getRealTargetEntity().getActualVersion().getParentEntity().getReferences().stream()
+                .anyMatch(r -> r.getReferenceName().equals(referenceToParent.getReferenceName()));
     }
 
     /**

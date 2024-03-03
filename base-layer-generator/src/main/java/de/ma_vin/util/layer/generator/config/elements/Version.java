@@ -233,7 +233,13 @@ public class Version implements IConfigLog {
                 .findFirst()
                 .orElse(getVersionId());
 
-        return reference.getRealTargetEntity().getVersions().stream()
+        List<Version> versions;
+        if (reference.getRealTargetEntity().getActualVersion() != null) {
+            versions = reference.getRealTargetEntity().getActualVersion().getParentEntity().getVersions();
+        } else {
+            versions = reference.getRealTargetEntity().getVersions();
+        }
+        return versions.stream()
                 .filter(v -> v.getVersionId().equals(targetVersionId))
                 .findFirst();
     }
@@ -261,5 +267,10 @@ public class Version implements IConfigLog {
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
     public List<Reference> getReferences() {
         return references;
+    }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public Entity getParentEntity(){
+        return parentEntity;
     }
 }

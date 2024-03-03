@@ -287,6 +287,62 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 	}
 
 	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtV1Dto} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @param parent  the parent of converted result
+	 * @return an equivalent new created {@link RootExtV1Dto}
+	 */
+	public static RootExtV1Dto convertToRootExtV1Dto(RootExt rootExt, RootV1Dto parent) {
+		return convertToRootExtV1Dto(rootExt, parent, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtV1Dto} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param parent        the parent of converted result
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found
+	 *                      {@link RootExtV1Dto} will be returned
+	 * @return an equivalent new created {@link RootExtV1Dto} or the found one from the given map
+	 */
+	public static RootExtV1Dto convertToRootExtV1Dto(RootExt rootExt, RootV1Dto parent, Map<String, ITransportable> mappedObjects) {
+		RootExtV1Dto result = convertToRootExtV1Dto(rootExt, mappedObjects);
+		if (result != null) {
+			parent.setExtNew(result);
+		}
+		return result;
+	}
+
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtV1Dto} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt the source object which should be converted
+	 * @param parent  the parent of converted result
+	 * @return an equivalent new created {@link RootExtV1Dto}
+	 */
+	public static RootExtV1Dto convertToRootExtV1Dto(RootExt rootExt, RootV2Dto parent) {
+		return convertToRootExtV1Dto(rootExt, parent, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link RootExt} to a(n) {@link RootExtV1Dto} and sets the result to the corresponding reference property at the parent
+	 *
+	 * @param rootExt       the source object which should be converted
+	 * @param parent        the parent of converted result
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code rootExt} is contained, the found
+	 *                      {@link RootExtV1Dto} will be returned
+	 * @return an equivalent new created {@link RootExtV1Dto} or the found one from the given map
+	 */
+	public static RootExtV1Dto convertToRootExtV1Dto(RootExt rootExt, RootV2Dto parent, Map<String, ITransportable> mappedObjects) {
+		RootExtV1Dto result = convertToRootExtV1Dto(rootExt, mappedObjects);
+		if (result != null) {
+			parent.setExtNew(result);
+		}
+		return result;
+	}
+
+	/**
 	 * Converts a(n) {@link Root} to a(n) {@link RootV1Dto}
 	 *
 	 * @param root the source object which should be converted

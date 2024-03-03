@@ -146,8 +146,8 @@ public class CommonTransportMapperTest {
 
         assertNull(result.getSingleRef(), "There should not be any single reg");
         assertNotNull(result.getAnotherSingleRef(), "There should be any second single reg");
-        // TODO: Missing parent mapping
-        // assertNotNull(result.getExt(), "There should be an ext");
+
+        assertNull(result.getExt(), "There should not be an ext, because of a different property name at RootV1Dto");
     }
 
 
@@ -162,8 +162,8 @@ public class CommonTransportMapperTest {
 
         assertNull(result.getSingleRef(), "There should not be any single reg");
         assertNotNull(result.getAnotherSingleRef(), "There should be any second single reg");
-        // TODO: Missing parent mapping
-        // assertNotNull(result.getExt(), "There should be an ext");
+
+        assertNull(result.getExt(), "There should not be an ext, because of a different property name at RootV2Dto");
     }
 
 
@@ -191,8 +191,8 @@ public class CommonTransportMapperTest {
         assertEquals(ROOT_IDENTIFICATION, result.getIdentification(), "Wrong identification");
 
         assertNotNull(result.getAnotherSingleRef(), "There should be any second single reg");
-        // TODO: Missing parent mapping
-        // assertNotNull(result.getExtNew(), "There should be an ext");
+
+        assertNull(result.getExtNew(), "There should be an ext, because of a different property name at Root");
     }
 
 
@@ -205,8 +205,8 @@ public class CommonTransportMapperTest {
         assertEquals(ROOT_IDENTIFICATION, result.getIdentification(), "Wrong identification");
 
         assertNotNull(result.getAnotherSingleRef(), "There should be any second single reg");
-        // TODO: Missing parent mapping
-        // assertNotNull(result.getExtNew(), "There should be an ext");
+
+        assertNull(result.getExtNew(), "There should be an ext, because of a different property name at Root");
     }
 
     @Test
@@ -276,8 +276,7 @@ public class CommonTransportMapperTest {
         assertEquals(result, rootDto.getExt(), "Wrong root ext");
     }
 
-    /*
-    TODO: Missing parent mapping
+
     @Test
     public void testConvertToRootExtV1DtoWithV1Parent() {
         rootV1Dto.setExtNew(null);
@@ -287,14 +286,11 @@ public class CommonTransportMapperTest {
         assertEquals(DEFAULT_EXTENDED_INFO, result.getExtendedInfo(), "Wrong extended info");
         assertEquals(ROOT_EXT_IDENTIFICATION, result.getIdentification(), "Wrong identification");
 
-        assertNotNull(rootDto.getExt(), "the reference to root ext should not be null");
-        assertEquals(result, rootDto.getExt(), "Wrong root ext");
+        assertNotNull(rootV1Dto.getExtNew(), "the reference to root ext should not be null");
+        assertEquals(result, rootV1Dto.getExtNew(), "Wrong root ext");
 
     }
-    */
 
-    /*
-    TODO: Missing parent mapping
     @Test
     public void testConvertToRootExtV1DtoWithV2Parent() {
         rootV2Dto.setExtNew(null);
@@ -304,10 +300,9 @@ public class CommonTransportMapperTest {
         assertEquals(DEFAULT_EXTENDED_INFO, result.getExtendedInfo(), "Wrong extended info");
         assertEquals(ROOT_EXT_IDENTIFICATION, result.getIdentification(), "Wrong identification");
 
-        assertNotNull(rootDto.getExt(), "the reference to root ext should not be null");
-        assertEquals(result, rootDto.getExt(), "Wrong root ext");
+        assertNotNull(rootV2Dto.getExtNew(), "the reference to root ext should not be null");
+        assertEquals(result, rootV2Dto.getExtNew(), "Wrong root ext");
     }
-    */
 
     @Test
     public void testConvertToSingleRefOne() {

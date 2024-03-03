@@ -14,8 +14,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 /**
@@ -138,6 +137,7 @@ public class VersionTest {
 
         baseVersion.setVersionId(DEFAULT_BASE_VERSION_ID);
 
+        when(referenceTargetVersion.getParentEntity()).thenReturn(referenceTargetEntity);
         when(referenceTargetVersion.determineFields(any())).thenReturn(Collections.emptyList());
         when(referenceTargetVersion.determineReferences(any())).thenReturn(Collections.emptyList());
         doCallRealMethod().when(referenceTargetVersion).setVersionId(anyString());
@@ -355,6 +355,10 @@ public class VersionTest {
         assertNotNull(result, "There should be a result");
         assertTrue(result.isPresent(), "the result should be present");
         assertEquals(referenceTargetVersion, result.get(), "Wrong version");
+
+        verify(referenceTargetVersion, never()).getParentEntity();
+        verify(referenceTargetEntity).getActualVersion();
+        verify(referenceTargetEntity).getVersions();
     }
 
     @Test
@@ -369,6 +373,31 @@ public class VersionTest {
         assertTrue(result.isPresent(), "the result should be present");
         assertEquals(referenceTargetVersion, result.get(), "Wrong version");
 
+    }
+
+    @Test
+    public void testDetermineReferenceTargetVersionEqualVersionIdAndVersionedParent() {
+        Entity versionReferenceTargetEntity = mock(Entity.class);
+        when(versionReferenceTargetEntity.getActualVersion()).thenReturn(referenceTargetVersion);
+        when(versionReferenceTargetEntity.getVersions()).thenReturn(Collections.emptyList());
+        when(versionReferenceTargetEntity.getFields()).thenReturn(Collections.emptyList());
+        when(versionReferenceTargetEntity.getReferences()).thenReturn(Collections.emptyList());
+        when(versionReferenceTargetEntity.getBaseName()).thenReturn(DEFAULT_ENTITY_NAME + "2" + DEFAULT_VERSION_ID);
+
+        Reference versionEntityReference = mock(Reference.class);
+        when(versionEntityReference.getReferenceName()).thenReturn(DEFAULT_ENTITY_REFERENCE_NAME);
+        when(versionEntityReference.getRealTargetEntity()).thenReturn(versionReferenceTargetEntity);
+
+        Optional<Version> result = cut.determineReferenceTargetVersion(versionEntityReference);
+
+        assertNotNull(result, "There should be a result");
+        assertTrue(result.isPresent(), "the result should be present");
+        assertEquals(referenceTargetVersion, result.get(), "Wrong version");
+
+        verify(referenceTargetVersion).getParentEntity();
+        verify(referenceTargetEntity, never()).getActualVersion();
+        verify(referenceTargetEntity).getVersions();
+        verify(versionReferenceTargetEntity, times(2)).getActualVersion();
     }
 
     @Test

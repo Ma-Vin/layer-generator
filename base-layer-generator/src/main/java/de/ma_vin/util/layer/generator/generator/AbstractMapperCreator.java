@@ -467,9 +467,11 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
 
         Method convertMethod = createConvertMethodWithParentBase(mapperClass, parameterContainer, referenceToParent, packageName);
 
+        Entity versionParentEntity = getNonVersionParentEntity(parameterContainer.entity, parameterContainer.sourceClassParameterPostFix);
+
         convertMethod.addLine("return %s(%s,%s parent,%s%s new %s<>());"
                 , getConvertMethodName(parameterContainer.entity, parameterContainer.classParameterPostFix)
-                , getLowerFirst(parameterContainer.entity.getBaseName())
+                , getLowerFirst(versionParentEntity.getBaseName())
                 , hasIncludeChildrenParameter(parameterContainer.entity, parameterContainer.entityChecker) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , singleValueModelRelevant ? getParameterOfRelevantSingleModelValuesText(parameterContainer.entity) : ""
                 , referenceToParentRelevant ? getParameterOfParentReferencesText(referenceToParent) : ""

@@ -3839,7 +3839,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 * @return an equivalent new created {@link TargetV1Dto}");
         expected.add("	 */");
         expected.add("	public static TargetV1Dto convertToTargetV1Dto(Target target, DummyV1Dto parent) {");
-        expected.add("		return convertToTargetV1Dto(targetV1, parent, new HashMap<>());");
+        expected.add("		return convertToTargetV1Dto(target, parent, new HashMap<>());");
         expected.add("	}");
         expected.add("");
         expected.add("	/**");
@@ -3852,7 +3852,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("	 * @return an equivalent new created {@link TargetV1Dto} or the found one from the given map");
         expected.add("	 */");
         expected.add("	public static TargetV1Dto convertToTargetV1Dto(Target target, DummyV1Dto parent, Map<String, ITransportable> mappedObjects) {");
-        expected.add("		TargetV1Dto result = convertToTargetV1Dto(targetV1, mappedObjects);");
+        expected.add("		TargetV1Dto result = convertToTargetV1Dto(target, mappedObjects);");
         expected.add("		if (result != null) {");
         expected.add("			parent.setTargetRefShared(result);");
         expected.add("		}");
