@@ -1,6 +1,7 @@
 package de.ma_vin.util.layer.generator.config.loader;
 
 import de.ma_vin.util.layer.generator.config.elements.Entity;
+import de.ma_vin.util.layer.generator.config.elements.Version;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 
 import java.util.ArrayList;
@@ -53,23 +54,32 @@ public class ListCompleter extends AbstractCompleter {
             if (e.getVersions() == null) {
                 e.setVersions(Collections.emptyList());
             } else {
-                e.getVersions().forEach(v -> {
-                    if (v.getAddedFields() == null) {
-                        v.setAddedFields(Collections.emptyList());
-                    }
-                    if (v.getRemovedFieldNames() == null) {
-                        v.setRemovedFieldNames(Collections.emptyList());
-                    }
-                    if (v.getAddedReferences() == null) {
-                        v.setAddedReferences(Collections.emptyList());
-                    }
-                    if (v.getRemovedReferenceNames() == null) {
-                        v.setRemovedReferenceNames(Collections.emptyList());
-                    }
-                });
+                removeVersionsNullList(e.getVersions());
             }
             e.setParentRefs(new ArrayList<>());
         });
         return true;
+    }
+
+    /**
+     * Removes {@code null} lists at a given list of versions
+     *
+     * @param versions the list of versions whose {@code null} lists should be removed
+     */
+    private void removeVersionsNullList(List<Version> versions) {
+        versions.forEach(v -> {
+            if (v.getAddedFields() == null) {
+                v.setAddedFields(Collections.emptyList());
+            }
+            if (v.getRemovedFieldNames() == null) {
+                v.setRemovedFieldNames(Collections.emptyList());
+            }
+            if (v.getAddedReferences() == null) {
+                v.setAddedReferences(Collections.emptyList());
+            }
+            if (v.getRemovedReferenceNames() == null) {
+                v.setRemovedReferenceNames(Collections.emptyList());
+            }
+        });
     }
 }
