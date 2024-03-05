@@ -139,6 +139,12 @@ public class Entity implements IConfigLog {
         return !hasParent();
     }
 
+    /**
+     * Validates this entity
+     *
+     * @param messages List where to add messages
+     * @return {@code true} if this entity is valid. {@code false} otherwise
+     */
     public boolean isValid(List<String> messages) {
         return validateRequired(baseName, messages, "baseName")
                 && validateNonRequired(tableName, messages, "tableName")
@@ -150,9 +156,20 @@ public class Entity implements IConfigLog {
                 && (indices == null || indices.stream().allMatch(i -> i.isValid(messages)))
                 && (references == null || (references.stream().allMatch(r -> r.isValid(messages))
                 && Reference.isFilterFieldValid(baseName, references, messages)))
-                && (derivedFrom == null || checkNullOrEmpty(versions, messages, "versions", "derivedFrom property is set"))
-                && (!isAbstract || checkNullOrEmpty(versions, messages, "versions", "isAbstract is true"))
-                && (getModels().isDto() || checkNullOrEmpty(versions, messages, "versions", "its not a data transport model"))
+                && areVersionsValid(messages);
+    }
+
+    /**
+     * Validates the {@code versions} property
+     *
+     * @param messages List where to add messages
+     * @return {@code true} if the list {@code versions} is valid. {@code false} otherwise
+     */
+    private boolean areVersionsValid(List<String> messages) {
+        final String propertyName = "versions";
+        return (derivedFrom == null || checkNullOrEmpty(versions, messages, propertyName, "derivedFrom property is set"))
+                && (!isAbstract || checkNullOrEmpty(versions, messages, propertyName, "isAbstract is true"))
+                && (getModels().isDto() || checkNullOrEmpty(versions, messages, propertyName, "its not a data transport model"))
                 && (versions == null || versions.stream().allMatch(r -> r.isValid(messages, this)));
     }
 
