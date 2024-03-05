@@ -33,4 +33,9 @@ public enum Models {
     public boolean includes(Models other) {
         return (!other.isDao || isDao) && (!other.isDto || isDto) && (!other.isDomain || isDomain);
     }
+
+    // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
+    public boolean isDto() {
+        return isDto;
+    }
 }

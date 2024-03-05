@@ -2,6 +2,8 @@ package de.ma_vin.util.layer.generator.config.elements;
 
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 
+import de.ma_vin.util.layer.generator.config.IConfigLog;
+import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import lombok.Data;
 import lombok.ToString;
 
@@ -17,7 +19,7 @@ import java.util.List;
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
 @ToString(exclude = {"groupings", "entities"})
-public class Config {
+public class Config implements IConfigLog {
 
     /**
      * Basic package which will be used for generated java classes
@@ -91,5 +93,17 @@ public class Config {
                 && (entities == null || entities.stream().allMatch(e -> e.isValid(messages))))
                 && ((idGeneratorPackage == null && idGeneratorClass == null)
                 || (validateRequired(idGeneratorPackage, messages, "idGeneratorPackage") && validateRequired(idGeneratorClass, messages, "idGeneratorClass")));
+    }
+
+    /**
+     * Logs the actual state of the configuration
+     *
+     * @param logger the logger to use
+     */
+    public void logConfig(ILogWrapper logger) {
+        if (!logger.isDebugEnabled()) {
+            return;
+        }
+        logConfigElement(this, logger, 0);
     }
 }

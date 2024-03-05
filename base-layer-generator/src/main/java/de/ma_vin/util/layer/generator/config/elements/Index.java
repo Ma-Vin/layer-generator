@@ -2,6 +2,8 @@ package de.ma_vin.util.layer.generator.config.elements;
 
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.validateRequired;
 
+import de.ma_vin.util.layer.generator.config.IConfigLog;
+import de.ma_vin.util.layer.generator.config.elements.fields.FieldSorting;
 import lombok.Data;
 
 import jakarta.xml.bind.annotation.*;
@@ -13,7 +15,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = "de.ma_vin.util.gen.model")
 @Data
-public class Index {
+public class Index implements IConfigLog {
     /**
      * Name of the index
      */

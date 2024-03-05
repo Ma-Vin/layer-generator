@@ -26,6 +26,30 @@
                 <reference referenceName="nonOwnerFiltering" targetEntity="SomeDifferentFilteringNotOwner" isOwner="true"/>
                 <reference referenceName="ext" targetEntity="RootExt" isOwner="true"/>
             </references>
+            <versions>
+                <version versionId="v2">
+                    <removedFieldNames>
+                        <removedField>description</removedField>
+                    </removedFieldNames>
+                    <addedFields>
+                        <addedField fieldName="addedField" type="String"/>
+                    </addedFields>
+                    <removedReferenceNames>
+                        <removedReference>singleRef</removedReference>
+                    </removedReferenceNames>
+                    <addedReferences>
+                        <addedReference referenceName="addedReference" targetEntity="SingleRefOneParent" isOwner="true"/>
+                    </addedReferences>
+                </version>
+                <version versionId="v3" baseVersionId="v2">
+                    <removedFieldNames>
+                        <removedField>addedField</removedField>
+                    </removedFieldNames>
+                    <removedReferenceNames>
+                        <removedReference>addedReference</removedReference>
+                    </removedReferenceNames>
+                </version>
+            </versions>
         </entity>
         <entity baseName="RootExt" tableName="RootExtension" models="DOMAIN_DAO_DTO" identificationPrefix="RE">
             <fields>

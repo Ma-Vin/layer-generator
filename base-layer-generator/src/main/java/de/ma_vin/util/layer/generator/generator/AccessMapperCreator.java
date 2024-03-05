@@ -7,8 +7,8 @@ import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Field;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
@@ -117,7 +117,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, daoPackageName, DaoCreator.DAO_INTERFACE));
 
-        DaoCreator.getAggregatedReferences(entity.getParentRefs()).forEach(ref ->
+        DaoCreator.getAggregatedReferences(entity.getNonVersionedParentRefs()).forEach(ref ->
                 createConvertToDaoMethodWithParent(mapperClass, entity, ref, daoPackageName)
         );
         createConvertToDaoMethod(mapperClass, entity, daoPackageName);
@@ -147,7 +147,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         addFilterValueParameter(mapperClass, referenceToParent, convertMethod, convertMethodWithMap);
 
-        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DAO_POSTFIX);
+        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DOMAIN_POSTFIX, DAO_POSTFIX);
 
         convertMethodWithMap.addLine("%sDao result = %s(%s,%s%s %s);"
                 , entity.getBaseName()
@@ -234,7 +234,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         Method setValueMethod = createSetValueMethod(mapperClass, entity, AccessMapperCreator::isFieldRelevant, DOMAIN_POSTFIX, DAO_POSTFIX, DOMAIN_PARAMETER, DAO_PARAMETER);
         String filterParameter = appendAndGetFilterParameterToSetValue(mapperClass, entity, setValueMethod);
 
-        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DAO_POSTFIX);
+        addMappedObjectsParam(convertMethodWithMap, entity, DaoCreator.DAO_INTERFACE, DOMAIN_POSTFIX, DAO_POSTFIX);
 
         boolean hasIncludeChildrenParameter = !getMultiReferences(entity, AccessMapperCreator::isEntityRelevant, l -> l).isEmpty();
 
@@ -471,7 +471,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         mapperClass.addImport(getPackageAndClass(entity, domainPackageName, DOMAIN_POSTFIX));
         mapperClass.addImport(String.format(PACKAGE_AND_CLASS_NAME_FORMAT, domainPackageName, DomainCreator.DOMAIN_INTERFACE));
 
-        DaoCreator.getAggregatedReferences(entity.getParentRefs()).forEach(ref ->
+        DaoCreator.getAggregatedReferences(entity.getNonVersionedParentRefs()).forEach(ref ->
                 createConvertToDomainMethodWithParent(mapperClass, entity, ref, domainPackageName)
         );
         createConvertToDomainMethod(mapperClass, entity);
@@ -503,7 +503,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
             addFilterValueParameter(mapperClass, referenceToParent, convertMethod, convertMethodWithMap);
         }
 
-        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DOMAIN_POSTFIX);
+        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DAO_POSTFIX, DOMAIN_POSTFIX);
 
         convertMethodWithMap.addLine("%s result = %s(%s,%s %s);"
                 , entity.getBaseName()
@@ -540,7 +540,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         }
         List<Reference> references = referenceToParent.getRealTargetEntity().getReferences().stream()
                 .filter(ref -> ref.getRealTargetEntity().equals(referenceToParent.getParent()) && ref.isList() == referenceToParent.isList() && ref.isOwner() == referenceToParent.isOwner())
-                .collect(Collectors.toList());
+                .toList();
 
         if (referenceToParent.isConnectionFiltering()) {
             convertMethod.addTabbedLine("switch (%s) {", 1, getLowerFirst(referenceToParent.getNonOwnerFilterField().getFilterFieldName()));
@@ -625,7 +625,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
      * @return Set of Fields which are used as filter
      */
     private Set<Field> getFilterNonDomainAttributes(Entity entity) {
-        return entity.getParentRefs().stream()
+        return entity.getNonVersionedParentRefs().stream()
                 .map(Reference::getRealTargetEntity)
                 .flatMap(e -> DaoCreator.getTreatedReferences(e.getReferences()).stream())
                 .filter(ref -> ref.isAggregated() && ref.getTargetEntity().equals(entity.getBaseName()) && !ref.isConnectionFiltering() && !ref.getRealFilterField().getModels().isDomain())
@@ -645,7 +645,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         createConvertMethodWithoutMap(mapperClass, createMethodParams);
 
         Method convertMethodWithMap = createConvertMethodBase(createMethodParams);
-        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DOMAIN_POSTFIX);
+        addMappedObjectsParam(convertMethodWithMap, entity, DomainCreator.DOMAIN_INTERFACE, DAO_POSTFIX, DOMAIN_POSTFIX);
 
         boolean hasIncludeChildrenParameter = !getMultiReferences(entity, AccessMapperCreator::isEntityRelevant, DaoCreator::getAggregatedReferences).isEmpty();
 

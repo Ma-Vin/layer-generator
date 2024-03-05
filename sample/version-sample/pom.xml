@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.ma_vin.util.layer.generator</groupId>
+        <artifactId>sample</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>version-sample</artifactId>
+
+    <name>Util Layer Generator Version Sample</name>
+    <description>An example of usage of data transport object versions</description>
+
+    <properties>
+        <model.generate.dao>false</model.generate.dao>
+        <!-- these classes are generated and analysed by module plugin-sample -->
+        <sonar.cpd.exclusions>**/AbstractMapper.java,**/AbstractTransportMapper.java</sonar.cpd.exclusions>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>de.ma_vin.util.layer.generator</groupId>
+                <artifactId>generator-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.ma_vin.util.layer.generator</groupId>
+            <artifactId>util-sample</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.ma_vin.util.layer.generator</groupId>
+            <artifactId>extension-annotation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

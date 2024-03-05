@@ -2,8 +2,8 @@ package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Models;
-import de.ma_vin.util.layer.generator.config.elements.NonOwnerFilterField;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.fields.NonOwnerFilterField;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -120,7 +120,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(subEntity.getGrouping()).thenReturn(grouping);
         when(subEntity.hasParent()).thenReturn(Boolean.FALSE);
         when(subEntity.hasNoParent()).thenReturn(Boolean.TRUE);
-        when(subEntity.getParentRefs()).thenReturn(Collections.singletonList(fromSubReference));
+        when(subEntity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(fromSubReference));
 
         setMockReturnsReference(toSubReference, "child", "Child", null, null, Boolean.TRUE, Boolean.TRUE);
         setMockReturnsReference(toSubReference, null, subEntity, null);
@@ -980,8 +980,8 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
         when(subEntity.getReferences()).thenReturn(Collections.singletonList(anotherTargetReference));
-        when(subEntity.getParentRefs()).thenReturn(Collections.emptyList());
-        when(targetEntity.getParentRefs()).thenReturn(Arrays.asList(fromTargetReference, fromAnotherTargetReference));
+        when(subEntity.getNonVersionedParentRefs()).thenReturn(Collections.emptyList());
+        when(targetEntity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(fromTargetReference, fromAnotherTargetReference));
         entities.add(subEntity);
         entities.add(targetEntity);
 
@@ -1704,7 +1704,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperParentSingleRef() {
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(toParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(toParentReference));
         when(toParentReference.getParent()).thenReturn(entity);
         when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
         when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
@@ -1926,7 +1926,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperMultiParentSingleRef() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
         when(toParentReference.getParent()).thenReturn(entity);
         when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
         when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
@@ -2209,7 +2209,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperParentMultiRef() {
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(toParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(toParentReference));
         when(toParentReference.getParent()).thenReturn(entity);
         when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
         when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
@@ -2460,7 +2460,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiRefNonOwnerSelfReference() {
         when(entity.getReferences()).thenReturn(Collections.singletonList(targetReference));
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(targetReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(targetReference));
         setMockReturnsReference(targetReference, ENTITY_NAME + "s", ENTITY_NAME, null, null, Boolean.TRUE, Boolean.FALSE);
         setMockReturnsReference(targetReference, entity, entity, null);
 
@@ -2707,7 +2707,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperMultiParentMultiRef() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
         when(toParentReference.getParent()).thenReturn(entity);
         when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
         when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
@@ -2988,7 +2988,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperMultiParentMultiRefOwnerAndNotOwner() {
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
         when(toParentReference.getParent()).thenReturn(entity);
         when(fromParentReference.getRealTargetEntity()).thenReturn(entity);
         when(fromParentReference.getTargetEntity()).thenReturn(ENTITY_NAME);
@@ -4175,7 +4175,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
     @Test
     public void testCreateAccessMapperMultiRefParentNotRelevant() {
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(toParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(toParentReference));
 
         List<String> expected = getDefaultExpected();
 
@@ -4186,7 +4186,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
     @Test
     public void testCreateAccessMapperSingleRefParentNotRelevant() {
-        when(entity.getParentRefs()).thenReturn(Collections.singletonList(toParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Collections.singletonList(toParentReference));
         when(toParentReference.isList()).thenReturn(Boolean.FALSE);
         when(parentEntity.getModels()).thenReturn(Models.DOMAIN_DTO);
 
@@ -4814,7 +4814,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
         when(field.getType()).thenReturn("SomeEnum");
         when(field.getTypePackage()).thenReturn("de.test.package.enums");
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
         when(entity.getFields()).thenReturn(Collections.singletonList(field));
         when(parentEntity.getReferences()).thenReturn(Arrays.asList(fromParentReference, anotherFromParentReference));
 
@@ -5058,7 +5058,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(field.getType()).thenReturn("SomeEnum");
         when(field.getTypePackage()).thenReturn("de.test.package.enums");
         when(field.getModels()).thenReturn(Models.DAO);
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
         when(entity.getFields()).thenReturn(Collections.singletonList(field));
         when(parentEntity.getReferences()).thenReturn(Arrays.asList(fromParentReference, anotherFromParentReference));
 
@@ -5629,7 +5629,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
 
         when(field.getType()).thenReturn("SomeEnum");
         when(field.getTypePackage()).thenReturn("de.test.package.enums");
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
         when(entity.getFields()).thenReturn(Collections.singletonList(field));
         when(parentEntity.getReferences()).thenReturn(Arrays.asList(fromParentReference, anotherFromParentReference));
 
@@ -6098,7 +6098,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         when(anotherFromParentReference.isConnectionFiltering()).thenReturn(Boolean.TRUE);
 
 
-        when(entity.getParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
+        when(entity.getNonVersionedParentRefs()).thenReturn(Arrays.asList(toParentReference, anotherToParentReference));
         when(parentEntity.getReferences()).thenReturn(Arrays.asList(fromParentReference, anotherFromParentReference));
 
         List<String> expected = new ArrayList<>();

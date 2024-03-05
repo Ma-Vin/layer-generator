@@ -92,6 +92,40 @@
           "targetEntity": "RootExt",
           "isOwner": true
         }
+      ],
+      "versions": [
+        {
+          "versionId": "v2",
+          "removedFieldNames": [
+            "description"
+          ],
+          "addedFields": [
+            {
+              "fieldName": "addedField",
+              "type": "String"
+            }
+          ],
+          "removedReferenceNames": [
+            "singleRef"
+          ],
+          "addedReferences": [
+            {
+              "referenceName": "addedReference",
+              "targetEntity": "SingleRefOneParent",
+              "isOwner": true
+            }
+          ]
+        },
+        {
+          "versionId": "v3",
+          "baseVersionId": "v2",
+          "removedFieldNames": [
+            "addedField"
+          ],
+          "removedReferenceNames": [
+            "addedReference"
+          ]
+        }
       ]
     },
     {

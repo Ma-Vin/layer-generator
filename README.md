@@ -39,4 +39,7 @@ The implementation of the annotation generator is located at [generator-annotati
 ### Example
 
 An example of plugin and extension annotations usage is shown at [plugin-sample](/sample/plugin-sample)
-An example of generator annotation usage is shown at [plugin-sample](/sample/annotation-sample)
+
+An example of generator annotation usage is shown at [annotation-sample](/sample/annotation-sample)
+
+An example of versioning usage is shown at [version-sample](/sample/version-sample)

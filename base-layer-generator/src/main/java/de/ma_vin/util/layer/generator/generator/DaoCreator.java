@@ -4,6 +4,8 @@ import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
 import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Index;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.exceptions.NotSupportedMethodException;
@@ -229,10 +231,10 @@ public class DaoCreator extends AbstractObjectCreator {
 
         List<String> attributes = new ArrayList<>();
 
-        List<Reference> treatedParentReferences = getTreatedReferences(entity.getParentRefs());
-        boolean isSingle = treatedParentReferences.stream().filter(Reference::isOwner).count() == 1;
+        List<Reference> treatedParentReferences = getTreatedReferences(entity.getNonVersionedParentRefs());
+        boolean isSingle = treatedParentReferences.stream().filter(Reference::getIsOwner).count() == 1;
         treatedParentReferences.stream()
-                .filter(Reference::isOwner)
+                .filter(Reference::getIsOwner)
                 .filter(ref -> ref.getRealTargetEntity().getModels().isDao())
                 .forEach(ref -> addParentRef(daoClazz, packageName, ref, isSingle, attributes));
         getTreatedReferences(entity.getReferences()).stream()

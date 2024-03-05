@@ -1,6 +1,8 @@
 package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.elements.*;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import de.ma_vin.util.layer.generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
 import org.mockito.Mock;
@@ -12,10 +14,7 @@ import javax.tools.JavaFileObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -26,6 +25,10 @@ import static org.mockito.MockitoAnnotations.openMocks;
 public class AbstractCreatorTest {
     public static final String BASE_PACKAGE = "de.test.package";
     public static final String ENTITY_NAME = "Dummy";
+    public static final String TARGET_ENTITY_NAME = "Target";
+    public static final String TARGET_REFERENCE_NAME = "TargetRef";
+    public static final String FIELD_NAME = "anyField";
+    public static final String FIELD_TYPE = "String";
 
     protected AutoCloseable openMocks;
 
@@ -61,34 +64,19 @@ public class AbstractCreatorTest {
     }
 
     protected void initDefaultMock() {
-        when(entity.getBaseName()).thenReturn(ENTITY_NAME);
-        when(entity.getTableName()).thenReturn(ENTITY_NAME);
-        when(entity.getDescription()).thenReturn("Dummy description");
-        when(entity.getIdentificationPrefix()).thenReturn("DU");
-        when(entity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
-        when(entity.getGrouping()).thenReturn(grouping);
-        when(entity.hasParent()).thenReturn(Boolean.FALSE);
-        when(entity.hasNoParent()).thenReturn(Boolean.TRUE);
-        when(entity.getGenIdIfDto()).thenReturn(Boolean.TRUE);
+        mockEntityDefault(entity);
 
-        when(field.getFieldName()).thenReturn("anyField");
-        when(field.getType()).thenReturn("String");
+        when(field.getFieldName()).thenReturn(FIELD_NAME);
+        when(field.getType()).thenReturn(FIELD_TYPE);
         when(field.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
         when(field.getParentEntity()).thenReturn(entity);
 
         when(grouping.getGroupingPackage()).thenReturn("group");
 
-        setMockReturnsReference(targetReference, "TargetRef", "Target", null, null, Boolean.TRUE, Boolean.TRUE);
+        setMockReturnsReference(targetReference, TARGET_REFERENCE_NAME, TARGET_ENTITY_NAME, null, null, Boolean.TRUE, Boolean.TRUE);
         setMockReturnsReference(targetReference, null, targetEntity, null);
 
-        when(targetEntity.getBaseName()).thenReturn("Target");
-        when(targetEntity.getTableName()).thenReturn("Target");
-        when(targetEntity.getDescription()).thenReturn("Target description");
-        when(targetEntity.getIdentificationPrefix()).thenReturn("TA");
-        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
-        when(targetEntity.getGrouping()).thenReturn(grouping);
-        when(targetEntity.hasParent()).thenReturn(Boolean.FALSE);
-        when(targetEntity.hasNoParent()).thenReturn(Boolean.TRUE);
+        mockTargetEntityDefault(targetEntity);
 
         when(config.getBasePackage()).thenReturn(BASE_PACKAGE);
         when(config.getDaoPackage()).thenReturn("dao");
@@ -108,6 +96,30 @@ public class AbstractCreatorTest {
             fail(e);
         }
     }
+
+    protected void mockEntityDefault(Entity entityMock) {
+        when(entityMock.getBaseName()).thenReturn(ENTITY_NAME);
+        when(entityMock.getTableName()).thenReturn(ENTITY_NAME);
+        when(entityMock.getDescription()).thenReturn("Dummy description");
+        when(entityMock.getIdentificationPrefix()).thenReturn("DU");
+        when(entityMock.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(entityMock.getGrouping()).thenReturn(grouping);
+        when(entityMock.hasParent()).thenReturn(Boolean.FALSE);
+        when(entityMock.hasNoParent()).thenReturn(Boolean.TRUE);
+        when(entityMock.getGenIdIfDto()).thenReturn(Boolean.TRUE);
+    }
+
+    protected void mockTargetEntityDefault(Entity targetEntity) {
+        when(targetEntity.getBaseName()).thenReturn(TARGET_ENTITY_NAME);
+        when(targetEntity.getTableName()).thenReturn(TARGET_ENTITY_NAME);
+        when(targetEntity.getDescription()).thenReturn("Target description");
+        when(targetEntity.getIdentificationPrefix()).thenReturn("TA");
+        when(targetEntity.getModels()).thenReturn(Models.DOMAIN_DAO_DTO);
+        when(targetEntity.getGrouping()).thenReturn(grouping);
+        when(targetEntity.hasParent()).thenReturn(Boolean.FALSE);
+        when(targetEntity.hasNoParent()).thenReturn(Boolean.TRUE);
+    }
+
 
     protected BufferedWriter mockBufferedWriter(String fileKey) {
         List<String> fileContent = new ArrayList<>();
@@ -163,6 +175,7 @@ public class AbstractCreatorTest {
         when(referenceMock.getFilterFieldValue()).thenReturn(filterFieldValue);
         when(referenceMock.isList()).thenReturn(isList);
         when(referenceMock.isOwner()).thenReturn(isOwner);
+        when(referenceMock.getIsOwner()).thenReturn(isOwner);
         when(referenceMock.isAggregated()).thenReturn(false);
         when(referenceMock.isReverse()).thenReturn(false);
 
@@ -173,7 +186,11 @@ public class AbstractCreatorTest {
         doAnswer(a -> when(referenceMock.getFilterField()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterField(anyString());
         doAnswer(a -> when(referenceMock.getFilterFieldValue()).thenReturn(a.getArgument(0))).when(referenceMock).setFilterFieldValue(anyString());
         doAnswer(a -> when(referenceMock.isList()).thenReturn(a.getArgument(0))).when(referenceMock).setIsList(anyBoolean());
-        doAnswer(a -> when(referenceMock.isOwner()).thenReturn(a.getArgument(0))).when(referenceMock).setIsOwner(anyBoolean());
+        doAnswer(a -> {
+            when(referenceMock.isOwner()).thenReturn(a.getArgument(0));
+            when(referenceMock.getIsOwner()).thenReturn(a.getArgument(0));
+            return null;
+        }).when(referenceMock).setIsOwner(anyBoolean());
         doAnswer(a -> when(referenceMock.isAggregated()).thenReturn(a.getArgument(0))).when(referenceMock).setAggregated(anyBoolean());
         doAnswer(a -> when(referenceMock.isReverse()).thenReturn(a.getArgument(0))).when(referenceMock).setReverse(anyBoolean());
     }

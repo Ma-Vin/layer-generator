@@ -7,8 +7,8 @@ import de.ma_vin.util.layer.generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.config.elements.Field;
-import de.ma_vin.util.layer.generator.config.elements.Reference;
+import de.ma_vin.util.layer.generator.config.elements.fields.Field;
+import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -188,15 +188,17 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
             , String sourceClassParameterPostFix, String targetClassParameterPostFix
             , String sourceParameter, String targetParameter) {
 
-        Method setValueMethod = new Method(String.format("set%s%sValues", getUpperFirst(entity.getBaseName()), targetClassParameterPostFix));
+        Entity targetVersionParentEntity = getNonVersionParentEntity(entity, targetClassParameterPostFix);
+
+        Method setValueMethod = new Method(String.format("set%s%sValues", getUpperFirst(targetVersionParentEntity.getBaseName()), targetClassParameterPostFix));
         setValueMethod.setQualifier(Qualifier.PROTECTED);
 
         String sourceBaseName = getSourceEntityBaseName(entity, sourceClassParameterPostFix);
 
         setValueMethod.addParameter(String.format("%s%s", getUpperFirst(sourceBaseName), sourceClassParameterPostFix), sourceParameter);
-        setValueMethod.addParameter(String.format("%s%s", getUpperFirst(entity.getBaseName()), targetClassParameterPostFix), targetParameter);
+        setValueMethod.addParameter(String.format("%s%s", getUpperFirst(targetVersionParentEntity.getBaseName()), targetClassParameterPostFix), targetParameter);
 
-        determineAlFields(entity).stream()
+        determineAllFields(entity).stream()
                 .filter(fieldChecker::isRelevant)
                 .forEach(f ->
                         setValueMethod.addLine("%1$s.set%3$s(%2$s.get%3$s());"
@@ -249,10 +251,12 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         boolean hasIncludeChildrenParameter = hasSingleRefWithChildren(relevantReferences, parameterContainer.entityChecker);
         String sourceBaseName = getSourceEntityBaseName(parameterContainer.entity, parameterContainer.sourceClassParameterPostFix);
 
-        Method setSingleRefMethod = new Method(String.format("set%s%sSingleReferences", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.classParameterPostFix));
+        Method setSingleRefMethod = new Method(String.format("set%s%sSingleReferences"
+                , getUpperFirst(parameterContainer.getAdjustedEntity().getBaseName()), parameterContainer.classParameterPostFix));
         setSingleRefMethod.setQualifier(Qualifier.PROTECTED);
         setSingleRefMethod.addParameter(String.format("%s%s", sourceBaseName, parameterContainer.sourceClassParameterPostFix), sourceParameter);
-        setSingleRefMethod.addParameter(String.format("%s%s", getUpperFirst(parameterContainer.entity.getBaseName()), parameterContainer.classParameterPostFix), targetParameter);
+        setSingleRefMethod.addParameter(String.format("%s%s", getUpperFirst(parameterContainer.getAdjustedEntity().getBaseName())
+                , parameterContainer.classParameterPostFix), targetParameter);
         if (hasIncludeChildrenParameter) {
             setSingleRefMethod.addParameter("boolean", INCLUDE_CHILDREN_PARAMETER);
         }
@@ -320,8 +324,8 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @return the created Method
      */
     protected Method createConvertMethodBase(CreateMethodParameterContainer parameterContainer) {
-        Method convertMethod = new Method(getConvertMethodName(parameterContainer.entity, parameterContainer.classParameterPostFix));
-        convertMethod.setMethodType(String.format("%s%s", parameterContainer.entity.getBaseName(), parameterContainer.classParameterPostFix));
+        Method convertMethod = new Method(getConvertMethodName(parameterContainer.getAdjustedEntity(), parameterContainer.classParameterPostFix));
+        convertMethod.setMethodType(String.format("%s%s", parameterContainer.getAdjustedEntity().getBaseName(), parameterContainer.classParameterPostFix));
         convertMethod.setQualifier(Qualifier.PUBLIC);
         convertMethod.setStatic(true);
         convertMethod.setJavaDoc(new JavaDoc());
@@ -335,7 +339,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         }
 
         convertMethod.getJavaDoc().setReturnDescription("an equivalent new created {@link %s%s}"
-                , getUpperFirst(parameterContainer.getEntity().getBaseName()), parameterContainer.getClassParameterPostFix());
+                , getUpperFirst(parameterContainer.getAdjustedEntity().getBaseName()), parameterContainer.getClassParameterPostFix());
 
         return convertMethod;
     }
@@ -365,8 +369,34 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * If the entity is derived from another one and the source is a {@code DOMAIN_POSTFIX}, the name will be taken from the derived from
      */
     protected String getSourceEntityBaseName(Entity entity, String entityPostFix) {
-        return entity.getRealDerivedFrom() != null && DOMAIN_POSTFIX.equals(entityPostFix) ? entity.getRealDerivedFrom().getBaseName() : entity.getBaseName();
+        Entity versionParentEntity = getNonVersionParentEntity(entity, entityPostFix);
+        return versionParentEntity.getRealDerivedFrom() != null && DOMAIN_POSTFIX.equals(entityPostFix)
+                ? versionParentEntity.getRealDerivedFrom().getBaseName()
+                : versionParentEntity.getBaseName();
     }
+
+    /**
+     * Determines the non versioned variant entity for non data transport objects
+     *
+     * @param entity        Entity whose non versioned variant is ask for
+     * @param entityPostFix postfix to identify if a data transport objects is requested or not
+     * @return the parent entity if {@code entity} has an actual version and {@code entityPostFix} is a data transport object postfix.
+     * {@code entity} otherwise.
+     */
+    protected static Entity getNonVersionParentEntity(Entity entity, String entityPostFix) {
+        return DTO_POSTFIX.equals(entityPostFix) ? entity : getNonVersionParentEntity(entity);
+    }
+
+    /**
+     * Determines the non versioned variant entity
+     *
+     * @param entity Entity whose non versioned variant is ask for
+     * @return the parent entity if {@code entity} has an actual version. {@code entity} otherwise.
+     */
+    protected static Entity getNonVersionParentEntity(Entity entity) {
+        return entity.getActualVersion() != null ? entity.getActualVersion().getParentEntity() : entity;
+    }
+
 
     /**
      * Creates mapping methods without a map parameter
@@ -436,9 +466,10 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
 
         Method convertMethod = createConvertMethodWithParentBase(mapperClass, parameterContainer, referenceToParent, packageName);
 
+
         convertMethod.addLine("return %s(%s,%s parent,%s%s new %s<>());"
                 , getConvertMethodName(parameterContainer.entity, parameterContainer.classParameterPostFix)
-                , getLowerFirst(parameterContainer.entity.getBaseName())
+                , getLowerFirst(parameterContainer.getSourceAdjustedEntity().getBaseName())
                 , hasIncludeChildrenParameter(parameterContainer.entity, parameterContainer.entityChecker) ? String.format(" %s,", INCLUDE_CHILDREN_PARAMETER) : ""
                 , singleValueModelRelevant ? getParameterOfRelevantSingleModelValuesText(parameterContainer.entity) : ""
                 , referenceToParentRelevant ? getParameterOfParentReferencesText(referenceToParent) : ""
@@ -480,9 +511,11 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     protected Method createConvertMethodWithParentBase(Clazz mapperClass, CreateMethodParameterContainer parameterContainer
             , Reference referenceToParent, String packageName) {
 
+        Entity targetVersionParentEntity = getNonVersionParentEntity(referenceToParent.getRealTargetEntity(), parameterContainer.classParameterPostFix);
+
         Method convertMethod = createConvertMethodBase(parameterContainer);
-        mapperClass.addImport(getPackageAndClass(referenceToParent, packageName, parameterContainer.classParameterPostFix));
-        convertMethod.addParameter(referenceToParent.getTargetEntity() + parameterContainer.classParameterPostFix, "parent");
+        mapperClass.addImport(getPackageAndClass(targetVersionParentEntity, packageName, parameterContainer.classParameterPostFix));
+        convertMethod.addParameter(targetVersionParentEntity.getBaseName() + parameterContainer.classParameterPostFix, "parent");
         convertMethod.getJavaDoc().addParams("parent", "the parent of converted result");
 
         return convertMethod;
@@ -541,7 +574,8 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @return Name of the dao converting method
      */
     protected String getConvertMethodName(Entity entity, String classParameterPostFix) {
-        return String.format(CONVERT_TO_TEXT, entity.getBaseName(), classParameterPostFix);
+        Entity versionParentEntity = getNonVersionParentEntity(entity, classParameterPostFix);
+        return String.format(CONVERT_TO_TEXT, versionParentEntity.getBaseName(), classParameterPostFix);
     }
 
     /**
@@ -550,15 +584,25 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param entity Entity whose fields should be determined
      * @return List of direct fields and those provided by super class of {@code entity}
      */
-    protected List<Field> determineAlFields(Entity entity) {
+    protected List<Field> determineAllFields(Entity entity) {
         if (entity.hasNoParent()) {
-            return entity.getFields();
+            return filterFieldsForVersion(entity, entity.getFields());
         }
         List<Field> result = new ArrayList<>();
         result.addAll(entity.getFields());
-        result.addAll(determineAlFields(entity.getRealParent()));
+        result.addAll(determineAllFields(entity.getRealParent()));
 
-        return result;
+        return filterFieldsForVersion(entity, result);
+    }
+
+    private List<Field> filterFieldsForVersion(Entity entity, List<Field> fields) {
+        if (entity.getActualVersion() != null) {
+            return fields.stream()
+                    .filter(f -> entity.getActualVersion().getParentEntity().getFields().stream()
+                            .anyMatch(f2 -> f2.getFieldName().equals(f.getFieldName())))
+                    .toList();
+        }
+        return fields;
     }
 
     /**
@@ -569,13 +613,23 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      */
     protected List<Reference> determineAllReferences(Entity entity) {
         if (entity.hasNoParent()) {
-            return entity.getReferences();
+            return filterReferencesForVersion(entity, entity.getReferences());
         }
         List<Reference> result = new ArrayList<>();
         result.addAll(entity.getReferences());
         result.addAll(determineAllReferences(entity.getRealParent()));
 
-        return result;
+        return filterReferencesForVersion(entity, result);
+    }
+
+    private List<Reference> filterReferencesForVersion(Entity entity, List<Reference> references) {
+        if (entity.getActualVersion() != null) {
+            return references.stream()
+                    .filter(r -> entity.getActualVersion().getParentEntity().getReferences().stream()
+                            .anyMatch(r2 -> r2.getReferenceName().equals(r.getReferenceName())))
+                    .toList();
+        }
+        return references;
     }
 
     /**
@@ -589,7 +643,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     protected void addConvertMethodDescriptionWithParent(Method convertMethod, Entity entity, String sourceClassPostFix, String targetClassPostFix) {
         convertMethod.getJavaDoc().addLine("Converts a(n) {@link %1$s%2$s} to a(n) {@link %3$s%4$s} and sets the result to the corresponding reference property at the parent"
                 , getUpperFirst(getSourceEntityBaseName(entity, sourceClassPostFix)), sourceClassPostFix
-                , getUpperFirst(entity.getBaseName()), targetClassPostFix);
+                , getUpperFirst(getNonVersionParentEntity(entity, targetClassPostFix).getBaseName()), targetClassPostFix);
     }
 
     /**
@@ -602,8 +656,8 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      */
     protected void addConvertMethodDescription(Method convertMethod, Entity entity, String sourceClassPostFix, String targetClassPostFix) {
         convertMethod.getJavaDoc().addLine("Converts a(n) {@link %1$s%2$s} to a(n) {@link %3$s%4$s}"
-                , getUpperFirst(getSourceEntityBaseName(entity, sourceClassPostFix)), sourceClassPostFix
-                , getUpperFirst(entity.getBaseName()), targetClassPostFix);
+                , getUpperFirst(getSourceEntityBaseName(getNonVersionParentEntity(entity, sourceClassPostFix), sourceClassPostFix)), sourceClassPostFix
+                , getUpperFirst(getNonVersionParentEntity(entity, targetClassPostFix).getBaseName()), targetClassPostFix);
     }
 
     /**
@@ -612,13 +666,16 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
      * @param convertMethod      Method where to add parameter end javadoc entry
      * @param entity             Entity which is converted
      * @param targetInterface    Interface which is implemented by the result
+     * @param sourceClassPostfix postfix for classes which is to map
      * @param targetClassPostfix postfix for classes which will be the result
      */
-    protected void addMappedObjectsParam(Method convertMethod, Entity entity, String targetInterface, String targetClassPostfix) {
+    protected void addMappedObjectsParam(Method convertMethod, Entity entity, String targetInterface, String sourceClassPostfix, String targetClassPostfix) {
         convertMethod.addParameter(String.format(MAP_DECLARATION_TEXT, Map.class.getSimpleName(), targetInterface), MAPPED_OBJECTS_PARAMETER_TEXT);
         convertMethod.getJavaDoc().addParams(MAPPED_OBJECTS_PARAMETER_TEXT
                 , "map which contains already mapped objects. If an identification of {@code %s} is contained, the found {@link %s%s} will be returned"
-                , getLowerFirst(entity.getBaseName()), getUpperFirst(entity.getBaseName()), targetClassPostfix);
+                , getLowerFirst(getNonVersionParentEntity(entity, sourceClassPostfix).getBaseName())
+                , getUpperFirst(getNonVersionParentEntity(entity, targetClassPostfix).getBaseName())
+                , targetClassPostfix);
         convertMethod.getJavaDoc().setReturnDescription(convertMethod.getJavaDoc().getReturnDescription() + " or the found one from the given map");
     }
 
@@ -664,18 +721,33 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
         /**
          * entity which is to map
          */
-        Entity entity;
+        private Entity entity;
         /**
          * postfix for classes and parameters
          */
-        String classParameterPostFix;
+        private String classParameterPostFix;
         /**
          * postfix for classes and parameters which is to map
          */
-        String sourceClassParameterPostFix;
+        private String sourceClassParameterPostFix;
         /**
          * checker for relevance verification
          */
-        EntityRelevantChecker entityChecker;
+        private EntityRelevantChecker entityChecker;
+        /**
+         * the versioned entity for data transport at {@code classParameterPostFix} and the non versioned variant entity for non data transport objects
+         */
+        private Entity adjustedEntity;
+        /**
+         * the versioned entity for data transport at {@code sourceClassParameterPostFix} and the non versioned variant entity for non data transport objects
+         */
+        private Entity sourceAdjustedEntity;
+
+        public CreateMethodParameterContainer(Entity entity, String classParameterPostFix, String sourceClassParameterPostFix, EntityRelevantChecker entityChecker) {
+            this(entity, classParameterPostFix, sourceClassParameterPostFix, entityChecker
+                    , getNonVersionParentEntity(entity, classParameterPostFix),
+                    getNonVersionParentEntity(entity, sourceClassParameterPostFix)
+            );
+        }
     }
 }

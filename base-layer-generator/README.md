@@ -6,9 +6,10 @@ Code generator to create domain model, data transport or data access objects.
 
 ## Model formats
 
-It is possible to define the model with a **xml**, **yaml/yml** or **json** file. At the following the xml variant is used to
-describe the configuration elements.
+It is possible to define the model with a **xml**, **yaml/yml** or **json** file. At the following the xml variant is
+used to describe the configuration elements.
 There exists four test resources which define an equal model:
+
 - [exampleModel.xml](src/test/resources/references/config/exampleModel.xml)
 - [exampleModel.yaml](src/test/resources/references/config/exampleModel.yaml)
 - [exampleModel.yml](src/test/resources/references/config/exampleModel.yml)
@@ -16,8 +17,9 @@ There exists four test resources which define an equal model:
 
 ## Model definition
 
-The following description refers to the xml format because it contains nodes and attributes element types in contrast to yaml and json
-The xsd generation base on [Config](src/main/java/de/ma_vin/util/layer/generator/config/elements/Config.java)
+The following description refers to the xml format because it contains nodes and attributes element types in contrast to
+yaml and json The xsd generation based
+on [Config](src/main/java/de/ma_vin/util/layer/generator/config/elements/Config.java)
 
 These abbreviations apply in the following for the xml type:
 
@@ -26,16 +28,16 @@ These abbreviations apply in the following for the xml type:
 
 ### Config
 
-| Property           | Nullable           | xml type | Description                                                                                                                                                                                                                                                                                                                                                                                                               |
-|--------------------|--------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| basePackage        | :x:                | *N*      | Basic package which will be used for generated java classes                                                                                                                                                                                                                                                                                                                                                               |
-| dtoPackage         | :x:                | *N*      | Extension of the basic package for dto objects                                                                                                                                                                                                                                                                                                                                                                            |
-| domainPackage      | :x:                | *N*      | Extension of the basic package for domain objects                                                                                                                                                                                                                                                                                                                                                                         |
-| daoPackage         | :x:                | *N*      | Extension of the basic package for dao objects                                                                                                                                                                                                                                                                                                                                                                            |
-| idGeneratorPackage | :heavy_check_mark: | *N*      | The package of an id generator                                                                                                                                                                                                                                                                                                                                                                                            |
-| idGeneratorClass   | :heavy_check_mark: | *N*      | The class of an id generator, which is used to transform the database id to an identification with some prefix.<br>The prefix makes it easier to classy the identification to a concrete type of model object<br>Two static function are to provide:<ul><li>*public static String generateIdentification(Long id, String prefix)*</li><li>*public static Long generateId(String identification, String prefix)*</li></ul> |
-| entities           | :x:                | *N*      | List of entities which will be used to generate domain objects, dto or dao.                                                                                                                                                                                                                                                                                                                                               |
-| groupings          | :x:                | *N*      | List of groupings of entities. Each grouping gets an own sub package                                                                                                                                                                                                                                                                                                                                                      |
+| Property           | Nullable | xml type | Description                                                                                                                                                                                                                                                                                                                                                                                                               |
+|--------------------|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| basePackage        | :x:      | *N*      | Basic package which will be used for generated java classes                                                                                                                                                                                                                                                                                                                                                               |
+| dtoPackage         | :x:      | *N*      | Extension of the basic package for dto objects                                                                                                                                                                                                                                                                                                                                                                            |
+| domainPackage      | :x:      | *N*      | Extension of the basic package for domain objects                                                                                                                                                                                                                                                                                                                                                                         |
+| daoPackage         | :x:      | *N*      | Extension of the basic package for dao objects                                                                                                                                                                                                                                                                                                                                                                            |
+| idGeneratorPackage | :x:      | *N*      | The package of an id generator                                                                                                                                                                                                                                                                                                                                                                                            |
+| idGeneratorClass   | :x:      | *N*      | The class of an id generator, which is used to transform the database id to an identification with some prefix.<br>The prefix makes it easier to classy the identification to a concrete type of model object<br>Two static function are to provide:<ul><li>*public static String generateIdentification(Long id, String prefix)*</li><li>*public static Long generateId(String identification, String prefix)*</li></ul> |
+| entities           | :x:      | *N*      | List of entities which will be used to generate domain objects, dto or dao.                                                                                                                                                                                                                                                                                                                                               |
+| groupings          | :x:      | *N*      | List of groupings of entities. Each grouping gets an own sub package                                                                                                                                                                                                                                                                                                                                                      |
 
 ### Entity
 
@@ -52,6 +54,7 @@ These abbreviations apply in the following for the xml type:
 | fields               | :heavy_check_mark: | *N*      | List of attributes of the entity                                                                                                                                                                   |
 | indices              | :heavy_check_mark: | *N*      | List of indices of the entity                                                                                                                                                                      |
 | references           | :heavy_check_mark: | *N*      | References to other entities                                                                                                                                                                       |
+| versions             | :heavy_check_mark: | *N*      | List of versions for this entity                                                                                                                                                                   |
 
 ### Grouping
 
@@ -114,6 +117,49 @@ These abbreviations apply in the following for the xml type:
 | filterFieldPackage | :x:      | *A*      | Package of the filtering enum. Only in case of filtered reference, non ownership. Will be used at connection table. |
 | filterFieldType    | :x:      | *A*      | Field of enum type to filter references from one entity to another multiple times                                   |
 | filterFieldValue   | :x:      | *A*      | Value which should be used for filtering.                                                                           |
+
+### Version
+
+A version can be used to generate multiple additional ***versions of the data transport objects***, which have different
+fields or reference (by adding or removing them) in comparison to the original entity.
+***Domain and data access objects remain versionless!*** Because of this, converting methods between versioned data
+transport and domain objects will be generated at transport mapper classes.
+
+A default mapping is realized for shared field and references. Added fields and references are to map manually by an
+extension of the specific transport mapper class.
+
+| Property              | Nullable           | xml type | Description                                                                                                          |
+|-----------------------|--------------------|----------|----------------------------------------------------------------------------------------------------------------------|
+| versionName           | :heavy_check_mark: | *N*      | Name of the versioned entity. If not set, it will be generated from entity name and versionId.                       |
+| versionId             | :x:                | *A*      | Identification of the version                                                                                        |
+| baseVersionId         | :heavy_check_mark: | *A*      | Id of the version which is to use as reference to derive difference from. If not set, the owner entity will be used. |
+| removedFieldNames     | :heavy_check_mark: | *N*      | List of field names which are to remove in comparison to the base version                                            |
+| addedFields           | :heavy_check_mark: | *N*      | List of fields which are to add in comparison to the base version                                                    |
+| removedReferenceNames | :heavy_check_mark: | *N*      | List of reference names which are to remove in comparison to the base version                                        |
+| addedReferences       | :heavy_check_mark: | *N*      | List of reference which are to add in comparison to the base version                                                 |
+
+#### AddedField
+
+This is a special reduced variant of *Field* and has only the following properties
+
+* fieldName
+* type
+* typePackage
+* isTypeEnum
+* shortDescription
+* description
+
+#### AddedReferences
+
+This is a special reduced variant of *Reference* and has only the following properties
+
+* referenceName
+* targetEntity
+* shortDescription
+* isOwner
+
+In addition, it is possible to point to a different version id than the source entity of the reference by setting the
+optional attribute *divergentTargetVersion*.
 
 ### Models
 
