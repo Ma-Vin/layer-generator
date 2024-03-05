@@ -49,6 +49,7 @@ jobs:
       with:
         package-name: de.ma_vin.util.layer.generator.${{ matrix.artifacts }}
         package-type: maven
+        min-versions-to-keep: 0
         ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
 
