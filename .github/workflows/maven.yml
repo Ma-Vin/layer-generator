@@ -39,6 +39,7 @@ jobs:
 
   clean-packages:
     needs: build
+    if: false
     strategy:
       matrix:
         artifacts: [layer-generator, utility, sourcecode-generator, extension-annotation, base-layer-generator, generator-annotation, generator-plugin, sample, util-sample, plugin-sample, annotation-sample, version-sample]
@@ -54,7 +55,8 @@ jobs:
         token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
 
   deploy:
-    needs: [build, clean-packages]
+#    needs: [build, clean-packages]
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout layerGenerator
