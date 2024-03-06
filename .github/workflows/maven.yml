@@ -39,24 +39,50 @@ jobs:
 
   clean-packages:
     needs: build
-    if: false
     strategy:
       matrix:
         artifacts: [layer-generator, utility, sourcecode-generator, extension-annotation, base-layer-generator, generator-annotation, generator-plugin, sample, util-sample, plugin-sample, annotation-sample, version-sample]
     runs-on: ubuntu-latest
     steps:
-    - name: delete old versions of ${{ matrix.artifacts }}
-      uses: actions/delete-package-versions@v5
-      with:
-        package-name: de.ma_vin.util.layer.generator.${{ matrix.artifacts }}
-        package-type: maven
-        min-versions-to-keep: 0
-        ignore-versions: ^(?:\d+\.\d+(\.\d+)?)$
-        token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
+    - name: delete previous versions of ${{ matrix.artifacts }}
+      run: |
+        USERNAME=Ma-Vin
+        PACKAGE_TYPE=maven
+        VERSION_NAME=2.0.0-SNAPSHOT
 
+        LIST_PACKAGES=$(
+            curl -L \
+                -H "Accept: application/vnd.github+json" \
+                -H "Authorization: Bearer ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}" \
+                https://api.github.com/users/${USERNAME}/packages/${PACKAGE_TYPE}/${{ matrix.artifacts }}/versions 
+        )
+
+        COUNT_VERSIONS=$(echo "${LIST_PACKAGES}" | grep -P -c '"name":.*')
+
+        if [[ "${COUNT_VERSIONS}" = "0" ]] then
+            echo "Nothing to delete"
+        else if [[ "${COUNT_VERSIONS}" = "1" ]] then
+            echo "delete package"
+            curl -L \
+                -X DELETE \
+                -H "Accept: application/vnd.github+json" \
+                -H "Authorization: Bearer ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}" \
+                https://api.github.com/users/${USERNAME}/packages/${PACKAGE_TYPE}/${{ matrix.artifacts }}
+        else
+            VERSION_ID=$(echo "${LIST_PACKAGES}" | grep -P -B1 "\"name\":.*\"${VERSION_NAME}\"" | grep -oP '(?<="id": ).*(?=,)')
+            if [[ -n "${VERSION_ID}" ]] then
+                echo "delete package version ${VERSION_NAME} with id ${VERSION_ID}"
+                curl -L \
+                    -X DELETE \
+                    -H "Accept: application/vnd.github+json" \
+                    -H "Authorization: Bearer ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}" \
+                    https://api.github.com/users/${USERNAME}/packages/${PACKAGE_TYPE}/${{ matrix.artifacts }}/versions/${VERSION_ID}
+            else
+                echo "no version extracted: nothing deleted"
+            fi
+        fi
   deploy:
-#    needs: [build, clean-packages]
-    needs: build
+    needs: [build, clean-packages]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout layerGenerator
