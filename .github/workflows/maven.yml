@@ -60,9 +60,9 @@ jobs:
 
         COUNT_VERSIONS=$(echo "${LIST_PACKAGES}" | grep -P -c '"name":.*')
 
-        if [[ "${COUNT_VERSIONS}" = "0" ]] then
+        if [ "${COUNT_VERSIONS}" = "0" ]; then
             echo "Nothing to delete"
-        elif [[ "${COUNT_VERSIONS}" = "1" ]] then
+        elif [ "${COUNT_VERSIONS}" = "1" ]; then
             echo "delete package"
             curl -L \
                 -X DELETE \
@@ -71,7 +71,7 @@ jobs:
                 https://api.github.com/users/${USERNAME}/packages/${PACKAGE_TYPE}/${PACKAGE_NAME}
         else
             VERSION_ID=$(echo "${LIST_PACKAGES}" | grep -P -B1 "\"name\":.*\"${VERSION_NAME}\"" | grep -oP '(?<="id": ).*(?=,)')
-            if [[ -n "${VERSION_ID}" ]] then
+            if [ -n "${VERSION_ID}" ]; then
                 echo "delete package version ${VERSION_NAME} with id ${VERSION_ID}"
                 curl -L \
                     -X DELETE \
