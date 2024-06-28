@@ -1,0 +1,42 @@
+package com.github.ma_vin.util.layer_generator.sample.content.dao.filtering;
+
+import com.github.ma_vin.util.layer_generator.annotations.model.BaseDao;
+import jakarta.persistence.*;
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@BaseDao("com.github.ma_vin.util.layer_generator.sample.content.dao")
+@Data
+@Entity
+@IdClass(SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao.SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerId.class)
+@NoArgsConstructor
+@SuppressWarnings("java:S1948")
+@Table(name = "SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwners")
+public class SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerDao {
+
+	@Id
+	@JoinColumn(name = "FilteredOnlyDaoFieldNotOwnerId")
+	@OneToOne(targetEntity = FilteredOnlyDaoFieldNotOwnerDao.class)
+	private FilteredOnlyDaoFieldNotOwnerDao filteredOnlyDaoFieldNotOwner;
+
+	@Id
+	@JoinColumn(name = "SomeFilteringOwnerId")
+	@ManyToOne(targetEntity = SomeFilteringOwnerDao.class)
+	private SomeFilteringOwnerDao someFilteringOwner;
+
+	@AllArgsConstructor
+	@Data
+	@NoArgsConstructor
+	@SuppressWarnings("java:S1068")
+	public static class SomeFilteringOwnerToFilteredOnlyDaoFieldNotOwnerId implements Serializable {
+
+		private Long filteredOnlyDaoFieldNotOwner;
+
+		private Long someFilteringOwner;
+
+	}
+
+}
