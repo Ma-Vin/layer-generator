@@ -94,7 +94,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -138,7 +138,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -175,7 +175,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.IBasicTransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -205,7 +205,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
         expected.add("");
@@ -241,7 +241,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -287,7 +287,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -324,7 +324,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -363,7 +363,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -398,7 +398,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -438,7 +438,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -477,7 +477,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -597,7 +597,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group.subgroup;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.NoArgsConstructor;");
@@ -675,7 +675,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.AnotherDummyDto;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -714,7 +714,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -759,7 +759,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
 
         basicExpected.add("package de.test.package.dto.group;");
         basicExpected.add("");
-        basicExpected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        basicExpected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         basicExpected.add("import de.test.package.dto.ITransportable;");
         basicExpected.add("import lombok.Data;");
         basicExpected.add("import lombok.NoArgsConstructor;");
@@ -808,7 +808,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -843,7 +843,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> basicExpected = new ArrayList<>();
         basicExpected.add("package de.test.package.dto.group;");
         basicExpected.add("");
-        basicExpected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        basicExpected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         basicExpected.add("import de.test.package.dto.ITransportable;");
         basicExpected.add("import lombok.Data;");
         basicExpected.add("import lombok.EqualsAndHashCode;");
@@ -916,7 +916,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.dto.group;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         expected.add("import de.test.package.dto.ITransportable;");
         expected.add("import lombok.Data;");
         expected.add("import lombok.EqualsAndHashCode;");
@@ -951,7 +951,7 @@ public class DtoCreatorTest extends AbstractCreatorTest {
         List<String> basicExpected = new ArrayList<>();
         basicExpected.add("package de.test.package.dto.group;");
         basicExpected.add("");
-        basicExpected.add("import de.ma_vin.util.layer.generator.annotations.model.BaseDto;");
+        basicExpected.add("import com.github.ma_vin.util.layer_generator.model.annotations.BaseDto;");
         basicExpected.add("import de.test.package.dto.ITransportable;");
         basicExpected.add("import lombok.Data;");
         basicExpected.add("import lombok.EqualsAndHashCode;");

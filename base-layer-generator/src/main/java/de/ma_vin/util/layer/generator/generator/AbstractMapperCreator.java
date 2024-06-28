@@ -3,7 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import static de.ma_vin.util.layer.generator.generator.CommonMapperCreator.*;
 
 import com.github.ma_vin.util.layer_generator.sources.*;
-import de.ma_vin.util.layer.generator.builder.MapperType;
+import com.github.ma_vin.util.layer_generator.builder.MapperType;
 import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;

@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.content.domain;
 
-import de.ma_vin.util.layer.generator.annotations.model.BaseDomain;
+import com.github.ma_vin.util.layer_generator.annotations.model.BaseDomain;
 import java.util.Collection;
 import java.util.HashSet;
 import lombok.AccessLevel;

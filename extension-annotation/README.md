@@ -15,20 +15,20 @@ The generated object factories are used by the generated code of *Util Layer Gen
 
 ### Annotations
 There are the following annotations used/to use at data access, domain and transport object:
-- [BaseDao](src/main/java/de/ma_vin/util/layer/generator/annotations/model/BaseDao.java)
-- [BaseDomain](src/main/java/de/ma_vin/util/layer/generator/annotations/model/BaseDomain.java)
-- [BaseDto](src/main/java/de/ma_vin/util/layer/generator/annotations/model/BaseDto.java)
-- [ExtendingDao](src/main/java/de/ma_vin/util/layer/generator/annotations/model/ExtendingDao.java)
-- [ExtendingDomain](src/main/java/de/ma_vin/util/layer/generator/annotations/model/ExtendingDomain.java)
-- [ExtendingDto](src/main/java/de/ma_vin/util/layer/generator/annotations/model/ExtendingDto.java)
+- [BaseDao](src/main/java/com/github/ma_vin/util/layer_generator/model/BaseDao.java)
+- [BaseDomain](src/main/java/com/github/ma_vin/util/layer_generator/model/BaseDomain.java)
+- [BaseDto](src/main/java/com/github/ma_vin/util/layer_generator/model/BaseDto.java)
+- [ExtendingDao](src/main/java/com/github/ma_vin/util/layer_generator/model/ExtendingDao.java)
+- [ExtendingDomain](src/main/java/com/github/ma_vin/util/layer_generator/model/ExtendingDomain.java)
+- [ExtendingDto](src/main/java/com/github/ma_vin/util/layer_generator/model/ExtendingDto.java)
   
 There are the following annotations used/to use at access and transport mapper:
-- [BaseAccessMapper](src/main/java/de/ma_vin/util/layer/generator/annotations/mapper/BaseAccessMapper.java)
-- [BaseTransportMapper](src/main/java/de/ma_vin/util/layer/generator/annotations/mapper/BaseTransportMapper.java)
-- [ExtendingAccessMapper](src/main/java/de/ma_vin/util/layer/generator/annotations/mapper/ExtendingAccessMapper.java)
-- [ExtendingTransportMapper](src/main/java/de/ma_vin/util/layer/generator/annotations/mapper/ExtendingTransportMapper.java)
+- [BaseAccessMapper](src/main/java/com/github/ma_vin/util/layer_generator/mapper/BaseAccessMapper.java)
+- [BaseTransportMapper](src/main/java/com/github/ma_vin/util/layer_generator/mapper/BaseTransportMapper.java)
+- [ExtendingAccessMapper](src/main/java/com/github/ma_vin/util/layer_generator/mapper/ExtendingAccessMapper.java)
+- [ExtendingTransportMapper](src/main/java/com/github/ma_vin/util/layer_generator/mapper/ExtendingTransportMapper.java)
 
 ### Processor
 There are the following annotation processors which generate the object factories:
-- [ObjectFactoryBuilder](src/main/java/de/ma_vin/util/layer/generator/builder/ObjectFactoryBuilder.java)
-- [MapperFactoryBuilder](src/main/java/de/ma_vin/util/layer/generator/builder/MapperFactoryBuilder.java)
+- [ObjectFactoryBuilder](src/main/java/com/github/ma_vin/util/layer_generator/builder/ObjectFactoryBuilder.java)
+- [MapperFactoryBuilder](src/main/java/com/github/ma_vin/util/layer_generator/builder/MapperFactoryBuilder.java)

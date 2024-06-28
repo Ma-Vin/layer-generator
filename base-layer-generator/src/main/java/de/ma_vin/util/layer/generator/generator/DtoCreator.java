@@ -1,7 +1,7 @@
 package de.ma_vin.util.layer.generator.generator;
 
 import com.github.ma_vin.util.layer_generator.sources.*;
-import de.ma_vin.util.layer.generator.annotations.model.BaseDto;
+import com.github.ma_vin.util.layer_generator.annotations.model.BaseDto;
 import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.config.elements.Version;
 import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;

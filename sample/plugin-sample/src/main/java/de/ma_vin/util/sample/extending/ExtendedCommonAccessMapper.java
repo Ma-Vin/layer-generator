@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.extending;
 
-import de.ma_vin.util.layer.generator.annotations.mapper.ExtendingAccessMapper;
+import com.github.ma_vin.util.layer_generator.annotations.mapper.ExtendingAccessMapper;
 import de.ma_vin.util.sample.content.dao.RootExtDao;
 import de.ma_vin.util.sample.content.domain.RootExt;
 import de.ma_vin.util.sample.content.mapper.CommonAccessMapper;

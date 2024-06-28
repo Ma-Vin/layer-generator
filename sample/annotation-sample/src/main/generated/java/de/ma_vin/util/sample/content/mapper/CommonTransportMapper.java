@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.content.mapper;
 
-import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
+import com.github.ma_vin.util.layer_generator.annotations.mapper.BaseTransportMapper;
 import de.ma_vin.util.sample.content.domain.DomainObjectFactory;
 import de.ma_vin.util.sample.content.domain.IIdentifiable;
 import de.ma_vin.util.sample.content.domain.RootEntity;

@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.extending;
 
-import de.ma_vin.util.layer.generator.annotations.model.ExtendingDao;
+import com.github.ma_vin.util.layer_generator.annotations.model.ExtendingDao;
 import de.ma_vin.util.sample.content.dao.single.SingleRefOneParentDao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

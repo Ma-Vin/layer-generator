@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.extending;
 
-import de.ma_vin.util.layer.generator.annotations.mapper.ExtendingTransportMapper;
+import com.github.ma_vin.util.layer_generator.annotations.mapper.ExtendingTransportMapper;
 import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.dto.RootDto;
 import de.ma_vin.util.sample.content.mapper.CommonTransportMapper;

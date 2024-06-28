@@ -160,7 +160,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -315,7 +315,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -474,7 +474,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -634,7 +634,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -792,7 +792,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -989,7 +989,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.ChildDao;");
@@ -1532,7 +1532,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -1716,7 +1716,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -1940,7 +1940,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
@@ -2220,7 +2220,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -2467,7 +2467,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -2718,7 +2718,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
@@ -3001,7 +3001,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.AnotherOwnerDao;");
         expected.add("import de.test.package.dao.AnotherOwnerToDummyDao;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
@@ -3284,7 +3284,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -3460,7 +3460,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -3633,7 +3633,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -3816,7 +3816,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -3993,7 +3993,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.group.subgroup.DummyDao;");
@@ -4249,7 +4249,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -4434,7 +4434,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -4623,7 +4623,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -4821,7 +4821,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -5065,7 +5065,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -5440,7 +5440,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -5636,7 +5636,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");
@@ -5888,7 +5888,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.grouping.DummyDao;");
@@ -6104,7 +6104,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseAccessMapper;");
         expected.add("import de.test.package.dao.DaoObjectFactory;");
         expected.add("import de.test.package.dao.IIdentifiableDao;");
         expected.add("import de.test.package.dao.OwnerDao;");

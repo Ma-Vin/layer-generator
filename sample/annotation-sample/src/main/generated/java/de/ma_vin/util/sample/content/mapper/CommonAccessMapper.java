@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.content.mapper;
 
-import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;
+import com.github.ma_vin.util.layer_generator.annotations.mapper.BaseAccessMapper;
 import de.ma_vin.util.sample.content.dao.DaoObjectFactory;
 import de.ma_vin.util.sample.content.dao.IIdentifiableDao;
 import de.ma_vin.util.sample.content.dao.RootEntityDao;

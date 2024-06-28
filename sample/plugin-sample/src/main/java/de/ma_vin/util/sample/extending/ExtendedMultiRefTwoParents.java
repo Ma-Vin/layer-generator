@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.extending;
 
-import de.ma_vin.util.layer.generator.annotations.model.ExtendingDomain;
+import com.github.ma_vin.util.layer_generator.annotations.model.ExtendingDomain;
 import de.ma_vin.util.sample.content.domain.multi.MultiRefTwoParents;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

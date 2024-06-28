@@ -1,9 +1,9 @@
 package de.ma_vin.util.layer.generator.generator;
 
 import com.github.ma_vin.util.layer_generator.sources.*;
-import de.ma_vin.util.layer.generator.annotations.mapper.BaseAccessMapper;
-import de.ma_vin.util.layer.generator.builder.MapperType;
-import de.ma_vin.util.layer.generator.builder.ModelType;
+import com.github.ma_vin.util.layer_generator.annotations.mapper.BaseAccessMapper;
+import com.github.ma_vin.util.layer_generator.builder.MapperType;
+import com.github.ma_vin.util.layer_generator.builder.ModelType;
 import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 import de.ma_vin.util.layer.generator.sources.*;
 import de.ma_vin.util.layer.generator.config.elements.Config;

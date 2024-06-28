@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample.content.dao;
 
-import de.ma_vin.util.layer.generator.annotations.model.BaseDao;
+import com.github.ma_vin.util.layer_generator.annotations.model.BaseDao;
 import de.ma_vin.util.sample.content.domain.RootEntity;
 import de.ma_vin.util.sample.given.IdGenerator;
 import jakarta.persistence.*;

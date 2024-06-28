@@ -1,8 +1,8 @@
 package de.ma_vin.util.layer.generator.generator;
 
-import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;
-import de.ma_vin.util.layer.generator.builder.MapperType;
-import de.ma_vin.util.layer.generator.builder.ModelType;
+import com.github.ma_vin.util.layer_generator.annotations.mapper.BaseTransportMapper;
+import com.github.ma_vin.util.layer_generator.builder.MapperType;
+import com.github.ma_vin.util.layer_generator.builder.ModelType;
 import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;

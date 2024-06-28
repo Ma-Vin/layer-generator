@@ -1,2 +1,2 @@
-de.ma_vin.util.layer.generator.builder.MapperFactoryBuilder
-de.ma_vin.util.layer.generator.builder.ObjectFactoryBuilder
+com.github.ma_vin.util.layer_generator.builder.MapperFactoryBuilder
+com.github.ma_vin.util.layer_generator.builder.ObjectFactoryBuilder

@@ -239,7 +239,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -374,7 +374,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -514,7 +514,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -654,7 +654,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -792,7 +792,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -931,7 +931,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1072,7 +1072,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.Owner;");
@@ -1268,7 +1268,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.AnotherOwner;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
@@ -1522,7 +1522,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1663,7 +1663,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1806,7 +1806,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -1946,7 +1946,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -2087,7 +2087,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -2322,7 +2322,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -2605,7 +2605,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.group.DerivedFromDummy;");
         expected.add("import de.test.package.dto.DtoObjectFactory;");
@@ -2708,7 +2708,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.group.DerivedFromDummy;");
         expected.add("import de.test.package.dto.DtoObjectFactory;");
@@ -2799,7 +2799,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -3035,7 +3035,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -3273,7 +3273,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
@@ -3522,7 +3522,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         List<String> expected = new ArrayList<>();
         expected.add("package de.test.package.mapper;");
         expected.add("");
-        expected.add("import de.ma_vin.util.layer.generator.annotations.mapper.BaseTransportMapper;");
+        expected.add("import com.github.ma_vin.util.layer_generator.mapper.annotations.BaseTransportMapper;");
         expected.add("import de.test.package.domain.DomainObjectFactory;");
         expected.add("import de.test.package.domain.IIdentifiable;");
         expected.add("import de.test.package.domain.group.Dummy;");
