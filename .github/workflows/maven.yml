@@ -47,50 +47,13 @@ jobs:
     - name: delete previous versions of ${{ matrix.artifacts }}
       uses: Ma-Vin/packages-action@v1.1
       with:
-        github_token: '${{ secrets.APE_DEPENDENCY_BUILD_PAT }}'
-        dry_run: true
-        github_user: 'Ma-Vin'
-        package_type: 'maven'
-        package_name: 'de.ma_vin.util.layer.generator.${{ matrix.artifacts }}'
+        github_token: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
+        dry_run: false
+        github_user: Ma-Vin
+        package_type: maven
+        package_name: de.ma_vin.util.layer.generator.${{ matrix.artifacts }}
         delete_snapshots: true
-    - name: delete previous versions of ${{ matrix.artifacts }}
-      run: |
-        USERNAME=Ma-Vin
-        PACKAGE_TYPE=maven
-        VERSION_NAME=2.0.0-SNAPSHOT
-        PACKAGE_NAME=de.ma_vin.util.layer.generator.${{ matrix.artifacts }}
 
-        LIST_PACKAGES=$(
-            curl -L \
-                -H "Accept: application/vnd.github+json" \
-                -H "Authorization: Bearer ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}" \
-                https://api.github.com/users/${USERNAME}/packages/${PACKAGE_TYPE}/${PACKAGE_NAME}/versions 
-        )
-
-        COUNT_VERSIONS=$(echo "${LIST_PACKAGES}" | grep -P -c '"name":.*')
-
-        if [ "${COUNT_VERSIONS}" = "0" ]; then
-            echo "Nothing to delete"
-        elif [ "${COUNT_VERSIONS}" = "1" ]; then
-            echo "delete package"
-            curl -L \
-                -X DELETE \
-                -H "Accept: application/vnd.github+json" \
-                -H "Authorization: Bearer ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}" \
-                https://api.github.com/users/${USERNAME}/packages/${PACKAGE_TYPE}/${PACKAGE_NAME}
-        else
-            VERSION_ID=$(echo "${LIST_PACKAGES}" | grep -P -B1 "\"name\":.*\"${VERSION_NAME}\"" | grep -oP '(?<="id": ).*(?=,)')
-            if [ -n "${VERSION_ID}" ]; then
-                echo "delete package version ${VERSION_NAME} with id ${VERSION_ID}"
-                curl -L \
-                    -X DELETE \
-                    -H "Accept: application/vnd.github+json" \
-                    -H "Authorization: Bearer ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}" \
-                    https://api.github.com/users/${USERNAME}/packages/${PACKAGE_TYPE}/${PACKAGE_NAME}/versions/${VERSION_ID}
-            else
-                echo "no version extracted: nothing deleted"
-            fi
-        fi
   deploy:
     needs: [build, clean-packages]
     runs-on: ubuntu-latest
