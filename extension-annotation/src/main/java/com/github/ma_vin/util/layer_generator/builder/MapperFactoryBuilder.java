@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 @SupportedAnnotationTypes(
-        "de.ma_vin.util.layer.generator.annotations.mapper.*")
+        "com.github.ma_vin.util.layer_generator.annotations.mapper.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 @Log4j2
 public class MapperFactoryBuilder extends AbstractFactoryBuilder {
