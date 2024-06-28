@@ -1,8 +1,8 @@
-basePackage: de.ma_vin.util.sample.content
+basePackage: com.github.ma_vin.util.layer_generator.sample.content
 dtoPackage: dto
 domainPackage: domain
 daoPackage: dao
-idGeneratorPackage: de.ma_vin.util.sample.given
+idGeneratorPackage: com.github.ma_vin.util.layer_generator.sample.given
 idGeneratorClass: IdGenerator
 entities:
   - baseName: Root
