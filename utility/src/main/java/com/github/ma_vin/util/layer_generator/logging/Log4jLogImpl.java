@@ -1,7 +1,6 @@
-package de.ma_vin.util.layer.generator.logging;
+package com.github.ma_vin.util.layer_generator.logging;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.maven.plugin.logging.Log;
 
 /**
  * Implementation of maven plugin logging which delegates logging statements to log4j

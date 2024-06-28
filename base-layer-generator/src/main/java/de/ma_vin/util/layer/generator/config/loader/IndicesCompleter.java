@@ -4,7 +4,7 @@ import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Index;
 import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.fields.FieldSorting;
-import de.ma_vin.util.layer.generator.logging.ILogWrapper;
+import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 import jakarta.persistence.Id;
 
 import java.util.ArrayList;

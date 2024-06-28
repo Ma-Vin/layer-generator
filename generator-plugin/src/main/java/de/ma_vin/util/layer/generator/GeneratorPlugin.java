@@ -1,7 +1,7 @@
 package de.ma_vin.util.layer.generator;
 
 import de.ma_vin.util.layer.generator.generator.CommonGenerator;
-import de.ma_vin.util.layer.generator.logging.MavenLogImpl;
+import com.github.ma_vin.util.layer_generator.logging.MavenLogImpl;
 import lombok.Data;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

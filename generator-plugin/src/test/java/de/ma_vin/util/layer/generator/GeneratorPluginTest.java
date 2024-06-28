@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import de.ma_vin.util.layer.generator.generator.CommonGenerator;
-import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.AfterEach;

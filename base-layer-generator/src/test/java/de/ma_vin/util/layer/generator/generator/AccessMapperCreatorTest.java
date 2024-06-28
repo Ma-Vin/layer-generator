@@ -4,7 +4,7 @@ import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.config.elements.fields.NonOwnerFilterField;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
-import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
+import com.github.ma_vin.util.layer_generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,7 @@ package de.ma_vin.util.layer.generator.config.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.ma_vin.util.layer.generator.config.elements.Config;
-import de.ma_vin.util.layer.generator.logging.ILogWrapper;
+import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;

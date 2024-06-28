@@ -3,7 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Grouping;
-import de.ma_vin.util.layer.generator.logging.ILogWrapper;
+import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 import lombok.Data;
 
 import javax.annotation.processing.ProcessingEnvironment;

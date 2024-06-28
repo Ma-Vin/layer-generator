@@ -3,7 +3,7 @@ package de.ma_vin.util.layer.generator.config.elements;
 import static de.ma_vin.util.layer.generator.config.ConfigElementsUtil.*;
 
 import de.ma_vin.util.layer.generator.config.IConfigLog;
-import de.ma_vin.util.layer.generator.logging.ILogWrapper;
+import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 import lombok.Data;
 import lombok.ToString;
 

@@ -1,6 +1,6 @@
 package de.ma_vin.util.layer.generator.config.loader;
 
-import de.ma_vin.util.layer.generator.logging.ILogWrapper;
+import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 
 /**
  * Completer which sets the indicator to use an id generator or not.

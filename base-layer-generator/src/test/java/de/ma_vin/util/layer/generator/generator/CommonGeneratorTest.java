@@ -2,7 +2,7 @@ package de.ma_vin.util.layer.generator.generator;
 
 import de.ma_vin.util.layer.generator.config.loader.ConfigLoader;
 import de.ma_vin.util.layer.generator.config.elements.Config;
-import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
+import com.github.ma_vin.util.layer_generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

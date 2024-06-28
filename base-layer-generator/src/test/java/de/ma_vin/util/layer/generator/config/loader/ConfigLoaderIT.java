@@ -6,8 +6,8 @@ import static org.mockito.Mockito.when;
 
 import de.ma_vin.util.layer.generator.config.elements.Config;
 import de.ma_vin.util.layer.generator.config.elements.Entity;
-import de.ma_vin.util.layer.generator.logging.ILogWrapper;
-import de.ma_vin.util.layer.generator.logging.Log4jLogImpl;
+import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
+import com.github.ma_vin.util.layer_generator.logging.Log4jLogImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package de.ma_vin.util.layer.generator.config;
 
-import de.ma_vin.util.layer.generator.logging.ILogWrapper;
+import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

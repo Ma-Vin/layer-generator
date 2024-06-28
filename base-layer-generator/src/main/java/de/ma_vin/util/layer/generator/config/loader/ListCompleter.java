@@ -2,7 +2,7 @@ package de.ma_vin.util.layer.generator.config.loader;
 
 import de.ma_vin.util.layer.generator.config.elements.Entity;
 import de.ma_vin.util.layer.generator.config.elements.Version;
-import de.ma_vin.util.layer.generator.logging.ILogWrapper;
+import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 
 import java.util.ArrayList;
 import java.util.Collections;

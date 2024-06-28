@@ -1,4 +1,4 @@
-package de.ma_vin.util.layer.generator.logging;
+package com.github.ma_vin.util.layer_generator.logging;
 
 import org.apache.maven.plugin.logging.Log;
 import org.junit.jupiter.api.AfterEach;
