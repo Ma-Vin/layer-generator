@@ -1,4 +1,4 @@
-package de.ma_vin.util.layer.generator;
+package com.github.ma_vin.util.layer_generator;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;

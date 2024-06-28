@@ -1,4 +1,4 @@
-package de.ma_vin.util.layer.generator;
+package com.github.ma_vin.util.layer_generator;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;

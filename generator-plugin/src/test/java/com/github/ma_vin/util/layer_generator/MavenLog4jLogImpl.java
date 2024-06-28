@@ -1,4 +1,4 @@
-package de.ma_vin.util.layer.generator;
+package com.github.ma_vin.util.layer_generator;
 
 import com.github.ma_vin.util.layer_generator.logging.Log4jLogImpl;
 import org.apache.maven.plugin.logging.Log;
