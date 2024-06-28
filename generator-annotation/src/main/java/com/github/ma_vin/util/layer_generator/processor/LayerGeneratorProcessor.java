@@ -1,6 +1,6 @@
-package de.ma_vin.util.layer.generator.processor;
+package com.github.ma_vin.util.layer_generator.processor;
 
-import de.ma_vin.util.layer.generator.annotations.LayerGenerator;
+import com.github.ma_vin.util.layer_generator.annotations.LayerGenerator;
 import com.github.ma_vin.util.layer_generator.generator.generator.CommonGenerator;
 import com.github.ma_vin.util.layer_generator.logging.MessagerLogImpl;
 
@@ -22,7 +22,7 @@ import java.util.Set;
 /**
  * Processor which loads the model file defined by {@link LayerGenerator} and generates the corresponding sources
  */
-@SupportedAnnotationTypes("de.ma_vin.util.layer.generator.annotations.LayerGenerator")
+@SupportedAnnotationTypes("com.github.ma_vin.util.layer_generator.annotations.LayerGenerator")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class LayerGeneratorProcessor extends AbstractProcessor {
     @Override

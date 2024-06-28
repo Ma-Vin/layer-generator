@@ -1,6 +1,6 @@
-package de.ma_vin.util.layer.generator.processor;
+package com.github.ma_vin.util.layer_generator.processor;
 
-import de.ma_vin.util.layer.generator.annotations.LayerGenerator;
+import com.github.ma_vin.util.layer_generator.annotations.LayerGenerator;
 import com.github.ma_vin.util.layer_generator.generator.generator.CommonGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

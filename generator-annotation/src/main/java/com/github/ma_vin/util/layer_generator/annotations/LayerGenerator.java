@@ -1,4 +1,4 @@
-package de.ma_vin.util.layer.generator.annotations;
+package com.github.ma_vin.util.layer_generator.annotations;
 
 import javax.tools.Diagnostic.Kind;
 import java.lang.annotation.ElementType;

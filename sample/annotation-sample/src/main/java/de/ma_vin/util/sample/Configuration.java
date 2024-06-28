@@ -1,6 +1,6 @@
 package de.ma_vin.util.sample;
 
-import de.ma_vin.util.layer.generator.annotations.LayerGenerator;
+import com.github.ma_vin.util.layer_generator.annotations.LayerGenerator;
 
 import javax.tools.Diagnostic;
 
