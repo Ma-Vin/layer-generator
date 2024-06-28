@@ -45,6 +45,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: delete previous versions of ${{ matrix.artifacts }}
+      uses: Ma-Vin/packages-action@v1.1
+      with:
+        github_token: '${{ secrets.APE_DEPENDENCY_BUILD_PAT }}'
+        dry_run: true
+        github_user: 'Ma-Vin'
+        package_type: 'maven'
+        package_name: 'de.ma_vin.util.layer.generator.${{ matrix.artifacts }}'
+        delete_snapshots: true
+    - name: delete previous versions of ${{ matrix.artifacts }}
       run: |
         USERNAME=Ma-Vin
         PACKAGE_TYPE=maven
