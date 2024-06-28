@@ -7,7 +7,7 @@ import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.fields.FieldSorting;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import com.github.ma_vin.util.layer_generator.logging.Log4jLogImpl;
-import de.ma_vin.util.layer.generator.sources.TestUtil;
+import com.github.ma_vin.util.layer_generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

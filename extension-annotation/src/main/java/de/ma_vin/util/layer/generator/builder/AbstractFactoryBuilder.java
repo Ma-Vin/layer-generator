@@ -1,9 +1,9 @@
 package de.ma_vin.util.layer.generator.builder;
 
-import de.ma_vin.util.layer.generator.sources.Clazz;
-import de.ma_vin.util.layer.generator.sources.Constructor;
-import de.ma_vin.util.layer.generator.sources.Method;
-import de.ma_vin.util.layer.generator.sources.Qualifier;
+import com.github.ma_vin.util.layer_generator.sources.Clazz;
+import com.github.ma_vin.util.layer_generator.sources.Constructor;
+import com.github.ma_vin.util.layer_generator.sources.Method;
+import com.github.ma_vin.util.layer_generator.sources.Qualifier;
 import lombok.extern.log4j.Log4j2;
 
 import javax.annotation.processing.AbstractProcessor;

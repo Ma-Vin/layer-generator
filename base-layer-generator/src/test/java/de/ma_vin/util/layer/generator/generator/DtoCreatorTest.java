@@ -5,7 +5,7 @@ import de.ma_vin.util.layer.generator.config.elements.Models;
 import de.ma_vin.util.layer.generator.config.elements.Version;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import com.github.ma_vin.util.layer_generator.logging.Log4jLogImpl;
-import de.ma_vin.util.layer.generator.sources.TestUtil;
+import com.github.ma_vin.util.layer_generator.sources.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

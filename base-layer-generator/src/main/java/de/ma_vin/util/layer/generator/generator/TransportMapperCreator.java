@@ -7,9 +7,9 @@ import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
-import de.ma_vin.util.layer.generator.sources.AbstractGenerateLines;
-import de.ma_vin.util.layer.generator.sources.Clazz;
-import de.ma_vin.util.layer.generator.sources.Method;
+import com.github.ma_vin.util.layer_generator.sources.AbstractGenerateLines;
+import com.github.ma_vin.util.layer_generator.sources.Clazz;
+import com.github.ma_vin.util.layer_generator.sources.Method;
 
 import java.io.File;
 import java.util.List;

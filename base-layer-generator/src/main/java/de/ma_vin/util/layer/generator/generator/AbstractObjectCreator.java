@@ -4,10 +4,10 @@ import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
 import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
-import de.ma_vin.util.layer.generator.sources.Annotation;
-import de.ma_vin.util.layer.generator.sources.Attribute;
-import de.ma_vin.util.layer.generator.sources.Clazz;
-import de.ma_vin.util.layer.generator.sources.JavaDoc;
+import com.github.ma_vin.util.layer_generator.sources.Annotation;
+import com.github.ma_vin.util.layer_generator.sources.Attribute;
+import com.github.ma_vin.util.layer_generator.sources.Clazz;
+import com.github.ma_vin.util.layer_generator.sources.JavaDoc;
 import lombok.*;
 
 import java.io.File;

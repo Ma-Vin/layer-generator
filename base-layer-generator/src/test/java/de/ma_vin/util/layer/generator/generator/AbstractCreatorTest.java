@@ -3,7 +3,7 @@ package de.ma_vin.util.layer.generator.generator;
 import de.ma_vin.util.layer.generator.config.elements.*;
 import de.ma_vin.util.layer.generator.config.elements.fields.Field;
 import de.ma_vin.util.layer.generator.config.elements.references.Reference;
-import de.ma_vin.util.layer.generator.sources.TestUtil;
+import com.github.ma_vin.util.layer_generator.sources.TestUtil;
 import lombok.extern.log4j.Log4j2;
 import org.mockito.Mock;
 import org.opentest4j.AssertionFailedError;
