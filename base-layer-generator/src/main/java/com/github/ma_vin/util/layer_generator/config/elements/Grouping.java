@@ -14,7 +14,7 @@ import java.util.List;
  * Grouping of entities in their own package
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 @ToString(exclude = {"entities"})
 public class Grouping implements IConfigLog {

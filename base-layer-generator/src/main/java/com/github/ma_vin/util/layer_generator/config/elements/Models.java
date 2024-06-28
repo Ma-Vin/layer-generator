@@ -8,7 +8,7 @@ import jakarta.xml.bind.annotation.XmlEnum;
 import jakarta.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @XmlEnum
 @Getter
 public enum Models {

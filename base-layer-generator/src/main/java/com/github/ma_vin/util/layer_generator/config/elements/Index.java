@@ -13,7 +13,7 @@ import java.util.List;
  * Description of an index which will be used at table annotation of data access objects
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 public class Index implements IConfigLog {
     /**

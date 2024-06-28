@@ -15,7 +15,7 @@ import java.util.List;
  * Describes the attribute of some entity
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 @EqualsAndHashCode(exclude = {"parentEntity"}, callSuper = true)
 @ToString(exclude = {"parentEntity"})

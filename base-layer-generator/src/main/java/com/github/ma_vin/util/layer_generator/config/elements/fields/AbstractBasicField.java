@@ -16,7 +16,7 @@ import static com.github.ma_vin.util.layer_generator.config.ConfigElementsUtil.v
 import static com.github.ma_vin.util.layer_generator.config.ConfigElementsUtil.validateRequired;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 // getter needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
 @Setter
 @NoArgsConstructor

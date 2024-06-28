@@ -21,7 +21,7 @@ import static com.github.ma_vin.util.layer_generator.config.ConfigElementsUtil.*
  * class to provide versioning of the data transport objects
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 @EqualsAndHashCode(exclude = {"parentEntity", "baseVersion", "fields", "references"})
 @ToString(exclude = {"parentEntity", "baseVersion", "addedFields", "addedReferences", "fields", "references", "versionEntity"})

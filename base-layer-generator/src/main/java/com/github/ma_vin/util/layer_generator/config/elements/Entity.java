@@ -18,7 +18,7 @@ import java.util.List;
  * Description of an entity which will be used to generate domain object, dto or dao
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 @EqualsAndHashCode(exclude = {"grouping", "parentRefs", "realParent", "versions"})
 @ToString(exclude = {"references", "parentRefs", "fields", "indices", "realParent", "versions"})

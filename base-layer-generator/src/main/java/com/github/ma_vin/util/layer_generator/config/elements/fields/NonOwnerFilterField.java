@@ -12,7 +12,7 @@ import static com.github.ma_vin.util.layer_generator.config.ConfigElementsUtil.*
  * Describes a filter criteria for non owner reference whose filter enum differs from target entity fields.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 public class NonOwnerFilterField implements IConfigLog {
     /**

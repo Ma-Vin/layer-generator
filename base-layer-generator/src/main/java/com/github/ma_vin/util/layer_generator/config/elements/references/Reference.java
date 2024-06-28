@@ -17,7 +17,7 @@ import java.util.List;
  * Describes the reference to som Entity
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 @EqualsAndHashCode(exclude = {"realFilterField", "parent"}, callSuper = true)
 @ToString(exclude = {"realFilterField", "parent"}, callSuper = true)

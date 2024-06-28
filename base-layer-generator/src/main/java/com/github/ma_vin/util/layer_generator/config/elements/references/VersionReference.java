@@ -14,7 +14,7 @@ import java.util.List;
 import static com.github.ma_vin.util.layer_generator.config.ConfigElementsUtil.validateNonRequired;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)

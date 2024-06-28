@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Configuration of the model generator
  */
-@XmlRootElement(namespace = "de.ma_vin.util.gen.model")
+@XmlRootElement(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 @ToString(exclude = {"groupings", "entities"})
 public class Config implements IConfigLog {

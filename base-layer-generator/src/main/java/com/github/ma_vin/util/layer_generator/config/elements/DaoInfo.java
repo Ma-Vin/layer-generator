@@ -15,7 +15,7 @@ import java.util.List;
  * Can be used to override default jpa column values
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(namespace = "de.ma_vin.util.gen.model")
+@XmlType(namespace = "com.github.ma_vin.util.layer_generator.gen.model")
 @Data
 public class DaoInfo implements IConfigLog {
 
