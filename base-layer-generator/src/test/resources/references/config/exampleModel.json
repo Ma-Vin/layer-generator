@@ -141,7 +141,7 @@
         {
           "fieldName": "someEnum",
           "type": "AnyEnumType",
-          "typePackage": "de.ma_vin.util.sample.given",
+          "typePackage": "com.github.ma_vin.util.layer_generator.sample.given",
           "isTypeEnum": true
         },
         {
@@ -151,7 +151,7 @@
         {
           "fieldName": "someCustom",
           "type": "CustomType",
-          "typePackage": "de.ma_vin.util.sample.given"
+          "typePackage": "com.github.ma_vin.util.layer_generator.sample.given"
         },
         {
           "fieldName": "onlyDao",
@@ -196,7 +196,7 @@
         },
         {
           "fieldName": "daoEnum",
-          "typePackage": "de.ma_vin.util.sample.given",
+          "typePackage": "com.github.ma_vin.util.layer_generator.sample.given",
           "type": "AnyEnumType",
           "isTypeEnum": true,
           "daoInfo": {
@@ -205,7 +205,7 @@
         },
         {
           "fieldName": "daoEnumWithText",
-          "typePackage": "de.ma_vin.util.sample.given",
+          "typePackage": "com.github.ma_vin.util.layer_generator.sample.given",
           "type": "AnyEnumType",
           "isTypeEnum": true,
           "daoInfo": {
@@ -633,7 +633,7 @@
             {
               "fieldName": "someEnum",
               "type": "AnyEnumType",
-              "typePackage": "de.ma_vin.util.sample.given",
+              "typePackage": "com.github.ma_vin.util.layer_generator.sample.given",
               "isTypeEnum": true
             }
           ]
@@ -650,7 +650,7 @@
             {
               "fieldName": "someEnumNotOwner",
               "type": "AnyEnumType",
-              "typePackage": "de.ma_vin.util.sample.given",
+              "typePackage": "com.github.ma_vin.util.layer_generator.sample.given",
               "isTypeEnum": true
             }
           ]
@@ -667,7 +667,7 @@
             {
               "fieldName": "someEnumOnlyDaoField",
               "type": "AnyEnumType",
-              "typePackage": "de.ma_vin.util.sample.given",
+              "typePackage": "com.github.ma_vin.util.layer_generator.sample.given",
               "isTypeEnum": true,
               "models": "DAO"
             }
@@ -685,7 +685,7 @@
             {
               "fieldName": "someEnumOnlyDaoFieldNotOwner",
               "type": "AnyEnumType",
-              "typePackage": "de.ma_vin.util.sample.given",
+              "typePackage": "com.github.ma_vin.util.layer_generator.sample.given",
               "isTypeEnum": true,
               "models": "DAO"
             }
@@ -701,7 +701,7 @@
               "targetEntity": "Filtered",
               "isList": true,
               "nonOwnerFilterField": {
-                "filterFieldPackage": "de.ma_vin.util.sample.given",
+                "filterFieldPackage": "com.github.ma_vin.util.layer_generator.sample.given",
                 "filterFieldType": "AnyEnumType",
                 "filterFieldValue": "ENUM_VALUE_A"
               }
@@ -711,7 +711,7 @@
               "targetEntity": "Filtered",
               "isList": true,
               "nonOwnerFilterField": {
-                "filterFieldPackage": "de.ma_vin.util.sample.given",
+                "filterFieldPackage": "com.github.ma_vin.util.layer_generator.sample.given",
                 "filterFieldType": "AnyEnumType",
                 "filterFieldValue": "ENUM_VALUE_B"
               }
@@ -721,7 +721,7 @@
               "targetEntity": "Filtered",
               "isList": true,
               "nonOwnerFilterField": {
-                "filterFieldPackage": "de.ma_vin.util.sample.given",
+                "filterFieldPackage": "com.github.ma_vin.util.layer_generator.sample.given",
                 "filterFieldType": "AnyEnumType",
                 "filterFieldValue": "ENUM_VALUE_C"
               }

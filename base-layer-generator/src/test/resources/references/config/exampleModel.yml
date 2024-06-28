@@ -87,13 +87,13 @@ entities:
         type: String
       - fieldName: someEnum
         type: AnyEnumType
-        typePackage: de.ma_vin.util.sample.given
+        typePackage: com.github.ma_vin.util.layer_generator.sample.given
         isTypeEnum: true
       - fieldName: someInteger
         type: Integer
       - fieldName: someCustom
         type: CustomType
-        typePackage: de.ma_vin.util.sample.given
+        typePackage: com.github.ma_vin.util.layer_generator.sample.given
       - fieldName: onlyDao
         models: DAO
         type: String
@@ -120,13 +120,13 @@ entities:
           precision: 7
           scale: 3
       - fieldName: daoEnum
-        typePackage: de.ma_vin.util.sample.given
+        typePackage: com.github.ma_vin.util.layer_generator.sample.given
         type: AnyEnumType
         isTypeEnum: true
         daoInfo:
           useEnumText: false
       - fieldName: daoEnumWithText
-        typePackage: de.ma_vin.util.sample.given
+        typePackage: com.github.ma_vin.util.layer_generator.sample.given
         type: AnyEnumType
         isTypeEnum: true
         daoInfo:
@@ -378,7 +378,7 @@ groupings:
             type: String
           - fieldName: someEnum
             type: AnyEnumType
-            typePackage: de.ma_vin.util.sample.given
+            typePackage: com.github.ma_vin.util.layer_generator.sample.given
             isTypeEnum: true
       - baseName: FilteredNotOwner
         models: DOMAIN_DAO
@@ -388,7 +388,7 @@ groupings:
             type: String
           - fieldName: someEnumNotOwner
             type: AnyEnumType
-            typePackage: de.ma_vin.util.sample.given
+            typePackage: com.github.ma_vin.util.layer_generator.sample.given
             isTypeEnum: true
       - baseName: FilteredOnlyDaoField
         models: DOMAIN_DAO_DTO
@@ -398,7 +398,7 @@ groupings:
             type: String
           - fieldName: someEnumOnlyDaoField
             type: AnyEnumType
-            typePackage: de.ma_vin.util.sample.given
+            typePackage: com.github.ma_vin.util.layer_generator.sample.given
             isTypeEnum: true
             models: DAO
       - baseName: FilteredOnlyDaoFieldNotOwner
@@ -409,7 +409,7 @@ groupings:
             type: String
           - fieldName: someEnumOnlyDaoFieldNotOwner
             type: AnyEnumType
-            typePackage: de.ma_vin.util.sample.given
+            typePackage: com.github.ma_vin.util.layer_generator.sample.given
             isTypeEnum: true
             models: DAO
       - baseName: SomeDifferentFilteringNotOwner
@@ -420,20 +420,20 @@ groupings:
             targetEntity: Filtered
             isList: true
             nonOwnerFilterField:
-              filterFieldPackage: de.ma_vin.util.sample.given
+              filterFieldPackage: com.github.ma_vin.util.layer_generator.sample.given
               filterFieldType: AnyEnumType
               filterFieldValue: ENUM_VALUE_A
           - referenceName: filterB
             targetEntity: Filtered
             isList: true
             nonOwnerFilterField:
-              filterFieldPackage: de.ma_vin.util.sample.given
+              filterFieldPackage: com.github.ma_vin.util.layer_generator.sample.given
               filterFieldType: AnyEnumType
               filterFieldValue: ENUM_VALUE_B
           - referenceName: filterC
             targetEntity: Filtered
             isList: true
             nonOwnerFilterField:
-              filterFieldPackage: de.ma_vin.util.sample.given
+              filterFieldPackage: com.github.ma_vin.util.layer_generator.sample.given
               filterFieldType: AnyEnumType
               filterFieldValue: ENUM_VALUE_C
