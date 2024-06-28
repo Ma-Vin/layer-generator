@@ -54,7 +54,7 @@ public class ConfigLoaderIT {
         Config config = configLoader.getConfig();
 
         assertNotNull(config.getBasePackage(), "There should be some base package");
-        assertEquals("de.ma_vin.util.test.content", config.getBasePackage(), "Wrong base package");
+        assertEquals("com.github.ma_vin.util.layer_generator.test.content", config.getBasePackage(), "Wrong base package");
         assertNotNull(config.getDtoPackage(), "There should be some dto package");
         assertEquals("dto", config.getDtoPackage(), "Wrong dto package");
         assertNotNull(config.getDomainPackage(), "There should be some dto package");

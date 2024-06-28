@@ -16,11 +16,11 @@ mappers.
 
 ## Usage
 
-For usage the artifact ***de.ma_vin.util.layer.generator:extension-annotation*** is needed as dependency
-and ***de.ma_vin.util.layer.generator:generator-plugin*** should be included as maven plugin. See details at their
+For usage the artifact ***com.github.ma_vin.util.layer_generator:extension-annotation*** is needed as dependency
+and ***com.github.ma_vin.util.layer_generator:generator-plugin*** should be included as maven plugin. See details at their
 readme markdowns.
 
-It is possible to use the artifact ***de.ma_vin.util.layer.generator:generator-annotation*** instead of the maven
+It is possible to use the artifact ***com.github.ma_vin.util.layer_generator:generator-annotation*** instead of the maven
 plugin. See details at its readme markdowns.
 
 ### Annotation for Extension

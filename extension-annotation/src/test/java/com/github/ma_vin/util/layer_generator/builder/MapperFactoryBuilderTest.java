@@ -56,7 +56,7 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyBaseAccessMapper() {
-        final String mapperPackageName = "de.ma_vin.mapper.test";
+        final String mapperPackageName = "com.github.ma_vin.mapper.test";
 
         TypeElement baseAccessMapperTypeElement = createTypeElementForAnnotationMock(BaseAccessMapper.class);
         TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseAccessMapper.class, "TestClassAccessMapper", mapperPackageName);
@@ -71,7 +71,7 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(mapperPackageName + "." + MapperType.ACCESS.getFactoryClassName()), "The mapper object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.mapper.test;");
+        expected.add("package com.github.ma_vin.mapper.test;");
         expected.add("");
         expected.add("public class AccessMapperFactory {");
         expected.add("");
@@ -93,7 +93,7 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseAccessMapper.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         TypeElement extendingAccessMapperTypeElement = createTypeElementForAnnotationMock(ExtendingAccessMapper.class);
-        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingAccessMapper.class, "TestClassAccessMapper", "de.ma_vin.mapper.test"
+        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingAccessMapper.class, "TestClassAccessMapper", "com.github.ma_vin.mapper.test"
                 , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingAccessMapperTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
@@ -108,9 +108,9 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(DUMMY_PACKAGE_NAME + "." + MapperType.ACCESS.getFactoryClassName()), "The mapper object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.util.layer.generator.builder;");
+        expected.add("package com.github.ma_vin.util.layer_generator.builder;");
         expected.add("");
-        expected.add("import de.ma_vin.mapper.test.TestClassAccessMapper;");
+        expected.add("import com.github.ma_vin.mapper.test.TestClassAccessMapper;");
         expected.add("");
         expected.add("public class AccessMapperFactory {");
         expected.add("");
@@ -128,7 +128,7 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyBaseTransportMapper() {
-        final String mapperPackageName = "de.ma_vin.mapper.test";
+        final String mapperPackageName = "com.github.ma_vin.mapper.test";
 
         TypeElement baseTransportMapperTypeElement = createTypeElementForAnnotationMock(BaseTransportMapper.class);
         TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseTransportMapper.class, "TestClassTransportMapper", mapperPackageName);
@@ -143,7 +143,7 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(mapperPackageName + "." + MapperType.TRANSPORT.getFactoryClassName()), "The mapper object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.mapper.test;");
+        expected.add("package com.github.ma_vin.mapper.test;");
         expected.add("");
         expected.add("public class TransportMapperFactory {");
         expected.add("");
@@ -165,7 +165,7 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseTransportMapper.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         TypeElement extendingTransportMapperTypeElement = createTypeElementForAnnotationMock(ExtendingTransportMapper.class);
-        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingTransportMapper.class, "TestClassTransportMapper", "de.ma_vin.mapper.test"
+        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingTransportMapper.class, "TestClassTransportMapper", "com.github.ma_vin.mapper.test"
                 , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingTransportMapperTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
@@ -180,9 +180,9 @@ public class MapperFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(DUMMY_PACKAGE_NAME + "." + MapperType.TRANSPORT.getFactoryClassName()), "The mapper object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.util.layer.generator.builder;");
+        expected.add("package com.github.ma_vin.util.layer_generator.builder;");
         expected.add("");
-        expected.add("import de.ma_vin.mapper.test.TestClassTransportMapper;");
+        expected.add("import com.github.ma_vin.mapper.test.TestClassTransportMapper;");
         expected.add("");
         expected.add("public class TransportMapperFactory {");
         expected.add("");

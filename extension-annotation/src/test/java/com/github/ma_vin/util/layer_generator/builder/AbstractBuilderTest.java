@@ -29,7 +29,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 public abstract class AbstractBuilderTest {
 
     public static final String DUMMY_CLASS_NAME = "DummyBaseClass";
-    public static final String DUMMY_PACKAGE_NAME = "de.ma_vin.util.layer.generator.builder";
+    public static final String DUMMY_PACKAGE_NAME = "com.github.ma_vin.util.layer_generator.builder";
 
     protected AutoCloseable openMocks;
 

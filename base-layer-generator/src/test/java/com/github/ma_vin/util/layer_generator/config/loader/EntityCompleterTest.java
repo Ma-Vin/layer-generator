@@ -25,7 +25,7 @@ public class EntityCompleterTest extends AbstractCompleterTest {
     private static final String DERIVED_ENTITY_NAME = "DerivedEntityName";
     private static final String FIELD_NAME = "FieldName";
     private static final String FIELD_TYPE = "CustomType";
-    private static final String FIELD_TYPE_PACKAGE = "de.ma_vin.util.layer.generator";
+    private static final String FIELD_TYPE_PACKAGE = "com.github.ma_vin.util.layer_generator.test.content";
     private static final String FIELD_DESCRIPTION = "Description";
     private static final String FIELD_SHORT_DESCRIPTION = "ShortDescription";
 

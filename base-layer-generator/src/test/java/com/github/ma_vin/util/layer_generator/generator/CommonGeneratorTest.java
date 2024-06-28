@@ -133,7 +133,7 @@ public class CommonGeneratorTest {
 
         when(configLoader.load()).thenReturn(Boolean.TRUE);
         when(configLoader.getConfig()).thenReturn(config);
-        when(config.getBasePackage()).thenReturn("de.ma_vin.test");
+        when(config.getBasePackage()).thenReturn("com.github.ma_vin.test");
 
         when(modelGenerator.generate()).thenReturn(Boolean.TRUE);
 

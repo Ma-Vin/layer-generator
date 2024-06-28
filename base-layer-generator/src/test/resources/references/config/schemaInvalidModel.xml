@@ -1,5 +1,5 @@
 <conf:config xmlns:conf="com.github.ma_vin.util.layer_generator.gen.model">
-    <basePackage>de.ma_vin.util.test.content</basePackage>
+    <basePackage>com.github.ma_vin.util.layer_generator.test.content</basePackage>
     <dtoPackage>dto</dtoPackage>
     <domainPackage>domain</domainPackage>
     <daoPackage>dao</daoPackage>

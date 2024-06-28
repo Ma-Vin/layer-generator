@@ -51,10 +51,10 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyBaseDao() {
-        final String daoPackageName = "de.ma_vin.dao";
+        final String daoPackageName = "com.github.ma_vin.dao";
 
         TypeElement baseDaoTypeElement = createTypeElementForAnnotationMock(BaseDao.class);
-        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDao.class, "TestClassDao", "de.ma_vin.dao.test"
+        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDao.class, "TestClassDao", "com.github.ma_vin.dao.test"
                 , (s, c) -> when(c.value()).thenReturn(s), daoPackageName);
 
         when(roundEnv.getElementsAnnotatedWith(eq(baseDaoTypeElement))).then(a -> Set.of(annotatedClassTypeElement));
@@ -67,9 +67,9 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(daoPackageName + "." + ModelType.DAO.getFactoryClassName()), "The dao object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.dao;");
+        expected.add("package com.github.ma_vin.dao;");
         expected.add("");
-        expected.add("import de.ma_vin.dao.test.TestClassDao;");
+        expected.add("import com.github.ma_vin.dao.test.TestClassDao;");
         expected.add("");
         expected.add("public class DaoObjectFactory {");
         expected.add("");
@@ -87,14 +87,14 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyExtendingDao() {
-        final String daoPackageName = "de.ma_vin.dao";
+        final String daoPackageName = "com.github.ma_vin.dao";
 
         TypeElement baseDaoTypeElement = createTypeElementForAnnotationMock(BaseDao.class);
         TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDao.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
                 , (s, c) -> when(c.value()).thenReturn(s), daoPackageName);
 
         TypeElement extendingDaoTypeElement = createTypeElementForAnnotationMock(ExtendingDao.class);
-        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingDao.class, "TestClassDao", "de.ma_vin.dao.test"
+        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingDao.class, "TestClassDao", "com.github.ma_vin.dao.test"
                 , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingDaoTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
@@ -109,10 +109,10 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(daoPackageName + "." + ModelType.DAO.getFactoryClassName()), "The dao object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.dao;");
+        expected.add("package com.github.ma_vin.dao;");
         expected.add("");
-        expected.add("import de.ma_vin.dao.test.TestClassDao;");
-        expected.add("import de.ma_vin.util.layer.generator.builder.DummyBaseClass;");
+        expected.add("import com.github.ma_vin.dao.test.TestClassDao;");
+        expected.add("import com.github.ma_vin.util.layer_generator.builder.DummyBaseClass;");
         expected.add("");
         expected.add("public class DaoObjectFactory {");
         expected.add("");
@@ -130,10 +130,10 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyBaseDomain() {
-        final String domainPackageName = "de.ma_vin.domain";
+        final String domainPackageName = "com.github.ma_vin.domain";
 
         TypeElement baseDomainTypeElement = createTypeElementForAnnotationMock(BaseDomain.class);
-        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDomain.class, "TestClassDomain", "de.ma_vin.domain.test"
+        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDomain.class, "TestClassDomain", "com.github.ma_vin.domain.test"
                 , (s, c) -> when(c.value()).thenReturn(s), domainPackageName);
 
         when(roundEnv.getElementsAnnotatedWith(eq(baseDomainTypeElement))).then(a -> Set.of(annotatedClassTypeElement));
@@ -146,9 +146,9 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(domainPackageName + "." + ModelType.DOMAIN.getFactoryClassName()), "The dao object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.domain;");
+        expected.add("package com.github.ma_vin.domain;");
         expected.add("");
-        expected.add("import de.ma_vin.domain.test.TestClassDomain;");
+        expected.add("import com.github.ma_vin.domain.test.TestClassDomain;");
         expected.add("");
         expected.add("public class DomainObjectFactory {");
         expected.add("");
@@ -166,14 +166,14 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyExtendingDomain() {
-        final String domainPackageName = "de.ma_vin.domain";
+        final String domainPackageName = "com.github.ma_vin.domain";
 
         TypeElement baseDomainTypeElement = createTypeElementForAnnotationMock(BaseDomain.class);
         TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDomain.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
                 , (s, c) -> when(c.value()).thenReturn(s), domainPackageName);
 
         TypeElement extendingDomainTypeElement = createTypeElementForAnnotationMock(ExtendingDomain.class);
-        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingDomain.class, "TestClassDomain", "de.ma_vin.domain.test"
+        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingDomain.class, "TestClassDomain", "com.github.ma_vin.domain.test"
                 , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingDomainTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
@@ -188,10 +188,10 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(domainPackageName + "." + ModelType.DOMAIN.getFactoryClassName()), "The dao object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.domain;");
+        expected.add("package com.github.ma_vin.domain;");
         expected.add("");
-        expected.add("import de.ma_vin.domain.test.TestClassDomain;");
-        expected.add("import de.ma_vin.util.layer.generator.builder.DummyBaseClass;");
+        expected.add("import com.github.ma_vin.domain.test.TestClassDomain;");
+        expected.add("import com.github.ma_vin.util.layer_generator.builder.DummyBaseClass;");
         expected.add("");
         expected.add("public class DomainObjectFactory {");
         expected.add("");
@@ -210,10 +210,10 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyBaseDto() {
-        final String dtoPackageName = "de.ma_vin.dto";
+        final String dtoPackageName = "com.github.ma_vin.dto";
 
         TypeElement baseDtoTypeElement = createTypeElementForAnnotationMock(BaseDto.class);
-        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDto.class, "TestClassDto", "de.ma_vin.dto.test"
+        TypeElement annotatedClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDto.class, "TestClassDto", "com.github.ma_vin.dto.test"
                 , (s, c) -> when(c.value()).thenReturn(s), dtoPackageName);
 
         when(roundEnv.getElementsAnnotatedWith(eq(baseDtoTypeElement))).then(a -> Set.of(annotatedClassTypeElement));
@@ -226,9 +226,9 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(dtoPackageName + "." + ModelType.DTO.getFactoryClassName()), "The dao object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.dto;");
+        expected.add("package com.github.ma_vin.dto;");
         expected.add("");
-        expected.add("import de.ma_vin.dto.test.TestClassDto;");
+        expected.add("import com.github.ma_vin.dto.test.TestClassDto;");
         expected.add("");
         expected.add("public class DtoObjectFactory {");
         expected.add("");
@@ -246,14 +246,14 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
 
     @Test
     public void testProcessOnlyExtendingDto() {
-        final String dtoPackageName = "de.ma_vin.dto";
+        final String dtoPackageName = "com.github.ma_vin.dto";
 
         TypeElement baseDtoTypeElement = createTypeElementForAnnotationMock(BaseDto.class);
         TypeElement annotatedBaseClassTypeElement = createTypeElementForAnnotatedBaseClassMock(BaseDto.class, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME
                 , (s, c) -> when(c.value()).thenReturn(s), dtoPackageName);
 
         TypeElement extendingDtoTypeElement = createTypeElementForAnnotationMock(ExtendingDto.class);
-        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingDto.class, "TestClassDto", "de.ma_vin.dto.test"
+        TypeElement annotatedExtendingClassTypeElement = createTypeElementForAnnotatedExtendingClassMock(ExtendingDto.class, "TestClassDto", "com.github.ma_vin.dto.test"
                 , TypeKind.DECLARED, DUMMY_CLASS_NAME, DUMMY_PACKAGE_NAME);
 
         when(roundEnv.getElementsAnnotatedWith(eq(extendingDtoTypeElement))).then(a -> Set.of(annotatedExtendingClassTypeElement));
@@ -268,10 +268,10 @@ public class ObjectFactoryBuilderTest extends AbstractBuilderTest {
         assertTrue(writtenFileContents.containsKey(dtoPackageName + "." + ModelType.DTO.getFactoryClassName()), "The dao object factory should be contained");
 
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("package de.ma_vin.dto;");
+        expected.add("package com.github.ma_vin.dto;");
         expected.add("");
-        expected.add("import de.ma_vin.dto.test.TestClassDto;");
-        expected.add("import de.ma_vin.util.layer.generator.builder.DummyBaseClass;");
+        expected.add("import com.github.ma_vin.dto.test.TestClassDto;");
+        expected.add("import com.github.ma_vin.util.layer_generator.builder.DummyBaseClass;");
         expected.add("");
         expected.add("public class DtoObjectFactory {");
         expected.add("");

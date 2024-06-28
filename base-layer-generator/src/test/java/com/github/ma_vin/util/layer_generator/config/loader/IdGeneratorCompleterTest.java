@@ -34,7 +34,7 @@ public class IdGeneratorCompleterTest extends AbstractCompleterTest {
     @DisplayName("with valid id generator")
     @Test
     public void testCompleteIdGenerator() {
-        when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.test");
+        when(config.getIdGeneratorPackage()).thenReturn("com.github.ma_vin.test");
         when(config.getIdGeneratorClass()).thenReturn("IdGenerator");
 
         assertTrue(cut.complete(config), "The result of completion should be true");
@@ -45,7 +45,7 @@ public class IdGeneratorCompleterTest extends AbstractCompleterTest {
     @DisplayName("with invalid id generator missing class")
     @Test
     public void testCompleteInvalidIdGeneratorWithoutClass() {
-        when(config.getIdGeneratorPackage()).thenReturn("de.ma_vin.test");
+        when(config.getIdGeneratorPackage()).thenReturn("com.github.ma_vin.test");
 
         assertFalse(cut.complete(config), "The result of completion should be true");
 

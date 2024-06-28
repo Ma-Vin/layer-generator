@@ -74,7 +74,7 @@ public class ConfigElementsUtilTest {
     @DisplayName("get simple name without fields ending with \"Name\"")
     @Test
     public void testGetSimpleNameNoFieldToDeriveFrom() {
-        final String groupingPackage = "de.ma_vin.test.package";
+        final String groupingPackage = "com.github.ma_vin.test.package";
         Grouping grouping = new Grouping();
         grouping.setGroupingPackage(groupingPackage);
 

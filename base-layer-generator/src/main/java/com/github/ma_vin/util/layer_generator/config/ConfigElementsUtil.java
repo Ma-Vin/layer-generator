@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Utility class to validate configuration elements {@link de.ma_vin.util.layer.generator.config.elements}
+ * Utility class to validate configuration elements {@link com.github.ma_vin.util.layer_generator.config.elements}
  */
 public class ConfigElementsUtil {
 

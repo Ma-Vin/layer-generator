@@ -1,4 +1,4 @@
-basePackage: de.ma_vin.util.test.content
+basePackage: com.github.ma_vin.util.layer_generator.test.content
 dtoPackage: dto
 domainPackage: domain
 daoPackage: dao

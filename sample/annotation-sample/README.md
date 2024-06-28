@@ -5,8 +5,8 @@
 An example of using the generator annotation of the ***Util Layer Generator***
 
 ## Comment
-The configuration of the generator is added at [Configuration.java](src/main/java/de/ma_vin/util/sample/Configuration.java).
+The configuration of the generator is added at [Configuration.java](src/main/java/com/github/ma_vin/util/layer_generator/sample/Configuration.java).
 
 For illustration the generated code, based on *smallExampleModel.yaml*, is also committed at package
-*de.ma_vin.util.sample.content*
+*com.github.ma_vin.util.layer_generator.sample.content*
 at [src/main/generated](src/main/generated) folder.
