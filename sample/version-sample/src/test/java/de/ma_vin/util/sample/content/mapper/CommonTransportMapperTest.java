@@ -4,12 +4,9 @@ import de.ma_vin.util.sample.content.domain.Root;
 import de.ma_vin.util.sample.content.domain.RootExt;
 import de.ma_vin.util.sample.content.domain.SingleRefOne;
 import de.ma_vin.util.sample.content.domain.SingleRefTwo;
-import de.ma_vin.util.sample.content.dto.*;
-import de.ma_vin.util.sample.given.IdGenerator;
+import com.github.ma_vin.util.layer_generator.sample.given.IdGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * {@link CommonTransportMapper} is the class under test

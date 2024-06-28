@@ -1,8 +1,7 @@
 package de.ma_vin.util.sample.content;
 
 import de.ma_vin.util.sample.content.dto.domain.DerivedFromDomainDto;
-import de.ma_vin.util.sample.given.IdGenerator;
-import de.ma_vin.util.sample.content.dao.*;
+import com.github.ma_vin.util.layer_generator.sample.given.IdGenerator;
 import de.ma_vin.util.sample.content.dao.dao.OnlyDaoDao;
 import de.ma_vin.util.sample.content.dao.domain.dao.DomainAndDaoDao;
 import de.ma_vin.util.sample.content.dao.filtering.*;
@@ -11,7 +10,6 @@ import de.ma_vin.util.sample.content.dao.multi.indirect.*;
 import de.ma_vin.util.sample.content.dao.parent.*;
 import de.ma_vin.util.sample.content.dao.single.*;
 import de.ma_vin.util.sample.content.dao.single.indirect.*;
-import de.ma_vin.util.sample.content.domain.*;
 import de.ma_vin.util.sample.content.domain.domain.OnlyDomain;
 import de.ma_vin.util.sample.content.domain.domain.dao.DomainAndDao;
 import de.ma_vin.util.sample.content.domain.domain.dto.DomainAndDto;
@@ -21,7 +19,6 @@ import de.ma_vin.util.sample.content.domain.multi.indirect.*;
 import de.ma_vin.util.sample.content.domain.parent.*;
 import de.ma_vin.util.sample.content.domain.single.*;
 import de.ma_vin.util.sample.content.domain.single.indirect.*;
-import de.ma_vin.util.sample.content.dto.*;
 import de.ma_vin.util.sample.content.dto.domain.dto.DomainAndDtoDto;
 import de.ma_vin.util.sample.content.dto.dto.OnlyDtoDto;
 import de.ma_vin.util.sample.content.dto.filtering.*;

@@ -1,4 +1,4 @@
-package de.ma_vin.util.sample.given;
+package com.github.ma_vin.util.layer_generator.sample.given;
 
 /**
  * Some Dummy id generator
