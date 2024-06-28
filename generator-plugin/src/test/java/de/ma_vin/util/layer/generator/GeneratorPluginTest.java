@@ -4,7 +4,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-import de.ma_vin.util.layer.generator.generator.CommonGenerator;
+import com.github.ma_vin.util.layer_generator.generator.generator.CommonGenerator;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.AfterEach;

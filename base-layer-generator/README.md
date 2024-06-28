@@ -19,7 +19,7 @@ There exists four test resources which define an equal model:
 
 The following description refers to the xml format because it contains nodes and attributes element types in contrast to
 yaml and json The xsd generation based
-on [Config](src/main/java/de/ma_vin/util/layer/generator/config/elements/Config.java)
+on [Config](src/main/java/com/github/ma_vin/util/layer_generator/config/elements/Config.java)
 
 These abbreviations apply in the following for the xml type:
 

@@ -1,7 +1,7 @@
 package de.ma_vin.util.layer.generator.processor;
 
 import de.ma_vin.util.layer.generator.annotations.LayerGenerator;
-import de.ma_vin.util.layer.generator.generator.CommonGenerator;
+import com.github.ma_vin.util.layer_generator.generator.generator.CommonGenerator;
 import com.github.ma_vin.util.layer_generator.logging.MessagerLogImpl;
 
 import javax.annotation.processing.AbstractProcessor;

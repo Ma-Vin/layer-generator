@@ -78,7 +78,7 @@
                         </transformSchema>
                     </transformSchemas>
                     <sources>
-                        <source>src/main/java/de/ma_vin/util/layer/generator/config/elements/</source>
+                        <source>src/main/java/com/github/ma_vin/util/layer_generator/config/elements/</source>
                     </sources>
                     <outputDirectory>${project.build.directory}/generated-resources/xsd</outputDirectory>
                 </configuration>
