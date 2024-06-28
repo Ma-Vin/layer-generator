@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>layer-generator</artifactId>
-        <groupId>de.ma_vin.util.layer.generator</groupId>
+        <groupId>com.github.ma_vin.util.layer.generator</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -17,15 +17,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>de.ma_vin.util.layer.generator</groupId>
+            <groupId>com.github.ma_vin.util.layer.generator</groupId>
             <artifactId>utility</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.ma_vin.util.layer.generator</groupId>
+            <groupId>com.github.ma_vin.util.layer.generator</groupId>
             <artifactId>base-layer-generator</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.ma_vin.util.layer.generator</groupId>
+            <groupId>com.github.ma_vin.util.layer.generator</groupId>
             <artifactId>base-layer-generator</artifactId>
             <classifier>tests</classifier>
         </dependency>
@@ -58,7 +58,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>de.ma_vin.util.layer.generator</groupId>
+                                    <groupId>com.github.ma_vin.util.layer.generator</groupId>
                                     <artifactId>base-layer-generator</artifactId>
                                     <version>${project.version}</version>
                                     <outputDirectory>${project.build.outputDirectory}</outputDirectory>
