@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: delete previous versions of ${{ matrix.artifacts }}
-      uses: Ma-Vin/packages-action@v1.1
+      uses: Ma-Vin/packages-action@v1.1.1
       with:
         github_token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
         dry_run: false
