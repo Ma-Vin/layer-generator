@@ -47,7 +47,7 @@ jobs:
     - name: delete previous versions of ${{ matrix.artifacts }}
       uses: Ma-Vin/packages-action@v1.1
       with:
-        github_token: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
+        github_token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
         dry_run: false
         github_user: Ma-Vin
         package_type: maven
