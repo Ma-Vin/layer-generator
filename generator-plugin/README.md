@@ -9,7 +9,7 @@ A maven plugin generator to create domain model, data transport or data access o
 For basic usage add a plugin entry like
 
 ```
-<groupId>com.github.ma_vin.util.layer.generator</groupId>
+<groupId>com.github.ma_vin.util.layer_generator</groupId>
 <artifactId>generator-plugin</artifactId>
 <version>2.0.0-SNAPSHOT</version>
 <executions>

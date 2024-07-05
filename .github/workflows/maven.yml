@@ -51,7 +51,7 @@ jobs:
         dry_run: false
         github_user: Ma-Vin
         package_type: maven
-        package_name: de.ma_vin.util.layer.generator.${{ matrix.artifacts }}
+        package_name: com.github.ma_vin.util.layer_generator.${{ matrix.artifacts }}
         delete_snapshots: true
 
   deploy:
