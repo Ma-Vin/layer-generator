@@ -19,7 +19,7 @@
     <name>Util Layer Generator</name>
     <description>Generator to create domain model, data transport and/or data access objects</description>
 
-    <url>https://github.com/Ma-Vin/de.ma_vin.util.layerGenerator</url>
+    <url>https://github.com/Ma-Vin/layer-generator</url>
 
     <organization>
         <name>Ma-Vin</name>
@@ -35,14 +35,14 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/Ma-Vin/de.ma_vin.util.layerGenerator/issues</url>
+        <url>https://github.com/Ma-Vin/layer-generator/issues</url>
     </issueManagement>
 
     <distributionManagement>
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/Ma-Vin/de.ma_vin.util.layerGenerator</url>
+            <url>https://maven.pkg.github.com/Ma-Vin/layer-generator</url>
         </repository>
     </distributionManagement>
 
@@ -90,7 +90,7 @@
         <sonar.test.exclusions>**/src/test/**/*</sonar.test.exclusions>
         <sonar.scm.provider>git</sonar.scm.provider>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
-        <sonar.projectName>de.ma_vin.util.layerGenerator</sonar.projectName>
+        <sonar.projectName>layer-generator</sonar.projectName>
     </properties>
 
     <profiles>
