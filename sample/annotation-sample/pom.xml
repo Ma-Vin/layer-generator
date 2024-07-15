@@ -14,11 +14,6 @@
     <name>Util Layer Generator Annotation Sample</name>
     <description>An example of usage of generator annotation</description>
 
-    <properties>
-        <!-- these classes are generated and analysed by module plugin-sample -->
-        <sonar.cpd.exclusions>**/AbstractMapper.java,**/AbstractAccessMapper.java,**/AbstractTransportMapper.java</sonar.cpd.exclusions>
-    </properties>
-
     <build>
         <plugins>
             <plugin>

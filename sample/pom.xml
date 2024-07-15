@@ -19,14 +19,18 @@
         <module>util-sample</module>
         <module>plugin-sample</module>
         <module>annotation-sample</module>
+        <module>entity-sample</module>
         <module>version-sample</module>
     </modules>
 
     <properties>
+        <model.file.baseName>exampleModel</model.file.baseName>
         <model.file.ending>yaml</model.file.ending>
         <model.generate.dto>true</model.generate.dto>
         <model.generate.domain>true</model.generate.domain>
         <model.generate.dao>true</model.generate.dao>
+        <!-- these classes are generated and analysed by module plugin-sample -->
+        <sonar.cpd.exclusions>**/AbstractMapper.java,**/AbstractAccessMapper.java,**/AbstractTransportMapper.java</sonar.cpd.exclusions>
     </properties>
 
 
@@ -50,7 +54,7 @@
                         <generateDomain>${model.generate.domain}</generateDomain>
                         <generateDao>${model.generate.dao}</generateDao>
                         <modelDefinitionDirectory>src/main/resources/</modelDefinitionDirectory>
-                        <modelDefinitionFilename>exampleModel.${model.file.ending}</modelDefinitionFilename>
+                        <modelDefinitionFilename>${model.file.baseName}.${model.file.ending}</modelDefinitionFilename>
                         <cleanTargetDirectory>false</cleanTargetDirectory>
                         <cleanBasePackage>true</cleanBasePackage>
                     </configuration>

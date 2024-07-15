@@ -1,0 +1,35 @@
+basePackage: com.github.ma_vin.util.layer_generator.sample.entity.content
+dtoPackage: dto
+domainPackage: domain
+daoPackage: dao
+idGeneratorPackage: com.github.ma_vin.util.layer_generator.sample.given
+idGeneratorClass: IdGenerator
+entities:
+  - baseName: RootEntity
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: R
+    fields:
+      - fieldName: rootName
+        type: String
+      - fieldName: description
+        type: String
+  - baseName: AbstractEntity
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: A
+    isAbstract: true
+    fields: 
+      - fieldName: superName
+        type: String
+  - baseName: ExtendingEntity
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: E
+    parent: AbstractEntity
+    fields:
+      - fieldName: addedField
+        type: Integer
+  - baseName: DerivedEntity
+    models: DTO
+    derivedFrom: RootEntity
+    fields:
+      - fieldName: rootName
+        type: String
