@@ -243,7 +243,7 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 	 */
 	protected void setRootEntityDtoValues(RootEntity domain, RootEntityDto dto) {
 		dto.setRootName(domain.getRootName());
-		dto.setDescription(domain.getDescription());
+		dto.setAnyAttribute(domain.getAnyAttribute());
 	}
 
 	/**
@@ -265,7 +265,7 @@ public class CommonTransportMapper extends AbstractTransportMapper {
 	 */
 	protected void setRootEntityValues(RootEntityDto dto, RootEntity domain) {
 		domain.setRootName(dto.getRootName());
-		domain.setDescription(dto.getDescription());
+		domain.setAnyAttribute(dto.getAnyAttribute());
 	}
 
 }

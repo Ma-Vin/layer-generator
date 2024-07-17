@@ -24,11 +24,11 @@ public class CommonAccessMapperTest {
         rootEntityDao = new RootEntityDao();
 
         rootEntity.setRootName("RootName");
-        rootEntity.setDescription("anything");
+        rootEntity.setAnyAttribute(1.3);
         rootEntity.setIdentification(IdGenerator.generateIdentification(1L, RootEntity.ID_PREFIX));
 
         rootEntityDao.setRootName(rootEntity.getRootName());
-        rootEntityDao.setDescription(rootEntity.getDescription());
+        rootEntityDao.setAnyAttribute(rootEntity.getAnyAttribute());
         rootEntityDao.setId(1L);
 
         extendingEntity = new ExtendingEntity();
@@ -50,7 +50,7 @@ public class CommonAccessMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(rootEntityDao.getRootName(), result.getRootName(), "Wrong name");
         assertEquals(rootEntityDao.getIdentification(), result.getIdentification(), "Wrong identification");
-        assertEquals(rootEntityDao.getDescription(), result.getDescription(), "Wrong description");
+        assertEquals(rootEntityDao.getAnyAttribute(), result.getAnyAttribute(), "Wrong attribute");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class CommonAccessMapperTest {
 
         assertEquals(rootEntity.getRootName(), result.getRootName(), "Wrong name");
         assertEquals(rootEntity.getIdentification(), result.getIdentification(), "Wrong identification");
-        assertEquals(rootEntity.getDescription(), result.getDescription(), "Wrong description");
+        assertEquals(rootEntity.getAnyAttribute(), result.getAnyAttribute(), "Wrong attribute");
     }
 
     @Test

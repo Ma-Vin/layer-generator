@@ -26,11 +26,11 @@ public class CommonTransportMapperTest {
         rootEntityDto = new RootEntityDto();
 
         rootEntity.setRootName("RootName");
-        rootEntity.setDescription("anything");
+        rootEntity.setAnyAttribute(1.2);
         rootEntity.setIdentification(IdGenerator.generateIdentification(1L, RootEntity.ID_PREFIX));
 
         rootEntityDto.setRootName(rootEntity.getRootName());
-        rootEntityDto.setDescription(rootEntity.getDescription());
+        rootEntityDto.setAnyAttribute(rootEntity.getAnyAttribute());
         rootEntityDto.setIdentification(rootEntity.getIdentification());
 
         extendingEntity = new ExtendingEntity();
@@ -56,7 +56,7 @@ public class CommonTransportMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(rootEntityDto.getRootName(), result.getRootName(), "Wrong name");
         assertEquals(rootEntityDto.getIdentification(), result.getIdentification(), "Wrong identification");
-        assertEquals(rootEntityDto.getDescription(), result.getDescription(), "Wrong description");
+        assertEquals(rootEntityDto.getAnyAttribute(), result.getAnyAttribute(), "Wrong attribute");
     }
 
     @Test
@@ -75,7 +75,7 @@ public class CommonTransportMapperTest {
 
         assertEquals(rootEntity.getRootName(), result.getRootName(), "Wrong name");
         assertEquals(rootEntity.getIdentification(), result.getIdentification(), "Wrong identification");
-        assertEquals(rootEntity.getDescription(), result.getDescription(), "Wrong description");
+        assertEquals(rootEntity.getAnyAttribute(), result.getAnyAttribute(), "Wrong attribute");
     }
 
     @Test

@@ -6,13 +6,14 @@ idGeneratorPackage: com.github.ma_vin.util.layer_generator.sample.given
 idGeneratorClass: IdGenerator
 entities:
   - baseName: RootEntity
+    description: The root entity of this example
     models: DOMAIN_DAO_DTO
     identificationPrefix: R
     fields:
       - fieldName: rootName
         type: String
-      - fieldName: description
-        type: String
+      - fieldName: anyAttribute
+        type: double
   - baseName: AbstractEntity
     models: DOMAIN_DAO_DTO
     identificationPrefix: A

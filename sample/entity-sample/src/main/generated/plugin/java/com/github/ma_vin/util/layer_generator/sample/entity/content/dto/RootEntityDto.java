@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * Generated dto class of RootEntity
+ * <br>
+ * The root entity of this example
  */
 @BaseDto("com.github.ma_vin.util.layer_generator.sample.entity.content.dto")
 @Data
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("java:S1068")
 public class RootEntityDto implements ITransportable {
 
-	private String description;
+	private double anyAttribute;
 
 	/**
 	 * Identification of RootEntity

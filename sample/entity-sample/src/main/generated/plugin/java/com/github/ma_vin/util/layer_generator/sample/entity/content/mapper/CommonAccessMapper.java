@@ -225,7 +225,7 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	 */
 	protected void setRootEntityDaoValues(RootEntity domain, RootEntityDao dao) {
 		dao.setRootName(domain.getRootName());
-		dao.setDescription(domain.getDescription());
+		dao.setAnyAttribute(domain.getAnyAttribute());
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	 */
 	protected void setRootEntityValues(RootEntityDao dao, RootEntity domain) {
 		domain.setRootName(dao.getRootName());
-		domain.setDescription(dao.getDescription());
+		domain.setAnyAttribute(dao.getAnyAttribute());
 	}
 
 }

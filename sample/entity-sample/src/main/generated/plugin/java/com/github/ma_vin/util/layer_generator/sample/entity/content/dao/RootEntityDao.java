@@ -8,6 +8,8 @@ import lombok.Data;
 
 /**
  * Generated dao class of RootEntity
+ * <br>
+ * The root entity of this example
  */
 @BaseDao("com.github.ma_vin.util.layer_generator.sample.entity.content.dao")
 @Data
@@ -16,7 +18,7 @@ import lombok.Data;
 public class RootEntityDao implements IIdentifiableDao {
 
 	@Column
-	private String description;
+	private double anyAttribute;
 
 	@Column(name = "Id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

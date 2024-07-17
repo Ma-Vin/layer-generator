@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * Generated domain class of RootEntity
+ * <br>
+ * The root entity of this example
  */
 @BaseDomain("com.github.ma_vin.util.layer_generator.sample.entity.content.domain")
 @Data
@@ -15,7 +17,7 @@ public class RootEntity implements IIdentifiable {
 
 	public static final String ID_PREFIX = "R";
 
-	private String description;
+	private double anyAttribute;
 
 	/**
 	 * Identification of RootEntity
