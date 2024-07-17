@@ -1,0 +1,69 @@
+basePackage: com.github.ma_vin.util.layer_generator.sample.field.content
+dtoPackage: dto
+domainPackage: domain
+daoPackage: dao
+idGeneratorPackage: com.github.ma_vin.util.layer_generator.sample.given
+idGeneratorClass: IdGenerator
+entities:
+  - baseName: FieldEntity
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: R
+    fields:
+      - fieldName: someString
+        type: String
+      - fieldName: someInteger
+        type: Integer
+      - fieldName: someEnum
+        type: AnyEnumType
+        typePackage: com.github.ma_vin.util.layer_generator.sample.given
+        isTypeEnum: true
+      - fieldName: someCustom
+        type: CustomType
+        typePackage: com.github.ma_vin.util.layer_generator.sample.given
+      - fieldName: onlyDao
+        type: String
+        models: DAO
+      - fieldName: onlyDomain
+        type: String
+        models: DOMAIN
+      - fieldName: onlyDto
+        type: String
+        models: DTO
+      - fieldName: daoAndDomain
+        type: String
+        models: DOMAIN_DAO
+      - fieldName: dtoAndDomain
+        type: String
+        models: DOMAIN_DTO
+      - fieldName: textWithDaoInfo
+        type: String
+        daoInfo:
+          nullable: false
+          length: 128
+      - fieldName: numberWithDaoInfo
+        type: double
+        daoInfo:
+          precision: 7
+          scale: 3
+      - fieldName: daoEnum
+        type: AnyEnumType
+        typePackage: com.github.ma_vin.util.layer_generator.sample.given
+        isTypeEnum: true
+        daoInfo:
+          useEnumText: false
+      - fieldName: daoEnumWithText
+        type: AnyEnumType
+        typePackage: com.github.ma_vin.util.layer_generator.sample.given
+        isTypeEnum: true
+        daoInfo:
+          useEnumText: true
+      - fieldName: someName
+        type: String
+        daoInfo:
+          columnName: anyOtherName
+      - fieldName: document
+        type: String
+        shortDescription: short text
+        daoInfo:
+          columnDefinition: BLOB
+          isLobType: true
