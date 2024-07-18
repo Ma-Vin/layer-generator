@@ -34,3 +34,19 @@ entities:
     fields:
       - fieldName: rootName
         type: String
+  - baseName: IndexEntity
+    models: DOMAIN_DAO
+    identificationPrefix: I
+    fields:
+      - fieldName: primaryKeyPartOne
+        type: Integer
+      - fieldName: primaryKeyPartTwo
+        type: Integer
+      - fieldName: indexPart
+        type: Integer
+    indices:
+      - indexName: ThePrimaryKey
+        fieldList: primaryKeyPartOne ASC, primaryKeyPartTwo DESC
+        isUnique: true
+      - indexName: AnIndex
+        fieldList: indexPart DESC

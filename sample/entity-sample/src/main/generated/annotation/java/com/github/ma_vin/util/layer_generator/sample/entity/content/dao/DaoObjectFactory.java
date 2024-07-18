@@ -9,6 +9,10 @@ public class DaoObjectFactory {
 		return new ExtendingEntityDao();
 	}
 
+	public static IndexEntityDao createIndexEntityDao() {
+		return new IndexEntityDao();
+	}
+
 	public static RootEntityDao createRootEntityDao() {
 		return new RootEntityDao();
 	}

@@ -12,3 +12,6 @@ There are two entities `AbstractEntity` and `ExtendingEntity`. The first one is 
 The entity `DerivedEntity` is derived by `RootEntity` and has to define which should inherit. 
 In comparison to `AbstractEntity` and `ExtendingEntity` not all properties will be inherited and it has to be a data transport model.
 The mapping of data transport and domain model will take place between `DerivedEntityDto` and `RootEntity`.
+
+## Table with indices
+The entity `IndexEntity` has two indices `ThePrimaryKey` and `AnIndex`. The first one is unique, but the second one not.

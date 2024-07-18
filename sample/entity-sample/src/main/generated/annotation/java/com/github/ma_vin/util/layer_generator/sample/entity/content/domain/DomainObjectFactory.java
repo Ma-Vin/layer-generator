@@ -9,6 +9,10 @@ public class DomainObjectFactory {
 		return new ExtendingEntity();
 	}
 
+	public static IndexEntity createIndexEntity() {
+		return new IndexEntity();
+	}
+
 	public static RootEntity createRootEntity() {
 		return new RootEntity();
 	}

@@ -4,10 +4,12 @@ import com.github.ma_vin.util.layer_generator.annotations.mapper.BaseAccessMappe
 import com.github.ma_vin.util.layer_generator.sample.entity.content.dao.DaoObjectFactory;
 import com.github.ma_vin.util.layer_generator.sample.entity.content.dao.ExtendingEntityDao;
 import com.github.ma_vin.util.layer_generator.sample.entity.content.dao.IIdentifiableDao;
+import com.github.ma_vin.util.layer_generator.sample.entity.content.dao.IndexEntityDao;
 import com.github.ma_vin.util.layer_generator.sample.entity.content.dao.RootEntityDao;
 import com.github.ma_vin.util.layer_generator.sample.entity.content.domain.DomainObjectFactory;
 import com.github.ma_vin.util.layer_generator.sample.entity.content.domain.ExtendingEntity;
 import com.github.ma_vin.util.layer_generator.sample.entity.content.domain.IIdentifiable;
+import com.github.ma_vin.util.layer_generator.sample.entity.content.domain.IndexEntity;
 import com.github.ma_vin.util.layer_generator.sample.entity.content.domain.RootEntity;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,6 +71,54 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 		return convertToDao(extendingEntity, mappedObjects, DaoObjectFactory::createExtendingEntityDao, (domain, dao) -> getInstance().setExtendingEntityDaoValues(domain, dao)
 				, (domain, dao) -> getInstance().setExtendingEntityDaoSingleReferences(domain, dao, mappedObjects)
 				, (domain, dao) -> getInstance().setExtendingEntityDaoMultiReferences(domain, dao, mappedObjects));
+	}
+
+	/**
+	 * Converts a(n) {@link IndexEntityDao} to a(n) {@link IndexEntity}
+	 *
+	 * @param indexEntity the source object which should be converted
+	 * @return an equivalent new created {@link IndexEntity}
+	 */
+	public static IndexEntity convertToIndexEntity(IndexEntityDao indexEntity) {
+		return convertToIndexEntity(indexEntity, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link IndexEntityDao} to a(n) {@link IndexEntity}
+	 *
+	 * @param indexEntity   the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code indexEntity} is contained, the found
+	 *                      {@link IndexEntity} will be returned
+	 * @return an equivalent new created {@link IndexEntity} or the found one from the given map
+	 */
+	public static IndexEntity convertToIndexEntity(IndexEntityDao indexEntity, Map<String, IIdentifiable> mappedObjects) {
+		return convertToDomain(indexEntity, mappedObjects, DomainObjectFactory::createIndexEntity, (dao, domain) -> getInstance().setIndexEntityValues(dao, domain)
+				, (dao, domain) -> getInstance().setIndexEntitySingleReferences(dao, domain, mappedObjects)
+				, (dao, domain) -> getInstance().setIndexEntityMultiReferences(dao, domain, mappedObjects));
+	}
+
+	/**
+	 * Converts a(n) {@link IndexEntity} to a(n) {@link IndexEntityDao}
+	 *
+	 * @param indexEntity the source object which should be converted
+	 * @return an equivalent new created {@link IndexEntityDao}
+	 */
+	public static IndexEntityDao convertToIndexEntityDao(IndexEntity indexEntity) {
+		return convertToIndexEntityDao(indexEntity, new HashMap<>());
+	}
+
+	/**
+	 * Converts a(n) {@link IndexEntity} to a(n) {@link IndexEntityDao}
+	 *
+	 * @param indexEntity   the source object which should be converted
+	 * @param mappedObjects map which contains already mapped objects. If an identification of {@code indexEntity} is contained, the found
+	 *                      {@link IndexEntityDao} will be returned
+	 * @return an equivalent new created {@link IndexEntityDao} or the found one from the given map
+	 */
+	public static IndexEntityDao convertToIndexEntityDao(IndexEntity indexEntity, Map<String, IIdentifiableDao> mappedObjects) {
+		return convertToDao(indexEntity, mappedObjects, DaoObjectFactory::createIndexEntityDao, (domain, dao) -> getInstance().setIndexEntityDaoValues(domain, dao)
+				, (domain, dao) -> getInstance().setIndexEntityDaoSingleReferences(domain, dao, mappedObjects)
+				, (domain, dao) -> getInstance().setIndexEntityDaoMultiReferences(domain, dao, mappedObjects));
 	}
 
 	/**
@@ -193,6 +243,74 @@ public class CommonAccessMapper extends AbstractAccessMapper {
 	protected void setExtendingEntityValues(ExtendingEntityDao dao, ExtendingEntity domain) {
 		domain.setAddedField(dao.getAddedField());
 		domain.setSuperName(dao.getSuperName());
+	}
+
+	/**
+	 * Adds the references at {@code dao} which are of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setIndexEntityDaoMultiReferences(IndexEntity domain, IndexEntityDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	/**
+	 * Adds the references at {@code dao} which are not of type {@link java.util.Collection}
+	 *
+	 * @param domain        source of the given references
+	 * @param dao           object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code domain} to {@code dao}
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setIndexEntityDaoSingleReferences(IndexEntity domain, IndexEntityDao dao, Map<String, IIdentifiableDao> mappedObjects) {
+	}
+
+	/**
+	 * Takes over values from {@code domain} to {@code dao} which are not of reference type
+	 *
+	 * @param domain source of the given values
+	 * @param dao    object where to set the values
+	 */
+	protected void setIndexEntityDaoValues(IndexEntity domain, IndexEntityDao dao) {
+		dao.setPrimaryKeyPartOne(domain.getPrimaryKeyPartOne());
+		dao.setPrimaryKeyPartTwo(domain.getPrimaryKeyPartTwo());
+		dao.setIndexPart(domain.getIndexPart());
+	}
+
+	/**
+	 * Adds the references at {@code domain} which are of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setIndexEntityMultiReferences(IndexEntityDao dao, IndexEntity domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	/**
+	 * Adds the references at {@code domain} which are not of type {@link java.util.Collection}
+	 *
+	 * @param dao           source of the given references
+	 * @param domain        object where to add the references
+	 * @param mappedObjects map which contains already mapped objects. It will be used while mapping sub entities of {@code dao} to {@code domain}
+	 */
+	@SuppressWarnings("java:S1186")
+	protected void setIndexEntitySingleReferences(IndexEntityDao dao, IndexEntity domain, Map<String, IIdentifiable> mappedObjects) {
+	}
+
+	/**
+	 * Takes over values from {@code dao} to {@code domain} which are not of reference type
+	 *
+	 * @param dao    source of the given values
+	 * @param domain object where to set the values
+	 */
+	protected void setIndexEntityValues(IndexEntityDao dao, IndexEntity domain) {
+		domain.setPrimaryKeyPartOne(dao.getPrimaryKeyPartOne());
+		domain.setPrimaryKeyPartTwo(dao.getPrimaryKeyPartTwo());
+		domain.setIndexPart(dao.getIndexPart());
 	}
 
 	/**
