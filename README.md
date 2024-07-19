@@ -16,12 +16,12 @@ mappers.
 
 ## Usage
 
-For usage the artifact ***com.github.ma_vin.util.layer_generator:extension-annotation*** is needed as dependency
-and ***com.github.ma_vin.util.layer_generator:generator-plugin*** should be included as maven plugin. See details at their
-readme markdowns.
+For usage the artifact `com.github.ma_vin.util.layer_generator:extension-annotation` is needed as dependency
+and `com.github.ma_vin.util.layer_generator:generator-plugin` should be included as maven plugin. See details at their
+readme markdowns at [extension-annotation](extension-annotation) and [generator-plugin](./generator-plugin).
 
-It is possible to use the artifact ***com.github.ma_vin.util.layer_generator:generator-annotation*** instead of the maven
-plugin. See details at its readme markdowns.
+It is possible to use the artifact `com.github.ma_vin.util.layer_generator:generator-annotation` instead of the maven
+plugin. See details at its readme markdowns at [generator-annotation](./generator-annotation).
 
 ### Annotation for Extension
 
@@ -50,3 +50,17 @@ The usage of following elements is shown:
   * `grouping` at [grouping-sample](./sample/grouping-sample)
   * `field`, `daoInfo` at [field-sample](./sample/field-sample)
   * `version` at [version-sample](./sample/version-sample)
+
+## Release features and changes
+
+### Main changes of version 2.0.0 compared to [v1.4](https://github.com/Ma-Vin/layer-generator/releases/tag/v1.4)
+* renaming/moving: 
+  * The GitHub project is renamed to `layer-generator`
+  * the groupId renamed to `com.github.ma_vin.util.layer_generator`
+  * the artifactId changed from `layer-generator-annotation` to `extension-annotation`
+  * the artifactId changed from `layer-generator-plugin` to `generator-plugin` and some elements are move into `base-layer-generator`
+  * the artifactId changed from `layer-generator-sources` to `sourcecode-generator`
+  * the artifactId changed from `layer-generator-sample` to `sample` and sub modules
+* accessibility with an annotation in addition to plugin configuration. See also `generator-annotation`
+* versioning of data transport objects. Can be used to provide a deprecated and an actual API
+* different types of configuration formats: yaml and json are added
