@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @ExtendingDao
 @Data
 @EqualsAndHashCode(callSuper = true)
+@SuppressWarnings("java:S1068")
 public class ExtendedEntityDao extends ToExtendEntityDao {
     private BigDecimal addedToDaoBigDecimal;
 }

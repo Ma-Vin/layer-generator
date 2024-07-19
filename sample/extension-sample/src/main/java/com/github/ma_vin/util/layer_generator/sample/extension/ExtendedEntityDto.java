@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @ExtendingDto
 @Data
 @EqualsAndHashCode(callSuper = true)
+@SuppressWarnings("java:S1068")
 public class ExtendedEntityDto extends ToExtendEntityDto {
     private BigDecimal addedToDtoBigDecimal;
 }
