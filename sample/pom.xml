@@ -20,6 +20,7 @@
         <module>plugin-sample</module>
         <module>annotation-sample</module>
         <module>entity-sample</module>
+        <module>grouping-sample</module>
         <module>field-sample</module>
         <module>reference-sample</module>
         <module>extension-sample</module>

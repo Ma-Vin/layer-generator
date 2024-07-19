@@ -1,0 +1,18 @@
+basePackage: com.github.ma_vin.util.layer_generator.sample.extension.content
+dtoPackage: dto
+domainPackage: domain
+daoPackage: dao
+idGeneratorPackage: com.github.ma_vin.util.layer_generator.sample.given
+idGeneratorClass: IdGenerator
+entities:
+  - baseName: CommonEntity
+    description: entity at default basePackage
+    models: DOMAIN_DTO
+    identificationPrefix: C
+groupings:
+  - groupingPackage: sub
+    entities:
+      - baseName: SubEntity
+        description: entity at sub package of basePackage.type
+        models: DOMAIN_DTO
+        identificationPrefix: S
