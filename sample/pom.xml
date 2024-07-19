@@ -13,7 +13,7 @@
     <artifactId>sample</artifactId>
 
     <name>Util Layer Generator Sample</name>
-    <description>Two examples of usage of plugin and annotations</description>
+    <description>Examples of usage of plugin, annotations and configurations</description>
 
     <modules>
         <module>util-sample</module>
@@ -21,6 +21,7 @@
         <module>annotation-sample</module>
         <module>entity-sample</module>
         <module>field-sample</module>
+        <module>reference-sample</module>
         <module>version-sample</module>
     </modules>
 

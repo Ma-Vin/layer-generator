@@ -1,0 +1,104 @@
+basePackage: com.github.ma_vin.util.layer_generator.sample.reference.content
+dtoPackage: dto
+domainPackage: domain
+daoPackage: dao
+idGeneratorPackage: com.github.ma_vin.util.layer_generator.sample.given
+idGeneratorClass: IdGenerator
+entities:
+  - baseName: SourceEntityOneToOne
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: S1
+    references:
+      - referenceName: oneToOneRef
+        shortDescription: a 1:1 reference
+        targetEntity: TargetEntityOneToOne
+        isOwner: true
+  - baseName: TargetEntityOneToOne
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: T1
+
+  - baseName: SourceEntityOneToMany
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: S2
+    references:
+      - referenceName: oneToManyRef
+        shortDescription: a 1:n reference
+        targetEntity: TargetEntityOneToMany
+        isOwner: true
+        isList: true
+  - baseName: TargetEntityOneToMany
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: T2
+
+  - baseName: SourceEntityManyToMany
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: S3_1
+    references:
+      - referenceName: ManyToManyRef
+        shortDescription: a m:n reference
+        targetEntity: TargetEntityManyToMany
+        isList: true
+  - baseName: SourceEntityManyToOne
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: S3_2
+    references:
+      - referenceName: ManyToOneRef
+        shortDescription: a m:1 reference
+        targetEntity: TargetEntityManyToMany
+  - baseName: TargetEntityManyToMany
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: T3
+
+  - baseName: SourceEntityFilter
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: S4
+    references:
+      - referenceName: oneToManyFilterA
+        shortDescription: a 1:n reference to entities with enum value A
+        targetEntity: TargetEntityFilter
+        isOwner: true
+        isList: true
+        filterField: enumFieldForFiltering
+        filterFieldValue: ENUM_VALUE_A
+      - referenceName: oneToManyFilterB
+        shortDescription: a 1:n reference to entities with enum value B
+        targetEntity: TargetEntityFilter
+        isOwner: true
+        isList: true
+        filterField: enumFieldForFiltering
+        filterFieldValue: ENUM_VALUE_B
+  - baseName: TargetEntityFilter
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: T4
+    fields:
+      - fieldName: enumFieldForFiltering
+        type: AnyEnumType
+        typePackage: com.github.ma_vin.util.layer_generator.sample.given
+        isTypeEnum: true
+
+  - baseName: SourceEntityFilterNotAtTarget
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: S5
+    references:
+      - referenceName: oneToManyFilterA
+        shortDescription: a 1:n reference to entities with enum value A, but the property is stored at connection table
+        targetEntity: TargetEntityFilterNotAtTarget
+        isList: true
+        nonOwnerFilterField:
+          filterFieldPackage: com.github.ma_vin.util.layer_generator.sample.given
+          filterFieldType: AnyEnumType
+          filterFieldValue: ENUM_VALUE_A
+      - referenceName: oneToManyFilterB
+        shortDescription: a 1:n reference to entities with enum value B, but the property is stored at connection table
+        targetEntity: TargetEntityFilterNotAtTarget
+        isList: true
+        nonOwnerFilterField:
+          filterFieldPackage: com.github.ma_vin.util.layer_generator.sample.given
+          filterFieldType: AnyEnumType
+          filterFieldValue: ENUM_VALUE_B
+  - baseName: TargetEntityFilterNotAtTarget
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: T5
+
+
+
