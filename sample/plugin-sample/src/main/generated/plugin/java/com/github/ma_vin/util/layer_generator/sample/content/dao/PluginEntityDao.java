@@ -1,22 +1,22 @@
-package com.github.ma_vin.util.layer_generator.sample.content.dao.dao;
+package com.github.ma_vin.util.layer_generator.sample.content.dao;
 
 import com.github.ma_vin.util.layer_generator.annotations.model.BaseDao;
-import com.github.ma_vin.util.layer_generator.sample.content.dao.IIdentifiableDao;
+import com.github.ma_vin.util.layer_generator.sample.content.domain.PluginEntity;
 import com.github.ma_vin.util.layer_generator.sample.given.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Data;
 
 /**
- * Generated dao class of OnlyDao
+ * Generated dao class of PluginEntity
  */
 @BaseDao("com.github.ma_vin.util.layer_generator.sample.content.dao")
 @Data
 @Entity
-@Table(name = "OnlyDaos")
-public class OnlyDaoDao implements IIdentifiableDao {
+@Table(name = "PluginEntitys")
+public class PluginEntityDao implements IIdentifiableDao {
 
 	@Column
-	private String description;
+	private short exampleAttribute;
 
 	@Column(name = "Id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +25,12 @@ public class OnlyDaoDao implements IIdentifiableDao {
 
 	@Override
 	public String getIdentification() {
-		return IdGenerator.generateIdentification(id, "");
+		return IdGenerator.generateIdentification(id, PluginEntity.ID_PREFIX);
 	}
 
 	@Override
 	public void setIdentification(String identification) {
-		id = IdGenerator.generateId(identification, "");
+		id = IdGenerator.generateId(identification, PluginEntity.ID_PREFIX);
 	}
 
 }

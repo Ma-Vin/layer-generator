@@ -38,8 +38,15 @@ The implementation of the annotation generator is located at [generator-annotati
 
 ### Example
 
-An example of plugin and extension annotations usage is shown at [plugin-sample](/sample/plugin-sample)
+There are few example at [sample](./sample) (The generated code is commited also). 
+The usage of following elements is shown:
 
-An example of generator annotation usage is shown at [annotation-sample](/sample/annotation-sample)
-
-An example of versioning usage is shown at [version-sample](/sample/version-sample)
+* accessibility
+  * `plugin` at [plugin-sample](./sample/plugin-sample)
+  * `annotation` at [annotation-sample](./sample/annotation-sample)
+* configuration elements
+  * `entity`, `index` at [entity-sample](./sample/entity-sample)
+  * `reference` at [reference-sample](./sample/reference-sample)
+  * `grouping` at [grouping-sample](./sample/grouping-sample)
+  * `field`, `daoInfo` at [field-sample](./sample/field-sample)
+  * `version` at [version-sample](./sample/version-sample)

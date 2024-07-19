@@ -1,21 +1,22 @@
-package com.github.ma_vin.util.layer_generator.sample.content.dto.filtering;
+package com.github.ma_vin.util.layer_generator.sample.content.dto;
 
 import com.github.ma_vin.util.layer_generator.annotations.model.BaseDto;
-import com.github.ma_vin.util.layer_generator.sample.content.dto.ITransportable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Generated dto class of SomeFilteringOwner
+ * Generated dto class of PluginEntity
  */
 @BaseDto("com.github.ma_vin.util.layer_generator.sample.content.dto")
 @Data
 @NoArgsConstructor
 @SuppressWarnings("java:S1068")
-public class SomeFilteringOwnerDto implements ITransportable {
+public class PluginEntityDto implements ITransportable {
+
+	private short exampleAttribute;
 
 	/**
-	 * Identification of SomeFilteringOwner
+	 * Identification of PluginEntity
 	 */
 	private String identification;
 
