@@ -1,6 +1,6 @@
 # Example for usage of `fields`
 
-A small example to show the usage of entity with configuration
+A small example to show the usage of fields with configuration
 at [fieldExampleModel.yaml](./src/main/resources/fieldExampleModel.yaml)
 
 ## Fields
