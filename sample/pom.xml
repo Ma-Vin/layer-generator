@@ -22,6 +22,7 @@
         <module>entity-sample</module>
         <module>field-sample</module>
         <module>reference-sample</module>
+        <module>extension-sample</module>
         <module>version-sample</module>
     </modules>
 

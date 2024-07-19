@@ -1,0 +1,14 @@
+basePackage: com.github.ma_vin.util.layer_generator.sample.extension.content
+dtoPackage: dto
+domainPackage: domain
+daoPackage: dao
+idGeneratorPackage: com.github.ma_vin.util.layer_generator.sample.given
+idGeneratorClass: IdGenerator
+entities:
+  - baseName: ToExtendEntity
+    description: entity which will be extended
+    models: DOMAIN_DAO_DTO
+    identificationPrefix: R
+    fields:
+      - fieldName: existingAttribute
+        type: String
