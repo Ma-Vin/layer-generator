@@ -30,6 +30,7 @@ public class CommonAccessMapperTest {
     private SourceEntityManyToOneDao sourceEntityManyToOneDao;
     private TargetEntityManyToMany targetEntityManyToMany;
     private TargetEntityManyToManyDao targetEntityManyToManyDao;
+    private SourceEntityManyToManyToTargetEntityManyToManyDao sourceTargetConnectionDao;
 
     private SourceEntityFilter sourceEntityFilter;
     private SourceEntityFilterDao sourceEntityFilterDao;
@@ -44,6 +45,7 @@ public class CommonAccessMapperTest {
     private TargetEntityFilterNotAtTarget targetEntityFilterNotAtTargetB;
     private SourceEntityFilterNotAtTargetToTargetEntityFilterNotAtTargetDao sourceTargetConnectionFilterDaoA;
     private SourceEntityFilterNotAtTargetToTargetEntityFilterNotAtTargetDao sourceTargetConnectionFilterDaoB;
+    private TargetEntityFilterNotAtTargetDao targetEntityFilterNotAtTargetDaoA;
 
     private void setUpOneToOne() {
         sourceEntityOneToOne = new SourceEntityOneToOne();
@@ -68,7 +70,6 @@ public class CommonAccessMapperTest {
         targetEntityOneToMany = new TargetEntityOneToMany();
         targetEntityOneToManyDao = new TargetEntityOneToManyDao();
 
-        sourceEntityOneToMany.addOneToManyRef(targetEntityOneToMany);
         sourceEntityOneToManyDao.setOneToManyRef(new ArrayList<>());
         sourceEntityOneToManyDao.getOneToManyRef().add(targetEntityOneToManyDao);
 
@@ -78,6 +79,8 @@ public class CommonAccessMapperTest {
         sourceEntityOneToManyDao.setId(3L);
         targetEntityOneToMany.setIdentification(IdGenerator.generateIdentification(4L, TargetEntityOneToMany.ID_PREFIX));
         targetEntityOneToManyDao.setId(4L);
+
+        sourceEntityOneToMany.addOneToManyRef(targetEntityOneToMany);
     }
 
     private void setUpManyToMany() {
@@ -89,9 +92,8 @@ public class CommonAccessMapperTest {
 
         targetEntityManyToMany = new TargetEntityManyToMany();
         targetEntityManyToManyDao = new TargetEntityManyToManyDao();
-        SourceEntityManyToManyToTargetEntityManyToManyDao sourceTargetConnectionDao = new SourceEntityManyToManyToTargetEntityManyToManyDao();
+        sourceTargetConnectionDao = new SourceEntityManyToManyToTargetEntityManyToManyDao();
 
-        sourceEntityManyToMany.addManyToManyRef(targetEntityManyToMany);
         sourceEntityManyToManyDao.setManyToManyRef(new ArrayList<>());
         sourceEntityManyToManyDao.getManyToManyRef().add(sourceTargetConnectionDao);
         sourceTargetConnectionDao.setSourceEntityManyToMany(sourceEntityManyToManyDao);
@@ -106,6 +108,8 @@ public class CommonAccessMapperTest {
         sourceEntityManyToOneDao.setId(6L);
         targetEntityManyToMany.setIdentification(IdGenerator.generateIdentification(7L, TargetEntityManyToMany.ID_PREFIX));
         targetEntityManyToManyDao.setId(7L);
+
+        sourceEntityManyToMany.addManyToManyRef(targetEntityManyToMany);
     }
 
     private void setUpFilter() {
@@ -118,8 +122,6 @@ public class CommonAccessMapperTest {
         targetEntityFilterB = new TargetEntityFilter();
         targetEntityFilterDaoB = new TargetEntityFilterDao();
 
-        sourceEntityFilter.addOneToManyFilterA(targetEntityFilterA);
-        sourceEntityFilter.addOneToManyFilterB(targetEntityFilterB);
         sourceEntityFilterDao.setAggTargetEntityFilter(new ArrayList<>());
         sourceEntityFilterDao.getAggTargetEntityFilter().add(targetEntityFilterDaoA);
         sourceEntityFilterDao.getAggTargetEntityFilter().add(targetEntityFilterDaoB);
@@ -136,6 +138,9 @@ public class CommonAccessMapperTest {
         targetEntityFilterDaoA.setId(9L);
         targetEntityFilterB.setIdentification(IdGenerator.generateIdentification(10L, TargetEntityFilter.ID_PREFIX));
         targetEntityFilterDaoB.setId(10L);
+
+        sourceEntityFilter.addOneToManyFilterA(targetEntityFilterA);
+        sourceEntityFilter.addOneToManyFilterB(targetEntityFilterB);
     }
 
     private void setUpFilterNotAtTarget() {
@@ -143,15 +148,12 @@ public class CommonAccessMapperTest {
         sourceEntityFilterNotAtTargetDao = new SourceEntityFilterNotAtTargetDao();
 
         targetEntityFilterNotAtTargetA = new TargetEntityFilterNotAtTarget();
-        TargetEntityFilterNotAtTargetDao targetEntityFilterNotAtTargetDaoA = new TargetEntityFilterNotAtTargetDao();
+        targetEntityFilterNotAtTargetDaoA = new TargetEntityFilterNotAtTargetDao();
         sourceTargetConnectionFilterDaoA = new SourceEntityFilterNotAtTargetToTargetEntityFilterNotAtTargetDao();
 
         targetEntityFilterNotAtTargetB = new TargetEntityFilterNotAtTarget();
         TargetEntityFilterNotAtTargetDao targetEntityFilterNotAtTargetDaoB = new TargetEntityFilterNotAtTargetDao();
         sourceTargetConnectionFilterDaoB = new SourceEntityFilterNotAtTargetToTargetEntityFilterNotAtTargetDao();
-
-        sourceEntityFilterNotAtTarget.addOneToManyFilterA(targetEntityFilterNotAtTargetA);
-        sourceEntityFilterNotAtTarget.addOneToManyFilterB(targetEntityFilterNotAtTargetB);
 
         sourceEntityFilterNotAtTargetDao.setAggTargetEntityFilterNotAtTarget(new ArrayList<>());
         sourceEntityFilterNotAtTargetDao.getAggTargetEntityFilterNotAtTarget().add(sourceTargetConnectionFilterDaoA);
@@ -171,6 +173,9 @@ public class CommonAccessMapperTest {
         targetEntityFilterNotAtTargetDaoA.setId(12L);
         targetEntityFilterNotAtTargetB.setIdentification(IdGenerator.generateIdentification(13L, TargetEntityFilterNotAtTarget.ID_PREFIX));
         targetEntityFilterNotAtTargetDaoB.setId(13L);
+
+        sourceEntityFilterNotAtTarget.addOneToManyFilterA(targetEntityFilterNotAtTargetA);
+        sourceEntityFilterNotAtTarget.addOneToManyFilterB(targetEntityFilterNotAtTargetB);
     }
 
     @Test
@@ -184,6 +189,27 @@ public class CommonAccessMapperTest {
     }
 
     @Test
+    public void testConvertToTargetEntityOneToOne() {
+        setUpOneToOne();
+
+        TargetEntityOneToOne result = CommonAccessMapper.convertToTargetEntityOneToOne(targetEntityOneToOneDao);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityOneToOne, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityOneToOneWithParent() {
+        setUpOneToOne();
+        sourceEntityOneToOne.setOneToOneRef(null);
+        TargetEntityOneToOne result = CommonAccessMapper.convertToTargetEntityOneToOne(targetEntityOneToOneDao, sourceEntityOneToOne);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityOneToOne, result, "Wrong result");
+        assertEquals(result, sourceEntityOneToOne.getOneToOneRef(), "Wrong OneToOneRef");
+    }
+
+    @Test
     public void testConvertToSourceEntityOneToOneDao() {
         setUpOneToOne();
         SourceEntityOneToOneDao result = CommonAccessMapper.convertToSourceEntityOneToOneDao(sourceEntityOneToOne);
@@ -191,6 +217,26 @@ public class CommonAccessMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(sourceEntityOneToOneDao.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(targetEntityOneToOneDao, result.getOneToOneRef(), "Wrong OneToOneRef");
+    }
+
+    @Test
+    public void testConvertToTargetEntityOneToOneDao() {
+        setUpOneToOne();
+        TargetEntityOneToOneDao result = CommonAccessMapper.convertToTargetEntityOneToOneDao(targetEntityOneToOne);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityOneToOneDao, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityOneToOneDaoWithParent() {
+        setUpOneToOne();
+        sourceEntityOneToOneDao.setOneToOneRef(null);
+        TargetEntityOneToOneDao result = CommonAccessMapper.convertToTargetEntityOneToOneDao(targetEntityOneToOne, sourceEntityOneToOneDao);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityOneToOneDao, result, "Wrong result");
+        assertEquals(result, sourceEntityOneToOneDao.getOneToOneRef(), "Wrong OneToOneRef");
     }
 
     @Test
@@ -205,6 +251,27 @@ public class CommonAccessMapperTest {
     }
 
     @Test
+    public void testConvertToTargetEntityOneToMany() {
+        setUpOneToMany();
+        TargetEntityOneToMany result = CommonAccessMapper.convertToTargetEntityOneToMany(targetEntityOneToManyDao);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityOneToMany, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityOneToManyWithParent() {
+        setUpOneToMany();
+        sourceEntityOneToMany.removeOneToManyRef(targetEntityOneToMany);
+        TargetEntityOneToMany result = CommonAccessMapper.convertToTargetEntityOneToMany(targetEntityOneToManyDao, sourceEntityOneToMany);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityOneToMany, result, "Wrong result");
+        assertEquals(1, sourceEntityOneToMany.getOneToManyRef().size());
+        assertEquals(result, getFirstEntry(sourceEntityOneToMany.getOneToManyRef()), "Wrong first entry of OneToManyRef");
+    }
+
+    @Test
     public void testConvertToSourceEntityOneToManyDao() {
         setUpOneToMany();
         SourceEntityOneToManyDao result = CommonAccessMapper.convertToSourceEntityOneToManyDao(sourceEntityOneToMany, true);
@@ -213,6 +280,25 @@ public class CommonAccessMapperTest {
         assertEquals(sourceEntityOneToMany.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(sourceEntityOneToMany.getOneToManyRef().size(), result.getOneToManyRef().size(), "Wrong number of OneToManyRef");
         assertEquals(targetEntityOneToManyDao, getFirstEntry(result.getOneToManyRef()), "Wrong first entry of OneToManyRef");
+    }
+
+    @Test
+    public void testConvertToTargetEntityOneToManyDao() {
+        setUpOneToMany();
+        TargetEntityOneToManyDao result = CommonAccessMapper.convertToTargetEntityOneToManyDao(targetEntityOneToMany);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityOneToManyDao, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityOneToManyDaoWithParent() {
+        setUpOneToMany();
+        TargetEntityOneToManyDao result = CommonAccessMapper.convertToTargetEntityOneToManyDao(targetEntityOneToMany, sourceEntityOneToManyDao);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityOneToManyDao, result, "Wrong result");
+        assertEquals(result, getFirstEntry(sourceEntityOneToManyDao.getOneToManyRef()), "Wrong first entry of OneToManyRef");
     }
 
     @Test
@@ -227,6 +313,27 @@ public class CommonAccessMapperTest {
     }
 
     @Test
+    public void testConvertToTargetEntityManyToMany() {
+        setUpManyToMany();
+        TargetEntityManyToMany result = CommonAccessMapper.convertToTargetEntityManyToMany(targetEntityManyToManyDao);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityManyToMany, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityManyToManyWithParent() {
+        setUpManyToMany();
+        sourceEntityManyToMany.removeManyToManyRef(targetEntityManyToMany);
+        TargetEntityManyToMany result = CommonAccessMapper.convertToTargetEntityManyToMany(targetEntityManyToManyDao, sourceEntityManyToMany);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityManyToMany, result, "Wrong result");
+        assertEquals(1, sourceEntityManyToMany.getManyToManyRef().size(), "Wrong number of ManyToManyRef");
+        assertEquals(result, getFirstEntry(sourceEntityManyToMany.getManyToManyRef()), "Wrong first entry of ManyToManyRef");
+    }
+
+    @Test
     public void testConvertToSourceEntityManyToManyDao() {
         setUpManyToMany();
         SourceEntityManyToManyDao result = CommonAccessMapper.convertToSourceEntityManyToManyDao(sourceEntityManyToMany, true);
@@ -234,8 +341,30 @@ public class CommonAccessMapperTest {
         assertNotNull(result, "There should be any result");
         assertEquals(sourceEntityManyToMany.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(sourceEntityManyToMany.getManyToManyRef().size(), result.getManyToManyRef().size(), "Wrong number of ManyToManyRef");
-        assertEquals(targetEntityManyToManyDao, getFirstEntry(result.getManyToManyRef()).getTargetEntityManyToMany(), "Wrong first entry of  ManyToManyRef");
+        assertEquals(targetEntityManyToManyDao, getFirstEntry(result.getManyToManyRef()).getTargetEntityManyToMany(), "Wrong first entry of ManyToManyRef");
     }
+
+    @Test
+    public void testConvertToTargetEntityManyToManyDao() {
+        setUpManyToMany();
+        TargetEntityManyToManyDao result = CommonAccessMapper.convertToTargetEntityManyToManyDao(targetEntityManyToMany);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityManyToManyDao, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityManyToManyDaoWithParent() {
+        setUpManyToMany();
+        sourceEntityManyToManyDao.getManyToManyRef().remove(sourceTargetConnectionDao);
+        TargetEntityManyToManyDao result = CommonAccessMapper.convertToTargetEntityManyToManyDao(targetEntityManyToMany, sourceEntityManyToManyDao);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityManyToManyDao, result, "Wrong result");
+        assertEquals(1, sourceEntityManyToManyDao.getManyToManyRef().size());
+        assertEquals(result, getFirstEntry(sourceEntityManyToManyDao.getManyToManyRef()).getTargetEntityManyToMany(), "Wrong first entry of ManyToManyRef");
+    }
+
 
     @Test
     public void testConvertToSourceEntityManyToOne() {
@@ -248,6 +377,18 @@ public class CommonAccessMapperTest {
     }
 
     @Test
+    public void testConvertToTargetEntityManyToOneWithParent() {
+        setUpManyToMany();
+        sourceEntityManyToOneDao.setManyToOneRef(null);
+        TargetEntityManyToManyDao result = CommonAccessMapper.convertToTargetEntityManyToManyDao(targetEntityManyToMany, sourceEntityManyToOneDao);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityManyToManyDao, result, "Wrong result");
+        assertEquals(result, sourceEntityManyToOneDao.getManyToOneRef(), "Wrong first entry of ManyToOneRe");
+    }
+
+
+    @Test
     public void testConvertToSourceEntityManyToOneDao() {
         setUpManyToMany();
         SourceEntityManyToOneDao result = CommonAccessMapper.convertToSourceEntityManyToOneDao(sourceEntityManyToOne);
@@ -256,6 +397,18 @@ public class CommonAccessMapperTest {
         assertEquals(sourceEntityManyToOne.getIdentification(), result.getIdentification(), "Wrong identification");
         assertEquals(targetEntityManyToManyDao, result.getManyToOneRef(), "Wrong first entry of ManyToOneRef");
     }
+
+    @Test
+    public void testConvertToTargetEntityManyToOneDaoWithParent() {
+        setUpManyToMany();
+        sourceEntityManyToOne.setManyToOneRef(null);
+        TargetEntityManyToMany result = CommonAccessMapper.convertToTargetEntityManyToMany(targetEntityManyToManyDao, sourceEntityManyToOne);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityManyToMany, result, "Wrong result");
+        assertEquals(result, sourceEntityManyToOne.getManyToOneRef(), "Wrong first entry of ManyToOneRe");
+    }
+
 
     @Test
     public void testConvertToSourceEntityFilter() {
@@ -271,6 +424,27 @@ public class CommonAccessMapperTest {
     }
 
     @Test
+    public void testConvertToTargetEntityFilter() {
+        setUpFilter();
+        TargetEntityFilter result = CommonAccessMapper.convertToTargetEntityFilter(targetEntityFilterDaoA);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityFilterA, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityFilterWithParent() {
+        setUpFilter();
+        sourceEntityFilter.getOneToManyFilterA().remove(targetEntityFilterA);
+        TargetEntityFilter result = CommonAccessMapper.convertToTargetEntityFilter(targetEntityFilterDaoA, sourceEntityFilter);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityFilterA, result, "Wrong result");
+        assertEquals(1, sourceEntityFilter.getOneToManyFilterA().size(), "Wrong number of OneToManyFilterA");
+        assertEquals(targetEntityFilterA, getFirstEntry(sourceEntityFilter.getOneToManyFilterA()), "Wrong first entry of OneToManyFilterA");
+    }
+
+    @Test
     public void testConvertToSourceEntityFilterDao() {
         setUpFilter();
         SourceEntityFilterDao result = CommonAccessMapper.convertToSourceEntityFilterDao(sourceEntityFilter, true);
@@ -280,6 +454,27 @@ public class CommonAccessMapperTest {
         assertEquals(sourceEntityFilterDao.getAggTargetEntityFilter().size(), result.getAggTargetEntityFilter().size(), "Wrong number of AggTargetEntityFilter");
         assertTrue(result.getAggTargetEntityFilter().contains(targetEntityFilterDaoA), "AggTargetEntityFilter must contains targetEntityFilterDaoA");
         assertTrue(result.getAggTargetEntityFilter().contains(targetEntityFilterDaoB), "AggTargetEntityFilter must contains targetEntityFilterDaoB");
+    }
+
+    @Test
+    public void testConvertToTargetEntityFilterDao() {
+        setUpFilter();
+        TargetEntityFilterDao result = CommonAccessMapper.convertToTargetEntityFilterDao(targetEntityFilterA);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityFilterDaoA, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityFilterDaoWithParent() {
+        setUpFilter();
+        sourceEntityFilterDao.getAggTargetEntityFilter().remove(targetEntityFilterDaoA);
+        TargetEntityFilterDao result = CommonAccessMapper.convertToTargetEntityFilterDao(targetEntityFilterA, sourceEntityFilterDao);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityFilterDaoA, result, "Wrong result");
+        assertEquals(2, sourceEntityFilterDao.getAggTargetEntityFilter().size(), "Wrong number of AggTargetEntityFilter");
+        assertTrue(sourceEntityFilterDao.getAggTargetEntityFilter().contains(result), "AggTargetEntityFilter must contains result");
     }
 
     @Test
@@ -296,6 +491,27 @@ public class CommonAccessMapperTest {
     }
 
     @Test
+    public void testConvertToTargetEntityFilterNotAtTarget() {
+        setUpFilterNotAtTarget();
+        TargetEntityFilterNotAtTarget result = CommonAccessMapper.convertToTargetEntityFilterNotAtTarget(targetEntityFilterNotAtTargetDaoA);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityFilterNotAtTargetA, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityFilterNotAtTargetWithParent() {
+        setUpFilterNotAtTarget();
+        sourceEntityFilterNotAtTarget.removeOneToManyFilterA(targetEntityFilterNotAtTargetA);
+        TargetEntityFilterNotAtTarget result = CommonAccessMapper.convertToTargetEntityFilterNotAtTarget(targetEntityFilterNotAtTargetDaoA, sourceEntityFilterNotAtTarget, AnyEnumType.ENUM_VALUE_A);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityFilterNotAtTargetA, result, "Wrong result");
+        assertEquals(1, sourceEntityFilterNotAtTarget.getOneToManyFilterA().size(), "Wrong number of OneToManyFilterA");
+        assertEquals(result, getFirstEntry(sourceEntityFilterNotAtTarget.getOneToManyFilterA()), "Wrong first entry of OneToManyFilterA");
+    }
+
+    @Test
     public void testConvertToSourceEntityFilterNotAtTargetDao() {
         setUpFilterNotAtTarget();
         SourceEntityFilterNotAtTargetDao result = CommonAccessMapper.convertToSourceEntityFilterNotAtTargetDao(sourceEntityFilterNotAtTarget, true);
@@ -305,6 +521,27 @@ public class CommonAccessMapperTest {
         assertEquals(sourceEntityFilterNotAtTargetDao.getAggTargetEntityFilterNotAtTarget().size(), result.getAggTargetEntityFilterNotAtTarget().size(), "Wrong number of AggTargetEntityFilterNotAtTarget");
         assertTrue(result.getAggTargetEntityFilterNotAtTarget().contains(sourceTargetConnectionFilterDaoA), "AggTargetEntityFilterNotAtTarget must contains sourceTargetConnectionFilterDaoA");
         assertTrue(result.getAggTargetEntityFilterNotAtTarget().contains(sourceTargetConnectionFilterDaoB), "AggTargetEntityFilterNotAtTarget must contains sourceTargetConnectionFilterDaoB");
+    }
+
+    @Test
+    public void testConvertToTargetEntityFilterNotAtTargetDao() {
+        setUpFilterNotAtTarget();
+        TargetEntityFilterNotAtTargetDao result = CommonAccessMapper.convertToTargetEntityFilterNotAtTargetDao(targetEntityFilterNotAtTargetA);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityFilterNotAtTargetDaoA, result, "Wrong result");
+    }
+
+    @Test
+    public void testConvertToTargetEntityFilterNotAtTargetDaoWithParent() {
+        setUpFilterNotAtTarget();
+        sourceEntityFilterNotAtTargetDao.getAggTargetEntityFilterNotAtTarget().clear();
+        TargetEntityFilterNotAtTargetDao result = CommonAccessMapper.convertToTargetEntityFilterNotAtTargetDao(targetEntityFilterNotAtTargetA, sourceEntityFilterNotAtTargetDao, AnyEnumType.ENUM_VALUE_A);
+
+        assertNotNull(result, "There should be any result");
+        assertEquals(targetEntityFilterNotAtTargetDaoA, result, "Wrong result");
+        assertEquals(1, sourceEntityFilterNotAtTargetDao.getAggTargetEntityFilterNotAtTarget().size(), "Wrong number of AggTargetEntityFilterNotAtTarget");
+        assertTrue(sourceEntityFilterNotAtTargetDao.getAggTargetEntityFilterNotAtTarget().contains(sourceTargetConnectionFilterDaoA), "AggTargetEntityFilterNotAtTarget must contains result");
     }
 
     private <T> T getFirstEntry(Collection<T> collection) {
