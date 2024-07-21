@@ -41,7 +41,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        artifacts: [layer-generator, utility, sourcecode-generator, extension-annotation, base-layer-generator, generator-annotation, generator-plugin, sample, util-sample, plugin-sample, annotation-sample, version-sample]
+        artifacts: [layer-generator, utility, sourcecode-generator, extension-annotation, base-layer-generator, generator-annotation, generator-plugin, sample, util-sample, plugin-sample, annotation-sample, entity-sample, grouping-sample, field-sample, reference-sample, extension-sample, version-sample]
     runs-on: ubuntu-latest
     steps:
     - name: delete previous versions of ${{ matrix.artifacts }}
