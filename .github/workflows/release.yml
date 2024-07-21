@@ -35,8 +35,25 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
 
+  clean-packages:
+    needs: build
+    strategy:
+      matrix:
+        artifacts: [layer-generator, utility, sourcecode-generator, extension-annotation, base-layer-generator, generator-annotation, generator-plugin, sample, util-sample, plugin-sample, annotation-sample, entity-sample, grouping-sample, field-sample, reference-sample, extension-sample, version-sample]
+    runs-on: ubuntu-latest
+    steps:
+      - name: delete previous versions of ${{ matrix.artifacts }}
+        uses: Ma-Vin/packages-action@v1.1.1
+        with:
+          github_token: ${{ secrets.LAYER_GITHUB_PACKAGES_PAT }}
+          dry_run: false
+          github_user: Ma-Vin
+          package_type: maven
+          package_name: com.github.ma_vin.util.layer_generator.${{ matrix.artifacts }}
+          version_name_to_delete: 2.0.0
+
   deploy:
-    needs: [build]
+    needs: [build, clean-packages]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout layerGenerator
