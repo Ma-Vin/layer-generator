@@ -15,6 +15,9 @@ public class Parameter implements IComparableWithText<Parameter> {
         return String.format("%s %s", parameterType, parameterName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Parameter o) {

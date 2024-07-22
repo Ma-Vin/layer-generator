@@ -18,6 +18,9 @@ public class FieldCompleter extends AbstractCompleter {
         super("field owner and filter", 5, logger);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean complete() {
         return completeEntityIterator(this::completeFieldOwner) && completeEntityIterator(this::completeFilterFields);

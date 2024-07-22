@@ -127,6 +127,9 @@ public class DomainCreator extends AbstractObjectCreator {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addReference(Clazz clazz, String packageName, Reference reference, List<String> attributeNames) {
         String childClassName = reference.getTargetEntity();

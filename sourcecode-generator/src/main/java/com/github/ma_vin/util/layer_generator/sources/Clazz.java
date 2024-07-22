@@ -42,6 +42,9 @@ public class Clazz extends AbstractGenerateLines implements IFileRepresentation,
         isInner = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> generate() {
         removeImportsAtSamePackage();
@@ -139,6 +142,9 @@ public class Clazz extends AbstractGenerateLines implements IFileRepresentation,
         staticImports.removeAll(staticToRemove);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Clazz o) {
@@ -209,11 +215,17 @@ public class Clazz extends AbstractGenerateLines implements IFileRepresentation,
         setDescription(new JavaDoc(String.format(description, args)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getFilename() {
         return className + ".java";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getObjectName() {
         return className;

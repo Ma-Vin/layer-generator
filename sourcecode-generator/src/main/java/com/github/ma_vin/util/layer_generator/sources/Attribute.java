@@ -28,6 +28,9 @@ public class Attribute extends AbstractGenerateLines implements Comparable<Attri
         this.attributeType = attributeType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> generate() {
         List<String> result = new ArrayList<>();
@@ -52,6 +55,9 @@ public class Attribute extends AbstractGenerateLines implements Comparable<Attri
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Attribute o) {

@@ -16,6 +16,9 @@ import java.util.*;
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 @Log4j2
 public class ObjectFactoryBuilder extends AbstractFactoryBuilder {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Map<Class<?>, Set<TypeElement>> annotatedClasses = createAnnotatedClassesMap(annotations, roundEnv);
@@ -36,6 +39,9 @@ public class ObjectFactoryBuilder extends AbstractFactoryBuilder {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Map<Class<?>, Set<TypeElement>> createDefaultAnnotatedClassesMap() {
         Map<Class<?>, Set<TypeElement>> annotatedClasses = new HashMap<>();
@@ -51,6 +57,9 @@ public class ObjectFactoryBuilder extends AbstractFactoryBuilder {
         return annotatedClasses;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Map<String, Class<?>> getNameToClassMap() {
         Map<String, Class<?>> nameToClass = new HashMap<>();

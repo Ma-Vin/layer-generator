@@ -15,6 +15,9 @@ public class Constructor extends Method {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getBaseDeclaration() {
         return String.format("%s %s(", qualifier.getText(), methodName);

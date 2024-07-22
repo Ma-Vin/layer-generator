@@ -22,6 +22,9 @@ public class Generic implements IComparableWithText<Generic> {
         return extension != null ? String.format("%s extends %s", genericName, extension) : genericName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Generic o) {

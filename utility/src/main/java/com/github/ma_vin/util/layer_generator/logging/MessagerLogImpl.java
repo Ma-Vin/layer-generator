@@ -22,11 +22,17 @@ public class MessagerLogImpl implements ILogWrapper {
         this.logLevel = logLevel;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isDebugEnabled() {
         return logLevel == Diagnostic.Kind.OTHER;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void debug(String msg) {
         if (!isDebugEnabled()) {
@@ -35,6 +41,9 @@ public class MessagerLogImpl implements ILogWrapper {
         messager.printMessage(Diagnostic.Kind.OTHER, msg);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void debug(String msg, Throwable throwable) {
         if (!isDebugEnabled()) {
@@ -44,6 +53,9 @@ public class MessagerLogImpl implements ILogWrapper {
         messager.printMessage(Diagnostic.Kind.OTHER, throwable.getMessage());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void debug(Throwable throwable) {
         if (!isDebugEnabled()) {
@@ -52,11 +64,17 @@ public class MessagerLogImpl implements ILogWrapper {
         messager.printMessage(Diagnostic.Kind.OTHER, throwable.getMessage());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isInfoEnabled() {
         return isDebugEnabled() || logLevel == Diagnostic.Kind.NOTE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void info(String msg) {
         if (!isInfoEnabled()) {
@@ -65,6 +83,9 @@ public class MessagerLogImpl implements ILogWrapper {
         messager.printMessage(Diagnostic.Kind.NOTE, msg);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void info(String msg, Throwable throwable) {
         if (!isInfoEnabled()) {
@@ -74,6 +95,9 @@ public class MessagerLogImpl implements ILogWrapper {
         messager.printMessage(Diagnostic.Kind.NOTE, throwable.getMessage());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void info(Throwable throwable) {
         if (!isInfoEnabled()) {
@@ -82,11 +106,17 @@ public class MessagerLogImpl implements ILogWrapper {
         messager.printMessage(Diagnostic.Kind.NOTE, throwable.getMessage());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isWarnEnabled() {
         return isInfoEnabled() || logLevel == Diagnostic.Kind.WARNING;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void warn(String msg) {
         if (!isWarnEnabled()) {
@@ -95,6 +125,9 @@ public class MessagerLogImpl implements ILogWrapper {
         messager.printMessage(Diagnostic.Kind.WARNING, msg);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void warn(String msg, Throwable throwable) {
         if (!isWarnEnabled()) {
@@ -104,6 +137,9 @@ public class MessagerLogImpl implements ILogWrapper {
         messager.printMessage(Diagnostic.Kind.WARNING, throwable.getMessage());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void warn(Throwable throwable) {
         if (!isWarnEnabled()) {
@@ -112,6 +148,9 @@ public class MessagerLogImpl implements ILogWrapper {
         messager.printMessage(Diagnostic.Kind.WARNING, throwable.getMessage());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isErrorEnabled() {
         return isWarnEnabled() || logLevel == Diagnostic.Kind.ERROR;

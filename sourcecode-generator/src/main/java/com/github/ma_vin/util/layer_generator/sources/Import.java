@@ -15,6 +15,9 @@ public class Import extends AbstractGenerateLines implements Comparable<Import> 
     String importedClass;
     boolean isStatic;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> generate() {
         List<String> result = new ArrayList<>();
@@ -24,6 +27,9 @@ public class Import extends AbstractGenerateLines implements Comparable<Import> 
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Import o) {

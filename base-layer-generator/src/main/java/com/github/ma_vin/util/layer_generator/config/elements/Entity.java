@@ -204,6 +204,9 @@ public class Entity implements IConfigLog {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSimpleLogName() {
         return getBaseName();

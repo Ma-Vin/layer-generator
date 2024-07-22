@@ -17,6 +17,9 @@ public class ReferenceCompleter extends AbstractCompleter {
         super("references", 3, logger);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean complete() {
         return completeEntityIterator(this::completeReferencesOfEntities);

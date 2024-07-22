@@ -11,6 +11,9 @@ public class IdGeneratorCompleter extends AbstractCompleter {
         super("id generator", 2, logger);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean complete() {
         if ((config.getIdGeneratorPackage() != null && config.getIdGeneratorClass() == null)

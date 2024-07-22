@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import jakarta.xml.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -35,6 +36,9 @@ public class Field extends AbstractBasicField {
     @XmlTransient
     private Entity parentEntity;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isValid(List<String> messages) {
         return super.isValid(messages)

@@ -36,6 +36,9 @@ public class VersionReference extends AbstractBasicReference {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isValid(List<String> messages) {
         return super.isValid(messages)

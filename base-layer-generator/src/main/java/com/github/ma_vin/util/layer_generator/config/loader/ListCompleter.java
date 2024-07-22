@@ -18,6 +18,9 @@ public class ListCompleter extends AbstractCompleter {
         super("null list removing", 1, logger);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean complete() {
         if (config.getEntities() == null) {

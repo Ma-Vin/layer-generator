@@ -66,6 +66,9 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         parameters.add(new Parameter(parameterType, parameterName));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> generate() {
         List<String> result = new ArrayList<>();
@@ -107,6 +110,9 @@ public class Method extends AbstractGenerateLines implements Comparable<Method> 
         return isStatic ? " static" : "";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Method o) {

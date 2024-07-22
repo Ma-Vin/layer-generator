@@ -133,6 +133,9 @@ public class DtoCreator extends AbstractObjectCreator {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addReference(Clazz clazz, String packageName, Reference reference, List<String> attributeNames) {
         if (reference.isList()) {

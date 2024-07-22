@@ -37,6 +37,9 @@ public class Grouping implements IConfigLog {
                 && (entities == null || entities.stream().allMatch(e -> e.isValid(messages)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSimpleLogName() {
         return groupingPackage;

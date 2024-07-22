@@ -5,6 +5,7 @@ import com.github.ma_vin.util.layer_generator.config.elements.Entity;
 import com.github.ma_vin.util.layer_generator.config.elements.Models;
 import com.github.ma_vin.util.layer_generator.config.elements.fields.Field;
 import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,9 @@ public class EntityCompleter extends AbstractCompleter {
         super("entities", 4, logger);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean complete() {
         config.getGroupings().forEach(g -> g.getEntities().forEach(e -> e.setGrouping(g)));

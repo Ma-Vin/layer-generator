@@ -19,6 +19,9 @@ public class IndicesCompleter extends AbstractCompleter {
         super("indices", 6, logger);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean complete() {
         return completeEntityIterator(this::completeIndices);

@@ -48,6 +48,9 @@ public class GeneratorPlugin extends AbstractMojo {
     private CommonGenerator commonGenerator = new CommonGenerator();
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute() throws MojoExecutionException {
         if (skip) {

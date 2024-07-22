@@ -57,6 +57,9 @@ public class Interface extends AbstractGenerateLines implements IFileRepresentat
         addMethodDeclaration(toAdd);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> generate() {
         List<String> result = new ArrayList<>();
@@ -123,17 +126,26 @@ public class Interface extends AbstractGenerateLines implements IFileRepresentat
         setDescription(new JavaDoc(String.format(description, args)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Interface o) {
         return interfaceName.compareTo(o.interfaceName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getFilename() {
         return interfaceName + ".java";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getObjectName() {
         return interfaceName;
@@ -156,6 +168,9 @@ public class Interface extends AbstractGenerateLines implements IFileRepresentat
             this.methodType = methodType;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         @SuppressWarnings("java:S1210")
         public int compareTo(MethodDeclaration o) {

@@ -25,6 +25,9 @@ import java.util.Set;
 @SupportedAnnotationTypes("com.github.ma_vin.util.layer_generator.annotations.LayerGenerator")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class LayerGeneratorProcessor extends AbstractProcessor {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         boolean result = true;

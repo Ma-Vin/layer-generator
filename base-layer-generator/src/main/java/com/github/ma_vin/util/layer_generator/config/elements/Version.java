@@ -244,6 +244,9 @@ public class Version implements IConfigLog {
                 .findFirst();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> getFieldNamesToLogComplete() {
         return Collections.singletonList("versionEntity");
@@ -270,7 +273,7 @@ public class Version implements IConfigLog {
     }
 
     // needed by jaxb2-maven-plugin:schemagen generated classes - it is not compatible with lombok
-    public Entity getParentEntity(){
+    public Entity getParentEntity() {
         return parentEntity;
     }
 }

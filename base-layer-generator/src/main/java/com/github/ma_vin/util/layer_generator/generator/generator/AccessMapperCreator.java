@@ -430,11 +430,17 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         return String.format(" %s.%s,", reference.getRealFilterField().getType(), reference.getFilterFieldValue());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getMapperName(String groupingName) {
         return getMapperName(MAPPER_TYPE_NAME, groupingName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParameterOfRelevantSingleModelValuesText(Entity entity) {
         StringBuilder sb = new StringBuilder();
@@ -446,6 +452,9 @@ public class AccessMapperCreator extends AbstractMapperCreator {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParameterOfParentReferencesText(Reference referenceToParent) {
         if (!referenceToParent.isConnectionFiltering()) {

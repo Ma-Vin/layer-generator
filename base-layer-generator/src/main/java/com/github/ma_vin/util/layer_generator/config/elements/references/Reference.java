@@ -64,6 +64,9 @@ public class Reference extends AbstractBasicReference {
      */
     private NonOwnerFilterField nonOwnerFilterField;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isValid(List<String> messages) {
         return super.isValid(messages)
@@ -119,7 +122,7 @@ public class Reference extends AbstractBasicReference {
         result.isList = isList();
         result.isAggregated = isAggregated();
         result.isReverse = isReverse();
-        result.nonOwnerFilterField =getNonOwnerFilterField();
+        result.nonOwnerFilterField = getNonOwnerFilterField();
 
         return result;
     }

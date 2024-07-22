@@ -33,7 +33,7 @@ public class JavaDoc extends AbstractGenerateLines {
     }
 
     public void addLine(String commentLine) {
-        if(commentLine==null){
+        if (commentLine == null) {
             return;
         }
         commentLines.addAll(splitLine(commentLine, " ", JAVA_DOC_MAX_LENGTH));
@@ -43,6 +43,9 @@ public class JavaDoc extends AbstractGenerateLines {
         addLine(String.format(commentLine, args));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> generate() {
         List<String> result = new ArrayList<>();

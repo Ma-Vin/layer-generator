@@ -19,6 +19,9 @@ public class VersionCompleter extends AbstractCompleter {
         super("versions", 7, logger);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean complete() {
         if (!completeEntityIterator(this::completeVersions)) {

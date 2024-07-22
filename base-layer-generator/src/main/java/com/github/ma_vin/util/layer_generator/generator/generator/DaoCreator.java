@@ -148,6 +148,9 @@ public class DaoCreator extends AbstractObjectCreator {
         return columnList.substring(0, columnList.length() - 2);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addAttributes(Entity entity, Clazz daoClazz, Models actualModel) {
         if (entity.hasNoParent()) {
@@ -164,6 +167,9 @@ public class DaoCreator extends AbstractObjectCreator {
         addAttributes(entity, daoClazz, actualModel, "Column");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Attribute createAttribute(Field field, String... annotations) {
         Attribute attribute = super.createAttribute(field, annotations);
@@ -210,11 +216,17 @@ public class DaoCreator extends AbstractObjectCreator {
                 || (field.getDaoInfo() != null && Boolean.FALSE.equals(field.getDaoInfo().getNullable())));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addReferences(Entity entity, Clazz clazz, String packageName, ModelValidator modelValidator) {
         throw new NotSupportedMethodException("Method addReferences(Entity entity, Clazz clazz, String packageName) should not be used in context data access object");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addReference(Clazz clazz, String packageName, Reference reference, List<String> attributeNames) {
         throw new NotSupportedMethodException("Method addReferenceClazz clazz, String packageName, Reference reference, List<String> attributeNames) should not be used in context data access object");

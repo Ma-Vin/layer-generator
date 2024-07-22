@@ -34,6 +34,9 @@ public class Annotation extends AbstractGenerateLines implements Comparable<Anno
         this(annotationClass.getSimpleName(), paraName, paraValue);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<String> generate() {
         Collections.sort(parameters);
@@ -62,6 +65,9 @@ public class Annotation extends AbstractGenerateLines implements Comparable<Anno
         addParameterArray(paraName, paraValues.toArray(String[]::new));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("java:S1210")
     public int compareTo(Annotation o) {
@@ -102,6 +108,9 @@ public class Annotation extends AbstractGenerateLines implements Comparable<Anno
             return sb.toString();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         @SuppressWarnings("java:S1210")
         public int compareTo(AttributeValue o) {

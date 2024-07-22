@@ -127,16 +127,25 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getMapperName(String groupingName) {
         return getMapperName(MAPPER_TYPE_NAME, groupingName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParameterOfRelevantSingleModelValuesText(Entity entity) {
         return "";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String getParameterOfParentReferencesText(Reference referenceToParent) {
         return "";
@@ -152,6 +161,9 @@ public class TransportMapperCreator extends AbstractMapperCreator {
         return getConvertMethodName(entity, DTO_POSTFIX);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean hasIncludeChildrenParameter(Entity entity, EntityRelevantChecker relevantChecker) {
         return false;
