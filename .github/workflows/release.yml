@@ -31,7 +31,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.APE_DEPENDENCY_BUILD_PAT }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn clean -B install org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P sonar-cloud --file pom.xml
+      run: mvn clean -B install org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -P sonar-cloud,withSample --file pom.xml
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
 

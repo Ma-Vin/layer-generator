@@ -13,7 +13,6 @@
         <module>base-layer-generator</module>
         <module>generator-annotation</module>
         <module>generator-plugin</module>
-        <module>sample</module>
     </modules>
 
     <name>Util Layer Generator</name>
@@ -108,6 +107,12 @@
                 <skip.test>true</skip.test>
                 <skip.it>true</skip.it>
             </properties>
+        </profile>
+        <profile>
+            <id>withSample</id>
+            <modules>
+                <module>sample</module>
+            </modules>
         </profile>
     </profiles>
 
