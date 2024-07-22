@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Generated class which provides methods to convert a data access to a domain object of sub package <i>null<i> and the other way around
+ * Generated class which provides methods to convert a data access to a domain object of sub package <i>null</i> and the other way around
  */
 @BaseAccessMapper
 public class CommonAccessMapper extends AbstractAccessMapper {

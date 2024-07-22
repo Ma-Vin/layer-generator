@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Generated class which provides methods to convert a data transport to a domain object of sub package <i>null<i> and the other way around
+ * Generated class which provides methods to convert a data transport to a domain object of sub package <i>null</i> and the other way around
  */
 @BaseTransportMapper
 public class CommonTransportMapper extends AbstractTransportMapper {

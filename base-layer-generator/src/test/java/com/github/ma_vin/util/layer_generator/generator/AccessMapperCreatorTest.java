@@ -173,7 +173,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -328,7 +328,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -487,7 +487,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -647,7 +647,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -806,7 +806,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -1008,7 +1008,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -1546,7 +1546,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -1731,7 +1731,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -1957,7 +1957,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -2236,7 +2236,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -2482,7 +2482,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -2735,7 +2735,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -3019,7 +3019,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -3297,7 +3297,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -3473,7 +3473,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -3647,7 +3647,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -3830,7 +3830,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -4006,7 +4006,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>group.subgroup<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>group.subgroup</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupSubgroupAccessMapper extends AbstractAccessMapper {");
@@ -4263,7 +4263,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -4448,7 +4448,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -4638,7 +4638,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -4837,7 +4837,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import lombok.extern.log4j.Log4j2;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("@Log4j2");
@@ -5082,7 +5082,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import lombok.extern.log4j.Log4j2;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("@Log4j2");
@@ -5454,7 +5454,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -5653,7 +5653,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import lombok.extern.log4j.Log4j2;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("@Log4j2");
@@ -5903,7 +5903,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("public class GroupingAccessMapper extends AbstractAccessMapper {");
@@ -6122,7 +6122,7 @@ public class AccessMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import lombok.extern.log4j.Log4j2;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data access to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseAccessMapper");
         expected.add("@Log4j2");

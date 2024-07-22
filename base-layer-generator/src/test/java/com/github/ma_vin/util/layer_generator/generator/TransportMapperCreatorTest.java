@@ -252,7 +252,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -387,7 +387,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -527,7 +527,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -667,7 +667,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -805,7 +805,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -944,7 +944,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -1087,7 +1087,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -1285,7 +1285,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -1535,7 +1535,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -1676,7 +1676,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -1819,7 +1819,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -1959,7 +1959,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -2100,7 +2100,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -2335,7 +2335,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -2617,7 +2617,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -2720,7 +2720,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -2813,7 +2813,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -3049,7 +3049,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -3287,7 +3287,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");
@@ -3539,7 +3539,7 @@ public class TransportMapperCreatorTest extends AbstractCreatorTest {
         expected.add("import java.util.Map;");
         expected.add("");
         expected.add("/**");
-        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping<i> and the other way around");
+        expected.add(" * Generated class which provides methods to convert a data transport to a domain object of sub package <i>grouping</i> and the other way around");
         expected.add(" */");
         expected.add("@BaseTransportMapper");
         expected.add("public class GroupingTransportMapper extends AbstractTransportMapper {");

@@ -36,7 +36,7 @@ import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * Generated class which provides methods to convert a data access to a domain object of sub package <i>null<i> and the other way around
+ * Generated class which provides methods to convert a data access to a domain object of sub package <i>null</i> and the other way around
  */
 @BaseAccessMapper
 @Log4j2

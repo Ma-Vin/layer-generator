@@ -87,7 +87,7 @@ public class AccessMapperCreator extends AbstractMapperCreator {
 
         mapperClass.addAnnotation(BaseAccessMapper.class.getSimpleName());
 
-        mapperClass.setDescription("Generated class which provides methods to convert a data access to a domain object of sub package <i>%s<i> and the other way around"
+        mapperClass.setDescription("Generated class which provides methods to convert a data access to a domain object of sub package <i>%s</i> and the other way around"
                 , groupingName);
 
         createGetInstance(mapperClass, MapperType.ACCESS);
