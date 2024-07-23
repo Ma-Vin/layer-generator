@@ -11,6 +11,9 @@ import javax.lang.model.element.TypeElement;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Class which generates the object factories for model objects
+ */
 @SupportedAnnotationTypes(
         "com.github.ma_vin.util.layer_generator.annotations.model.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)

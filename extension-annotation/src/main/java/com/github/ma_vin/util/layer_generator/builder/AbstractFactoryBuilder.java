@@ -20,6 +20,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * class with common methods to generate an object factory.
+ */
 @Log4j2
 public abstract class AbstractFactoryBuilder extends AbstractProcessor {
 
@@ -121,6 +124,12 @@ public abstract class AbstractFactoryBuilder extends AbstractProcessor {
         return generateInformation;
     }
 
+    /**
+     * Determines the package name of a given full qualified name
+     *
+     * @param qualifiedName the full qualified name which contains the package name
+     * @return the package name
+     */
     protected static String getPackageNameFromQualified(String qualifiedName) {
         return qualifiedName.substring(0, qualifiedName.lastIndexOf("."));
     }
@@ -205,18 +214,22 @@ public abstract class AbstractFactoryBuilder extends AbstractProcessor {
      *
      * @param javaFileObject file to write at
      * @return created buffered writer
+     * @throws IOException if an I/O error occurred
      */
     protected BufferedWriter createBufferedWriter(JavaFileObject javaFileObject) throws IOException {
         return new BufferedWriter(javaFileObject.openWriter());
     }
 
-    @FunctionalInterface
-    protected interface ExtendedClassesGetter {
-        TypeElement getExtendedClass(TypeElement extendingClassTypeElement);
-    }
-
+    /**
+     * FunctionalInterface to get annotation value with the model package
+     */
     @FunctionalInterface
     protected interface ModelPackageGetter {
+        /**
+         * Getter of the model package
+         * @param extendedClassTypeElement the type element of an extending class
+         * @return the model package
+         */
         String getModelPackage(TypeElement extendedClassTypeElement);
     }
 }

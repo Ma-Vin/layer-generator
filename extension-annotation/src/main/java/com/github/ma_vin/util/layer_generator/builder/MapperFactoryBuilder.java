@@ -14,6 +14,10 @@ import javax.lang.model.element.TypeElement;
 import java.io.IOException;
 import java.util.*;
 
+
+/**
+ * Class which generates the mapper factories
+ */
 @SupportedAnnotationTypes(
         "com.github.ma_vin.util.layer_generator.annotations.mapper.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
