@@ -7,6 +7,9 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A representation of an import at a {@link Clazz}
+ */
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)

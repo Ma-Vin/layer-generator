@@ -17,10 +17,25 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class JavaDoc extends AbstractGenerateLines {
+    /**
+     * Maximal number of entries for each line
+     */
     public static final int JAVA_DOC_MAX_LENGTH = MAX_LENGTH - 3;
+    /**
+     * the parameter signal
+     */
     public static final String PARAM = "@param";
+    /**
+     * the return signal
+     */
     public static final String RETURN = "@return";
+    /**
+     * the throw signal
+     */
     public static final String THROWS = "@throws";
+    /**
+     * template of a line with signal element
+     */
     public static final String TAG_OR_FILLER_BEFORE_DESCRIPTION = " * %s %s";
 
     List<String> commentLines = new ArrayList<>();
@@ -28,10 +43,20 @@ public class JavaDoc extends AbstractGenerateLines {
     String returnDescription = null;
     List<PropertyDescription> throwDescriptions = new ArrayList<>();
 
+    /**
+     * Constructor
+     *
+     * @param comment the text of the java doc
+     */
     public JavaDoc(String comment) {
         addLine(comment);
     }
 
+    /**
+     * Adds a line to the text of the java doc
+     *
+     * @param commentLine line to add
+     */
     public void addLine(String commentLine) {
         if (commentLine == null) {
             return;
@@ -39,6 +64,12 @@ public class JavaDoc extends AbstractGenerateLines {
         commentLines.addAll(splitLine(commentLine, " ", JAVA_DOC_MAX_LENGTH));
     }
 
+    /**
+     * Adds a line to the text of the java doc
+     *
+     * @param commentLine template of a line to add
+     * @param args        arguments to set at template
+     */
     public void addLine(String commentLine, Object... args) {
         addLine(String.format(commentLine, args));
     }
@@ -64,22 +95,52 @@ public class JavaDoc extends AbstractGenerateLines {
         return result;
     }
 
+    /**
+     * adds a parameter description to this java doc
+     *
+     * @param parameter   name of the parameter
+     * @param description the description template
+     * @param args        arguments to set at template
+     */
     public void addParams(String parameter, String description, Object... args) {
         addParams(parameter, String.format(description, args));
     }
 
+    /**
+     * adds a parameter description to this java doc
+     *
+     * @param parameter   name of the parameter
+     * @param description the description
+     */
     public void addParams(String parameter, String description) {
         parameters.add(new PropertyDescription(parameter, description));
     }
 
+    /**
+     * Adds a throw description to this java doc
+     *
+     * @param exceptionClass the name of the class which might be thrown
+     * @param description    the description
+     */
     public void addThrows(String exceptionClass, String description) {
         throwDescriptions.add(new PropertyDescription(exceptionClass, description));
     }
 
+    /**
+     * Sets the description of the return
+     *
+     * @param returnDescription description of the return
+     */
     public void setReturnDescription(String returnDescription) {
         this.returnDescription = returnDescription;
     }
 
+    /**
+     * Sets the description of the return
+     *
+     * @param returnDescription template of description of the return
+     * @param args              arguments to set at template
+     */
     public void setReturnDescription(String returnDescription, Object... args) {
         setReturnDescription(String.format(returnDescription, args));
     }

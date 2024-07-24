@@ -32,11 +32,22 @@ public class Clazz extends AbstractGenerateLines implements IFileRepresentation,
     private boolean isInner;
     private boolean isAbstract;
 
+    /**
+     * Constructor
+     *
+     * @param packageName package of this class
+     * @param className   the simple name of the class
+     */
     public Clazz(String packageName, String className) {
         this.packageName = packageName;
         this.className = className;
     }
 
+    /**
+     * Constructor for an inner class
+     *
+     * @param className the simple name of the class
+     */
     public Clazz(String className) {
         this(null, className);
         isInner = true;
@@ -151,66 +162,148 @@ public class Clazz extends AbstractGenerateLines implements IFileRepresentation,
         return className.compareTo(o.className);
     }
 
+    /**
+     * Adds a constructor to this class
+     *
+     * @param constructor the constructor to add
+     */
     public void addConstructor(Constructor constructor) {
         constructors.add(constructor);
     }
 
+    /**
+     * Adds an attribute to this class
+     *
+     * @param attribute the attribute to add
+     */
     public void addAttribute(Attribute attribute) {
         attributes.add(attribute);
     }
 
+    /**
+     * Adds a method to this class
+     *
+     * @param method the method to add
+     */
     public void addMethod(Method method) {
         methods.add(method);
     }
 
+    /**
+     * Adds an annotation to this class
+     *
+     * @param annotation the annotation to add
+     */
     public void addAnnotation(Annotation annotation) {
         annotations.add(annotation);
     }
 
+    /**
+     * Adds an annotation to this class
+     *
+     * @param annotation the annotation name to add
+     */
     public void addAnnotation(String annotation) {
         annotations.add(new Annotation(annotation));
     }
 
+    /**
+     * Adds an annotation to this class
+     *
+     * @param annotation the class of annotation to add by its simple name
+     */
     public void addAnnotation(Class<?> annotation) {
         addAnnotation(annotation.getSimpleName());
     }
 
+    /**
+     * Adds a class to import to this class
+     *
+     * @param importedClass the class to add to imports
+     */
     public void addImport(String importedClass) {
         imports.add(new Import(importedClass, false));
     }
 
+    /**
+     * Adds a class to import static to this class
+     *
+     * @param importedClass the class to add to imports
+     */
     public void addStaticImport(String importedClass) {
         staticImports.add(new Import(importedClass, true));
     }
 
+    /**
+     * Adds a class as inner one to this class
+     *
+     * @param clazz the class to add
+     */
     public void addInnerClazz(Clazz clazz) {
         innerClasses.add(clazz);
     }
 
+    /**
+     * Adds an interface which is implemented by this class
+     *
+     * @param interfaceName the attribute to add
+     */
     public void addInterface(String interfaceName) {
         interfaces.add(interfaceName);
     }
 
+    /**
+     * Adds an inner interface to this class
+     *
+     * @param inter the interface to add
+     */
     public void addInnerInterface(Interface inter) {
         innerInterfaces.add(inter);
     }
 
+    /**
+     * Adds a generic to this class
+     *
+     * @param genericName the name of generic to add
+     */
     public void addGeneric(String genericName) {
         addGeneric(new Generic(genericName));
     }
 
+    /**
+     * Adds a generic to this class
+     *
+     * @param generic the generic to add
+     */
     public void addGeneric(Generic generic) {
         generics.add(generic);
     }
 
+    /**
+     * Getter of a defined annotation by name
+     *
+     * @param annotationName name of the annotation to get
+     * @return an optional the found annotation. {@link Optional#empty()} if not present
+     */
     public Optional<Annotation> getAnnotation(String annotationName) {
         return annotations.stream().filter(a -> a.getAnnotationName().equals(annotationName)).findFirst();
     }
 
+    /**
+     * Sets a description to this class
+     *
+     * @param description the description to set
+     */
     public void setDescription(JavaDoc description) {
         this.description = description;
     }
 
+    /**
+     * Sets a description to this class
+     *
+     * @param description template of description to set
+     * @param args        arguments to set at template
+     */
     public void setDescription(String description, Object... args) {
         setDescription(new JavaDoc(String.format(description, args)));
     }

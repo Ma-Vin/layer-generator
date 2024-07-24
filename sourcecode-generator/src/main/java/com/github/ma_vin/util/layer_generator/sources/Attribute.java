@@ -23,6 +23,11 @@ public class Attribute extends AbstractGenerateLines implements Comparable<Attri
     private String attributeType;
     private String initValue = null;
 
+    /**
+     * Constructor
+     * @param attributeName name of the attribute
+     * @param attributeType type of the attribute
+     */
     public Attribute(String attributeName, String attributeType) {
         this.attributeName = attributeName;
         this.attributeType = attributeType;
@@ -76,24 +81,53 @@ public class Attribute extends AbstractGenerateLines implements Comparable<Attri
         return attributeName.compareTo(o.attributeName);
     }
 
+    /**
+     * Adds an annotation without parameters
+     *
+     * @param annotationName name of the annotation
+     */
     public void addAnnotation(String annotationName) {
         annotations.add(new Annotation(annotationName));
     }
 
+    /**
+     * Adds an annotation
+     *
+     * @param annotationName name of the annotation
+     * @param parameterName  name of the annotation parameter
+     * @param parameterValue value of the annotation parameter
+     */
     public void addAnnotation(String annotationName, String parameterName, String parameterValue) {
         Annotation annotation = new Annotation(annotationName);
         annotation.addParameter(parameterName, parameterValue);
         annotations.add(annotation);
     }
 
+    /**
+     * Adds an annotation without parameters
+     *
+     * @param annotationClass classes of an annotation, whose simple name ist used for {@code annotationName}
+     */
     public void addAnnotation(Class<?> annotationClass) {
         addAnnotation(annotationClass.getSimpleName());
     }
 
+    /**
+     * Adds an annotation
+     *
+     * @param annotationClass classes of an annotation, whose simple name ist used for {@code annotationName}
+     * @param parameterName   name of the annotation parameter
+     * @param parameterValue  value of the annotation parameter
+     */
     public void addAnnotation(Class<?> annotationClass, String parameterName, String parameterValue) {
         addAnnotation(annotationClass.getSimpleName(), parameterName, parameterValue);
     }
 
+    /**
+     * Adds an annotation
+     *
+     * @param annotation the annotation to add
+     */
     public void addAnnotation(Annotation annotation) {
         annotations.add(annotation);
     }
