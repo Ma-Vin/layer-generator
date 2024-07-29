@@ -15,6 +15,9 @@ There exists four test resources which define an equal model:
 - [exampleModel.yml](src/test/resources/references/config/exampleModel.yml)
 - [exampleModel.json](src/test/resources/references/config/exampleModel.json)
 
+:warning: `xml` format will be removed in future releases. Use preferred `yaml` instead :warning:
+This will be done because the plugin `jaxb2-maven-plugin` forces the explicit declaration of `getter` and `setter` instead of using `lombok` 
+
 ## Model definition
 
 The following description refers to the xml format because it contains nodes and attributes element types in contrast to

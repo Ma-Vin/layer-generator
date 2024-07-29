@@ -136,6 +136,7 @@ public class ConfigFileLoader {
      * @return An {@link Optional} of the parsed {@link Config}. {@link Optional#empty()} at any failure.
      */
     private Optional<Config> loadXml() {
+        logger.warn("xml format is deprecated and will be removed as accepted format at future releases. Use preferred yaml instead");
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Config.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
