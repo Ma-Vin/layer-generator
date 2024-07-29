@@ -28,6 +28,7 @@
     </modules>
 
     <properties>
+        <skip.javadoc>true</skip.javadoc>
         <model.file.baseName>exampleModel</model.file.baseName>
         <model.file.ending>yaml</model.file.ending>
         <model.generate.dto>true</model.generate.dto>

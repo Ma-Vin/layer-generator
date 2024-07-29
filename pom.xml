@@ -58,6 +58,7 @@
         <maven.plugin-resource.version>3.3.1</maven.plugin-resource.version>
         <maven.plugin-source.version>3.3.1</maven.plugin-source.version>
         <maven.plugin-jar.version>3.4.2</maven.plugin-jar.version>
+        <maven.plugin-javadoc.version>3.7.0</maven.plugin-javadoc.version>
         <maven.surefire.failsafe.version>3.3.0</maven.surefire.failsafe.version>
         <fasterxml.jackson.version>2.17.2</fasterxml.jackson.version>
         <jacoco.plugin.version>0.8.12</jacoco.plugin.version>
@@ -74,6 +75,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip.test>false</skip.test>
         <skip.it>false</skip.it>
+        <skip.javadoc>false</skip.javadoc>
         <sonar.search.port>9002</sonar.search.port>
         <sonar.sources>src/main</sonar.sources>
         <sonar.tests>src/test</sonar.tests>
@@ -320,6 +322,23 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven.plugin-javadoc.version}</version>
+                    <executions>
+                        <execution>
+                            <id>gen-java-doc</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <configuration>
+                                <skip>${skip.javadoc}</skip>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${maven.plugin-resource.version}</version>
                 </plugin>
@@ -431,6 +450,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
 
             <!-- testing -->
