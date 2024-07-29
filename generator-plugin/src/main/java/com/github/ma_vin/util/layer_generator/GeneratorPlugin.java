@@ -3,6 +3,7 @@ package com.github.ma_vin.util.layer_generator;
 import com.github.ma_vin.util.layer_generator.generator.generator.CommonGenerator;
 import com.github.ma_vin.util.layer_generator.logging.MavenLogImpl;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -11,6 +12,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Mojo(name = "generate-model", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 @Data
 public class GeneratorPlugin extends AbstractMojo {
