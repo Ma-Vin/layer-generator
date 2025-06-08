@@ -53,14 +53,6 @@ The usage of following elements is shown:
 
 ## Release features and changes
 
-### Main changes of version 2.0.0 compared to [v1.4](https://github.com/Ma-Vin/layer-generator/releases/tag/v1.4)
-* renaming/moving: 
-  * The GitHub project is renamed to `layer-generator`
-  * the groupId renamed to `com.github.ma_vin.util.layer_generator`
-  * the artifactId changed from `layer-generator-annotation` to `extension-annotation`
-  * the artifactId changed from `layer-generator-plugin` to `generator-plugin` and some elements are move into `base-layer-generator`
-  * the artifactId changed from `layer-generator-sources` to `sourcecode-generator`
-  * the artifactId changed from `layer-generator-sample` to `sample` and sub modules
-* accessibility with an annotation in addition to plugin configuration. See also `generator-annotation`
-* versioning of data transport objects. Can be used to provide a deprecated and an actual API
-* different types of configuration formats: yaml and json are added
+### Main changes of version 2.1.0 compared to [v2.0.0](https://github.com/Ma-Vin/layer-generator/releases/tag/v2.0.0)
+* upgrade from java 17 to 21
+* generate javadoc and add some descriptions
