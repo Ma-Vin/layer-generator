@@ -15,7 +15,7 @@ The plugin is configured as follows (derived from effective pom)
 <plugin>
     <groupId>com.github.ma_vin.util.layer_generator</groupId>
     <artifactId>generator-plugin</artifactId>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>2.1.0</version>
     <executions>
         <execution>
             <goals>
