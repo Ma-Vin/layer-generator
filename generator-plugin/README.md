@@ -1,5 +1,3 @@
-![Maven Workflow Action](https://github.com/Ma-Vin/layer-generator/actions/workflows/maven.yml/badge.svg)
-
 # Util Layer Generator Plugin
 
 A maven plugin generator to create domain model, data transport or data access objects.

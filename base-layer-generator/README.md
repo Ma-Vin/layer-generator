@@ -1,5 +1,3 @@
-![Maven Workflow Action](https://github.com/Ma-Vin/layer-generator/actions/workflows/maven.yml/badge.svg)
-
 # Base Layer Generator
 
 Code generator to create domain model, data transport or data access objects.

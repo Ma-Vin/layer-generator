@@ -1,5 +1,3 @@
-![Maven Workflow Action](https://github.com/Ma-Vin/layer-generator/actions/workflows/maven.yml/badge.svg)
-
 # Util Layer Generator Plugin Sample
 
 An example of using the maven plugin of the ***Util Layer Generator***
