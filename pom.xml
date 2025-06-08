@@ -87,7 +87,7 @@
         </sonar.junit.reportPaths>
         <sonar.language>java</sonar.language>
         <sonar.java.libraries>target</sonar.java.libraries>
-        <sonar.java.source>14</sonar.java.source>
+        <sonar.java.source>21</sonar.java.source>
         <sonar.test.exclusions>**/src/test/**/*</sonar.test.exclusions>
         <sonar.scm.provider>git</sonar.scm.provider>
         <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
