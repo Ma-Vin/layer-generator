@@ -23,7 +23,7 @@ import java.util.Set;
  * Processor which loads the model file defined by {@link LayerGenerator} and generates the corresponding sources
  */
 @SupportedAnnotationTypes("com.github.ma_vin.util.layer_generator.annotations.LayerGenerator")
-@SupportedSourceVersion(SourceVersion.RELEASE_17)
+@SupportedSourceVersion(SourceVersion.RELEASE_21)
 public class LayerGeneratorProcessor extends AbstractProcessor {
     /**
      * {@inheritDoc}

@@ -20,7 +20,7 @@ import java.util.*;
  */
 @SupportedAnnotationTypes(
         "com.github.ma_vin.util.layer_generator.annotations.mapper.*")
-@SupportedSourceVersion(SourceVersion.RELEASE_17)
+@SupportedSourceVersion(SourceVersion.RELEASE_21)
 @Log4j2
 public class MapperFactoryBuilder extends AbstractFactoryBuilder {
     /**

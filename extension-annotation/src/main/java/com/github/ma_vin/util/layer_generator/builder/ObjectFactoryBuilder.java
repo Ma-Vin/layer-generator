@@ -16,7 +16,7 @@ import java.util.*;
  */
 @SupportedAnnotationTypes(
         "com.github.ma_vin.util.layer_generator.annotations.model.*")
-@SupportedSourceVersion(SourceVersion.RELEASE_17)
+@SupportedSourceVersion(SourceVersion.RELEASE_21)
 @Log4j2
 public class ObjectFactoryBuilder extends AbstractFactoryBuilder {
     /**

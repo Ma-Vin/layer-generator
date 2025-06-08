@@ -46,8 +46,8 @@
     </distributionManagement>
 
     <properties>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
 
         <maven.plugin.version>3.11.0</maven.plugin.version>
         <maven.plugin-annotations.version>3.13.1</maven.plugin-annotations.version>
