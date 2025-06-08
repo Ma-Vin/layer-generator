@@ -50,7 +50,7 @@ jobs:
           github_user: Ma-Vin
           package_type: maven
           package_name: com.github.ma_vin.util.layer_generator.${{ matrix.artifacts }}
-          version_name_to_delete: 2.0.0
+          version_name_to_delete: 2.1.0
 
   deploy:
     needs: [build, clean-packages]
