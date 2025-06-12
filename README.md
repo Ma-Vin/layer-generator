@@ -53,6 +53,4 @@ The usage of following elements is shown:
 
 ## Release features and changes
 
-### Main changes of version 2.1.0 compared to [v2.0.0](https://github.com/Ma-Vin/layer-generator/releases/tag/v2.0.0)
-* upgrade from java 17 to 21
-* generate javadoc and add some descriptions
+### Main changes of version 2.2.0 compared to [v2.1.0](https://github.com/Ma-Vin/layer-generator/releases/tag/v2.1.0)

@@ -9,7 +9,7 @@ For basic usage add a plugin entry like
 ```
 <groupId>com.github.ma_vin.util.layer_generator</groupId>
 <artifactId>generator-plugin</artifactId>
-<version>2.1.0-SNAPSHOT</version>
+<version>2.2.0-SNAPSHOT</version>
 <executions>
     <execution>
         <goals>
