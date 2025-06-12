@@ -314,12 +314,12 @@ public class ConfigElementsUtil {
      * @throws IllegalAccessException if this Field object is enforcing Java language access control and the underlying field is inaccessible.
      */
     private static void logConfigInterfaceField(Object configElement, Field field, ILogWrapper logger, int indent) throws IllegalAccessException {
-        IConfigLog configLog = (IConfigLog) field.get(configElement);
-        if (configElement instanceof IConfigLog && ((IConfigLog) configElement).getFieldNamesToLogComplete().contains(field.getName())) {
+        IConfigLog fieldConfigLog = (IConfigLog) field.get(configElement);
+        if (configElement instanceof IConfigLog elementConfigLog && elementConfigLog.getFieldNamesToLogComplete().contains(field.getName())) {
             logger.debug(format("%s =", indent, field.getName()));
-            logConfigElement(configLog, logger, indent + 1);
+            logConfigElement(fieldConfigLog, logger, indent + 1);
         } else {
-            logger.debug(format("%s = %s", indent, field.getName(), configLog.getSimpleLogName()));
+            logger.debug(format("%s = %s", indent, field.getName(), fieldConfigLog.getSimpleLogName()));
         }
     }
 

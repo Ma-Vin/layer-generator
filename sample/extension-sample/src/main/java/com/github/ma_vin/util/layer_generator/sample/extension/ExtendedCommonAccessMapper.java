@@ -14,8 +14,8 @@ public class ExtendedCommonAccessMapper extends CommonAccessMapper {
     @Override
     protected void setToExtendEntityDaoValues(ToExtendEntity domain, ToExtendEntityDao dao) {
         super.setToExtendEntityDaoValues(domain, dao);
-        if (domain instanceof ExtendedEntity && dao instanceof ExtendedEntityDao) {
-            ((ExtendedEntityDao) dao).setAddedToDaoBigDecimal(((ExtendedEntity) domain).getAddedToDomainBigDecimal());
+        if (domain instanceof ExtendedEntity domainExtended && dao instanceof ExtendedEntityDao daoExtended) {
+            daoExtended.setAddedToDaoBigDecimal(domainExtended.getAddedToDomainBigDecimal());
         }
     }
 
@@ -25,8 +25,8 @@ public class ExtendedCommonAccessMapper extends CommonAccessMapper {
     @Override
     protected void setToExtendEntityValues(ToExtendEntityDao dao, ToExtendEntity domain) {
         super.setToExtendEntityValues(dao, domain);
-        if (dao instanceof ExtendedEntityDao && domain instanceof ExtendedEntity) {
-            ((ExtendedEntity) domain).setAddedToDomainBigDecimal(((ExtendedEntityDao) dao).getAddedToDaoBigDecimal());
+        if (dao instanceof ExtendedEntityDao daoExtended && domain instanceof ExtendedEntity domainExtended) {
+            domainExtended.setAddedToDomainBigDecimal(daoExtended.getAddedToDaoBigDecimal());
         }
     }
 }

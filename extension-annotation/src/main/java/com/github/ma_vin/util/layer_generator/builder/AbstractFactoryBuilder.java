@@ -41,8 +41,8 @@ public abstract class AbstractFactoryBuilder extends AbstractProcessor {
             Class<?> annotationClass = nameToClass.get(annotation.getSimpleName().toString());
             annotatedClasses.computeIfAbsent(annotationClass, k -> new HashSet<>());
             roundEnv.getElementsAnnotatedWith(annotation).forEach(e -> {
-                if (e instanceof TypeElement) {
-                    annotatedClasses.get(annotationClass).add((TypeElement) e);
+                if (e instanceof TypeElement typeElement) {
+                    annotatedClasses.get(annotationClass).add(typeElement);
                 }
             });
         }

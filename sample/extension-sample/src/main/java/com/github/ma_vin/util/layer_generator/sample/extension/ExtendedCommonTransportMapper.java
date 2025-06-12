@@ -14,8 +14,8 @@ public class ExtendedCommonTransportMapper extends CommonTransportMapper {
     @Override
     protected void setToExtendEntityDtoValues(ToExtendEntity domain, ToExtendEntityDto dto) {
         super.setToExtendEntityDtoValues(domain, dto);
-        if (domain instanceof ExtendedEntity && dto instanceof ExtendedEntityDto) {
-            ((ExtendedEntityDto) dto).setAddedToDtoBigDecimal(((ExtendedEntity) domain).getAddedToDomainBigDecimal());
+        if (domain instanceof ExtendedEntity domainExtended && dto instanceof ExtendedEntityDto dtoExtended) {
+            dtoExtended.setAddedToDtoBigDecimal(domainExtended.getAddedToDomainBigDecimal());
         }
     }
 
@@ -25,8 +25,8 @@ public class ExtendedCommonTransportMapper extends CommonTransportMapper {
     @Override
     protected void setToExtendEntityValues(ToExtendEntityDto dto, ToExtendEntity domain) {
         super.setToExtendEntityValues(dto, domain);
-        if (dto instanceof ExtendedEntityDto && domain instanceof ExtendedEntity) {
-            ((ExtendedEntity) domain).setAddedToDomainBigDecimal(((ExtendedEntityDto) dto).getAddedToDtoBigDecimal());
+        if (dto instanceof ExtendedEntityDto dtoExtended && domain instanceof ExtendedEntity domainExtended) {
+            domainExtended.setAddedToDomainBigDecimal(dtoExtended.getAddedToDtoBigDecimal());
         }
     }
 }
