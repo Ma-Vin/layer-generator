@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 /**
  * A representation of an interface
@@ -272,7 +271,7 @@ public class Interface extends AbstractGenerateLines implements IFileRepresentat
 
         private List<String> generate(int numOfTabs) {
             String tabsToAdd = getTabs(numOfTabs);
-            return generate().stream().map(s -> tabsToAdd + s).collect(Collectors.toList());
+            return generate().stream().map(s -> tabsToAdd + s).toList();
         }
 
         private List<String> generate() {

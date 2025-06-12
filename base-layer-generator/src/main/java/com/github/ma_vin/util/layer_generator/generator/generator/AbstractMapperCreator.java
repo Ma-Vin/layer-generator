@@ -18,10 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractMapperCreator extends AbstractCreator {
+public abstract class   AbstractMapperCreator extends AbstractCreator {
 
     public static final String INCLUDE_CHILDREN_PARAMETER = "includeChildren";
     public static final String CONVERT_TO_TEXT = "convertTo%s%s";
@@ -298,7 +297,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     protected List<Reference> getSingleReferences(Entity entity, EntityRelevantChecker entityChecker, ReferenceFilter referenceFilter) {
         return referenceFilter.filter(determineAllReferences(entity)).stream()
                 .filter(ref -> !ref.isList() && entityChecker.isRelevant(ref.getRealTargetEntity()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     protected boolean hasSingleRefWithChildren(List<Reference> relevantReferences, EntityRelevantChecker entityChecker) {
@@ -314,7 +313,7 @@ public abstract class AbstractMapperCreator extends AbstractCreator {
     protected List<Reference> getMultiReferences(Entity entity, EntityRelevantChecker entityChecker, ReferenceFilter referenceFilter) {
         return referenceFilter.filter(determineAllReferences(entity)).stream()
                 .filter(ref -> ref.isList() && entityChecker.isRelevant(ref.getRealTargetEntity()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

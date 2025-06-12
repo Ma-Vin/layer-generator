@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -154,7 +153,7 @@ public abstract class AbstractObjectCreator extends AbstractCreator {
 
         List<String> excludeAttributes = attributes.stream()
                 .map(a -> a.startsWith("\"") && a.endsWith("\"") ? a : "\"" + a + "\"")
-                .collect(Collectors.toList());
+                .toList();
 
         Annotation toStringAnnotation = daoClazz.getAnnotation(ToString.class.getSimpleName())
                 .orElse(new Annotation(ToString.class));

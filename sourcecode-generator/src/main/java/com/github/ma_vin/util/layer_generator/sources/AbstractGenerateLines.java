@@ -2,7 +2,6 @@ package com.github.ma_vin.util.layer_generator.sources;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Abstract class which provides method to generate a list of source code line
@@ -32,7 +31,7 @@ public abstract class AbstractGenerateLines {
      */
     public List<String> generate(int numTabs) {
         String tabs = getTabs(numTabs);
-        return generate().stream().map(s -> s.trim().isEmpty() ? s : tabs + s).collect(Collectors.toList());
+        return generate().stream().map(s -> s.trim().isEmpty() ? s : tabs + s).toList();
     }
 
     /**

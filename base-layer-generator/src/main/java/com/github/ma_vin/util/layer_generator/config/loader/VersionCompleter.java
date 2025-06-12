@@ -8,7 +8,6 @@ import com.github.ma_vin.util.layer_generator.logging.ILogWrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Completes all versions and transforms them to an entity with an actual version (whose references considering version entities also)
@@ -153,7 +152,7 @@ public class VersionCompleter extends AbstractCompleter {
      */
     private void determineVersionParentReferences(Entity entity) {
         List<Reference> parentReferences = determineReferenceToVersionEntity(entity).stream()
-                .map(this::createParentReference).collect(Collectors.toList());
+                .map(this::createParentReference).toList();
 
         entity.setParentRefs(parentReferences);
     }
