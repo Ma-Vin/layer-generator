@@ -49,33 +49,34 @@
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
 
-        <maven.plugin.version>3.11.0</maven.plugin.version>
-        <maven.plugin-annotations.version>3.13.1</maven.plugin-annotations.version>
-        <maven.plugin-api.version>3.9.8</maven.plugin-api.version>
-        <maven.plugin-clean.version>3.4.0</maven.plugin-clean.version>
-        <maven.plugin-dependency.version>3.7.1</maven.plugin-dependency.version>
-        <maven.plugin-plugin.version>3.13.1</maven.plugin-plugin.version>
+        <maven.plugin.version>3.14.1</maven.plugin.version>
+        <maven.plugin-annotations.version>3.15.2</maven.plugin-annotations.version>
+        <maven.plugin-api.version>3.9.11</maven.plugin-api.version>
+        <maven.plugin-clean.version>3.5.0</maven.plugin-clean.version>
+        <maven.plugin-dependency.version>3.9.0</maven.plugin-dependency.version>
+        <maven.plugin-plugin.version>3.15.2</maven.plugin-plugin.version>
         <maven.plugin-resource.version>3.3.1</maven.plugin-resource.version>
         <maven.plugin-source.version>3.3.1</maven.plugin-source.version>
-        <maven.plugin-jar.version>3.4.2</maven.plugin-jar.version>
-        <maven.plugin-javadoc.version>3.7.0</maven.plugin-javadoc.version>
-        <maven.surefire.failsafe.version>3.3.0</maven.surefire.failsafe.version>
-        <fasterxml.jackson.version>2.17.2</fasterxml.jackson.version>
-        <jacoco.plugin.version>0.8.12</jacoco.plugin.version>
-        <jaxb2.plugin.version>3.2.0</jaxb2.plugin.version>
-        <jakarta.api.version>4.0.2</jakarta.api.version>
-        <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
-        <junit.version>5.10.3</junit.version>
-        <lombok.version>1.18.34</lombok.version>
-        <log4j.version>2.23.1</log4j.version>
-        <mockito.version>5.12.0</mockito.version>
-        <snake-yaml.version>2.2</snake-yaml.version>
-        <sonar.plugin.version>4.0.0.4121</sonar.plugin.version>
+        <maven.plugin-jar.version>3.5.0</maven.plugin-jar.version>
+        <maven.plugin-javadoc.version>3.12.0</maven.plugin-javadoc.version>
+        <maven.surefire.failsafe.version>3.5.4</maven.surefire.failsafe.version>
+        <fasterxml.jackson.version>2.20.1</fasterxml.jackson.version>
+        <jacoco.plugin.version>0.8.14</jacoco.plugin.version>
+        <jaxb2.plugin.version>4.0.0</jaxb2.plugin.version>
+        <jakarta.api.version>4.0.4</jakarta.api.version>
+        <jakarta-persistence.version>3.2.0</jakarta-persistence.version>
+        <junit.version>6.0.1</junit.version>
+        <lombok.version>1.18.42</lombok.version>
+        <log4j.version>2.25.2</log4j.version>
+        <mockito.version>5.20.0</mockito.version>
+        <snake-yaml.version>2.5</snake-yaml.version>
+        <sonar.plugin.version>5.3.0.6276</sonar.plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip.test>false</skip.test>
         <skip.it>false</skip.it>
         <skip.javadoc>false</skip.javadoc>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
         <sonar.search.port>9002</sonar.search.port>
         <sonar.sources>src/main</sonar.sources>
         <sonar.tests>src/test</sonar.tests>
